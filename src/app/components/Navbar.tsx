@@ -16,13 +16,13 @@ const Navbar: React.FC<NavbarProps> = () => {
           </div>
         </div>
         <div className={NavStyles.listLinks}>
-          <Link href="/">
+          <Link href="/profile">
             <img className={NavStyles.icon} src="user.svg" />
           </Link>
           <Link href="/dashboard">
             <img className={NavStyles.icon} src="dashboard.svg" />
           </Link>
-          <Link href="/profile">
+          <Link href="/dashboard">
             <img className={NavStyles.icon} src="notif.svg" />
           </Link>
         </div>

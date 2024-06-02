@@ -1,3 +1,22 @@
-.links {
-  color: orange;
+.layout {
+  display: flex;
+  flex-direction: row;
+}
+
+.rightSide {
+  background-color: #212121;
+  width: 100%;
+}
+
+.topNavbar {
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(90deg, #212121, #0b0b0b);
+  border-bottom: #eeeeee 1px solid;
+}
+
+.navbar {
+  width: 60px;
+  height: 100vh;
+  border-right: #eeeeee 1px solid;
 }

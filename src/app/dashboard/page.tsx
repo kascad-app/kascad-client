@@ -7,6 +7,8 @@ export default function DashboardPage() {
   return (
     <main className={DashStyles.main}>
       <p>Hello Dashboard</p>
+
+      <p>Good Hacking</p>
     </main>
   );
 }

@@ -9,6 +9,8 @@ export default function ProfilePage() {
   return (
     <main className={ProfileStyles.main}>
       <p>Hello Profile</p>
+
+      <p>Good Hacking</p>
     </main>
   );
 }

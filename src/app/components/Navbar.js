@@ -1,9 +1,10 @@
 import Link from "next/link";
-import NavStyles from "./layout.module.css";
+import NavStyles from "./navbar.module.css";
 const Navbar = () => {
   return (
-    <nav>
-      <ul>
+    <nav className={NavStyles.navbar}>
+      <img src="logo-kascad-mini.png" />
+      {/* <ul>
         <li>
           <Link href="/">
             <p className={NavStyles.links}>Home</p>
@@ -19,7 +20,7 @@ const Navbar = () => {
             <p className={NavStyles.links}>Profile</p>
           </Link>
         </li>
-      </ul>
+      </ul> */}
     </nav>
   );
 };

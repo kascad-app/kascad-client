@@ -1,0 +1,12 @@
+.navbar {
+  background: linear-gradient(#212121, #0b0b0b);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+  width: 60px;
+  position: fixed;
+  overflow: hidden;
+  padding: 9px 0;
+}

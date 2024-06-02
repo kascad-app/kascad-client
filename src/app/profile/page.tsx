@@ -1,16 +1,14 @@
 "use client";
 
-import ProfileStyles from "./profile.module.css";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import Link from "next/link";
+import ProfileStyles from "./page.module.css";
+import Layout from "../components/Layout";
 
 export default function ProfilePage() {
   return (
-    <main className={ProfileStyles.main}>
-      <p>Hello Profile</p>
+    <Layout>
+      <p className={ProfileStyles.main}>Hello Profile</p>
 
       <p>Good Hacking</p>
-    </main>
+    </Layout>
   );
 }

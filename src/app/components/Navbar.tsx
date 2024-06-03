@@ -19,10 +19,10 @@ const Navbar: React.FC<NavbarProps> = () => {
           <Link href="/profile">
             <img className={NavStyles.icon} src="user.svg" />
           </Link>
-          <Link href="/dashboard">
+          <Link href="/marketplace">
             <img className={NavStyles.icon} src="dashboard.svg" />
           </Link>
-          <Link href="/dashboard">
+          <Link href="/marketplace">
             <img className={NavStyles.icon} src="notif.svg" />
           </Link>
         </div>

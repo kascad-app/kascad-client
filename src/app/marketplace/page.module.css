@@ -1,12 +1,12 @@
 .marketContainer {
-  padding: 60px;
-  width: 100%;
+  margin: 60px;
+  width: calc(100% - 180px);
   display: flex;
   flex-direction: column;
 }
 
 .newSponsorContainer {
-  width: 95%;
+  width: 100%;
   height: 30vh;
   max-height: 30vh;
   background-color: rgba(11, 11, 11, 0.86);
@@ -17,10 +17,26 @@
   padding: 16px;
   /* align-items: center; */
 }
+
+.welcomePanel {
+  padding: 3vh 0;
+  line-height: 30px;
+}
+
+.welcomePanel p {
+  font-size: 1.5vh;
+}
+
+.welcomePanel b {
+  font-size: 1.75vh;
+  font-weight: 600;
+}
+
 .newCardContainer {
   display: flex;
   align-items: center;
   height: 100%;
+  /* overflow-x: scroll; */
 }
 .sectionCardTitle {
   font-weight: 600;
@@ -32,8 +48,20 @@
   flex-direction: row;
   align-items: center;
   /* padding: 0 20px; */
-  width: 100%;
+  /* width: 100%; */
   height: 75%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.carouselCardsWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: max-content; /* This ensures the wrapper takes the width of its content */
+  height: 90%;
+  gap: 20px;
 }
 
 .logoKascad {
@@ -46,20 +74,23 @@
   width: 30vh;
   border-radius: 10px;
   background: linear-gradient(90deg, #212121, #0b0b0b);
-  filter: drop-shadow(-6px 0px 36px rgba(255, 255, 255, 0.14));
+  filter: drop-shadow(5px 0px 15px rgba(255, 255, 255, 0.04));
   margin-left: 20px;
   padding: 1%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  position: relative;
 }
 
 .cardActionMenu {
-  width: 90%;
+  width: 80%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: absolute;
+  bottom: 10%;
 }
 
 .cardActionMenu img {
@@ -76,5 +107,5 @@
 
 .cardBrandLogo {
   width: 70%;
-  max-height: 55%;
+  max-height: 65%;
 }

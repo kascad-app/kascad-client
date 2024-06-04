@@ -8,6 +8,10 @@ export default function MarketPlacePage() {
   return (
     <Layout>
       <div className={MarketStyles.marketContainer}>
+        <div className={MarketStyles.welcomePanel}>
+          <p>4 Juin 2024</p>
+          <b>Bonjour Candide</b>
+        </div>
         <div className={MarketStyles.newSponsorContainer}>
           <h3 className={MarketStyles.sectionCardTitle}>
             Ils nous ont récemment rejoint
@@ -18,45 +22,124 @@ export default function MarketPlacePage() {
               src="logo-kascad-big.svg"
             />
             <div className={MarketStyles.carouselCards}>
-              {/* Card */}
-              <div className={MarketStyles.card}>
-                <div></div>
-                <img
-                  className={MarketStyles.cardBrandLogo}
-                  src="Salomon-logo.svg"
-                />
-                <div className={MarketStyles.cardActionMenu}>
-                  <img className={MarketStyles.contactLogo} src="contact.svg" />
-                  <img className={MarketStyles.saveLogo} src="save.svg" />
+              <div className={MarketStyles.carouselCardsWrapper}>
+                {/* Card */}
+                <div className={MarketStyles.card}>
+                  <img
+                    className={MarketStyles.cardBrandLogo}
+                    src="Salomon-logo.svg"
+                  />
+                  <div className={MarketStyles.cardActionMenu}>
+                    <img
+                      className={MarketStyles.contactLogo}
+                      src="contact.svg"
+                    />
+                    <img className={MarketStyles.saveLogo} src="save.svg" />
+                  </div>
                 </div>
-              </div>
 
-              {/* Card  */}
-              <div className={MarketStyles.card}>
-                <div></div>
-                <img
-                  className={MarketStyles.cardBrandLogo}
-                  src="Redbull-logo.svg"
-                />
-                <div className={MarketStyles.cardActionMenu}>
-                  <img className={MarketStyles.contactLogo} src="contact.svg" />
-                  <img className={MarketStyles.saveLogo} src="save.svg" />
+                {/* Card  */}
+                <div className={MarketStyles.card}>
+                  <img
+                    className={MarketStyles.cardBrandLogo}
+                    src="Redbull-logo.svg"
+                  />
+                  <div className={MarketStyles.cardActionMenu}>
+                    <img
+                      className={MarketStyles.contactLogo}
+                      src="contact.svg"
+                    />
+                    <img className={MarketStyles.saveLogo} src="save.svg" />
+                  </div>
                 </div>
-              </div>
 
-              {/* Card  */}
-              <div className={MarketStyles.card}>
-                <div></div>
-                <img
-                  className={MarketStyles.cardBrandLogo}
-                  src="Coqsportif-logo.svg"
-                />
-                <div className={MarketStyles.cardActionMenu}>
-                  <img className={MarketStyles.contactLogo} src="contact.svg" />
-                  <img className={MarketStyles.saveLogo} src="save.svg" />
+                {/* Card  */}
+                <div className={MarketStyles.card}>
+                  <img
+                    className={MarketStyles.cardBrandLogo}
+                    src="Coqsportif-logo.svg"
+                  />
+                  <div className={MarketStyles.cardActionMenu}>
+                    <img
+                      className={MarketStyles.contactLogo}
+                      src="contact.svg"
+                    />
+                    <img className={MarketStyles.saveLogo} src="save.svg" />
+                  </div>
                 </div>
+
+                {/* Card  */}
+                <div className={MarketStyles.card}>
+                  <img
+                    className={MarketStyles.cardBrandLogo}
+                    src="Coqsportif-logo.svg"
+                  />
+                  <div className={MarketStyles.cardActionMenu}>
+                    <img
+                      className={MarketStyles.contactLogo}
+                      src="contact.svg"
+                    />
+                    <img className={MarketStyles.saveLogo} src="save.svg" />
+                  </div>
+                </div>
+
+                <div className={MarketStyles.card}>
+                  <img
+                    className={MarketStyles.cardBrandLogo}
+                    src="Coqsportif-logo.svg"
+                  />
+                  <div className={MarketStyles.cardActionMenu}>
+                    <img
+                      className={MarketStyles.contactLogo}
+                      src="contact.svg"
+                    />
+                    <img className={MarketStyles.saveLogo} src="save.svg" />
+                  </div>
+                </div>
+
+                <div className={MarketStyles.card}>
+                  <img
+                    className={MarketStyles.cardBrandLogo}
+                    src="Coqsportif-logo.svg"
+                  />
+                  <div className={MarketStyles.cardActionMenu}>
+                    <img
+                      className={MarketStyles.contactLogo}
+                      src="contact.svg"
+                    />
+                    <img className={MarketStyles.saveLogo} src="save.svg" />
+                  </div>
+                </div>
+
+                <div className={MarketStyles.card}>
+                  <img
+                    className={MarketStyles.cardBrandLogo}
+                    src="Coqsportif-logo.svg"
+                  />
+                  <div className={MarketStyles.cardActionMenu}>
+                    <img
+                      className={MarketStyles.contactLogo}
+                      src="contact.svg"
+                    />
+                    <img className={MarketStyles.saveLogo} src="save.svg" />
+                  </div>
+                </div>
+
+                <div className={MarketStyles.card}>
+                  <img
+                    className={MarketStyles.cardBrandLogo}
+                    src="Coqsportif-logo.svg"
+                  />
+                  <div className={MarketStyles.cardActionMenu}>
+                    <img
+                      className={MarketStyles.contactLogo}
+                      src="contact.svg"
+                    />
+                    <img className={MarketStyles.saveLogo} src="save.svg" />
+                  </div>
+                </div>
+                {/* End Card  */}
               </div>
-              {/* End Card  */}
             </div>
           </div>
         </div>

@@ -152,22 +152,30 @@ export default function MarketPlacePage() {
               <div
                 className={`${MarketStyles.categoryCard} ${MarketStyles.bgBike}`}
               >
-                <div className={MarketStyles.filterCategoryCard}></div>
+                <div className={MarketStyles.filterCategoryCard}>
+                  <p className={MarketStyles.categoryTitle}>Aerien</p>
+                </div>
               </div>
               <div
                 className={`${MarketStyles.categoryCard} ${MarketStyles.bgSkate}`}
               >
-                <div className={MarketStyles.filterCategoryCard}></div>
+                <div className={MarketStyles.filterCategoryCard}>
+                  <p className={MarketStyles.categoryTitle}>Terrestre</p>
+                </div>
               </div>
               <div
                 className={`${MarketStyles.categoryCard} ${MarketStyles.bgSnow}`}
               >
-                <div className={MarketStyles.filterCategoryCard}></div>
+                <div className={MarketStyles.filterCategoryCard}>
+                  <p className={MarketStyles.categoryTitle}>Montagneux</p>
+                </div>
               </div>
               <div
                 className={`${MarketStyles.categoryCard} ${MarketStyles.bgKanoe}`}
               >
-                <div className={MarketStyles.filterCategoryCard}></div>
+                <div className={MarketStyles.filterCategoryCard}>
+                  <p className={MarketStyles.categoryTitle}>Aquatique</p>
+                </div>
               </div>
             </div>
           </div>

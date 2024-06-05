@@ -25,6 +25,9 @@ const Navbar: React.FC<NavbarProps> = () => {
           <Link href="/dashboard">
             <img className={NavStyles.icon} src="notif.svg" />
           </Link>
+          <Link href ="/sponsors">
+            <p>sp</p>
+          </Link>
         </div>
       </div>
       <div className={NavStyles.bottomSection}>

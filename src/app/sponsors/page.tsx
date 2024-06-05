@@ -1,7 +1,8 @@
 'use client'
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import listStyles from './liste.module.css';
+import listSponsorsStyles from './listSponsors.module.css';
+import Layout from '../components/Layout';
 
 type ListItem = {
   id: number;
@@ -20,17 +21,18 @@ const List: React.FC = () => {
   ];
 
   const handleItemClick = (item: ListItem) => {
-    router.push(`/details/${item.id}`);
+    router.push(`/sponsors/${item.id}`);
   };
 
   return (
-    <div className={listStyles.container}>
-      <h2 className={listStyles.header}>Liste des marques</h2>
-      <ul className={listStyles.list}>
+   <Layout>
+     <div className={listSponsorsStyles.container}>
+      <h2 className={listSponsorsStyles.header}>Liste des sponsors</h2>
+      <ul className={listSponsorsStyles.list}>
         {items.map(item => (
-          <li key={item.id} onClick={() => handleItemClick(item)} className={listStyles.listItem}>
-            <div className={listStyles.itemContent}>
-              <h3 className={listStyles.itemTitle}>{item.brandName}</h3>
+          <li key={item.id} onClick={() => handleItemClick(item)} className={listSponsorsStyles.listItem}>
+            <div className={listSponsorsStyles.itemContent}>
+              <h3 className={listSponsorsStyles.itemTitle}>{item.brandName}</h3>
               <p>Sport: {item.sport}</p>
               <p>Nombre de sportifs adhérents: {item.athleteCount}</p>
             </div>
@@ -38,6 +40,7 @@ const List: React.FC = () => {
         ))}
       </ul>
     </div>
+   </Layout>
   );
 };
 

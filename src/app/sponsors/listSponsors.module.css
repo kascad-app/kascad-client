@@ -1,0 +1,39 @@
+/* components/List.module.css */
+.container {
+    padding: 20px;
+  }
+  
+  .header {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .listItem {
+    background-color: #f0f0f0;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .listItem:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .itemContent {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .itemTitle {
+    font-size: 20px;
+    margin: 0;
+    margin-bottom: 10px;
+  }
+  

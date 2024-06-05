@@ -143,6 +143,41 @@ export default function MarketPlacePage() {
             </div>
           </div>
         </div>
+        <div className={MarketStyles.secondSection}>
+          <div className={MarketStyles.universContainer}>
+            <h3 className={MarketStyles.sectionCardTitle}>
+              Dans leurs univers
+            </h3>
+            <div className={MarketStyles.categoryContainer}>
+              <div
+                className={`${MarketStyles.categoryCard} ${MarketStyles.bgBike}`}
+              >
+                <div className={MarketStyles.filterCategoryCard}></div>
+              </div>
+              <div
+                className={`${MarketStyles.categoryCard} ${MarketStyles.bgSkate}`}
+              >
+                <div className={MarketStyles.filterCategoryCard}></div>
+              </div>
+              <div
+                className={`${MarketStyles.categoryCard} ${MarketStyles.bgSnow}`}
+              >
+                <div className={MarketStyles.filterCategoryCard}></div>
+              </div>
+              <div
+                className={`${MarketStyles.categoryCard} ${MarketStyles.bgKanoe}`}
+              >
+                <div className={MarketStyles.filterCategoryCard}></div>
+              </div>
+            </div>
+          </div>
+          <div className={MarketStyles.favoriteContainer}>
+            <h3 className={MarketStyles.sectionCardTitle}>
+              Les plus appréciés
+            </h3>
+            {/* <div className={MarketStyles.newCardContainer}></div> */}
+          </div>
+        </div>
       </div>
       {/* <p className={MarketStyles.main}>Hello Marketplace</p>
 

@@ -116,6 +116,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 5vh;
 }
 .universContainer {
   width: 49%;
@@ -217,4 +218,24 @@
   opacity: 85%;
   transition: 0.5s all;
   backdrop-filter: blur(0px);
+}
+
+.thirdSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.thirdSectionTitle {
+  font-size: 6vh;
+  color: #3c3c3c;
+  padding-bottom: 15px;
+}
+
+.separator {
+  background-color: #3c3c3c;
+  width: 35%;
+  height: 2px;
 }

@@ -3,6 +3,12 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Layout from "../components/Layout";
+import { Michroma } from "next/font/google";
+
+const michroma = Michroma({
+  subsets: ["latin"],
+  weight: "400",
+});
 
 export default function MarketPlacePage() {
   return (
@@ -185,6 +191,14 @@ export default function MarketPlacePage() {
             </h3>
             {/* <div className={MarketStyles.newCardContainer}></div> */}
           </div>
+        </div>
+        <div className={MarketStyles.thirdSection}>
+          <h2
+            className={`${michroma.className} ${MarketStyles.thirdSectionTitle}`}
+          >
+            Nos sponsors
+          </h2>
+          <span className={MarketStyles.separator}></span>
         </div>
       </div>
       {/* <p className={MarketStyles.main}>Hello Marketplace</p>

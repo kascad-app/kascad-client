@@ -1,7 +1,6 @@
 'use client'
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import listStyles from './liste.module.css';
 
 type ListItem = {
   id: number;
@@ -10,33 +9,56 @@ type ListItem = {
   athleteCount: number;
 };
 
-const List: React.FC = () => {
+type ListProps = {
+  items: ListItem[];
+};
+
+const List: React.FC<ListProps> = ({ items }) => {
   const router = useRouter();
 
-  const items: ListItem[] = [
-    { id: 1, brandName: 'Nike', sport: 'Running', athleteCount: 120 },
-    { id: 2, brandName: 'Adidas', sport: 'Football', athleteCount: 200 },
-    { id: 3, brandName: 'Puma', sport: 'Basketball', athleteCount: 150 },
-  ];
-
   const handleItemClick = (item: ListItem) => {
-    router.push(`/details/${item.id}`);
+    router.push(`/sponsors/${item.id}`);
   };
 
   return (
-    <div className={listStyles.container}>
-      <h2 className={listStyles.header}>Liste des marques</h2>
-      <ul className={listStyles.list}>
-        {items.map(item => (
-          <li key={item.id} onClick={() => handleItemClick(item)} className={listStyles.listItem}>
-            <div className={listStyles.itemContent}>
-              <h3 className={listStyles.itemTitle}>{item.brandName}</h3>
-              <p>Sport: {item.sport}</p>
-              <p>Nombre de sportifs adhérents: {item.athleteCount}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-bold mb-4 text-center">Liste des sponsors</h2>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-200">
+          <thead>
+            <tr>
+              <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Brand Name
+              </th>
+              <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Sport
+              </th>
+              <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Athlete Count
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map(item => (
+              <tr 
+                key={item.id} 
+                onClick={() => handleItemClick(item)} 
+                className="cursor-pointer hover:bg-gray-100 transition"
+              >
+                <td className="px-6 py-4 border-b border-gray-200">
+                  {item.brandName}
+                </td>
+                <td className="px-6 py-4 border-b border-gray-200">
+                  {item.sport}
+                </td>
+                <td className="px-6 py-4 border-b border-gray-200">
+                  {item.athleteCount}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

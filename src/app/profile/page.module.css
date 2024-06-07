@@ -1,2 +1,61 @@
-.main {
+.profile {
+    color: white;
+}
+
+.profile_card {
+    padding: 24px;
+    max-width: 340px;
+    border-radius: 0 0 12px 12px;
+    background: green;
+}
+
+.profile_image {
+    height: 178px;
+    width: 178px;
+    border-radius: 100%;
+    background: red;
+}
+
+.profile_infos,
+.profile_contact {
+    margin-top: 32px;
+}
+
+.profile_infos_name,
+.profile_contact_title {
+    margin-top: 12px;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 30px;
+}
+
+.profile_infos_age {
+    margin-top: 12px;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 20px;
+
+}
+
+.profile_contact_email {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+}
+
+.profile_infos_location {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+}
+
+.profile_desc,
+.profile_contact_rs {
+    margin-top: 12px;
+}
+
+.profile_desc {
+    text-align: justify;
 }

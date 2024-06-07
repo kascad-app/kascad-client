@@ -1,16 +1,78 @@
+"use client";
+
 import MarketStyles from "./page.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Layout from "../components/Layout";
 import { Michroma } from "next/font/google";
+import { useEffect, useState, useRef } from "react";
 
 const michroma = Michroma({
   subsets: ["latin"],
   weight: "400",
 });
+const MarketPlacePage: React.FC = () => {
+  const [isManualHover, setIsManualHover] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-export default function MarketPlacePage() {
+  useEffect(() => {
+    const cards = document.querySelectorAll(`.${MarketStyles.categoryCard}`);
+    console.log(cards);
+    let index = 0;
+
+    const hoverNextCard = () => {
+      if (!isManualHover) {
+        cards.forEach((card) => {
+          card.classList.remove(`${MarketStyles.animateHover}`);
+        });
+        cards[index].classList.add(`${MarketStyles.animateHover}`);
+        index = (index + 1) % cards.length;
+
+        timeoutRef.current = setTimeout(hoverNextCard, 5000);
+      }
+    };
+
+    const startHovering = () => {
+      if (!isManualHover) {
+        hoverNextCard(); // initial call
+      }
+    };
+
+    startHovering();
+
+    const stopHovering = () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+
+      cards.forEach((card) => {
+        card.classList.remove(`${MarketStyles.animateHover}`);
+      });
+    };
+
+    cards.forEach((card) => {
+      card.addEventListener("mouseenter", () => {
+        setIsManualHover(true);
+        stopHovering();
+      });
+
+      card.addEventListener("mouseleave", () => {
+        setIsManualHover(false);
+        startHovering();
+      });
+    });
+
+    return () => {
+      stopHovering();
+      cards.forEach((card) => {
+        card.removeEventListener("mouseenter", () => setIsManualHover(true));
+        card.removeEventListener("mouseleave", () => setIsManualHover(false));
+      });
+    };
+  }, [isManualHover]);
+
   return (
     <Layout>
       <div className={MarketStyles.marketContainer}>
@@ -201,9 +263,8 @@ export default function MarketPlacePage() {
           <span className={MarketStyles.separator}></span>
         </div>
       </div>
-      {/* <p className={MarketStyles.main}>Hello Marketplace</p>
-
-      <p>Good Hacking</p> */}
     </Layout>
   );
-}
+};
+
+export default MarketPlacePage;

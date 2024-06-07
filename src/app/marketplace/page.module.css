@@ -239,3 +239,31 @@
   width: 35%;
   height: 2px;
 }
+
+/* @keyframes hoverAnimation {
+  0% {
+    filter: grayscale(100%);
+  }
+  100% {
+    filter: grayscale(0%);
+  }
+} */
+
+.animateHover {
+  filter: grayscale(0%) !important;
+
+  opacity: 1;
+  width: 50%;
+  transition: all 1s;
+}
+
+.animateHover div {
+  backdrop-filter: blur(0px);
+
+  transition: all 1s;
+}
+
+.animateHover div p {
+  opacity: 1;
+  transition: all 1s;
+}

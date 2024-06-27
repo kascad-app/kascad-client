@@ -9,23 +9,25 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'connexion-background': "url('/views/connexion/connexionBackground.png')",
+        "connexion-background":
+          "url('/views/connexion/connexionBackground.png')",
       },
       colors: {
-        'dark-green': '#1B4C4E',
-        'dark-green-hover': '#0B2526',
+        "common-green": "#A0C446",
+        "dark-green": "#1B4C4E",
+        "dark-green-hover": "#0B2526",
       },
       fontFamily: {
-        michroma: ['"Michroma"', 'sans-serif'],
-        figtree: ['"Figtree"', 'sans-serif'],
+        michroma: ['"Michroma"', "sans-serif"],
+        figtree: ['"Figtree"', "sans-serif"],
       },
       fontSize: {
-        sm: '0.8rem',
-        base: '24px',
-        xl: '32px',
-        '2xl' : '40px'
-      }
-    }
+        sm: "0.8rem",
+        base: "24px",
+        xl: "32px",
+        "2xl": "40px",
+      },
+    },
   },
   plugins: [],
-}
+};

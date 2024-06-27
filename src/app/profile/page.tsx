@@ -2,7 +2,7 @@
 
 import ProfileStyles from "./page.module.css";
 import Layout from "../components/Layout";
-import List from '../components/liste';
+import List from '../components/Liste';
 
 type ListItem = {
   id: number;

@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import Layout from '../components/Layout';
-import List from '../components/liste';
+import List from '../components/Liste';
 
 type ListItem = {
   id: number;

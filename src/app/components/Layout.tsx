@@ -1,22 +1,21 @@
-import Navbar from "./Navbar";
-import layoutStyles from "./layout.module.css";
-import React, { useRef } from "react";
-import TopNavbar from "./TopNavbar";
+import { ReactNode } from 'react';
 
-const Layout = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => {
+interface LayoutProps {
+  children: ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className={layoutStyles.layout}>
-      <Navbar />
-      <div className={layoutStyles.navbar}></div>
-      <div className={layoutStyles.rightSide}>
-        <TopNavbar></TopNavbar>
-        <div className={layoutStyles.topNavbar}></div>
-        <main className={layoutStyles.children}>{children}</main>
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <header className="bg-gray-800 text-white p-4">
+        <h1>My Website</h1>
+      </header>
+      <main className="flex-1">
+        {children}
+      </main>
+      <footer className="bg-gray-800 text-white p-4">
+        <p>Footer Content</p>
+      </footer>
     </div>
   );
 };

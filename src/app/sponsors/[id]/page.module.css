@@ -11,6 +11,7 @@
 
 .sponsor_infos {
     max-width: 1074px;
+    margin-top: 300px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -20,6 +21,7 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 300px;
+    font-size: 20px;
 }
 
 .sponsor_info {
@@ -28,7 +30,7 @@
     flex-wrap: nowrap;
     /* align-items: center; */
     /* min-height: 75dvh; */
-    padding: 25dvh 0;
+    padding: 200px 0;
 }
 
 .sponsor_info_title {
@@ -37,11 +39,9 @@
     font-weight: 700;
     font-size: 32px;
     line-height: 30px;
-
-    position: sticky;
-    top: 100px;
 }
 
 .sponsor_info_content {
     flex: 1;
+    font-size: 20px;
 }

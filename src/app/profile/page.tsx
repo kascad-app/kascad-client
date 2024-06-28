@@ -44,18 +44,25 @@ export default function ProfilePage() {
 
   return (
     <>
-      <header className="w-full h-screen overflow-y-hidden relative image-gradient">
-        <div className="z-10 absolute inset-x-1/2 top-20 transform -translate-x-1/2 w-10/12 rounded-2xl opacity-50 font-bold bg-[#C8C8C8] ">
-          <h1 className=" font-figtree opacity-100 text-8xl px-8 py-12 text-white">
+      {/* className="w-full h-96 flex items-center justify-center text-white
+      text-4xl" */}
+      <header className="w-full h-[65vh] bg-cover overflow-y-hidden relative image-gradient ">
+        <div
+          className="absolute inset-0 bg-cover filter grayscale"
+          style={{ backgroundImage: `url(${images[loading]})` }}
+        ></div>
+        <div className="z-10 absolute inset-x-1/2 top-20 transform -translate-x-1/2 w-10/12 rounded-2xl font-bold px-8 py-12">
+          <h1 className=" font-figtree text-8xl pb-5 text-black">
             Candide <span className="text-common-green">Thovex</span>
           </h1>
+          <p>@candide</p>
         </div>
-        <img className="w-full" src={images[loading]} alt="Carousel" />
-        <div className="absolute z-10 bottom-40 inset-x-1/2 h-4 flex w-fit">
+        {/* <img className="w-full" src={} alt="Carousel" /> */}
+        <div className="absolute z-10 bottom-10 inset-x-1/2 h-4 flex w-fit">
           {images.map((_, index) => (
             <span
               key={index}
-              className="w-12 h-2 mx-2 rounded-full bg-gray-300 relative overflow-hidden cursor-pointer"
+              className="w-12 h-2 mx-2 rounded-full bg-white relative overflow-hidden cursor-pointer"
               onClick={() => handleSpanClick(index)}
             >
               <span

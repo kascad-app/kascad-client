@@ -1,6 +1,6 @@
-"use client";
+'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import MainBanner from './MainBanner';
 import SecondaryBanners from './SecondaryBanners';
 
@@ -19,6 +19,19 @@ const MarquesBanner = () => {
   ]);
   const [progress, setProgress] = useState(0);
   const router = useRouter();
+  const scrollPositionRef = useRef<number>(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      scrollPositionRef.current = window.scrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -46,6 +59,10 @@ const MarquesBanner = () => {
       router.push('/marketplace');
     }
   }, [progress, router]);
+
+  useEffect(() => {
+    window.scrollTo(0, scrollPositionRef.current);
+  });
 
   return (
     <div className="relative w-full mx-auto px-24 py-7">

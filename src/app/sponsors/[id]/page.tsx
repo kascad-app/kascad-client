@@ -42,8 +42,8 @@ const Detail: React.FC = () => {
         let tl = gsap.timeline({
           scrollTrigger: {
             trigger: el,
-            start: 'top+=800 70%',
-            end: 'bottom+=200 center-=200',
+            start: 'top+=650 70%',
+            end: 'bottom+=100 center-=200',
             toggleActions: 'play none reverse none',
             scrub: 1,
             pin: true

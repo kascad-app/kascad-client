@@ -1,6 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import "./profile.css";
+import List from "../components/liste";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function ProfilePage() {
   const [loading, setLoading] = useState(0);
@@ -42,6 +47,77 @@ export default function ProfilePage() {
     // Update the loading state to the clicked span index
     setLoading(index); // Index is zero-based, so add 1 to match loading state
   };
+
+  // useEffect(() => {
+  //   const nav = document.getElementById("sticky-nav");
+  //   gsap.to(nav, {
+  //     scrollTrigger: {
+  //       trigger: nav,
+  //       start: "top top",
+  //       end: "+=100",
+  //       // pin: true,
+  //       pinSpacing: false,
+  //       markers: true,
+  //     },
+  //   });
+  // }, []);
+
+  type ListItem = {
+    id: number;
+    date: string;
+    event: string;
+    categorie: string;
+    top: string;
+  };
+
+  type Column<T> = {
+    title: string;
+    key: keyof T;
+  };
+  const firstListTitle: string = "Derniers résultat";
+  const secondListTitle: string = "Classement général";
+
+  const items: ListItem[] = [
+    {
+      id: 1,
+      date: "21/11/2001",
+      event: "Nike",
+      categorie: "Running",
+      top: "120",
+    },
+    {
+      id: 2,
+      date: "14/05/2004",
+      event: "Adidas",
+      categorie: "Football",
+      top: "200",
+    },
+    {
+      id: 3,
+      date: "15/08/1971",
+      event: "Puma",
+      categorie: "Basketball",
+      top: "150",
+    },
+  ];
+  const columnTitles: Column<ListItem>[] = [
+    {
+      title: "Date",
+      key: "date",
+    },
+    {
+      title: "Evenements",
+      key: "event",
+    },
+    {
+      title: "Catégorie",
+      key: "categorie",
+    },
+    {
+      title: "Classement",
+      key: "top",
+    },
+  ];
 
   return (
     <>
@@ -85,22 +161,31 @@ export default function ProfilePage() {
           ))}
         </div>
       </header>
-      <section className="w-full h-screen bg-white flex flex-col items-center p-16 font-semibold">
-        <div className="flex w-1/4 h-fit justify-evenly">
-          <p className="cursor-pointer ">PRESENTATION</p>
-          <p>|</p>
-          <p className="cursor-pointer">STATISTIQUE</p>
-          <p>|</p>
-          <p className="cursor-pointer">CONTENU</p>
-        </div>
-
-        <div className="flex w-full justify-center gap-x-32 items-center h-full pt-40">
+      <div
+        id="sticky-nav"
+        className="flex w-full h-fit justify-center gap-16 my-8 py-8 bg-white font-semibold sticky top-0"
+      >
+        <a href="#presentation" className="cursor-pointer scroll-smooth">
+          PRESENTATION
+        </a>
+        <p>|</p>
+        <a href="#stat" className="cursor-pointer">
+          STATISTIQUE
+        </a>
+        <p>|</p>
+        <a className="cursor-pointer">CONTENU</a>
+      </div>
+      <section
+        id="presentation"
+        className="scroll-smooth w-full h-screen min-h-screen bg-white flex flex-col items-center mb-16 font-semibold"
+      >
+        <div className="flex w-full h-full min-h-screen justify-center gap-x-32 items-center h-full pt-20">
           <div
-            className="inset-0 bg-cover w-4/12 h-full"
+            className="inset-0 bg-cover w-4/12 h-full "
             style={{ backgroundImage: "url(./views/profile/profile.png)" }}
           ></div>
           <div className="w-1/4">
-            <h2 className="font-bold font-figtree text-6xl pb-12">ABOUT ME</h2>
+            <h2 className="font-bold font-figtree text-5xl pb-12">ABOUT ME</h2>
             <p className="text-base font-thin">
               Skieur professionnel, freeskieur et snowboardeur, défie les
               conventions avec son style unique et ses exploits audacieux.
@@ -121,7 +206,15 @@ export default function ProfilePage() {
           </div>
         </div>
       </section>
-      <section></section>
+      <section
+        id="stat"
+        className="w-full h-screen bg-white flex flex-col   p-28 font-semibold"
+      >
+        <h2 className="font-bold font-figtree text-5xl">STATISTIQUES</h2>
+
+        <List title={firstListTitle} items={items} columns={columnTitles} />
+        <List title={secondListTitle} items={items} columns={columnTitles} />
+      </section>
     </>
   );
 }

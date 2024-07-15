@@ -1,9 +1,11 @@
 import Layout from "./components/Layout";
+import Loader from "./components/Loader";
+import Login from "./login/page";
 
 export default function Home() {
   return (
-    <Layout>
-      <p>Futur Login Page</p>
-    </Layout>
+    <div>
+      <Loader />
+    </div>
   );
 }

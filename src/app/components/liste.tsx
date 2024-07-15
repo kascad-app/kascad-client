@@ -1,6 +1,6 @@
-"use client";
-import React from "react";
-import { useRouter } from "next/navigation";
+'use client';
+import React from 'react';
+import { useRouter } from 'next/navigation';
 
 type Column<T> = {
   title: string;
@@ -28,7 +28,7 @@ const List = <T extends { id: number }>({
     <div className=" py-12 flex flex-col items-start w-full">
       <h2 className="text-l font-bold mb-4 text-center">{title}</h2>
       <div className="overflow-x-auto w-full">
-        <table className="min-w-full bg-white border border-gray-200">
+        <table className=" min-w-full bg-white border border-gray-200">
           <thead>
             <tr>
               {columns.map((column) => (
@@ -49,10 +49,12 @@ const List = <T extends { id: number }>({
                 className="cursor-pointer hover:bg-gray-100 transition"
               >
                 {columns.map((column) => (
+
                   <td
                     key={column.key as string}
                     className="px-6 py-4 border-b border-gray-200"
                   >
+
                     {String(item[column.key])}
                   </td>
                 ))}

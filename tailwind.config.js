@@ -9,8 +9,9 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        "connexion-background":
-          "url('/views/connexion/connexionBackground.png')",
+ nav_bar
+        'connexion-background': "url('/views/connexion/connexionBackground.png')",
+        'footer-background': "url('/views/footer/footerBackground.png')",
       },
       colors: {
         "common-green": "#A0C446",
@@ -22,12 +23,17 @@ module.exports = {
         figtree: ['"Figtree"', "sans-serif"],
       },
       fontSize: {
-        sm: "0.8rem",
-        base: "24px",
-        xl: "32px",
-        "2xl": "40px",
+     nav_bar
+        sm: '0.8rem',
+        base: '24px',
+        xl: '32px',
+        '2xl' : '40px'
       },
-    },
+      spacing: {
+        '50vw': '50vw',
+      }
+    }
+
   },
   plugins: [],
 };

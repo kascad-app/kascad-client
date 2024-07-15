@@ -1,6 +1,6 @@
 import Layout from "./components/Layout";
 import Loader from "./components/Loader";
-import Login from "./connexion/page";
+import Login from "./login/page";
 
 export default function Home() {
   return (

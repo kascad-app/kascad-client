@@ -1,21 +1,21 @@
-'use client';
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const Loader: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
-      const svgElement = document.querySelector('.animate-draw');
-      const rectElement = svgElement?.querySelector('rect');
-      const pathElements = svgElement?.querySelectorAll('path');
+      const svgElement = document.querySelector(".animate-draw");
+      const rectElement = svgElement?.querySelector("rect");
+      const pathElements = svgElement?.querySelectorAll("path");
 
-      rectElement?.classList.add('fill-black');
-      pathElements?.forEach(path => path.classList.add('stroke-white'));
+      rectElement?.classList.add("fill-black");
+      pathElements?.forEach((path) => path.classList.add("stroke-white"));
 
       const timer2 = setTimeout(() => {
-        router.push('/connexion');
+        router.push("/login");
       }, 1000);
 
       return () => clearTimeout(timer2);

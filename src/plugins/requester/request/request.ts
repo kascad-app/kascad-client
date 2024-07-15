@@ -11,6 +11,7 @@ const request = async <TData>(
   const headers = new Headers({
     "Content-Type": "application/json",
     Accept: "application/json",
+    credentials: "include",
     ...options?.headers,
   });
 

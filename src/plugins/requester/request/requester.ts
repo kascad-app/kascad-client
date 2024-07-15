@@ -19,8 +19,10 @@ type RequestResponse = {
   delete: BaseRequest;
 };
 
-const requester = (): RequestResponse => {
+const requester = (auth = true): RequestResponse => {
   let baseOptions: ApiRequestConfig = {};
+
+  if (auth) baseOptions.credentials = "include";
 
   const createRequest =
     (method: string) =>

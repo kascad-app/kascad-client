@@ -1,36 +1,53 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import Layout from "../components/Layout";
-import List from "../components/Liste";
+
+import List from "../components/liste";
 import MarquesBanner from "../components/sponsors/MarquesBanner";
 
 export default function MarketPlacePage() {
+  type ListItem = {
+    date: string;
+    event: string;
+    categorie: string;
+    top: string;
+  };
 
-  const items = [
-    { id: 1, brandName: 'Salomon', sport: 'Football', athleteCount: 20 },
-    { id: 2, brandName: 'Red Bull', sport: 'Basketball', athleteCount: 15 },
-    { id: 3, brandName: 'Billabong', sport: 'Surfing', athleteCount: 10 },
+  type Column<T> = {
+    title: string;
+    key: keyof T;
+  };
+
+  const items: ListItem[] = [
+    { date: "1", event: "Nike", categorie: "Running", top: "120" },
+    { date: "2", event: "Adidas", categorie: "Football", top: "200" },
+    { date: "3", event: "Puma", categorie: "Basketball", top: "150" },
   ];
-  
-  const columns = [
-    { title: 'Brand Name', key: 'brandName' as keyof typeof items[0] },
-    { title: 'Sport', key: 'sport' as keyof typeof items[0] },
-    { title: 'Athlete Count', key: 'athleteCount' as keyof typeof items[0] },
+  const columnTitles: Column<ListItem>[] = [
+    {
+      title: "Date",
+      key: "date",
+    },
+    {
+      title: "Evenements",
+      key: "event",
+    },
+    {
+      title: "Catégorie",
+      key: "categorie",
+    },
+    {
+      title: "Classement",
+      key: "top",
+    },
   ];
 
-  const firstListTitle = 'Liste des marques';
-  const secondListTitle = 'Liste des marques';
-  
   return (
     <>
-      <Header/>
-      <Layout/>
-      <MarquesBanner/>
-      <div className="px-24 py-12"> 
-        <List title={firstListTitle} items={items} columns={columns}/>
-        <List title={secondListTitle} items={items} columns={columns}/>
-      </div>
-      <Footer/>
+      <Header />
+      <MarquesBanner />
+      <List title={firstListTitle} items={items} columnTitles={columnTitles} />
+      <List title={secondListTitle} items={items} columnTitles={columnTitles} />
+      <Footer />
     </>
   );
-};
+}

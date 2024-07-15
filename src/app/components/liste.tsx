@@ -13,7 +13,11 @@ type ListProps<T> = {
   columns: Column<T>[];
 };
 
-const List = <T extends { id: number }>({ title, items, columns }: ListProps<T>) => {
+const List = <T extends { id: number }>({
+  title,
+  items,
+  columns,
+}: ListProps<T>) => {
   const router = useRouter();
 
   const handleItemClick = (item: T) => {
@@ -21,7 +25,7 @@ const List = <T extends { id: number }>({ title, items, columns }: ListProps<T>)
   };
 
   return (
-    <div className="mx-auto py-12 flex flex-col items-start w-full">
+    <div className=" py-12 flex flex-col items-start w-full">
       <h2 className="text-l font-bold mb-4 text-center">{title}</h2>
       <div className="overflow-x-auto w-full">
         <table className=" min-w-full bg-white border border-gray-200">
@@ -45,7 +49,12 @@ const List = <T extends { id: number }>({ title, items, columns }: ListProps<T>)
                 className="cursor-pointer hover:bg-gray-100 transition"
               >
                 {columns.map((column) => (
-                  <td key={column.key as string} className="px-6 py-4 border-b border-gray-200">
+
+                  <td
+                    key={column.key as string}
+                    className="px-6 py-4 border-b border-gray-200"
+                  >
+
                     {String(item[column.key])}
                   </td>
                 ))}

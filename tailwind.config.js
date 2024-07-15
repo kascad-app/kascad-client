@@ -9,18 +9,21 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
+ nav_bar
         'connexion-background': "url('/views/connexion/connexionBackground.png')",
         'footer-background': "url('/views/footer/footerBackground.png')",
       },
       colors: {
-        'dark-green': '#1B4C4E',
-        'dark-green-hover': '#0B2526',
+        "common-green": "#A0C446",
+        "dark-green": "#1B4C4E",
+        "dark-green-hover": "#0B2526",
       },
       fontFamily: {
-        michroma: ['"Michroma"', 'sans-serif'],
-        figtree: ['"Figtree"', 'sans-serif'],
+        michroma: ['"Michroma"', "sans-serif"],
+        figtree: ['"Figtree"', "sans-serif"],
       },
       fontSize: {
+     nav_bar
         sm: '0.8rem',
         base: '24px',
         xl: '32px',
@@ -30,6 +33,7 @@ module.exports = {
         '50vw': '50vw',
       }
     }
+
   },
   plugins: [],
-}
+};

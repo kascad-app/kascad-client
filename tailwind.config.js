@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         'connexion-background': "url('/views/connexion/connexionBackground.png')",
+        'footer-background': "url('/views/footer/footerBackground.png')",
       },
       colors: {
         'dark-green': '#1B4C4E',
@@ -24,6 +25,9 @@ module.exports = {
         base: '24px',
         xl: '32px',
         '2xl' : '40px'
+      },
+      spacing: {
+        '50vw': '50vw',
       }
     }
   },

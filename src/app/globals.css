@@ -3,6 +3,9 @@
 @tailwind components;
 @tailwind utilities;
 
+body{
+    /* background-color: #EEEEEE; */
+}
 
 @font-face {
     font-family: 'Michroma';

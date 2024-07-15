@@ -1,36 +1,35 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import Layout from "../components/Layout";
 import List from "../components/Liste";
 import MarquesBanner from "../components/sponsors/MarquesBanner";
 
 export default function MarketPlacePage() {
-  type ListItem = {
-    id: number;
-    brandName: string;
-    sport: string;
-    athleteCount: number;
-  };
+
+  const items = [
+    { id: 1, brandName: 'Salomon', sport: 'Football', athleteCount: 20 },
+    { id: 2, brandName: 'Red Bull', sport: 'Basketball', athleteCount: 15 },
+    { id: 3, brandName: 'Billabong', sport: 'Surfing', athleteCount: 10 },
+  ];
   
+  const columns = [
+    { title: 'Brand Name', key: 'brandName' as keyof typeof items[0] },
+    { title: 'Sport', key: 'sport' as keyof typeof items[0] },
+    { title: 'Athlete Count', key: 'athleteCount' as keyof typeof items[0] },
+  ];
+
   const firstListTitle = 'Liste des marques';
   const secondListTitle = 'Liste des marques';
-
-  const items: ListItem[] = [
-    { id: 1, brandName: 'Nike', sport: 'Running', athleteCount: 120 },
-    { id: 2, brandName: 'Adidas', sport: 'Football', athleteCount: 200 },
-    { id: 3, brandName: 'Puma', sport: 'Basketball', athleteCount: 150 },
-  ];
-  const columnTitles = {
-    brandName: 'Nom de la marque',
-    sport: 'Sport',
-    athleteCount: 'Nombre d\'athlètes'
-  };
   
   return (
     <>
       <Header/>
+      <Layout/>
       <MarquesBanner/>
-      <List title={firstListTitle} items={items} columnTitles={columnTitles}/>
-      <List title={secondListTitle} items={items} columnTitles={columnTitles}/>
+      <div className="px-24 py-12"> 
+        <List title={firstListTitle} items={items} columns={columns}/>
+        <List title={secondListTitle} items={items} columns={columns}/>
+      </div>
       <Footer/>
     </>
   );

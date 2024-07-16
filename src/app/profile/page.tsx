@@ -23,9 +23,8 @@ export default function ProfilePage() {
     if (loading < images.length) {
       timer = setTimeout(() => {
         setLoading(loading + 1);
-      }, 5000); // Duration for each image
+      }, 5000);
     } else {
-      // Set resetting state to true and reset loading to 0 instantly
       setResetting(true);
       setLoading(0);
     }
@@ -35,32 +34,15 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (resetting) {
-      // Wait a brief moment to visually reset the bars, then show the first image
       setTimeout(() => {
         setResetting(false);
-      }, 100); // Adjust the delay as needed
+      }, 100); 
     }
   }, [loading, resetting]);
 
   const handleSpanClick = (index: number) => {
-    // console.log(span);
-    // Update the loading state to the clicked span index
     setLoading(index); // Index is zero-based, so add 1 to match loading state
   };
-
-  // useEffect(() => {
-  //   const nav = document.getElementById("sticky-nav");
-  //   gsap.to(nav, {
-  //     scrollTrigger: {
-  //       trigger: nav,
-  //       start: "top top",
-  //       end: "+=100",
-  //       // pin: true,
-  //       pinSpacing: false,
-  //       markers: true,
-  //     },
-  //   });
-  // }, []);
 
   type ListItem = {
     id: number;
@@ -134,7 +116,6 @@ export default function ProfilePage() {
           </h1>
           <p>@candide</p>
         </div>
-        {/* <img className="w-full" src={} alt="Carousel" /> */}
         <div className="absolute z-10 bottom-10 inset-x-1/2 transform -translate-x-1/2 h-4 flex w-fit">
           {images.map((_, index) => (
             <span
@@ -177,12 +158,12 @@ export default function ProfilePage() {
       </div>
       <section
         id="presentation"
-        className="scroll-smooth w-full h-screen min-h-screen bg-white flex flex-col items-center mb-16 font-semibold"
+        className="scroll-smooth w-full min-h-screen bg-white flex flex-col items-center mb-16 font-semibold"
       >
         <div className="flex w-full h-full min-h-screen justify-center gap-x-32 items-center h-full pt-20">
           <div
             className="inset-0 bg-cover w-4/12 h-full "
-            style={{ backgroundImage: "url(./views/profile/profile.png)" }}
+            style={{ backgroundImage: "url(./views/profile/profile.png)", height: "100vh" }}
           ></div>
           <div className="w-1/4">
             <h2 className="font-bold font-figtree text-5xl pb-12">ABOUT ME</h2>

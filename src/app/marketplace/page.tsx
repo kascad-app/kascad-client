@@ -1,5 +1,6 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import Layout from "../components/Layout";
 
 import List from "../components/liste";
 import MarquesBanner from "../components/sponsors/MarquesBanner";
@@ -48,9 +49,12 @@ export default function MarketPlacePage() {
   return (
     <>
       <Header />
+      <Layout />
       <MarquesBanner />
-      <List title={firstListTitle} items={items} columns={columnTitles} />
-      <List title={secondListTitle} items={items} columns={columnTitles} />
+      <div className="px-24 py-7">
+        <List title={firstListTitle} items={items} columns={columnTitles} />
+        <List title={secondListTitle} items={items} columns={columnTitles} />
+      </div>
       <Footer />
     </>
   );

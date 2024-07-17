@@ -10,8 +10,6 @@ const request = async <TData>(
 ): APIResponsePromise<TData> => {
   const headers = new Headers({
     "Content-Type": "application/json",
-    "Access-Control-Allow-Credentials": "true",
-    "Access-Control-Allow-Origin": "*",
     Accept: "application/json",
     credentials: "include",
     ...options?.headers,

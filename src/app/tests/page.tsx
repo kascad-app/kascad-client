@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function TestAuth() {
   const session = useSession();
 
-  console.log(session);
+  // console.log(session);
 
   const handleLogin = () => {
     API.auth

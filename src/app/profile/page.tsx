@@ -2,14 +2,18 @@
 import { useEffect, useState } from "react";
 import "./profile.css";
 import List from "../components/Liste";
+import Layout from "@/app/components/Layout";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { usePathname } from 'next/navigation';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ProfilePage() {
   const [loading, setLoading] = useState(0);
   const [resetting, setResetting] = useState(false);
+
+  const pathname = usePathname();
 
   const images = [
     "./views/profile/Carousel.png",
@@ -195,6 +199,7 @@ export default function ProfilePage() {
 
         <List title={firstListTitle} items={items} columns={columnTitles} />
         <List title={secondListTitle} items={items} columns={columnTitles} />
+        <Layout />
       </section>
     </>
   );

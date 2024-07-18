@@ -18,7 +18,12 @@ const Loader: React.FC = () => {
 
       const timer2 = setTimeout(() => {
         if (session.loggedIn) {
-          router.push("/marketplace");
+          console.log(session);
+          if (session.user.type == "rider") {
+            router.push("/marketplace/sponsors");
+          } else {
+            router.push("/marketplace/riders");
+          }
         } else {
           router.push("/login");
         }

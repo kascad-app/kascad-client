@@ -16,7 +16,11 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (session.loggedIn) {
-      router.push("/marketplace");
+      if (session.user.type == "rider") {
+        router.push("/marketplace/sponsors");
+      } else {
+        router.push("/marketplace/riders");
+      }
     }
   }, [session]);
 
@@ -34,7 +38,11 @@ const Login: React.FC = () => {
       })
       .then((res) => {
         if (res.success) {
-          router.push("/marketplace");
+          if (res.data.type == "rider") {
+            router.push("/marketplace/sponsors");
+          } else {
+            router.push("/marketplace/riders");
+          }
         } else {
           setError(res.message);
           setBCatchResponse((prevState) => !prevState);

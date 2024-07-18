@@ -33,7 +33,6 @@ const Form: React.FC<FormProps> = ({
   // const buttonClasses = `${baseClasses} ${additionalClasses}`;
 
   useEffect(() => {
-    console.log("Response");
     if (buttonRef.current) {
       buttonRef.current.classList.remove("sending");
     }

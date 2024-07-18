@@ -17,9 +17,7 @@ export default function TestAuth() {
         password: "Ouiouioui1",
         type: ProfileType.RIDER,
       })
-      .then((res) => {
-        console.log(res);
-      });
+      .then((res) => {});
   };
 
   const handleLogout = () => {

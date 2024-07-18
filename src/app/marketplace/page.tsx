@@ -1,10 +1,16 @@
+"use client";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 import List from "../components/liste";
 import MarquesBanner from "../components/sponsors/MarquesBanner";
 
+import API from "@/services/api";
+import useSession from "@hooks/use-session";
+import { ProfileType } from "@kascad-app/shared-types";
+
 export default function MarketPlacePage() {
+  const session = useSession();
   type ListItem = {
     id: number;
     date: string;
@@ -47,7 +53,7 @@ export default function MarketPlacePage() {
 
   return (
     <>
-      <Header />
+      <Header identity={session.user?.identity} />
       <MarquesBanner />
       <List title={firstListTitle} items={items} columns={columnTitles} />
       <List title={secondListTitle} items={items} columns={columnTitles} />

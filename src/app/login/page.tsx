@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import Form from "../components/Form";
 import { useRouter } from "next/navigation";
-
+import Cookies from "js-cookie";
 import API from "@/services/api";
 import useSession from "@hooks/use-session";
 import { ProfileType } from "@kascad-app/shared-types";
@@ -20,16 +20,10 @@ const Login: React.FC = () => {
     }
   }, [session]);
 
-  // console.log(session);
-
   const fields = [
     { name: "email", label: "Email", type: "email" },
     { name: "password", label: "Mot de passe", type: "password" },
   ];
-
-  // const handleSubmit = (data: { [key: string]: string }) => {
-  //   router.push("/marketplace");
-  // };
 
   const handleLogin = (data: { [key: string]: string }) => {
     API.auth
@@ -39,7 +33,6 @@ const Login: React.FC = () => {
         type: ProfileType.RIDER,
       })
       .then((res) => {
-        console.log(res);
         if (res.success) {
           router.push("/marketplace");
         } else {

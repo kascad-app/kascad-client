@@ -1,4 +1,6 @@
 "use client";
+
+import { useEffect, useState } from "react";
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
 import Layout from "@/app/components/Layout";
@@ -383,7 +385,6 @@ export default function MarketPlacePage() {
       title: "Discipline",
       key: "discipline",
     },
-
     {
       title: "Âge",
       key: "age",

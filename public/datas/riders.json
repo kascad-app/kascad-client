@@ -1,0 +1,178 @@
+{
+    "riders": [
+      {
+        "id": 1,
+        "firstName": "Candide",
+        "lastName": "Thovex",
+        "tag": "candidethovex",
+        "age": 31,
+        "nationality": "French",
+        "disciplines": ["Skiing", "Snowboarding"],
+        "profilePhoto": "https://ullerco.com/cdn/shop/articles/4_5d691604-1efa-482f-856d-8b88f2687a57.jpg?v=1638201340",
+        "images": [
+          "https://www.outside.fr/wp-content/uploads/2022/01/ouverture-thovex.webp",
+          "https://rideordie.fr/wp-content/uploads/2019/12/Candide-Thovex-1620x980.jpg",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJee2g_22sfoQKQELdWcxZYxlPi6Ah16VY5Klq6JDUmf_RaerF4q9w5kvlF2ZwqZ8de8Y&usqp=CAU"
+        ],
+        "description": "Candide Thovex is a professional skier and snowboarder known for his unique style and daring feats. He pushes the limits of what's possible on the slopes, combining acrobatics with perilous descents.",
+        "titlesWon": ["X Games Gold Medalist", "Freeride World Tour Champion"],
+        "futureContests": ["Winter X Games 2024", "Freeride World Tour 2024"]
+      },
+      {
+        "id": 2,
+        "firstName": "Chloe",
+        "lastName": "Kim",
+        "tag": "chloe-kim",
+        "age": 23,
+        "nationality": "American",
+        "disciplines": ["Snowboarding"],
+        "profilePhoto": "https://letemps-17455.kxcdn.com/photos/04bd079e-1c31-4d43-b904-b36406ef96a5/small",
+        "images": [
+          "https://i.insider.com/61f0452f702f4b001866ecaf?width=700",
+          "https://media.nbcnewyork.com/2022/02/chloekimthumbnail.jpg?quality=85&strip=all&resize=1200%2C675",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyy1GFGB_m4LVe2hofkmUlpSAPqcFsAS9JLhnDDaclB5b1IYG5snIUeuPUYZS2oikEcQA&usqp=CAU"
+        ],
+        "description": "Chloe Kim is an American snowboarder and Olympic gold medalist. She is known for her remarkable skills in the halfpipe and has won numerous competitions.",
+        "titlesWon": ["Olympic Gold Medalist", "X Games Gold Medalist"],
+        "futureContests": ["Winter X Games 2024", "Dew Tour 2024"]
+      },
+      {
+        "id": 3,
+        "firstName": "Ayumu",
+        "lastName": "Hirano",
+        "tag": "ayumu-hirano",
+        "age": 25,
+        "nationality": "Japanese",
+        "disciplines": ["Snowboarding"],
+        "profilePhoto": "https://media.fashionnetwork.com/m/1727/4f87/d2fe/fc4c/90e9/f793/b851/3266/d18d/42a4/42a4.jpg",
+        "images": [
+          "https://s.yimg.com/ny/api/res/1.2/I2MczDkTjAhlDcASF9.wAQ--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD05MTM-/https://media.zenfs.com/en/nbc_today_217/7d7f4bd189d213d268ce7ba1a8dc2d25",
+          "https://live-production.wcms.abc-cdn.net.au/0a85fbf6ff189204781f349c5bceb040?impolicy=wcms_crop_resize&cropH=3005&cropW=4507&xPos=0&yPos=7&width=862&height=575",
+          "https://www.usatoday.com/gcdn/presto/2021/08/05/USAT/4a966412-31aa-435e-b5c5-95925902eeaa-GTY_1332417801.jpg?crop=3228,2032,x0,y54"
+        ],
+        "description": "Ayumu Hirano is a Japanese snowboarder who has won multiple medals in the Winter X Games and the Olympics. He is known for his high-flying tricks and technical prowess.",
+        "titlesWon": ["Olympic Silver Medalist", "X Games Gold Medalist"],
+        "futureContests": ["Winter X Games 2024", "Burton US Open 2024"]
+      },
+      {
+        "id": 4,
+        "firstName": "Kelly",
+        "lastName": "Sildaru",
+        "age": 21,
+        "nationality": "Estonian",
+        "disciplines": ["Freestyle Skiing"],
+        "profilePhoto": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiUDwtjgbbzvh2iKtBHf5twPCn2RzwHuT3fQ&s",
+        "images": [
+          "https://example.com/images/kelly_sildaru_1.jpg",
+          "https://example.com/images/kelly_sildaru_2.jpg",
+          "https://example.com/images/kelly_sildaru_3.jpg"
+        ],
+        "description": "Kelly Sildaru is an Estonian freestyle skier who has made a name for herself in the sport with her incredible performances and multiple medals in international competitions.",
+        "titlesWon": ["X Games Gold Medalist", "FIS World Champion"],
+        "futureContests": ["Winter X Games 2024", "FIS World Cup 2024"]
+      },
+      {
+        "id": 5,
+        "firstName": "Max",
+        "lastName": "Parrot",
+        "age": 30,
+        "nationality": "Canadian",
+        "disciplines": ["Snowboarding"],
+        "profilePhoto": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgoRBBQDALydo3wvNmKt2aHrfu5kIBQUJQEA&s",
+        "images": [
+          "https://example.com/images/max_parrot_1.jpg",
+          "https://example.com/images/max_parrot_2.jpg",
+          "https://example.com/images/max_parrot_3.jpg"
+        ],
+        "description": "Max Parrot is a Canadian snowboarder known for his achievements in slopestyle and big air competitions. He has won numerous medals in the X Games and the Olympics.",
+        "titlesWon": ["Olympic Silver Medalist", "X Games Gold Medalist"],
+        "futureContests": ["Winter X Games 2024", "Red Bull Snow Performers 2024"]
+      },
+      {
+        "id": 6,
+        "firstName": "Jamie",
+        "lastName": "Anderson",
+        "age": 29,
+        "nationality": "American",
+        "disciplines": ["Snowboarding"],
+        "profilePhoto": "https://example.com/images/jamie_anderson.jpg",
+        "images": [
+          "https://example.com/images/jamie_anderson_1.jpg",
+          "https://example.com/images/jamie_anderson_2.jpg",
+          "https://example.com/images/jamie_anderson_3.jpg"
+        ],
+        "description": "Jamie Anderson is an American snowboarder who has dominated the slopestyle events for years. She has won multiple Olympic and X Games medals.",
+        "titlesWon": ["Olympic Gold Medalist", "X Games Gold Medalist"],
+        "futureContests": ["Winter X Games 2024", "Dew Tour 2024"]
+      },
+      {
+        "id": 7,
+        "firstName": "Marcus",
+        "lastName": "Kleveland",
+        "age": 24,
+        "nationality": "Norwegian",
+        "disciplines": ["Snowboarding"],
+        "profilePhoto": "https://example.com/images/marcus_kleveland.jpg",
+        "images": [
+          "https://example.com/images/marcus_kleveland_1.jpg",
+          "https://example.com/images/marcus_kleveland_2.jpg",
+          "https://example.com/images/marcus_kleveland_3.jpg"
+        ],
+        "description": "Marcus Kleveland is a Norwegian snowboarder known for his innovative tricks and consistent performance in big air and slopestyle competitions.",
+        "titlesWon": ["X Games Gold Medalist", "FIS World Cup Champion"],
+        "futureContests": ["Winter X Games 2024", "Burton US Open 2024"]
+      },
+      {
+        "id": 8,
+        "firstName": "Henrik",
+        "lastName": "Harlaut",
+        "age": 32,
+        "nationality": "Swedish",
+        "disciplines": ["Freestyle Skiing"],
+        "profilePhoto": "https://example.com/images/henrik_harlaut.jpg",
+        "images": [
+          "https://example.com/images/henrik_harlaut_1.jpg",
+          "https://example.com/images/henrik_harlaut_2.jpg",
+          "https://example.com/images/henrik_harlaut_3.jpg"
+        ],
+        "description": "Henrik Harlaut is a Swedish freestyle skier known for his unique style and incredible tricks. He has won several medals in the Winter X Games and other international competitions.",
+        "titlesWon": ["X Games Gold Medalist", "Olympic Bronze Medalist"],
+        "futureContests": ["Winter X Games 2024", "FIS World Cup 2024"]
+      },
+      {
+        "id": 9,
+        "firstName": "Tess",
+        "lastName": "Ledeux",
+        "age": 22,
+        "nationality": "French",
+        "disciplines": ["Freestyle Skiing"],
+        "profilePhoto": "https://example.com/images/tess_ledeux.jpg",
+        "images": [
+          "https://example.com/images/tess_ledeux_1.jpg",
+          "https://example.com/images/tess_ledeux_2.jpg",
+          "https://example.com/images/tess_ledeux_3.jpg"
+        ],
+        "description": "Tess Ledeux is a French freestyle skier who has quickly made a name for herself with her impressive performances in slopestyle and big air events.",
+        "titlesWon": ["X Games Gold Medalist", "FIS World Champion"],
+        "futureContests": ["Winter X Games 2024", "FIS World Cup 2024"]
+      },
+      {
+        "id": 10,
+        "firstName": "Eileen",
+        "lastName": "Gu",
+        "age": 20,
+        "nationality": "Chinese",
+        "disciplines": ["Freestyle Skiing"],
+        "profilePhoto": "https://example.com/images/eileen_gu.jpg",
+        "images": [
+          "https://example.com/images/eileen_gu_1.jpg",
+          "https://example.com/images/eileen_gu_2.jpg",
+          "https://example.com/images/eileen_gu_3.jpg"
+        ],
+        "description": "Eileen Gu is a Chinese freestyle skier known for her versatility and dominance in both halfpipe and slopestyle events. She has quickly risen to the top of her sport.",
+        "titlesWon": ["X Games Gold Medalist", "Olympic Gold Medalist"],
+        "futureContests": ["Winter X Games 2024", "FIS World Cup 2024"]
+      }
+    ]
+  }
+  

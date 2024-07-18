@@ -25,10 +25,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/marketplace",
-    "/marketplace/riders",
-    "/marketplace/sponsors",
-    "/profile",
-  ],
+  matcher: ["/marketplace/riders", "/marketplace/sponsors", "/profile"],
 };

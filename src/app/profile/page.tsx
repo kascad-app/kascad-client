@@ -1,18 +1,22 @@
 "use client";
 import { useEffect, useState } from "react";
 import "./profile.css";
-import List from "../components/Liste";
+import List from "../components/liste";
 import Layout from "@/app/components/Layout";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
+import { Session } from "@/types/auth";
+import useSession from "@hooks/use-session";
+import { RiderIdentity } from "@kascad-app/shared-types";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ProfilePage() {
+  const session: Session = useSession();
   const [loading, setLoading] = useState(0);
   const [resetting, setResetting] = useState(false);
-
+  const userIdentity: RiderIdentity = session.user?.identity as RiderIdentity;
   const pathname = usePathname();
 
   const images = [
@@ -40,7 +44,7 @@ export default function ProfilePage() {
     if (resetting) {
       setTimeout(() => {
         setResetting(false);
-      }, 100); 
+      }, 100);
     }
   }, [loading, resetting]);
 
@@ -116,7 +120,8 @@ export default function ProfilePage() {
         ></div>
         <div className="z-10 absolute inset-x-1/2 top-20 transform -translate-x-1/2 w-10/12 rounded-2xl font-bold px-8 py-12">
           <h1 className=" font-figtree text-8xl pb-5 text-black">
-            Candide <span className="text-common-green">Thovex</span>
+            {userIdentity.firstName}{" "}
+            <span className="text-common-green">{userIdentity.lastName}</span>
           </h1>
           <p>@candide</p>
         </div>
@@ -167,7 +172,10 @@ export default function ProfilePage() {
         <div className="flex w-full h-full min-h-screen justify-center gap-x-32 items-center h-full pt-20">
           <div
             className="inset-0 bg-cover w-4/12 h-full "
-            style={{ backgroundImage: "url(./views/profile/profile.png)", height: "100vh" }}
+            style={{
+              backgroundImage: "url(./views/profile/profile.png)",
+              height: "100vh",
+            }}
           ></div>
           <div className="w-1/4">
             <h2 className="font-bold font-figtree text-5xl pb-12">ABOUT ME</h2>

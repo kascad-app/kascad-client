@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import "./profile.css";
-import List from "../components/liste";
+import List from "../components/Liste";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 

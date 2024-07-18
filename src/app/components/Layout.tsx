@@ -19,11 +19,10 @@ const Layout: React.FC = () => {
           className="bg-dark-green text-white px-6 py-4 rounded"
           onClick={toggleMenu}
         >
-          Profile
+          Actions
         </button>
         {menuVisible && (
           <div className="absolute w-50vw rounded-xl bottom-full left-1/2 -translate-x-1/2 bg-white p-4 shadow-lg mb-2 z-50">
-            <h2 className="text-lg font-bold mb-2 text-black">Actions</h2>
             <ul>
               <li>
                 <Link href="/" passHref>

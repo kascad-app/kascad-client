@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SponsorStyles from './page.module.css';
+import Footer from '@/app/components/Footer';
+import Layout from '@/app/components/Layout';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -129,6 +131,8 @@ const Detail: React.FC = () => {
           </div>
         </div>
       </div>
+      <Layout/>
+      <Footer/>
     </>
   );
 };

@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import MainBanner from './MainBanner';
 import SecondaryBanners from './SecondaryBanners';
@@ -18,7 +17,6 @@ const MarquesBanner = () => {
     { id: 3, name: 'Billabong', img: '/views/home/billabong.png', logo: 'views/logos/logoSalomon.png' },
   ]);
   const [progress, setProgress] = useState(0);
-  const router = useRouter();
   const scrollPositionRef = useRef<number>(0);
 
   useEffect(() => {
@@ -53,12 +51,6 @@ const MarquesBanner = () => {
 
     return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    if (progress >= 100) {
-      router.push('/marketplace');
-    }
-  }, [progress, router]);
 
   useEffect(() => {
     window.scrollTo(0, scrollPositionRef.current);

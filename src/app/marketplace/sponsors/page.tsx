@@ -25,7 +25,13 @@ export default function MarketPlacePage() {
   };
 
   const listLastResultItems: ListItem[] = [
-    { id: 1, date: "1", event: "Nike", categorie: "Running", top: "120" },
+    {
+      id: 1,
+      date: "1",
+      event: "Redbull",
+      categorie: "Multi-sport",
+      top: "120",
+    },
     { id: 2, date: "2", event: "Adidas", categorie: "Football", top: "200" },
     { id: 3, date: "3", event: "Puma", categorie: "Basketball", top: "150" },
   ];

@@ -41,9 +41,9 @@ export default function MarketPlacePage() {
     },
     {
       id: 2,
-      firstName: "Ayumu",
-      lastName: "Hirano",
-      nationality: "Japanese",
+      firstName: "Chloe",
+      lastName: "Kim",
+      nationality: "American",
       discipline: "Snowboarding",
       profilePhoto:
         "https://upload.wikimedia.org/wikipedia/commons/1/1e/Ayumu_Hirano.jpg",

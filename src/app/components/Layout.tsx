@@ -70,7 +70,7 @@ const Layout: React.FC = () => {
           <p>{session.user?.type == "rider" ? "Sponsors" : "Riders"}</p>
         </Link> */}
         <Link
-          href="/profile"
+          href="/riders/1"
           passHref
           className="bg-common-green h-12 w-12 flex items-center justify-center rounded"
         >

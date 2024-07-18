@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function TestAuth() {
   const session = useSession();
 
-  console.log(session);
+  // console.log(session);
 
   const handleLogin = () => {
     API.auth
@@ -17,9 +17,7 @@ export default function TestAuth() {
         password: "Ouiouioui1",
         type: ProfileType.RIDER,
       })
-      .then((res) => {
-        console.log(res);
-      });
+      .then((res) => {});
   };
 
   const handleLogout = () => {

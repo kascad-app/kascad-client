@@ -1,3 +1,5 @@
+"use client";
+import { useEffect } from "react";
 import Layout from "./components/Layout";
 import Loader from "./components/Loader";
 import Login from "./login/page";

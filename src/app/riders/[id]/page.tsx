@@ -1,10 +1,11 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+"use client";
+import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import "./profile.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import List from "@/app/components/liste";
+import Layout from "@/app/components/Layout";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,7 +28,7 @@ type Rider = {
 export default function ProfilePage() {
   const router = useRouter();
   const pathname = usePathname();
-  const riderId = pathname.split('/').pop();
+  const riderId = pathname.split("/").pop();
 
   const [loading, setLoading] = useState(0);
   const [resetting, setResetting] = useState(false);
@@ -35,7 +36,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const fetchRider = async () => {
-      const response = await fetch('/datas/riders.json');
+      const response = await fetch("/datas/riders.json");
       const data = await response.json();
       const rider = data.riders.find((r: Rider) => r.id.toString() === riderId);
       setCurrentRider(rider);
@@ -62,7 +63,6 @@ export default function ProfilePage() {
     if (resetting) {
       setTimeout(() => {
         setResetting(false);
-      }, 100);
       }, 100);
     }
   }, [loading, resetting]);
@@ -143,7 +143,8 @@ export default function ProfilePage() {
         ></div>
         <div className="z-10 absolute inset-x-1/2 top-20 transform -translate-x-1/2 w-10/12 rounded-2xl font-bold px-8 py-12">
           <h1 className=" font-figtree text-8xl pb-5 text-black">
-            {currentRider.firstName} <span className="text-common-green">{currentRider.lastName}</span>
+            {currentRider.firstName}{" "}
+            <span className="text-common-green">{currentRider.lastName}</span>
           </h1>
           <p>@{currentRider.tag}</p>
         </div>
@@ -194,13 +195,14 @@ export default function ProfilePage() {
         <div className="flex w-full h-full min-h-screen justify-center gap-x-32 items-center h-full pt-20">
           <div
             className="inset-0 bg-cover w-4/12 h-full"
-            style={{ backgroundImage: `url(${currentRider.profilePhoto})`, height: "100vh" }}
+            style={{
+              backgroundImage: `url(${currentRider.profilePhoto})`,
+              height: "100vh",
+            }}
           ></div>
           <div className="w-1/4">
             <h2 className="font-bold font-figtree text-5xl pb-12">ABOUT ME</h2>
-            <p className="text-base font-thin">
-              {currentRider.description}
-            </p>
+            <p className="text-base font-thin">{currentRider.description}</p>
           </div>
         </div>
       </section>

@@ -63,6 +63,7 @@ export default function ProfilePage() {
       setTimeout(() => {
         setResetting(false);
       }, 100);
+      }, 100);
     }
   }, [loading, resetting]);
 
@@ -211,6 +212,7 @@ export default function ProfilePage() {
 
         <List title={firstListTitle} items={items} columns={columnTitles} />
         <List title={secondListTitle} items={items} columns={columnTitles} />
+        <Layout />
       </section>
     </>
   );

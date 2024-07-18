@@ -30,8 +30,7 @@ const List = <T extends { id: number }>({
   const [visibleCount, setVisibleCount] = useState(threshold);
 
   const handleItemClick = (item: T) => {
-   if(pathname === '/marketplace/riders') router.push(`/riders/${item.id}`);
-   if(pathname === '/marketplace/sponsors') router.push(`/sponsors/${item.id}`);
+    router.push(`/${pathname.split('/').pop()}/${item.id}`);
   };
 
   const handleShowMore = () => {

@@ -1,26 +1,53 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import "./profile.css";
-import List from "../components/Liste";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import List from "@/app/components/liste";
+import Layout from "@/app/components/Layout";
 
 gsap.registerPlugin(ScrollTrigger);
 
+type Rider = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  age: number;
+  nationality: string;
+  disciplines: string[];
+  profilePhoto: string;
+  images: string[];
+  description: string;
+  titlesWon: string[];
+  futureContests: string[];
+  username: string;
+  tag: string[];
+};
+
 export default function ProfilePage() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const riderId = pathname.split("/").pop();
+
   const [loading, setLoading] = useState(0);
   const [resetting, setResetting] = useState(false);
+  const [currentRider, setCurrentRider] = useState<Rider | null>(null);
 
-  const images = [
-    "./views/profile/Carousel.png",
-    "./views/profile/Carousel2.webp",
-    "./views/profile/Carousel3.webp",
-    "./views/profile/Carousel4.webp",
-  ];
+  useEffect(() => {
+    const fetchRider = async () => {
+      const response = await fetch("/datas/riders.json");
+      const data = await response.json();
+      const rider = data.riders.find((r: Rider) => r.id.toString() === riderId);
+      setCurrentRider(rider);
+    };
+
+    fetchRider();
+  }, [riderId]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (loading < images.length) {
+    if (currentRider && loading < currentRider.images.length) {
       timer = setTimeout(() => {
         setLoading(loading + 1);
       }, 5000);
@@ -30,19 +57,23 @@ export default function ProfilePage() {
     }
 
     return () => clearTimeout(timer);
-  }, [loading]);
+  }, [loading, currentRider]);
 
   useEffect(() => {
     if (resetting) {
       setTimeout(() => {
         setResetting(false);
-      }, 100); 
+      }, 100);
     }
   }, [loading, resetting]);
 
   const handleSpanClick = (index: number) => {
-    setLoading(index); // Index is zero-based, so add 1 to match loading state
+    setLoading(index);
   };
+
+  if (!currentRider) {
+    return <div>Loading...</div>;
+  }
 
   type ListItem = {
     id: number;
@@ -56,7 +87,8 @@ export default function ProfilePage() {
     title: string;
     key: keyof T;
   };
-  const firstListTitle: string = "Derniers résultat";
+
+  const firstListTitle: string = "Derniers résultats";
   const secondListTitle: string = "Classement général";
 
   const items: ListItem[] = [
@@ -82,6 +114,7 @@ export default function ProfilePage() {
       top: "150",
     },
   ];
+
   const columnTitles: Column<ListItem>[] = [
     {
       title: "Date",
@@ -103,21 +136,20 @@ export default function ProfilePage() {
 
   return (
     <>
-      {/* className="w-full h-96 flex items-center justify-center text-white
-      text-4xl" */}
       <header className="w-full h-[65vh] bg-cover overflow-y-hidden relative image-gradient ">
         <div
           className="absolute inset-0 bg-cover filter grayscale"
-          style={{ backgroundImage: `url(${images[loading]})` }}
+          style={{ backgroundImage: `url(${currentRider.images[loading]})` }}
         ></div>
         <div className="z-10 absolute inset-x-1/2 top-20 transform -translate-x-1/2 w-10/12 rounded-2xl font-bold px-8 py-12">
           <h1 className=" font-figtree text-8xl pb-5 text-black">
-            Candide <span className="text-common-green">Thovex</span>
+            {currentRider.firstName}{" "}
+            <span className="text-common-green">{currentRider.lastName}</span>
           </h1>
-          <p>@candide</p>
+          <p>@{currentRider.tag}</p>
         </div>
         <div className="absolute z-10 bottom-10 inset-x-1/2 transform -translate-x-1/2 h-4 flex w-fit">
-          {images.map((_, index) => (
+          {currentRider.images.map((_, index: number) => (
             <span
               key={index}
               className="w-12 h-2 mx-2 rounded-full bg-white relative overflow-hidden cursor-pointer "
@@ -162,39 +194,27 @@ export default function ProfilePage() {
       >
         <div className="flex w-full h-full min-h-screen justify-center gap-x-32 items-center h-full pt-20">
           <div
-            className="inset-0 bg-cover w-4/12 h-full "
-            style={{ backgroundImage: "url(./views/profile/profile.png)", height: "100vh" }}
+            className="inset-0 bg-cover w-4/12 h-full"
+            style={{
+              backgroundImage: `url(${currentRider.profilePhoto})`,
+              height: "100vh",
+            }}
           ></div>
           <div className="w-1/4">
             <h2 className="font-bold font-figtree text-5xl pb-12">ABOUT ME</h2>
-            <p className="text-base font-thin">
-              Skieur professionnel, freeskieur et snowboardeur, défie les
-              conventions avec son style unique et ses exploits audacieux.
-              <br />
-              <br /> Sur les pentes, il repousse les limites de l'impossible,
-              enchaînant figures acrobatiques et descentes périlleuses avec une
-              grâce inégalée. Ses vidéos virales, capturant ses prouesses, ont
-              fait de lui une icône des sports d'hiver. <br />
-              <br />
-              Son palmarès impressionnant témoigne de son talent et de sa
-              détermination. Son engagement ne se limite pas au sport, il est
-              également entrepreneur et créateur de contenu, partageant sa
-              passion avec le monde entier.
-              <br />
-              <br /> Candid Thovex, un virtuose de la neige qui inspire et
-              émerveille.
-            </p>
+            <p className="text-base font-thin">{currentRider.description}</p>
           </div>
         </div>
       </section>
       <section
         id="stat"
-        className="w-full h-screen bg-white flex flex-col   p-28 font-semibold"
+        className="w-full h-screen bg-white flex flex-col p-28 font-semibold"
       >
         <h2 className="font-bold font-figtree text-5xl">STATISTIQUES</h2>
 
         <List title={firstListTitle} items={items} columns={columnTitles} />
         <List title={secondListTitle} items={items} columns={columnTitles} />
+        <Layout />
       </section>
     </>
   );

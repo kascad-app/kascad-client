@@ -1,4 +1,6 @@
 "use client";
+
+import { useEffect, useState } from "react";
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
 import Layout from "@/app/components/Layout";
@@ -39,9 +41,9 @@ export default function MarketPlacePage() {
     },
     {
       id: 2,
-      firstName: "Ayumu",
-      lastName: "Hirano",
-      nationality: "Japanese",
+      firstName: "Chloe",
+      lastName: "Kim",
+      nationality: "American",
       discipline: "Snowboarding",
       profilePhoto:
         "https://upload.wikimedia.org/wikipedia/commons/1/1e/Ayumu_Hirano.jpg",
@@ -383,7 +385,6 @@ export default function MarketPlacePage() {
       title: "Discipline",
       key: "discipline",
     },
-
     {
       title: "Âge",
       key: "age",

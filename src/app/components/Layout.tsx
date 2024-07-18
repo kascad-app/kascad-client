@@ -1,28 +1,47 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
+"use client";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Session } from "@/types/auth";
+import useSession from "@hooks/use-session";
+import { ProfileType } from "@kascad-app/shared-types";
+import { RiderIdentity, SponsorIdentity } from "@kascad-app/shared-types";
 const Layout: React.FC = () => {
+  const session: Session = useSession();
   const [menuVisible, setMenuVisible] = useState(false);
 
   const pathname = usePathname();
 
-  const [profileName, setProfileName] = useState('');
+  const [profileName, setProfileName] = useState("");
+  const [profileNameVisible, setProfileNameVisible] = useState(true);
 
   const [pathMarketRiders, setPathMarketRiders] = useState(true);
   const [pathMarketSponsors, setPathMarketSponsors] = useState(true);
 
   useEffect(() => {
-    if (pathname.includes('marketplace/riders')) {
+    if (session.user?.type == "rider") {
+      const riderIdentity = session.user.identity as RiderIdentity;
+      setProfileName(
+        riderIdentity.fullName
+          ? riderIdentity.fullName
+          : riderIdentity.firstName
+      );
+    } else if (session.user?.type == "sponsor") {
+      const sponsorIdentity = session.user.identity as SponsorIdentity;
+      setProfileName(sponsorIdentity.companyName);
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (pathname.includes("marketplace/riders")) {
       setPathMarketRiders(false);
-    } else if (pathname.includes('marketplace/sponsors')) {
+    } else if (pathname.includes("marketplace/sponsors")) {
       setPathMarketSponsors(false);
     }
 
-    if (pathname.includes('profile')) {
-      setProfileName('Profile Name')
-    }
+    pathname.includes("profile")
+      ? setProfileNameVisible(true)
+      : setProfileNameVisible(false);
   }, [pathname]);
 
   const toggleMenu = () => {
@@ -33,18 +52,39 @@ const Layout: React.FC = () => {
     <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex justify-center">
       <div className="bg-gray-300 w-auto opacity-90 text-white p-2 flex items-center justify-center gap-4 rounded-xl relative">
         <Link href="/" passHref>
-          <img src="/views/logos/logoSquare.svg" alt="Logo" className="h-12 cursor-pointer" />
+          <img
+            src="/views/logos/logoSquare.svg"
+            alt="Logo"
+            className="h-12 cursor-pointer"
+          />
         </Link>
-        <Link href="/profile" passHref className='bg-dark-green h-12 w-12 flex items-center justify-center rounded'>
-          <img src="/views/profile/user-fill.svg" alt="Logo" className="h-6 cursor-pointer" />
+        {/* <Link
+          href={
+            session.user?.type == "rider"
+              ? "/marketplace/sponsors"
+              : "/marketplace/riders"
+          }
+          passHref
+          className=" h-12 flex items-center justify-center rounded"
+        >
+          <p>{session.user?.type == "rider" ? "Sponsors" : "Riders"}</p>
+        </Link> */}
+        <Link
+          href="/profile"
+          passHref
+          className="bg-common-green h-12 w-12 flex items-center justify-center rounded"
+        >
+          <img
+            src="/views/profile/user-fill.svg"
+            alt="Logo"
+            className="h-6 cursor-pointer"
+          />
         </Link>
-        {profileName ? (
-          <div className="text-black ml-[-8px]">
-            {profileName}
-          </div>
+        {profileNameVisible ? (
+          <div className="text-black ml-[-8px]">{profileName}</div>
         ) : null}
-        <button 
-          className="bg-dark-green text-white px-6 py-4 rounded"
+        <button
+          className="bg-common-green text-white px-6 py-4 rounded"
           onClick={toggleMenu}
         >
           Actions
@@ -78,13 +118,13 @@ const Layout: React.FC = () => {
                   </Link>
                 </li>
               ) : null}
-              <li>
+              {/* <li>
                 <Link href="/profile" passHref>
                   <div className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-black cursor-pointer">
                     Profile
                   </div>
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         )}

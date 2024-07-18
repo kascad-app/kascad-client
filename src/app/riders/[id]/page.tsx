@@ -4,7 +4,9 @@ import { useRouter, usePathname } from 'next/navigation';
 import "./profile.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import List from "@/app/components/liste";
+import List from "@/app/components/Liste";
+import Popup from '@/app/components/PopUp';
+import Footer from '@/app/components/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,12 +30,13 @@ export default function ProfilePage() {
   const router = useRouter();
   const pathname = usePathname();
   const riderId = pathname.split('/').pop();
-
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [loading, setLoading] = useState(0);
   const [resetting, setResetting] = useState(false);
   const [currentRider, setCurrentRider] = useState<Rider | null>(null);
 
   useEffect(() => {
+    console.log(isPopupOpen);
     const fetchRider = async () => {
       const response = await fetch('/datas/riders.json');
       const data = await response.json();
@@ -64,7 +67,10 @@ export default function ProfilePage() {
         setResetting(false);
       }, 100);
     }
+    
   }, [loading, resetting]);
+
+  
 
   const handleSpanClick = (index: number) => {
     setLoading(index);
@@ -211,7 +217,17 @@ export default function ProfilePage() {
 
         <List title={firstListTitle} items={items} columns={columnTitles} />
         <List title={secondListTitle} items={items} columns={columnTitles} />
+        <button 
+        className="px-4 py-2 bg-dark-green text-white rounded hover:bg-dark-green-hover" 
+        onClick={() => setIsPopupOpen(true)}
+        >
+          contact the sponsor
+        </button>
       </section>
+     
+      <Popup isOpen={isPopupOpen} onClose={() => { setIsPopupOpen(false)}} title="Title" content={[{ title: "Title", text: "Text" }]}/>
+
+      <Footer/>
     </>
   );
 }

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
 import Layout from "@/app/components/Layout";
-import List from "@/app/components/liste";
+import List from "@/app/components/Liste";
 import MarquesBanner from "@/app/components/sponsors/MarquesBanner";
 
 export default function MarketPlacePage() {

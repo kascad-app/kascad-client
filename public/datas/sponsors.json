@@ -1,0 +1,205 @@
+{
+    "sponsors": [
+      {
+        "id": 1,
+        "name": "Nike",
+        "category": "Sportswear",
+        "logo": "https://example.com/logos/nike.png",
+        "bannerImage": "https://example.com/banners/nike.jpg",
+        "description": "Nike is a leading sportswear brand known for its innovative products and extensive sponsorships in various sports.",
+        "sponsoredProducts": ["Running Shoes", "Sports Apparel", "Accessories"],
+        "sponsoredEvents": ["Olympics", "World Cup", "NBA"]
+      },
+      {
+        "id": 2,
+        "name": "Adidas",
+        "category": "Sportswear",
+        "logo": "https://example.com/logos/adidas.png",
+        "bannerImage": "https://example.com/banners/adidas.jpg",
+        "description": "Adidas is a global sportswear brand that sponsors numerous athletes and sports teams across different disciplines.",
+        "sponsoredProducts": ["Football Boots", "Sports Apparel", "Training Gear"],
+        "sponsoredEvents": ["FIFA World Cup", "UEFA Champions League", "Olympics"]
+      },
+      {
+        "id": 3,
+        "name": "Red Bull",
+        "category": "Beverages",
+        "logo": "https://example.com/logos/redbull.png",
+        "bannerImage": "https://example.com/banners/redbull.jpg",
+        "description": "Red Bull is a renowned energy drink brand that sponsors extreme sports and high-adrenaline events around the world.",
+        "sponsoredProducts": ["Energy Drinks"],
+        "sponsoredEvents": ["Red Bull Rampage", "Red Bull Air Race", "X Games"]
+      },
+      {
+        "id": 4,
+        "name": "Under Armour",
+        "category": "Sportswear",
+        "logo": "https://example.com/logos/underarmour.png",
+        "bannerImage": "https://example.com/banners/underarmour.jpg",
+        "description": "Under Armour is known for its performance-enhancing sportswear and sponsorship of various athletes and sports teams.",
+        "sponsoredProducts": ["Sports Apparel", "Footwear", "Accessories"],
+        "sponsoredEvents": ["NFL", "NBA", "MLB"]
+      },
+      {
+        "id": 5,
+        "name": "Puma",
+        "category": "Sportswear",
+        "logo": "https://example.com/logos/puma.png",
+        "bannerImage": "https://example.com/banners/puma.jpg",
+        "description": "Puma is a leading sportswear brand that offers stylish and high-performance products, and sponsors numerous athletes and teams.",
+        "sponsoredProducts": ["Sports Apparel", "Footwear", "Accessories"],
+        "sponsoredEvents": ["UEFA Champions League", "Olympics", "FIFA World Cup"]
+      },
+      {
+        "id": 6,
+        "name": "The North Face",
+        "category": "Outdoor Gear",
+        "logo": "https://example.com/logos/thenorthface.png",
+        "bannerImage": "https://example.com/banners/thenorthface.jpg",
+        "description": "The North Face is an outdoor gear brand known for its high-quality products and sponsorship of outdoor and adventure sports.",
+        "sponsoredProducts": ["Jackets", "Backpacks", "Climbing Gear"],
+        "sponsoredEvents": ["Expeditions", "Climbing Competitions", "Trail Running Events"]
+      },
+      {
+        "id": 7,
+        "name": "Oakley",
+        "category": "Eyewear",
+        "logo": "https://example.com/logos/oakley.png",
+        "bannerImage": "https://example.com/banners/oakley.jpg",
+        "description": "Oakley is a leading brand in sports eyewear, providing high-performance sunglasses and goggles for athletes.",
+        "sponsoredProducts": ["Sunglasses", "Goggles", "Apparel"],
+        "sponsoredEvents": ["Cycling Races", "Winter Sports Events", "Motorsports"]
+      },
+      {
+        "id": 8,
+        "name": "Monster Energy",
+        "category": "Beverages",
+        "logo": "https://example.com/logos/monster.png",
+        "bannerImage": "https://example.com/banners/monster.jpg",
+        "description": "Monster Energy is a popular energy drink brand that sponsors extreme sports and high-energy events globally.",
+        "sponsoredProducts": ["Energy Drinks"],
+        "sponsoredEvents": ["Motocross", "Supercross", "X Games"]
+      },
+      {
+        "id": 9,
+        "name": "Patagonia",
+        "category": "Outdoor Gear",
+        "logo": "https://example.com/logos/patagonia.png",
+        "bannerImage": "https://example.com/banners/patagonia.jpg",
+        "description": "Patagonia is an environmentally conscious outdoor gear brand that sponsors sustainable and adventure-focused events.",
+        "sponsoredProducts": ["Jackets", "Backpacks", "Climbing Gear"],
+        "sponsoredEvents": ["Environmental Expeditions", "Climbing Competitions", "Trail Running Events"]
+      },
+      {
+        "id": 10,
+        "name": "Columbia",
+        "category": "Outdoor Gear",
+        "logo": "https://example.com/logos/columbia.png",
+        "bannerImage": "https://example.com/banners/columbia.jpg",
+        "description": "Columbia is a renowned outdoor gear brand that sponsors various outdoor activities and adventure sports.",
+        "sponsoredProducts": ["Jackets", "Footwear", "Camping Gear"],
+        "sponsoredEvents": ["Hiking Events", "Trail Running Competitions", "Climbing Events"]
+      },
+      {
+        "id": 11,
+        "name": "GoPro",
+        "category": "Electronics",
+        "logo": "https://example.com/logos/gopro.png",
+        "bannerImage": "https://example.com/banners/gopro.jpg",
+        "description": "GoPro is a leading brand in action cameras, sponsoring athletes and events to capture high-adrenaline activities.",
+        "sponsoredProducts": ["Action Cameras", "Accessories"],
+        "sponsoredEvents": ["Extreme Sports Events", "Adventure Races", "Motorsports"]
+      },
+      {
+        "id": 12,
+        "name": "Reebok",
+        "category": "Sportswear",
+        "logo": "https://example.com/logos/reebok.png",
+        "bannerImage": "https://example.com/banners/reebok.jpg",
+        "description": "Reebok is a global sportswear brand that sponsors fitness events and athletes in various sports disciplines.",
+        "sponsoredProducts": ["Fitness Apparel", "Footwear", "Accessories"],
+        "sponsoredEvents": ["CrossFit Games", "UFC", "NFL"]
+      },
+      {
+        "id": 13,
+        "name": "New Balance",
+        "category": "Sportswear",
+        "logo": "https://example.com/logos/newbalance.png",
+        "bannerImage": "https://example.com/banners/newbalance.jpg",
+        "description": "New Balance is known for its high-quality athletic footwear and apparel, sponsoring numerous sports events and teams.",
+        "sponsoredProducts": ["Running Shoes", "Sports Apparel", "Accessories"],
+        "sponsoredEvents": ["Marathons", "Track and Field Events", "Basketball"]
+      },
+      {
+        "id": 14,
+        "name": "Salomon",
+        "category": "Outdoor Gear",
+        "logo": "https://example.com/logos/salomon.png",
+        "bannerImage": "https://example.com/banners/salomon.jpg",
+        "description": "Salomon is a premier outdoor gear brand that sponsors skiing, trail running, and hiking events worldwide.",
+        "sponsoredProducts": ["Ski Gear", "Trail Running Shoes", "Backpacks"],
+        "sponsoredEvents": ["Ski Competitions", "Trail Running Events", "Mountain Biking"]
+      },
+      {
+        "id": 15,
+        "name": "North Face",
+        "category": "Outdoor Gear",
+        "logo": "https://example.com/logos/northface.png",
+        "bannerImage": "https://example.com/banners/northface.jpg",
+        "description": "The North Face provides high-performance outdoor gear and sponsors expeditions and extreme sports events.",
+        "sponsoredProducts": ["Jackets", "Backpacks", "Tents"],
+        "sponsoredEvents": ["Mountaineering", "Rock Climbing", "Expeditions"]
+      },
+      {
+        "id": 16,
+        "name": "Billabong",
+        "category": "Surfwear",
+        "logo": "https://example.com/logos/billabong.png",
+        "bannerImage": "https://example.com/banners/billabong.jpg",
+        "description": "Billabong is a leading surfwear brand that sponsors surfing events and athletes around the globe.",
+        "sponsoredProducts": ["Boardshorts", "Wetsuits", "Surfboards"],
+        "sponsoredEvents": ["World Surf League", "Big Wave Competitions", "Surfing Festivals"]
+      },
+      {
+        "id": 17,
+        "name": "DC Shoes",
+        "category": "Footwear",
+        "logo": "https://example.com/logos/dcshoes.png",
+        "bannerImage": "https://example.com/banners/dcshoes.jpg",
+        "description": "DC Shoes is a renowned footwear brand that sponsors skateboarding, snowboarding, and motocross events.",
+        "sponsoredProducts": ["Skate Shoes", "Snowboard Boots", "Apparel"],
+        "sponsoredEvents": ["Skateboarding Competitions", "Snowboarding Events", "Motocross"]
+      },
+      {
+        "id": 18,
+        "name": "Burton",
+        "category": "Snowboarding Gear",
+        "logo": "https://example.com/logos/burton.png",
+        "bannerImage": "https://example.com/banners/burton.jpg",
+        "description": "Burton is a premier snowboarding brand that sponsors snowboarding events and athletes globally.",
+        "sponsoredProducts": ["Snowboards", "Bindings", "Outerwear"],
+        "sponsoredEvents": ["Winter X Games", "Burton US Open", "Snowboarding Festivals"]
+      },
+      {
+        "id": 19,
+        "name": "Quiksilver",
+        "category": "Surfwear",
+        "logo": "https://example.com/logos/quiksilver.png",
+        "bannerImage": "https://example.com/banners/quiksilver.jpg",
+        "description": "Quiksilver is a leading surfwear brand that sponsors major surfing events and top surfers worldwide.",
+        "sponsoredProducts": ["Boardshorts", "Wetsuits", "Surfboards"],
+        "sponsoredEvents": ["World Surf League", "Big Wave Competitions", "Surfing Festivals"]
+      },
+      {
+        "id": 20,
+        "name": "Vans",
+        "category": "Footwear",
+        "logo": "https://example.com/logos/vans.png",
+        "bannerImage": "https://example.com/banners/vans.jpg",
+        "description": "Vans is a popular footwear brand known for its sponsorship of skateboarding, BMX, and music events.",
+        "sponsoredProducts": ["Skate Shoes", "Apparel", "Accessories"],
+        "sponsoredEvents": ["Vans Park Series", "Warped Tour", "BMX Competitions"]
+      }
+    ]
+  }
+  

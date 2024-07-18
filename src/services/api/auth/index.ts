@@ -6,6 +6,7 @@ import {
   UnknowProfile,
 } from "@kascad-app/shared-types";
 import { requester } from "@plugins/requester";
+import Cookies from "js-cookie";
 
 type APIAuthentication = {
   me: typeof me;
@@ -26,7 +27,10 @@ const register = async (data: registerRiderDto | registerSponsorDto) =>
 const refreshToken = async () =>
   requester().post<UnknowProfile>("/auth/refresh-token");
 
-const logout = async () => requester().post("/auth/logout", { data: {} });
+const logout = async () => {
+  requester().post("/auth/logout", { data: {} });
+  Cookies.remove("authToken");
+};
 
 const apiAuthentication: APIAuthentication = {
   me,

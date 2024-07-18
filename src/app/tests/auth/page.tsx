@@ -6,8 +6,6 @@ import Link from "next/link";
 export default function TestAuth() {
   const session = useSession(true);
 
-  console.log(session);
-
   return (
     <div
       style={{

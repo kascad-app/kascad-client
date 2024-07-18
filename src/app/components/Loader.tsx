@@ -1,9 +1,11 @@
 "use client";
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import useSession from "@hooks/use-session";
 
 const Loader: React.FC = () => {
   const router = useRouter();
+  const session = useSession();
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -15,14 +17,23 @@ const Loader: React.FC = () => {
       pathElements?.forEach((path) => path.classList.add("stroke-white"));
 
       const timer2 = setTimeout(() => {
-        router.push("/login");
+        if (session.loggedIn) {
+          console.log(session);
+          if (session.user.type == "rider") {
+            router.push("/marketplace/sponsors");
+          } else {
+            router.push("/marketplace/riders");
+          }
+        } else {
+          router.push("/login");
+        }
       }, 1000);
 
       return () => clearTimeout(timer2);
     }, 1500);
 
     return () => clearTimeout(timer1);
-  }, [router]);
+  }, [session]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

@@ -9,14 +9,16 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        "connexion-background":
-          "url('/views/connexion/connexionBackground.png')",
+        "login-sponsor": "url('/views/connexion/connexionBackground.png')",
+        "login-rider": "url('/views/connexion/loginRider.png')",
         "footer-background": "url('/views/footer/footerBackground.png')",
+        "dark-gradient": "linear-gradient(180deg, #212121 0%, #0B0B0B 100%)",
       },
       colors: {
         "common-green": "#A0C446",
         "dark-green": "#1B4C4E",
         "dark-green-hover": "#0B2526",
+        "black-gradient": "linear-gradient(180deg, #212121, #0B0B0B)",
         "blue-950": "#141D52",
         "blue-900": "#22348D",
         "blue-800": "2035B3",
@@ -33,13 +35,23 @@ module.exports = {
         figtree: ['"Figtree"', "sans-serif"],
       },
       fontSize: {
-        sm: "0.8rem",
-        base: "24px",
-        xl: "32px",
-        "2xl": "40px",
+        pageTitle: "96px",
+        title: "32px",
+        subtitle: "24px",
+        subtitle2: "20px",
+        large: "16px",
+        medium: "14px",
+        small: "12px",
+        // sm: "0.8rem",
+        // base: "24px",
+        // xl: "32px",
+        // "2xl": "40px",
       },
       spacing: {
         "50vw": "50vw",
+      },
+      width: {
+        "login-vector-height": "90dvh",
       },
     },
   },

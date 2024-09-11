@@ -26,7 +26,7 @@ const Form: React.FC<FormProps> = ({
   const [formState, setFormState] = useState<{ [key: string]: string }>({});
   const buttonRef = useRef<HTMLButtonElement>(null);
   const baseClasses =
-    "w-full py-2 px-4 bg-dark-green text-white font-semibold rounded-md hover:bg-dark-green-hover transition duration-200";
+    "w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-300 transition duration-200";
   // // Classes supplémentaires que vous souhaitez ajouter
   // const additionalClasses = "";
   // // Concaténation des classes

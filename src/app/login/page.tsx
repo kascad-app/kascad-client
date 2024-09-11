@@ -16,11 +16,11 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (session.loggedIn) {
-      if (session.user.type == "rider") {
-        router.push("/marketplace/sponsors");
-      } else {
-        router.push("/marketplace/riders");
-      }
+      // if (session.user.type == "rider") {
+      //   router.push("/marketplace/sponsors");
+      // } else {
+      //   router.push("/marketplace/riders");
+      // }
     }
   }, [session]);
 
@@ -59,14 +59,14 @@ const Login: React.FC = () => {
           alt=""
         />
         <div className="text-container">
-          <h2 className="font-michroma text-white text-2xl font-light">
+          {/* <h2 className="font-michroma text-white text-2xl font-light">
             Passerelles vers vos opportunités.
           </h2>
           <div className="h-0.5 bg-white my-4"></div>
           <p className="text-white text-base font-light">
             Kascad est une application conçue pour simplifier la gestion des
             réponses aux appels d'offres.
-          </p>
+          </p> */}
         </div>
       </div>
       <div className="w-1/2 flex items-center justify-center flex-col ">

@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import "./form.css";
+import { useRouter } from "next/navigation";
 
 type FormField = {
   name: string;
@@ -17,6 +18,7 @@ type FormProps = {
   submitButtonText: string;
   switchAuthButtonText: string;
   bCatchResponse: boolean;
+  route: string;
 };
 
 const Form: React.FC<FormProps> = ({
@@ -28,6 +30,7 @@ const Form: React.FC<FormProps> = ({
   submitButtonText,
   switchAuthButtonText,
   bCatchResponse,
+  route,
 }) => {
   const [formState, setFormState] = useState<{ [key: string]: string }>({});
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -38,6 +41,7 @@ const Form: React.FC<FormProps> = ({
   // // Concaténation des classes
   // const buttonClasses = `${baseClasses} ${additionalClasses}`;
 
+  const router = useRouter();
   useEffect(() => {
     if (buttonRef.current) {
       buttonRef.current.classList.remove("sending");
@@ -50,6 +54,10 @@ const Form: React.FC<FormProps> = ({
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const redirectTo = () => {
+    router.push(route);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -69,7 +77,7 @@ const Form: React.FC<FormProps> = ({
       onSubmit={handleSubmit}
       className="pt-8 px-8 pb-4 w-full max-w-md space-y-4"
     >
-      <h2 className="font-michroma text-title ">Log In</h2>
+      <h2 className="font-michroma text-title ">{submitButtonText}</h2>
       {fields.map((field) => (
         <div key={field.name}>
           <label
@@ -95,12 +103,13 @@ const Form: React.FC<FormProps> = ({
       </button>
       <div className="flex flex-row items-center justify-center">
         <span className="h-0.5 w-full bg-dark-gradient"></span>
-        <p className="px-2">or</p>
+        <p className="px-2 font-bold">or</p>
         <span className="h-0.5 w-full bg-dark-gradient"></span>
       </div>
       <button
         ref={buttonRef}
-        className="w-full py-2 text-medium font-bold px-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-md hover:bg-blue-300 hover:border-blue-300 hover:text-white  transition duration-200"
+        onClick={redirectTo}
+        className="w-full py-2 bg-white text-medium font-bold px-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-md hover:bg-blue-300 hover:border-blue-300 hover:text-white  transition duration-200"
       >
         {switchAuthButtonText}
       </button>

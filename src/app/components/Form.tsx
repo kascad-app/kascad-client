@@ -57,7 +57,10 @@ const Form: React.FC<FormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className=" p-8 w-full max-w-md space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="pt-8 px-8 pb-4 w-full max-w-md space-y-4"
+    >
       {fields.map((field) => (
         <div key={field.name}>
           <label
@@ -92,9 +95,6 @@ const Form: React.FC<FormProps> = ({
       >
         {switchAuthButtonText}
       </button>
-      <p className=" w-fit mx-auto text-blue-600 cursor-pointer text-center">
-        Connect as sponsor
-      </p>
     </form>
   );
 };

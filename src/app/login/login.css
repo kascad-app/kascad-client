@@ -1,0 +1,175 @@
+@keyframes hideContent {
+  0% {
+    top: 0px;
+    opacity: 1;
+  }
+  99% {
+    top: -100px;
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes draw {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    stroke-dasharray: 1350; /*  A modifier pour le départ ud trait*/
+    stroke-dashoffset: 1000;
+  }
+  3% {
+    visibility: visible;
+    opacity: 1;
+  }
+  100% {
+    stroke-dasharray: 1700; /* fin du trait */
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes undraw {
+  0% {
+    stroke-dasharray: 1700; /* fin du trait */
+    stroke-dashoffset: 0;
+  }
+  97% {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    stroke-dasharray: 1350; /*  A modifier pour le départ ud trait*/
+    stroke-dashoffset: 1000;
+  }
+}
+
+@keyframes loginTransition {
+  0% {
+    order: 1;
+    width: 41.666667%;
+    margin-right: auto;
+  }
+  45% {
+    order: 1;
+    margin-right: auto;
+
+    width: 100%;
+  }
+  55% {
+    width: 100%;
+    order: 3;
+    margin-left: auto;
+  }
+  100% {
+    width: 41.666667%;
+    margin-left: auto;
+    order: 3;
+  }
+}
+
+@keyframes loginTransitionReverse {
+  0% {
+    width: 41.666667%;
+    margin-left: auto;
+    order: 3;
+  }
+  45% {
+    width: 100%;
+    order: 3;
+    margin-left: auto;
+  }
+  55% {
+    order: 1;
+    margin-right: auto;
+
+    width: 100%;
+  }
+  100% {
+    order: 1;
+    width: 41.666667%;
+    margin-right: auto;
+  }
+}
+
+@keyframes imageTransition {
+  0% {
+    background-image: url("/views/connexion/loginRider.png");
+    width: 58.333333%;
+  }
+  45% {
+    background-image: url("/views/connexion/loginRider.png");
+    padding: 0;
+    width: 0%;
+  }
+  55% {
+    background-image: url("/views/connexion/connexionBackground.png");
+    padding: 0;
+    width: 0%;
+  }
+  100% {
+    background-image: url("/views/connexion/connexionBackground.png");
+    width: 58.333333%;
+  }
+}
+
+@keyframes imageTransitionReverse {
+  0% {
+    background-image: url("/views/connexion/connexionBackground.png");
+    width: 58.333333%;
+  }
+
+  45% {
+    background-image: url("/views/connexion/connexionBackground.png");
+    padding: 0;
+    width: 0%;
+  }
+  55% {
+    background-image: url("/views/connexion/loginRider.png");
+    padding: 0;
+    width: 0%;
+  }
+  100% {
+    background-image: url("/views/connexion/loginRider.png");
+    width: 58.333333%;
+  }
+}
+
+.animate-login {
+  animation: loginTransition 2s ease-out forwards 2s;
+}
+
+.animate-login-reverse {
+  animation: loginTransitionReverse 2s ease-out forwards 2s;
+}
+
+.animate-image {
+  animation: imageTransition 2s ease-out forwards 2s;
+}
+
+.animate-image-reverse {
+  animation: imageTransitionReverse 2s ease-out forwards 2s;
+}
+
+.animate-draw {
+  stroke-dasharray: 0;
+  stroke-dashoffset: 0;
+  animation: draw 3s ease-in-out forwards 0.5s;
+}
+
+.animate-draw-reverse {
+  transition: all 3s;
+
+  stroke-dasharray: 0;
+  stroke-dashoffset: 0;
+  animation: undraw 1s ease-out forwards 0.3s;
+}
+
+.animate-hideContent {
+  transition: all;
+  animation: hideContent 1s ease forwards 1s;
+}

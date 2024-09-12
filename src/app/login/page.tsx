@@ -15,11 +15,13 @@ const Login: React.FC = () => {
   const [bCatchResponse, setBCatchResponse] = useState<boolean>(false);
   const router = useRouter();
   const [bRider, setBRider] = useState<boolean>(true);
+  const [textConnect, setTextConnect] = useState<string>("Connect as sponsor");
 
   const refLogin = useRef<HTMLDivElement>(null);
   const refLoginSection = useRef<HTMLDivElement>(null);
   const refImageSection = useRef<HTMLDivElement>(null);
   const refPath = useRef<SVGPathElement>(null);
+  const refPath2 = useRef<SVGPathElement>(null);
 
   useEffect(() => {
     if (session.loggedIn) {
@@ -39,29 +41,40 @@ const Login: React.FC = () => {
   const changeLogin = (e: React.SyntheticEvent) => {
     const loginContainer = refLogin.current;
     const svg = refPath.current;
+    const svg2 = refPath2.current;
     const loginSection = refLoginSection.current;
     const imageSection = refImageSection.current;
     loginContainer?.classList.add("animate-hideContent");
+    svg?.classList.toggle("opacity-0");
+
+    svg2?.classList.add("opacity-0");
     if (bRider) {
       setBRider(!bRider);
-      // loginSection?.classList.remove("order-3");
       // trait
       svg?.classList.add("animate-draw-reverse");
       loginSection?.classList.add("animate-login");
       imageSection?.classList.add("animate-image");
 
       setTimeout(() => {
+        setTextConnect("Connect as rider");
         imageSection?.classList.remove("bg-login-rider");
         imageSection?.classList.add("bg-login-sponsor");
+        svg2?.classList.remove("animate-draw-reverse");
       }, 4000);
     } else {
       setBRider(!bRider);
+      // On empeche le bug des sections qui s'inverse au retour
       loginSection?.classList.add("order-3");
+      svg2?.classList.remove("opacity-0");
+      svg2?.classList.add("animate-draw-reverse");
+      // on anime les 2 sections pour les intervertirs
       loginSection?.classList.add("animate-login-reverse");
 
       imageSection?.classList.add("animate-image-reverse");
-
+      // fix de fin d'anim
       setTimeout(() => {
+        setTextConnect("Connect as sponsor");
+        // on change definitivement les backgrounds
         imageSection?.classList.add("bg-login-rider");
         imageSection?.classList.remove("bg-login-sponsor");
         loginSection?.classList.remove("animate-login");
@@ -75,7 +88,7 @@ const Login: React.FC = () => {
     }
     setTimeout(() => {
       svg?.classList.toggle("animate-draw");
-      // loginSection?.classList.remove("animate-login");
+      svg2?.classList.toggle("animate-draw");
       loginContainer?.classList.remove("animate-hideContent");
     }, 4000);
     // remove animations classes
@@ -144,10 +157,27 @@ const Login: React.FC = () => {
               onClick={changeLogin}
               className=" w-fit mx-auto text-blue-600 cursor-pointer text-center"
             >
-              Connect as sponsor
+              {textConnect}
             </p>
           </div>
         </div>
+
+        <svg
+          width="868"
+          height="698"
+          viewBox="0 0 868 698"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className=" absolute left-0 bottom-0 z-0  h-full w-login-vector-height"
+        >
+          <path
+            ref={refPath2}
+            className=" opacity-0 w-login-vector-width "
+            d="M892.36 0.596619C879.663 200.026 733.181 553.626 660.785 551.982C631.381 551.315 622.044 518.094 634.165 490.862C648.818 457.942 736.006 432.959 733.119 560.126C730.231 687.293 597.918 699.593 416.965 695.485C236.011 691.376 0.696256 658.526 0.696256 658.526"
+            stroke="#2B4AFB"
+            stroke-width="3"
+          />
+        </svg>
       </div>
       <div
         ref={refImageSection}

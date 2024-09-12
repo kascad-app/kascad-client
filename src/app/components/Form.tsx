@@ -12,7 +12,10 @@ type FormProps = {
   errorMessage: string;
   fields: FormField[];
   onSubmit: (data: { [key: string]: string }) => void;
+  onChangeUserType: () => void;
+  textConnect: string;
   submitButtonText: string;
+  switchAuthButtonText: string;
   bCatchResponse: boolean;
 };
 
@@ -20,13 +23,16 @@ const Form: React.FC<FormProps> = ({
   errorMessage,
   fields,
   onSubmit,
+  onChangeUserType,
+  textConnect,
   submitButtonText,
+  switchAuthButtonText,
   bCatchResponse,
 }) => {
   const [formState, setFormState] = useState<{ [key: string]: string }>({});
   const buttonRef = useRef<HTMLButtonElement>(null);
   const baseClasses =
-    "w-full py-2 px-4 bg-dark-green text-white font-semibold rounded-md hover:bg-dark-green-hover transition duration-200";
+    "w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-blue-300 transition duration-200";
   // // Classes supplémentaires que vous souhaitez ajouter
   // const additionalClasses = "";
   // // Concaténation des classes
@@ -54,10 +60,14 @@ const Form: React.FC<FormProps> = ({
     onSubmit(formState);
   };
 
+  const handleClickChangeUserType = () => {
+    onChangeUserType();
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white p-8 w-full max-w-md space-y-4"
+      className="pt-8 px-8 pb-4 w-full max-w-md space-y-4"
     >
       {fields.map((field) => (
         <div key={field.name}>
@@ -82,6 +92,23 @@ const Form: React.FC<FormProps> = ({
       <button ref={buttonRef} type="submit" className={baseClasses}>
         {submitButtonText}
       </button>
+      <div className="flex flex-row items-center justify-center">
+        <span className="h-0.5 w-full bg-dark-gradient"></span>
+        <p className="px-2">or</p>
+        <span className="h-0.5 w-full bg-dark-gradient"></span>
+      </div>
+      <button
+        ref={buttonRef}
+        className="w-full py-2 text-medium font-bold px-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-md hover:bg-blue-300 hover:border-blue-300 hover:text-white  transition duration-200"
+      >
+        {switchAuthButtonText}
+      </button>
+      <p
+        onClick={handleClickChangeUserType}
+        className=" w-fit mx-auto text-blue-600 cursor-pointer text-center"
+      >
+        {textConnect}
+      </p>
     </form>
   );
 };

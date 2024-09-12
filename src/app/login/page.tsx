@@ -42,10 +42,10 @@ const Login: React.FC = () => {
     const loginSection = refLoginSection.current;
     const imageSection = refImageSection.current;
     loginContainer?.classList.add("animate-hideContent");
-    svg?.classList.remove("animate-draw");
-    // debugger;
     if (bRider) {
       setBRider(!bRider);
+      // loginSection?.classList.remove("order-3");
+      // trait
       svg?.classList.add("animate-draw-reverse");
       loginSection?.classList.add("animate-login");
       imageSection?.classList.add("animate-image");
@@ -53,30 +53,28 @@ const Login: React.FC = () => {
       setTimeout(() => {
         imageSection?.classList.remove("bg-login-rider");
         imageSection?.classList.add("bg-login-sponsor");
-        // loginContainer?.classList.remove("animate-hideContent");
       }, 4000);
     } else {
-      debugger;
-      console.log("reverse");
       setBRider(!bRider);
       loginSection?.classList.add("order-3");
       loginSection?.classList.add("animate-login-reverse");
 
       imageSection?.classList.add("animate-image-reverse");
 
-      // loginContainer?.classList.remove("animate-hideContent");
-      // svg?.classList.remove("animate-draw-reverse");
-      // loginSection?.classList.remove("animate-login");
-
       setTimeout(() => {
         imageSection?.classList.add("bg-login-rider");
         imageSection?.classList.remove("bg-login-sponsor");
         loginSection?.classList.remove("animate-login");
         imageSection?.classList.remove("animate-image");
-        // loginContainer?.classList.remove("animate-hideContent");
+        loginSection?.classList.remove("animate-login-reverse");
+        imageSection?.classList.remove("animate-image-reverse");
+        svg?.classList.remove("animate-draw-reverse");
+
+        loginSection?.classList.remove("order-3");
       }, 4000);
     }
     setTimeout(() => {
+      svg?.classList.toggle("animate-draw");
       // loginSection?.classList.remove("animate-login");
       loginContainer?.classList.remove("animate-hideContent");
     }, 4000);
@@ -121,7 +119,7 @@ const Login: React.FC = () => {
         >
           <path
             ref={refPath}
-            className="animate-draw w-login-vector-width "
+            className="animate-draw opacity-0 w-login-vector-width "
             d="M-271 170.57C-93.371 79.0202 285.256 23.0612 321.034 86.0201C335.565 111.59 311.859 136.667 282.268 140.255C246.497 144.594 180.275 82.6221 290.865 19.7757C401.455 -43.0707 479.975 64.1333 569.403 221.498C658.83 378.863 751.523 597.633 751.523 597.633"
             stroke="#2B4AFB"
             strokeWidth="3"

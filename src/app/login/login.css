@@ -20,22 +20,24 @@
     stroke-dasharray: 1350; /*  A modifier pour le départ ud trait*/
     stroke-dashoffset: 1000;
   }
-  3% {
+  1% {
     visibility: visible;
     opacity: 1;
   }
   100% {
     stroke-dasharray: 1700; /* fin du trait */
+    opacity: 1;
     stroke-dashoffset: 0;
   }
 }
 
 @keyframes undraw {
   0% {
+    opacity: 1;
     stroke-dasharray: 1700; /* fin du trait */
     stroke-dashoffset: 0;
   }
-  97% {
+  99% {
     visibility: visible;
     opacity: 1;
   }

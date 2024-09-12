@@ -69,6 +69,7 @@ const Form: React.FC<FormProps> = ({
       onSubmit={handleSubmit}
       className="pt-8 px-8 pb-4 w-full max-w-md space-y-4"
     >
+      <h2 className="font-michroma text-title ">Log In</h2>
       {fields.map((field) => (
         <div key={field.name}>
           <label

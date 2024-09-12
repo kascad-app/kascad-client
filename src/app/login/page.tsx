@@ -143,8 +143,7 @@ const Login: React.FC = () => {
           ref={refLogin}
           className="z-10 w-2/3 flex flex-col items-center relative justify-center"
         >
-          <div className="w-full">
-            <h2 className="font-michroma text-title px-8">Log In</h2>
+          <div className="w-full flex justify-center">
             <Form
               errorMessage={error}
               fields={fields}

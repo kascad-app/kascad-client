@@ -38,7 +38,7 @@ const Login: React.FC = () => {
     { name: "password", label: "Mot de passe", type: "password" },
   ];
 
-  const changeLogin = (e: React.SyntheticEvent) => {
+  const changeLogin = () => {
     const loginContainer = refLogin.current;
     const svg = refPath.current;
     const svg2 = refPath2.current;
@@ -143,22 +143,18 @@ const Login: React.FC = () => {
           ref={refLogin}
           className="z-10 w-2/3 flex flex-col items-center relative justify-center"
         >
-          <div className="w-2/3">
+          <div className="w-full">
             <h2 className="font-michroma text-title px-8">Log In</h2>
             <Form
               errorMessage={error}
               fields={fields}
               onSubmit={handleLogin}
+              onChangeUserType={changeLogin}
+              textConnect={textConnect}
               submitButtonText="Log in"
               switchAuthButtonText="Register"
               bCatchResponse={bCatchResponse}
             />
-            <p
-              onClick={changeLogin}
-              className=" w-fit mx-auto text-blue-600 cursor-pointer text-center"
-            >
-              {textConnect}
-            </p>
           </div>
         </div>
 

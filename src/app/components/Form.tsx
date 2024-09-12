@@ -12,6 +12,8 @@ type FormProps = {
   errorMessage: string;
   fields: FormField[];
   onSubmit: (data: { [key: string]: string }) => void;
+  onChangeUserType: () => void;
+  textConnect: string;
   submitButtonText: string;
   switchAuthButtonText: string;
   bCatchResponse: boolean;
@@ -21,6 +23,8 @@ const Form: React.FC<FormProps> = ({
   errorMessage,
   fields,
   onSubmit,
+  onChangeUserType,
+  textConnect,
   submitButtonText,
   switchAuthButtonText,
   bCatchResponse,
@@ -54,6 +58,10 @@ const Form: React.FC<FormProps> = ({
       buttonRef.current.classList.toggle("sending");
     }
     onSubmit(formState);
+  };
+
+  const handleClickChangeUserType = () => {
+    onChangeUserType();
   };
 
   return (
@@ -95,6 +103,12 @@ const Form: React.FC<FormProps> = ({
       >
         {switchAuthButtonText}
       </button>
+      <p
+        onClick={handleClickChangeUserType}
+        className=" w-fit mx-auto text-blue-600 cursor-pointer text-center"
+      >
+        {textConnect}
+      </p>
     </form>
   );
 };

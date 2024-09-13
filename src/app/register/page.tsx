@@ -62,7 +62,7 @@ const Register: React.FC = () => {
         imageSection?.classList.remove("bg-login-rider");
         imageSection?.classList.add("bg-login-sponsor");
         svg2?.classList.remove("animate-draw-reverse");
-      }, 4000);
+      }, 2250);
     } else {
       setBRider(!bRider);
       // On empeche le bug des sections qui s'inverse au retour
@@ -86,13 +86,13 @@ const Register: React.FC = () => {
         svg?.classList.remove("animate-draw-reverse");
 
         registerSection?.classList.remove("order-3");
-      }, 4000);
+      }, 2250);
     }
     setTimeout(() => {
       svg?.classList.toggle("animate-draw");
       svg2?.classList.toggle("animate-draw");
       registerContainer?.classList.remove("animate-hideContent");
-    }, 4000);
+    }, 2250);
     // remove animations classes
   };
 

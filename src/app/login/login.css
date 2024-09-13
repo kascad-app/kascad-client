@@ -142,36 +142,36 @@
 }
 
 .animate-login {
-  animation: loginTransition 2s ease-out forwards 2s;
+  animation: loginTransition 1s ease-out forwards 1s;
 }
 
 .animate-login-reverse {
-  animation: loginTransitionReverse 2s ease-out forwards 2s;
+  animation: loginTransitionReverse 1s ease-out forwards 1s;
 }
 
 .animate-image {
-  animation: imageTransition 2s ease-out forwards 2s;
+  animation: imageTransition 1s ease-out forwards 1s;
 }
 
 .animate-image-reverse {
-  animation: imageTransitionReverse 2s ease-out forwards 2s;
+  animation: imageTransitionReverse 1s ease-out forwards 1s;
 }
 
 .animate-draw {
   stroke-dasharray: 0;
   stroke-dashoffset: 0;
-  animation: draw 3s ease-in-out forwards 0.5s;
+  animation: draw 2s ease-in-out forwards 0.5s;
 }
 
 .animate-draw-reverse {
-  transition: all 3s;
+  transition: all 2s;
 
   stroke-dasharray: 0;
   stroke-dashoffset: 0;
-  animation: undraw 1s ease-out forwards 0.3s;
+  animation: undraw 0.5s ease-out forwards 0.3s;
 }
 
 .animate-hideContent {
   transition: all;
-  animation: hideContent 1s ease forwards 1s;
+  animation: hideContent 0.5s ease forwards 0.5s;
 }

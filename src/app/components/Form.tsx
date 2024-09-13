@@ -73,39 +73,38 @@ const Form: React.FC<FormProps> = ({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="pt-8 px-8 pb-4 w-full max-w-md space-y-4"
-    >
-      <h2 className="font-michroma text-title ">{submitButtonText}</h2>
-      {fields.map((field) => (
-        <div key={field.name}>
-          <label
-            htmlFor={field.name}
-            className="block text-sm font-medium text-gray-700"
-          >
-            {field.label}
-          </label>
-          <input
-            type={field.type}
-            id={field.name}
-            name={field.name}
-            value={formState[field.name] || ""}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          />
+    <div className="pt-8 px-8 pb-4 w-full max-w-md space-y-4">
+      <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
+        <h2 className="font-michroma text-title ">{submitButtonText}</h2>
+        {fields.map((field) => (
+          <div key={field.name}>
+            <label
+              htmlFor={field.name}
+              className="block text-sm font-medium text-gray-700"
+            >
+              {field.label}
+            </label>
+            <input
+              type={field.type}
+              id={field.name}
+              name={field.name}
+              value={formState[field.name] || ""}
+              onChange={handleChange}
+              required
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            />
+          </div>
+        ))}
+        <p className="text-red">{errorMessage}</p>
+        <button ref={buttonRef} type="submit" className={baseClasses}>
+          {submitButtonText}
+        </button>
+        <div className="flex flex-row items-center justify-center">
+          <span className="h-0.5 w-full bg-dark-gradient"></span>
+          <p className="px-2 font-bold">or</p>
+          <span className="h-0.5 w-full bg-dark-gradient"></span>
         </div>
-      ))}
-      <p className="text-red">{errorMessage}</p>
-      <button ref={buttonRef} type="submit" className={baseClasses}>
-        {submitButtonText}
-      </button>
-      <div className="flex flex-row items-center justify-center">
-        <span className="h-0.5 w-full bg-dark-gradient"></span>
-        <p className="px-2 font-bold">or</p>
-        <span className="h-0.5 w-full bg-dark-gradient"></span>
-      </div>
+      </form>
       <button
         ref={buttonRef}
         onClick={redirectTo}
@@ -119,7 +118,7 @@ const Form: React.FC<FormProps> = ({
       >
         {textConnect}
       </p>
-    </form>
+    </div>
   );
 };
 

@@ -8,12 +8,18 @@ importers:
 
   .:
     dependencies:
+      '@kascad-app/prettier-config':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@kascad-app/shared-types':
         specifier: ^1.2.9
         version: 1.2.9
       gsap:
         specifier: ^3.12.5
         version: 3.12.5
+      jose:
+        specifier: ^5.6.3
+        version: 5.8.0
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
@@ -32,6 +38,9 @@ importers:
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@svgr/webpack':
         specifier: ^8.1.0
@@ -732,6 +741,9 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
+  '@kascad-app/prettier-config@1.0.0':
+    resolution: {integrity: sha512-oL3PIPHz2zF9RM+WPIWzRIErXEjsSRNSVl79FYchh8U87fKbRV9FVywBdIsro+Qu+K0jgE1+n1OXFIuwFbSbaw==, tarball: https://npm.pkg.github.com/download/@kascad-app/prettier-config/1.0.0/806738848d696cd1c98e7a0a66b9294a2ae41ea6}
+
   '@kascad-app/shared-types@1.2.9':
     resolution: {integrity: sha512-N5QBkyA0fkfqKSFI2PDT0PX6IOk1/GB3i3qP+ZkRqmQbMpNaM8pnMF5mhz9+wCprDCno66YiEi0BptjAJlV9lQ==, tarball: https://npm.pkg.github.com/download/@kascad-app/shared-types/1.2.9/916f27e4cb738395d40bd6f9909f5e83e356ce6b}
 
@@ -1283,6 +1295,9 @@ packages:
     resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
     hasBin: true
 
+  jose@5.8.0:
+    resolution: {integrity: sha512-E7CqYpL/t7MMnfGnK/eg416OsFCVUrU/Y3Vwe7QjKhu/BkS1Ms455+2xsqZQVN57/U2MHMBvEb5SrmAZWAIntA==}
+
   js-cookie@3.0.5:
     resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==}
     engines: {node: '>=14'}
@@ -1738,6 +1753,9 @@ packages:
     resolution: {integrity: sha512-aBx2bnqDzVOyNKfsysjA2ms5ZlnjSAW2eG3/L5G/CSujfjLJTJsEw1bGw8kCf04KodQWk1pxlGnZ56CRxiawmg==}
     engines: {node: '>= 14'}
     hasBin: true
+
+  zod@3.23.8:
+    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
 snapshots:
 
@@ -2619,6 +2637,8 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
+  '@kascad-app/prettier-config@1.0.0': {}
+
   '@kascad-app/shared-types@1.2.9': {}
 
   '@next/env@14.2.3': {}
@@ -3138,6 +3158,8 @@ snapshots:
 
   jiti@1.21.6: {}
 
+  jose@5.8.0: {}
+
   js-cookie@3.0.5: {}
 
   js-tokens@4.0.0: {}
@@ -3566,3 +3588,5 @@ snapshots:
   yallist@3.1.1: {}
 
   yaml@2.4.5: {}
+
+  zod@3.23.8: {}

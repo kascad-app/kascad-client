@@ -8,6 +8,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      content: {
+        'check': 'url("/views/check.svg")',
+      },
       backgroundImage: {
         "login-sponsor": "url('/views/connexion/connexionBackground.png')",
         "login-rider": "url('/views/connexion/loginRider.png')",
@@ -29,6 +32,7 @@ module.exports = {
         "blue-100": "#DCECFF",
         "dark-950": "#212121",
         "dark-700": "#4F4F4F",
+        "dark-transparent": "#000000b3",
       },
       fontFamily: {
         michroma: ['"Michroma"', "sans-serif"],

@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import "./onboarding.css";
+import { Card } from "@/widgets/card-sport-onboarding";
 
 const OnBoarding: React.FC = () => {
   return (
@@ -19,16 +20,18 @@ const OnBoarding: React.FC = () => {
           This will help us customize your experience!
         </p>
         <div
-          className="flex px-4 pb-2 gap-4 w-full max-w-full overflow-x-auto scrollbar-hide"
+          className="flex px-4 pb-2 gap-6 w-full max-w-full overflow-x-auto scrollbar-hide"
           id="style-1"
         >
-          <div className="w-52 min-w-52 h-72 bg-blue-100  rounded-md"></div>
-          <div className="w-52 min-w-52 h-72 bg-blue-100  rounded-md"></div>
-          <div className="w-52 min-w-52 h-72 bg-blue-100  rounded-md"></div>
-          <div className="w-52 min-w-52 h-72 bg-blue-100  rounded-md"></div>
-          <div className="w-52 min-w-52 h-72 bg-blue-100  rounded-md"></div>
-          <div className="w-52 min-w-52 h-72 bg-blue-100  rounded-md"></div>
+          <Card title="Surf" src="/views/onBoard/Surf.png" />
+          <Card title="Skate" src="/views/onBoard/Skate.png" /> 
+          <Card title="Snow" src="/views/onBoard/Snow.png" /> 
+          <Card title="BMX" src="/views/onBoard/BMX.png" /> 
+          <Card title="BMX" src="/views/onBoard/BMX.png" /> 
+          <Card title="BMX" src="/views/onBoard/BMX.png" /> 
         </div>
+
+        <span></span>
       </div>
     </div>
   );

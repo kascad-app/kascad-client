@@ -1,0 +1,3 @@
+.label-dynamic::before {
+    content: attr(data-label);
+}

@@ -9,7 +9,8 @@ module.exports = {
   theme: {
     extend: {
       content: {
-        'check': 'url("/views/check.svg")',
+        'check': 'url("/views/shared/check.svg")',
+        'arrow-down': 'url("/views/shared/arrow-down.svg")',
       },
       backgroundImage: {
         "login-sponsor": "url('/views/connexion/connexionBackground.png')",
@@ -32,6 +33,12 @@ module.exports = {
         "blue-100": "#DCECFF",
         "dark-950": "#212121",
         "dark-700": "#4F4F4F",
+        "dark-600": "#5D5D5D",
+        "dark-500": "#6D6D6D",
+        "dark-400": "#888888",
+        "dark-300": "#B0B0B0",
+        "dark-200": "#D1D1D1",
+        "dark-100": "#E7E7E7",
         "dark-transparent": "#000000b3",
       },
       fontFamily: {

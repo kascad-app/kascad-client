@@ -1,0 +1,36 @@
+/* * {
+  outline: red 1px solid;
+} */
+
+.gradient-circle {
+  height: 820px;
+  width: 820px;
+  border-radius: 50%;
+  position: absolute;
+  /* transform-origin: center;*/
+  bottom: -20%;
+  left: -15%;
+
+  background: linear-gradient(#2b4afb, #0f6fff75 80%, #0f6fff00);
+  opacity: 1;
+  filter: blur(200px);
+}
+
+#style-1::-webkit-scrollbar-track {
+  margin: 5;
+  border-radius: 10px;
+  background-color: #bfdaff;
+}
+
+#style-1::-webkit-scrollbar {
+  height: 12px;
+  background-color: #bfdaff;
+
+  border-radius: 10px;
+}
+
+#style-1::-webkit-scrollbar-thumb {
+  margin: 5;
+  border-radius: 10px;
+  background-color: #b0b0b0;
+}

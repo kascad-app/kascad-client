@@ -13,6 +13,12 @@ const cardsData = [
   { title: "BMX", src: "/views/onBoard/BMX.png" }
 ];
 
+const options = [
+  {label: "Value 1", value: "value1" },
+  {label: "Value 2", value: "value2" },
+  {label: "Value 3", value: "value3" }
+]
+
 const OnBoarding: React.FC = () => {
   return (
     <div className="w-full max-w-screen flex h-screen max-h-full overflow-hidden relative flex items-center justify-center">
@@ -38,13 +44,13 @@ const OnBoarding: React.FC = () => {
             ))}
         </div>
 
-          <span className="h-1 block  w-full bg-dark-300 my-8"></span>
+          <span className="h-0.5 block  w-full bg-dark-300 my-8"></span>
           <h3 className="p-2 text-subtitle text-dark-950 font-medium">
             How we communicate
           </h3>
           <div className="flex flex-row gap-8">
-            <Select label="Country" />
-            <Select label="Email adress" />
+            <Select label="Country" options={options} />
+            <Select label="Email adress" options={options} />
           </div>
       </div>
     </div>

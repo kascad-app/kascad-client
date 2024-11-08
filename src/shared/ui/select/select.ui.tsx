@@ -4,11 +4,16 @@
 
 import React from "react";
 
+interface Option {
+    label: string;
+    value: string;
+}
 interface SelectProps {
-    label: string
+    label: string,
+    options: Option[]
 }
 
-export const Select: React.FC<SelectProps> = ({label}) => {
+export const Select: React.FC<SelectProps> = ({label, options}) => {
     return (
         <div className="relative w-full bg-white h-16 border border-dark-200 rounded-lg label-dynamic
           text-subtitle2 after:content-arrow-down

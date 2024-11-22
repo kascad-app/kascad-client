@@ -10,14 +10,15 @@ const cardsData = [
   { title: "Snow", src: "/views/onBoard/Snow.png" },
   { title: "BMX", src: "/views/onBoard/BMX.png" },
   { title: "BMX", src: "/views/onBoard/BMX.png" },
-  { title: "BMX", src: "/views/onBoard/BMX.png" }
+  { title: "BMX", src: "/views/onBoard/BMX.png" },
 ];
 
 const options = [
-  {label: "Value 1", value: "value1" },
-  {label: "Value 2", value: "value2" },
-  {label: "Value 3", value: "value3" }
-]
+  { label: "Value 1", value: "value1" },
+  { label: "Value 2", value: "value2" },
+  { label: "Value 3", value: "value3" },
+  { label: "Value 4", value: "value4" },
+];
 
 const OnBoarding: React.FC = () => {
   return (
@@ -31,6 +32,7 @@ const OnBoarding: React.FC = () => {
         <h3 className="p-2 text-subtitle text-dark-950 font-medium">
           Select your sports
         </h3>
+        <Select label="Email adress" options={options} />
 
         <p className="p-2 pb-12 text-subtitle2 text-dark-700">
           This will help us customize your experience!
@@ -40,18 +42,18 @@ const OnBoarding: React.FC = () => {
           id="style-1"
         >
           {cardsData.map((card, index) => (
-                <Card key={index} title={card.title} src={card.src} />
-            ))}
+            <Card key={index} title={card.title} src={card.src} />
+          ))}
         </div>
 
-          <span className="h-0.5 block  w-full bg-dark-300 my-8"></span>
-          <h3 className="p-2 text-subtitle text-dark-950 font-medium">
-            How we communicate
-          </h3>
-          <div className="flex flex-row gap-8">
-            <Select label="Country" options={options} />
-            <Select label="Email adress" options={options} />
-          </div>
+        <span className="h-0.5 block  w-full bg-dark-300 my-8"></span>
+        <h3 className="p-2 text-subtitle text-dark-950 font-medium">
+          How we communicate
+        </h3>
+        <div className="flex flex-row gap-8">
+          <Select label="Country" options={options} />
+          <Select label="Email adress" options={options} />
+        </div>
       </div>
     </div>
   );

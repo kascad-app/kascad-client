@@ -32,7 +32,6 @@ const OnBoarding: React.FC = () => {
         <h3 className="p-2 text-subtitle text-dark-950 font-medium">
           Select your sports
         </h3>
-        <Select label="Email adress" options={options} />
 
         <p className="p-2 pb-12 text-subtitle2 text-dark-700">
           This will help us customize your experience!
@@ -53,6 +52,11 @@ const OnBoarding: React.FC = () => {
         <div className="flex flex-row gap-8">
           <Select label="Country" options={options} />
           <Select label="Email adress" options={options} />
+        </div>
+        <div className="w-full flex justify-end">
+          <button className="bg-blue-600 text-white py-2 rounded-lg px-8 mt-8">
+            Next
+          </button>
         </div>
       </div>
     </div>

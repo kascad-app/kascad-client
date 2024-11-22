@@ -29,6 +29,7 @@ const OnBoarding: React.FC = () => {
         <h2 className="p-2 text-title text-dark-950 font-semibold">
           Customize your Experience
         </h2>
+        <Select label="Country" options={options} />
         <h3 className="p-2 text-subtitle text-dark-950 font-medium">
           Select your sports
         </h3>

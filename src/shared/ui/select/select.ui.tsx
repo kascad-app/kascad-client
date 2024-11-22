@@ -46,9 +46,7 @@ export const Select: React.FC<SelectProps> = ({ label, options }) => {
       const rect = selectElement.getBoundingClientRect();
       const spaceBelow = window.innerHeight - rect.bottom;
       const spaceAbove = rect.top;
-
-      // Calculer la position et la hauteur maximale
-      if (spaceBelow < 200 && spaceAbove > spaceBelow) {
+      if (spaceBelow < 400 && options.length > 4) {
         setDropdownPosition("top");
         setMaxHeight(spaceAbove - 16);
       } else {

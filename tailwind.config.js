@@ -9,8 +9,8 @@ module.exports = {
   theme: {
     extend: {
       content: {
-        'check': 'url("/views/shared/check.svg")',
-        'arrow-down': 'url("/views/shared/arrow-down.svg")',
+        check: 'url("/views/shared/check.svg")',
+        "arrow-down": 'url("/views/shared/arrow-down.svg")',
       },
       backgroundImage: {
         "login-sponsor": "url('/views/connexion/connexionBackground.png')",

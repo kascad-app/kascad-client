@@ -35,3 +35,93 @@
   border-radius: 10px;
   background-color: #2b4afb;
 }
+
+@keyframes hideContentLeft {
+  0% {
+    left: 0px;
+    opacity: 1;
+  }
+  99%{
+    left: -100px;
+    opacity: 0;
+  }
+  100% {
+    display: none;
+    opacity: 0;
+  }
+}
+@keyframes hideContentRight {
+  0% {
+    right: 0px;
+    opacity: 1;
+  }
+  99%{
+    right: 100px;
+    opacity: 0;
+  }
+  100% {
+    display: none;
+    opacity: 0;
+  }
+}
+
+@keyframes showContentLeft {
+  0% {
+    display: none;
+    left: -100px;
+    opacity: 0;
+  }
+  1%{
+    display: flex;
+    left: -100px;
+    opacity: 0;
+  }
+  100% {
+    left: 0px;
+    opacity: 1;
+  }
+}
+
+@keyframes showContentRight {
+  0% {
+    display: none;
+    right: 100px;
+    opacity: 0;
+  }
+  1%{
+    
+    display: flex;
+    right: 100px;
+    opacity: 0;
+  }
+  100% {
+    right: 0px;
+    opacity: 1;
+  }
+}
+
+
+
+.animate-hideContentLeft{
+  transition: all;
+  animation: hideContentLeft 0.5s ease forwards 0.5s;
+
+}
+
+.animate-showContentLeft{
+  transition: all;
+  animation: showContentLeft 0.5s ease forwards 0.5s;
+
+}
+
+.animate-hideContentRight{
+  transition: all;
+  animation: hideContentRight 0.5s ease forwards 0.5s;
+
+}
+
+.animate-showContentRight{
+  transition: all;
+  animation: showContentRight 0.5s ease forwards 0.5s;
+
+}

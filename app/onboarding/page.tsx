@@ -25,8 +25,8 @@ const options = [
 const OnBoarding: React.FC = () => {
   
   const steps: Step[] = [
-    {stepName: "Customize your Experience", stepLabel: "Select your sports", stepDescription: "This will help us customize your experience!" },
-    {stepName: "Company information", stepLabel: "Input your details", stepDescription: "This will help us customize your experience!" },
+    {stepName: "Customize your Experience", stepLabel: "Select your sports", stepDescription: "This will help us customize your experience !" },
+    {stepName: "Company information", stepLabel: "Input your details", stepDescription: "This will help us customize your experience !" },
   ]
 
 

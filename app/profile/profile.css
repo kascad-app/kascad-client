@@ -141,6 +141,7 @@
 .gallery_image {
     width: calc(50% - 12px);
     border-radius: 16px;
+    object-fit: cover;
 }
 
 .gallery_video {

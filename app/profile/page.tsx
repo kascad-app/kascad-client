@@ -11,9 +11,9 @@ const Profile = {
     sport: "BMX",
     bio: [
         "Skieur professionnel, freeskieur et snowboardeur, défie les conventions avec son style unique et ses exploits audacieux.",
-        "Sur les pentes, il repousse les limites de l'impossible, enchaînant figures acrobatiques et descentes périlleuses avec une grâce inégalée. Ses vidéos virales, capturant ses prouesses, ont fait de lui une icône des sports d'hiver.",
-        "Son palmarès impressionnant témoigne de son talent et de sa détermination.",
-        "Son engagement ne se limite pas au sport, il est également entrepreneur et créateur de contenu, partageant sa passion avec le monde entier.",
+        "Sur les pentes, il repousse les limites de l'impossible, enchaînant figures acrobatiques et descentes périlleuses avec une grâce inégalée.",
+        "Ses vidéos virales, capturant ses prouesses, ont fait de lui une icône des sports d'hiver.",
+        "Son engagement ne se limite pas au sport, il est également entrepreneur et créateur de contenu.",
         "Candide Thovex, un virtuose de la neige qui inspire et émerveille."
     ],
     stats: {
@@ -24,7 +24,7 @@ const Profile = {
     },
     location: "Paris, France",
     socials: {
-        label: "Suivez moi sur",
+        label: "Suivez-moi sur",
         links: {
             youtube: "https://www.youtube.com/",
             twitter: "https://x.com/",
@@ -32,7 +32,7 @@ const Profile = {
         }
     },
     media: {
-        videos: Array(16).fill('/views/profile/profile.png'),
+        videos: Array(12).fill("https://www.youtube.com/embed/y7nuxXCX97o"),
         images: Array(16).fill('/views/profile/profile.png')
     },
     instagram: {
@@ -48,23 +48,23 @@ const Profile = {
 };
 
 export default function ProfileComponent(): JSX.Element {
-    const [visibleVideoImages, setVisibleVideoImages] = useState(4);
-    const [visibleImageImages, setVisibleImageImages] = useState(4);
+    const [visibleVideos, setVisibleVideos] = useState(4);
+    const [visibleImages, setVisibleImages] = useState(4);
 
     const handleShowMoreVideos = () => {
-        setVisibleVideoImages((prev) => (prev + 4 >= Profile.media.videos.length ? Profile.media.videos.length : prev + 4));
+        setVisibleVideos((prev) => (prev + 4 >= Profile.media.videos.length ? Profile.media.videos.length : prev + 4));
     };
 
     const handleResetVideos = () => {
-        setVisibleVideoImages(4);
+        setVisibleVideos(4);
     };
 
     const handleShowMoreImages = () => {
-        setVisibleImageImages((prev) => (prev + 4 >= Profile.media.images.length ? Profile.media.images.length : prev + 4));
+        setVisibleImages((prev) => (prev + 4 >= Profile.media.images.length ? Profile.media.images.length : prev + 4));
     };
 
     const handleResetImages = () => {
-        setVisibleImageImages(4);
+        setVisibleImages(4);
     };
 
     return (
@@ -100,25 +100,13 @@ export default function ProfileComponent(): JSX.Element {
                         <span className='label'>{Profile.socials.label}</span>
                         <div className='logos'>
                             <Link href={Profile.socials.links.youtube}>
-                                <img
-                                    src="/views/logos/facebook-circle-fill.svg"
-                                    alt="Facebook"
-                                    className="h-10 w-10"
-                                />
+                                <img src="/views/logos/facebook-circle-fill.svg" alt="Facebook" className="h-10 w-10" />
                             </Link>
                             <Link href={Profile.socials.links.twitter}>
-                                <img
-                                    src="/views/logos/twitter-x-line.svg"
-                                    alt="Twitter"
-                                    className="h-10 w-10"
-                                />
+                                <img src="/views/logos/twitter-x-line.svg" alt="Twitter" className="h-10 w-10" />
                             </Link>
                             <Link href={Profile.socials.links.instagram}>
-                                <img
-                                    src="/views/logos/instagram-line.svg"
-                                    alt="Instagram"
-                                    className="h-10 w-10"
-                                />
+                                <img src="/views/logos/instagram-line.svg" alt="Instagram" className="h-10 w-10" />
                             </Link>
                         </div>
                     </div>
@@ -127,35 +115,47 @@ export default function ProfileComponent(): JSX.Element {
 
             <div className='profile_medias'>
                 <div className='profile_media'>
-                    <h3 className='profile_media_title'>Vidéo</h3>
+                    <h3 className='profile_media_title'>Vidéos</h3>
                     <div className='gallery'>
-                        {Profile.media.videos.slice(0, visibleVideoImages).map((video, index) => (
-                            <Image key={index} src={video} alt={`Vidéo ${index + 1}`} width={300} height={300} className='gallery_video' />
+                        {Profile.media.videos.slice(0, visibleVideos).map((video, index) => (
+                            <iframe
+                                key={index}
+                                width="560"
+                                height="315"
+                                src={video}
+                                className='gallery_video'
+                                title={`YouTube video ${index + 1}`}
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            ></iframe>
                         ))}
                     </div>
                     <div className='gallery_buttons'>
-                        {visibleVideoImages < Profile.media.videos.length ? (
+                        {visibleVideos < Profile.media.videos.length ? (
                             <button onClick={handleShowMoreVideos}>Voir plus de vidéos</button>
                         ) : (
                             <button onClick={handleResetVideos}>Réinitialiser</button>
                         )}
                     </div>
                 </div>
+
                 <div className='profile_media'>
                     <h3 className='profile_media_title'>Images</h3>
                     <div className='gallery'>
-                        {Profile.media.images.slice(0, visibleImageImages).map((image, index) => (
+                        {Profile.media.images.slice(0, visibleImages).map((image, index) => (
                             <Image key={index} src={image} alt={`Image ${index + 1}`} width={300} height={300} className='gallery_image' />
                         ))}
                     </div>
                     <div className='gallery_buttons'>
-                        {visibleImageImages < Profile.media.images.length ? (
+                        {visibleImages < Profile.media.images.length ? (
                             <button onClick={handleShowMoreImages}>Voir plus d'images</button>
                         ) : (
                             <button onClick={handleResetImages}>Réinitialiser</button>
                         )}
                     </div>
                 </div>
+
                 <div className='profile_media'>
                     <div className='logo_insta'></div>
                     <div className='profile_insta_name'>{Profile.instagram.username}</div>
@@ -166,7 +166,7 @@ export default function ProfileComponent(): JSX.Element {
                     </div>
                     <div className='profile_insta_posts'>
                         {Profile.instagram.posts.map((post, index) => (
-                            <Image key={index} src={post} alt={`Vidéo ${index + 1}`} width={300} height={300} className='insta_post' />
+                            <Image key={index} src={post} alt={`Post Instagram ${index + 1}`} width={300} height={300} className='insta_post' />
                         ))}
                     </div>
                 </div>

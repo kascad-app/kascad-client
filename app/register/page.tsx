@@ -1,19 +1,19 @@
 "use client";
+
 import React, { useEffect, useRef, useState } from "react";
-import { Layout } from "@/shared/ui/layout/layout.ui";
 import { Form } from "@/widgets/form";
 import { useRouter } from "next/navigation";
 import { AuthentificationTypes } from "@/entities/authentification";
 import useSession from "@/shared/api/use-session";
-import { ProfileType } from "@kascad-app/shared-types";
+import { ProfileType, GenderIdentity } from "@kascad-app/shared-types";
 import "./register.css";
 
 const Register: React.FC = () => {
   const session = useSession();
   const [error, setError] = useState<string>("");
-  const [bCatchResponse, setBCatchResponse] = useState<boolean>(false);
+  const [isCatchResponse, setIsCatchResponse] = useState<boolean>(false);
   const router = useRouter();
-  const [bRider, setBRider] = useState<boolean>(true);
+  const [isRider, setIsRider] = useState<boolean>(true);
   const [textConnect, setTextConnect] = useState<string>("Connect as sponsor");
 
   const refRegister = useRef<HTMLDivElement>(null);
@@ -24,96 +24,97 @@ const Register: React.FC = () => {
 
   useEffect(() => {
     if (session.loggedIn) {
-      // if (session.user.type == "rider") {
-      //   router.push("/marketplace/sponsors");
-      // } else {
-      //   router.push("/marketplace/riders");
-      // }
+      if (session.user.type == "rider") {
+        router.push("/marketplace/riders");
+      } else {
+        router.push("/marketplace/sponsors");
+      }
     }
   }, [session]);
 
   const fields = [
     { name: "email", label: "Email", type: "email" },
     { name: "password", label: "Password", type: "password" },
-
     { name: "confirm-password", label: "Confirm password", type: "password" },
   ];
 
   const changeRegister = () => {
-    const registerContainer = refRegister.current;
-    const svg = refPath.current;
-    const svg2 = refPath2.current;
-    const registerSection = refRegisterSection.current;
-    const imageSection = refImageSection.current;
-    registerContainer?.classList.add("animate-hideContent");
-    svg?.classList.toggle("opacity-0");
-
-    svg2?.classList.add("opacity-0");
-    if (bRider) {
-      setBRider(!bRider);
+    refRegister.current?.classList.add("animate-hideContent");
+    refPath.current?.classList.toggle("opacity-0");
+    refPath2.current?.classList.add("opacity-0");
+    if (isRider) {
+      setIsRider(!isRider);
       // trait
-      svg?.classList.add("animate-draw-reverse");
-      registerSection?.classList.add("animate-login");
-      imageSection?.classList.add("animate-image");
+      refPath.current?.classList.add("animate-draw-reverse");
+      refRegisterSection.current?.classList.add("animate-login");
+      refImageSection.current?.classList.add("animate-image");
 
       setTimeout(() => {
         setTextConnect("Connect as rider");
-        imageSection?.classList.remove("bg-login-rider");
-        imageSection?.classList.add("bg-login-sponsor");
-        svg2?.classList.remove("animate-draw-reverse");
+        refImageSection.current?.classList.remove("bg-login-rider");
+        refImageSection.current?.classList.add("bg-login-sponsor");
+        refPath2.current?.classList.remove("animate-draw-reverse");
       }, 2250);
     } else {
-      setBRider(!bRider);
+      setIsRider(!isRider);
       // On empeche le bug des sections qui s'inverse au retour
-      registerSection?.classList.add("order-3");
-      svg2?.classList.remove("opacity-0");
-      svg2?.classList.add("animate-draw-reverse");
+      refRegisterSection.current?.classList.add("order-3");
+      refPath2.current?.classList.remove("opacity-0");
+      refPath2.current?.classList.add("animate-draw-reverse");
       // on anime les 2 sections pour les intervertirs
-      registerSection?.classList.add("animate-login-reverse");
+      refRegisterSection.current?.classList.add("animate-login-reverse");
 
-      imageSection?.classList.add("animate-image-reverse");
+      refImageSection.current?.classList.add("animate-image-reverse");
       // fix de fin d'anim
       setTimeout(() => {
         setTextConnect("Connect as sponsor");
         // on change definitivement les backgrounds
-        imageSection?.classList.add("bg-login-rider");
-        imageSection?.classList.remove("bg-login-sponsor");
-        registerSection?.classList.remove("animate-login");
-        imageSection?.classList.remove("animate-image");
-        registerSection?.classList.remove("animate-login-reverse");
-        imageSection?.classList.remove("animate-image-reverse");
-        svg?.classList.remove("animate-draw-reverse");
+        refImageSection.current?.classList.add("bg-login-rider");
+        refImageSection.current?.classList.remove("bg-login-sponsor");
+        refRegisterSection.current?.classList.remove("animate-login");
+        refImageSection.current?.classList.remove("animate-image");
+        refRegisterSection.current?.classList.remove("animate-login-reverse");
+        refImageSection.current?.classList.remove("animate-image-reverse");
+        refPath.current?.classList.remove("animate-draw-reverse");
 
-        registerSection?.classList.remove("order-3");
+        refRegisterSection.current?.classList.remove("order-3");
       }, 2250);
     }
     setTimeout(() => {
-      svg?.classList.toggle("animate-draw");
-      svg2?.classList.toggle("animate-draw");
-      registerContainer?.classList.remove("animate-hideContent");
+      refPath.current?.classList.toggle("animate-draw");
+      refPath2.current?.classList.toggle("animate-draw");
+      refRegister.current?.classList.remove("animate-hideContent");
     }, 2250);
     // remove animations classes
   };
 
   const handleRegister = (data: { [key: string]: string }) => {
-    // AuthentificationTypes.API.auth
-    //   .register({
-    //     email: data.email,
-    //     password: data.password,
-    //     type: ProfileType.RIDER,
-    //   })
-    //   .then((res) => {
-    //     if (res.success) {
-    //       if (res.data.type == "rider") {
-    //         router.push("/marketplace/sponsors");
-    //       } else {
-    //         router.push("/marketplace/riders");
-    //       }
-    //     } else {
-    //       setError(res.message);
-    //       setBCatchResponse((prevState) => !prevState);
-    //     }
-    //   });
+    console.log("data", data);
+
+    AuthentificationTypes.API.auth
+      .register({
+        email: data.email,
+        password: data.password,
+        type: ProfileType.RIDER,
+        birthDate: new Date(),
+        firstName: "John",
+        lastName: "Doe",
+        gender: GenderIdentity.MALE,
+      })
+      .then((res) => {
+        if (res.success) {
+          if (res.data.type == "rider") {
+            router.push("/marketplace/riders");
+          } else {
+            router.push("/marketplace/sponsors");
+          }
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(err);
+        setIsCatchResponse((prevState) => !prevState);
+      });
   };
 
   return (
@@ -137,7 +138,7 @@ const Register: React.FC = () => {
             d="M2.20911 2.98438C75.2713 46.0766 139.964 101.991 193.182 168.042C318.475 325.034 301.392 449.485 373.255 468.961C484.375 499.039 556.109 210.055 789.644 164.39C960.982 130.901 1135.3 244.78 1175.64 271.136C1333.04 373.949 1353.88 487.862 1466.77 490.888C1549.33 493.192 1573.68 433.249 1702.82 407.857C1792.72 390.181 1871.36 401.412 1924.38 413.888"
             stroke="#2B4AFB"
             strokeWidth="3"
-            stroke-miterlimit="10"
+            strokeMiterlimit="10"
           />
         </svg>
 
@@ -154,7 +155,7 @@ const Register: React.FC = () => {
               textConnect={textConnect}
               submitButtonText="Register"
               switchAuthButtonText="Log in"
-              bCatchResponse={bCatchResponse}
+              bCatchResponse={isCatchResponse}
               route="/login"
             />
           </div>
@@ -190,7 +191,7 @@ const Register: React.FC = () => {
             d="M1.55957 268.177C166.255 168.123 346.695 123.288 498.263 96.5924C554.98 86.602 592.682 104.004 632.43 142.801C661.017 170.677 686.543 212.142 714.797 264.399C808.539 437.701 843.483 572.758 925.079 575.203C1071.26 579.578 1089.13 135.23 1330.82 26.973C1336.98 24.2153 1343.26 21.6019 1349.69 19.2872C1536.46 -47.8284 1767.33 109.933 1920.36 238.863"
             stroke="#2B4AFB"
             strokeWidth="3"
-            stroke-miterlimit="10"
+            strokeMiterlimit="10"
           />
         </svg>
       </div>

@@ -1,9 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Layout } from "@/shared/ui/layout/layout.ui";
 import { useRouter } from "next/navigation";
 import { Form } from "@/widgets/form";
-import Cookies from "js-cookie";
 import { AuthentificationTypes } from "@/entities/authentification";
 import useSession from "@/shared/api/use-session";
 import { ProfileType } from "@kascad-app/shared-types";
@@ -25,11 +23,11 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (session.loggedIn) {
-      // if (session.user.type == "rider") {
-      //   router.push("/marketplace/sponsors");
-      // } else {
-      //   router.push("/marketplace/riders");
-      // }
+      if (session.user.type == "rider") {
+        router.push("/marketplace/riders");
+      } else {
+        router.push("/marketplace/sponsors");
+      }
     }
   }, [session]);
 
@@ -95,6 +93,8 @@ const Login: React.FC = () => {
   };
 
   const handleLogin = (data: { [key: string]: string }) => {
+    console.log("data", data);
+
     AuthentificationTypes.API.auth
       .login({
         email: data.email,
@@ -104,9 +104,9 @@ const Login: React.FC = () => {
       .then((res) => {
         if (res.success) {
           if (res.data.type == "rider") {
-            router.push("/marketplace/sponsors");
-          } else {
             router.push("/marketplace/riders");
+          } else {
+            router.push("/marketplace/sponsors");
           }
         } else {
           setError(res.message);

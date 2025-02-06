@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 import { Navbar } from "@/shared/ui/navbar/navbar.ui";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 const inter = Figtree({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default async function RootLayout({
       <body className={inter.className + " h-full"}>
         {children}
         <Navbar />
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );

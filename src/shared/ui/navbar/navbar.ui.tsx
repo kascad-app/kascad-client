@@ -6,11 +6,10 @@ import { usePathname } from "next/navigation";
 import { AuthentificationTypes } from "@/entities/authentification";
 import useSession from "@/shared/api/use-session";
 import { RiderIdentity, SponsorIdentity } from "@kascad-app/shared-types";
+import { toast } from "sonner";
 
 export const Navbar = () => {
   const session: AuthentificationTypes.Session = useSession();
-  const [menuVisible, setMenuVisible] = useState(false);
-
   const pathname = usePathname();
 
   const [profileName, setProfileName] = useState("");
@@ -45,13 +44,9 @@ export const Navbar = () => {
       : setProfileNameVisible(false);
   }, [pathname]);
 
-  const toggleMenu = () => {
-    setMenuVisible(!menuVisible);
-  };
-
   return (
     <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex justify-center">
-      <div className="bg-gray-300 w-auto opacity-90 text-white p-2 flex items-center justify-center gap-4 rounded-xl relative">
+      <div className="bg-[#EEEEEE] px-6 w-auto opacity-90 text-[#7B7B7B] py-2 flex items-center justify-center rounded-[18rem] gap-4 relative">
         <Link href="/" passHref>
           <img
             src="/views/logos/logoSquare.svg"
@@ -59,76 +54,23 @@ export const Navbar = () => {
             className="h-12 cursor-pointer"
           />
         </Link>
-        {/* <Link
+        <Link href="/profile" passHref>
+          <p>Mon profil</p>
+        </Link>
+        <Link
+          onClick={() => {
+            toast.info("Fonctionnalité en cours de développement");
+          }}
           href={
-            session.user?.type == "rider"
-              ? "/marketplace/sponsors"
-              : "/marketplace/riders"
+            "#"
+            // session.user?.type == "rider"
+            //   ? "/marketplace/sponsors"
+            //   : "/marketplace/riders"
           }
           passHref
-          className=" h-12 flex items-center justify-center rounded"
         >
-          <p>{session.user?.type == "rider" ? "Sponsors" : "Riders"}</p>
-        </Link> */}
-        <Link
-          href="/riders/1"
-          passHref
-          className="bg-common-green h-12 w-12 flex items-center justify-center rounded"
-        >
-          <img
-            src="/views/profile/user-fill.svg"
-            alt="Logo"
-            className="h-6 cursor-pointer"
-          />
+          <p>Paramètres</p>
         </Link>
-        {profileNameVisible ? (
-          <div className="text-black ml-[-8px]">{profileName}</div>
-        ) : null}
-        <button
-          className="bg-common-green text-white px-6 py-4 rounded"
-          onClick={toggleMenu}
-        >
-          Actions
-        </button>
-        {menuVisible && (
-          <div className="absolute w-50vw rounded-xl bottom-full left-1/2 -translate-x-1/2 bg-white p-4 shadow-lg mb-2 z-50">
-            <ul>
-              <li>
-                <Link href="/" passHref>
-                  <div className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-black cursor-pointer">
-                    Home
-                  </div>
-                </Link>
-              </li>
-              {pathMarketRiders ? (
-                <li>
-                  <Link href="/marketplace/riders" passHref>
-                    <div className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-black cursor-pointer">
-                      Riders
-                    </div>
-                  </Link>
-                </li>
-              ) : null}
-
-              {pathMarketSponsors ? (
-                <li>
-                  <Link href="/marketplace/sponsors" passHref>
-                    <div className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-black cursor-pointer">
-                      Sponsors
-                    </div>
-                  </Link>
-                </li>
-              ) : null}
-              {/* <li>
-                <Link href="/profile" passHref>
-                  <div className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-black cursor-pointer">
-                    Profile
-                  </div>
-                </Link>
-              </li> */}
-            </ul>
-          </div>
-        )}
       </div>
     </div>
   );

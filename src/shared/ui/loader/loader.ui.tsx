@@ -1,13 +1,11 @@
 "use client";
 import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import useSession from "@/shared/api/use-session";
 
 export const Loader: React.FC = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const session = useSession();
-
-  console.log("oui", session);
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -18,20 +16,19 @@ export const Loader: React.FC = () => {
       rectElement?.classList.add("fill-black");
       pathElements?.forEach((path) => path.classList.add("stroke-white"));
 
-      const timer2 = setTimeout(() => {
-        if (session.loggedIn) {
-          console.log(session);
-          if (session.user.type == "rider") {
-            router.push("/marketplace/riders");
-          } else {
-            router.push("/marketplace/sponsors");
-          }
-        } else {
-          router.push("/login");
-        }
-      }, 1000);
+      // const timer2 = setTimeout(() => {
+      //   if (session.loggedIn) {
+      //     if (session.user.type == "rider") {
+      //       router.push("/marketplace/riders");
+      //     } else {
+      //       router.push("/marketplace/sponsors");
+      //     }
+      //   } else {
+      //     router.push("/login");
+      //   }
+      // }, 1000);
 
-      return () => clearTimeout(timer2);
+      // return () => clearTimeout(timer2);
     }, 1500);
 
     return () => clearTimeout(timer1);

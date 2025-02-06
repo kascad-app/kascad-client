@@ -27,3 +27,9 @@ html {
   scroll-behavior: smooth;
   height: 100%;
 }
+
+// Use in dashboard rider
+.right-col-dashboard-rider canvas {
+  height: auto !important;
+  width: 100% !important;
+}

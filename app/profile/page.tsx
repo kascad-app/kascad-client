@@ -20,13 +20,7 @@ export default function ProfileComponent(): JSX.Element {
         ? (session.user.identity as RiderIdentity).fullName
         : "",
     sport: "BMX",
-    bio: [
-      "Skieur professionnel, freeskieur et snowboardeur, défie les conventions avec son style unique et ses exploits audacieux.",
-      "Sur les pentes, il repousse les limites de l'impossible, enchaînant figures acrobatiques et descentes périlleuses avec une grâce inégalée.",
-      "Ses vidéos virales, capturant ses prouesses, ont fait de lui une icône des sports d'hiver.",
-      "Son engagement ne se limite pas au sport, il est également entrepreneur et créateur de contenu.",
-      "Candide Thovex, un virtuose de la neige qui inspire et émerveille.",
-    ],
+    bio: session.user?.description ?? "Aucune description",
     stats: {
       age: { label: "ans", value: 19 },
       podiums: { label: "podiums", value: 5 },
@@ -112,9 +106,10 @@ export default function ProfileComponent(): JSX.Element {
           />
         </div>
         <div className="profile_infos_content">
-          {Profile.bio.map((paragraph, index) => (
+          <p>{Profile.bio}</p>
+          {/* {Profile.bio.map((paragraph, index) => (
             <p key={index}>{paragraph}</p>
-          ))}
+          ))} */}
 
           <div className="profile_infos_stats">
             {Object.entries(Profile.stats).map(([key, stat]) => (

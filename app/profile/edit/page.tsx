@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import "./edit.css";
 import { Button } from "@/shared/ui/button/button";
 import { Input } from "@/shared/ui/input/input";
 import { Textarea } from "@/shared/ui/textarea/textarea";
@@ -17,6 +18,7 @@ import {
   RiderIdentity,
 } from "@kascad-app/shared-types";
 import { toast } from "sonner";
+import ShapeCanvas from "../ShapeCanvas";
 
 interface Option {
   label: string;
@@ -26,6 +28,8 @@ interface Option {
 export default function EditProfile() {
   const session = useSession();
   const router = useRouter();
+
+  // const refPath = useRef<SVGPathElement>(null);
 
   const [profile, setProfile] = useState({
     firstName:
@@ -38,7 +42,7 @@ export default function EditProfile() {
         : "",
     email: session.user?.identifier.email as string,
     address: "",
-    description: "",
+    description: session.user?.description as string,
     trainingFrequency: 3,
     trainingUnit: "week",
     sponsors: ["RedBull", "Salomon", "Adidas"],
@@ -130,6 +134,25 @@ export default function EditProfile() {
 
   return (
     <div className="max-w-xl mx-auto p-6 space-y-3 min-h-screen flex flex-col items-center justify-center">
+      <div className="canvas">
+        <ShapeCanvas canvasHeight={700} canvasWidth={700} />
+      </div>
+      {/* <svg
+        width="753"
+        height="599"
+        viewBox="0 0 753 599"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="fixed -right-2/3 md:-right-1/3 lg:right-0 -top-1/3 md:-top-1/2 h-full w-login-vector-height"
+      >
+        <path
+          ref={refPath}
+          className="animate-draw opacity-0 w-login-vector-width "
+          d="M-271 170.57C-93.371 79.0202 285.256 23.0612 321.034 86.0201C335.565 111.59 311.859 136.667 282.268 140.255C246.497 144.594 180.275 82.6221 290.865 19.7757C401.455 -43.0707 479.975 64.1333 569.403 221.498C658.83 378.863 751.523 597.633 751.523 597.633"
+          stroke="#2B4AFB"
+          strokeWidth="3"
+        />
+      </svg> */}
       <h2 className="text-2xl font-semibold mb-16 w-full">
         Modifier le profil
       </h2>
@@ -200,7 +223,7 @@ export default function EditProfile() {
               label="Description"
               value={description}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                return setProfile((prev) => ({
+                setProfile((prev) => ({
                   ...prev,
                   description: e.target.value,
                 }));

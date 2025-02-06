@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import './edit.css';
 import { Button } from '@/shared/ui/button/button';
 import { Input } from '@/shared/ui/input/input';
 import { Textarea } from '@/shared/ui/textarea/textarea';
 import { Select } from '@/shared/ui/select';
+import ShapeCanvas from '../ShapeCanvas';
 
 interface Option {
   label: string;
@@ -12,6 +14,8 @@ interface Option {
 }
 
 export default function EditProfile() {
+  const refPath = useRef<SVGPathElement>(null);
+
   const [profile, setProfile] = useState({
     firstName: 'Candice',
     lastName: 'Thorvex',
@@ -54,14 +58,27 @@ export default function EditProfile() {
   const [activeSlide, setActiveSlide] = useState(0);
   const slides = ['À propos', 'Engagement et Visibilité', 'Réalisations et Expériences'];
 
-  const firstName = String(profile.firstName ?? "");
-  const lastName = String(profile.lastName ?? "");
-  const email = String(profile.email ?? "");
-  const address = String(profile.address ?? "");
-  const description = String(profile.description ?? "");
-
   return (
     <div className="max-w-xl mx-auto p-6 space-y-6 min-h-screen flex flex-col items-center justify-center">
+      <div className="canvas">
+        <ShapeCanvas canvasHeight={700} canvasWidth={700} />
+      </div>
+      <svg
+        width="753"
+        height="599"
+        viewBox="0 0 753 599"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="fixed -right-2/3 md:-right-1/3 lg:right-0 -top-1/3 md:-top-1/2 h-full w-login-vector-height"
+      >
+        <path
+          ref={refPath}
+          className="animate-draw opacity-0 w-login-vector-width "
+          d="M-271 170.57C-93.371 79.0202 285.256 23.0612 321.034 86.0201C335.565 111.59 311.859 136.667 282.268 140.255C246.497 144.594 180.275 82.6221 290.865 19.7757C401.455 -43.0707 479.975 64.1333 569.403 221.498C658.83 378.863 751.523 597.633 751.523 597.633"
+          stroke="#2B4AFB"
+          strokeWidth="3"
+        />
+      </svg>
       <h2 className="text-2xl font-semibold mb-16 w-full">Modifier le profil</h2>
 
       {/* Slide Navigation */}
@@ -83,14 +100,12 @@ export default function EditProfile() {
         {activeSlide === 0 && (
           <div className="flex items-start flex-col">
             <div className="flex gap-4 w-full">
-              <Input className="w-1/2" label="Prénom" value={firstName} />
-              <Input className="w-1/2" label="Nom" value={lastName} />
+              <Input className="w-1/2" label="Prénom" value={profile.firstName} />
+              <Input className="w-1/2" label="Nom" value={profile.lastName} />
             </div>
-            <Input className="w-full mt-4" label="Email" value={email} />
-            <Input className="w-full mt-8" label="Adresse postale" value={address} />
-            <Textarea className="w-full mt-12" label="Description" value={description} />
-          </div>
-          
+            <Input className="w-full mt-4" label="Email" value={profile.email} />
+            <Input className="w-full mt-8" label="Adresse postale" value={profile.address} />
+            <Textarea className="w-full mt-12" label="Description" value={profile.description} />
           </div>
         )}
 

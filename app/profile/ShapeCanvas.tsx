@@ -4,9 +4,11 @@ import { useEffect, useRef } from 'react';
 
 interface ShapeCanvasProps {
   className?: string;
+  canvasWidth?: number;
+  canvasHeight?: number;
 }
 
-const ShapeCanvas: React.FC<ShapeCanvasProps> = ({ className = '' }) => {
+const ShapeCanvas: React.FC<ShapeCanvasProps> = ({ className = '', canvasWidth, canvasHeight }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const previousVerticesRef = useRef<{ x: number; y: number }[] | null>(null);
   const lastDrawTimeRef = useRef<number>(performance.now());
@@ -29,8 +31,9 @@ const ShapeCanvas: React.FC<ShapeCanvasProps> = ({ className = '' }) => {
   
       if (elapsedTime > redrawIntervalRef.current) {
         redrawIntervalRef.current = 20000;
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+
+        canvas.width = canvasWidth ?? window.innerWidth;
+        canvas.height = canvasHeight ?? window.innerHeight;
   
         const vertices = previousVerticesRef.current || [];
         if (vertices.length !== 16) {

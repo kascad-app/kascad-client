@@ -3,7 +3,7 @@ import React from 'react';
 interface InputProps {
   label: string;
   className?: string;
-  value: number;
+  value: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: 'text' | 'range';
   min?: number;

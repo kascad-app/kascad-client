@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { FormTypes } from "@/entities/form";
 
 export const Form: React.FC<FormTypes.FormProps> = ({
-  errorMessage,
+  error,
   fields,
   onSubmit,
   onChangeUserType,
@@ -53,6 +53,8 @@ export const Form: React.FC<FormTypes.FormProps> = ({
   };
 
   const handleClickChangeUserType = () => {
+    setFormState({});
+    error.set("");
     onChangeUserType();
   };
 
@@ -79,7 +81,7 @@ export const Form: React.FC<FormTypes.FormProps> = ({
             />
           </div>
         ))}
-        <p className="text-red-600">{errorMessage}</p>
+        {error.get !== "" && <p className="text-red-600">{error.get}</p>}
         <button ref={buttonRef} type="submit" className={baseClasses}>
           {submitButtonText}
         </button>

@@ -227,16 +227,21 @@ export default function EditProfile() {
               <input
                 className="w-full mt-8"
                 type="date"
-                // label="Date de naissance"
-                value={
-                  profile.birthDate.toISOString().split("T")[0] ||
-                  new Date().toISOString().split("T")[0]
-                }
+                value={(() => {
+                  try {
+                    return profile.birthDate
+                      ? new Date(profile.birthDate).toISOString().split("T")[0]
+                      : new Date().toISOString().split("T")[0];
+                  } catch {
+                    return new Date().toISOString().split("T")[0];
+                  }
+                })()}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setDate(new Date(e.target.value));
+                  const newDate = new Date(e.target.value);
+                  setDate(newDate);
                   setProfile((prev) => ({
                     ...prev,
-                    birthDate: date,
+                    birthDate: newDate,
                   }));
                 }}
               />

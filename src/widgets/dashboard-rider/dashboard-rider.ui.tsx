@@ -99,7 +99,7 @@ export const DashboardRidersWidget: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[calc(100%-theme(spacing.20))]">
         <div className="flex flex-col justify-between">
           <h2 className="text-xl font-semibold mb-4">Compétitions à venir</h2>
-          <div className="flex items-start h-full justify-start gap-4 overflow-x-scroll">
+          <div className="flex items-start justify-start gap-4 overflow-x-scroll pb-4">
             {competitions.map((competition, index) => (
               <CardCompetition key={index} cardProps={competition} />
             ))}

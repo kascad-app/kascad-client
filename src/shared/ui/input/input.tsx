@@ -1,17 +1,26 @@
-import React from 'react';
+import React from "react";
 
 interface InputProps {
   label: string;
   className?: string;
-  value: number;
+  value: number | string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: 'text' | 'range';
+  type?: "text" | "range";
   min?: number;
   max?: number;
   step?: number;
 }
 
-export const Input: React.FC<InputProps> = ({ label, className='', value, onChange, type = 'text', min, max, step }) => {
+export const Input: React.FC<InputProps> = ({
+  label,
+  className = "",
+  value,
+  onChange,
+  type = "text",
+  min,
+  max,
+  step,
+}) => {
   return (
     <div className={`flex flex-col ${className}`}>
       <label className="text-sm font-light">{label}</label>

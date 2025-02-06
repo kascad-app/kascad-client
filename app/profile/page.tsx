@@ -7,6 +7,7 @@ import { useState } from "react";
 import ShapeCanvas from "./ShapeCanvas";
 import useSession from "@/shared/api/use-session";
 import { RiderIdentity } from "@kascad-app/shared-types";
+import { Button } from "@/shared/ui/button/Button.ui";
 
 const Profile = {
   name: "Marie-Claire QUENOT",
@@ -81,6 +82,12 @@ export default function ProfileComponent(): JSX.Element {
   return (
     <div className="profile">
       <div className="profile_hero">
+        <Link
+          href="/profile/edit"
+          className="absolute top-5 right-5 rounded-lg"
+        >
+          <Button>Modifier le profil</Button>
+        </Link>
         <ShapeCanvas className="profile_hero_canva" />
         <p>{Profile.sport}</p>
         <h1>

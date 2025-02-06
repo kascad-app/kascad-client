@@ -8,6 +8,7 @@ import ShapeCanvas from "./ShapeCanvas";
 import useSession from "@/shared/api/use-session";
 import { RiderIdentity } from "@kascad-app/shared-types";
 import { Button } from "@/shared/ui/button/Button.ui";
+import { DividerSvg } from "@/widgets/divider-svg";
 
 export default function ProfileComponent(): JSX.Element {
   const [visibleVideos, setVisibleVideos] = useState(4);
@@ -178,7 +179,9 @@ export default function ProfileComponent(): JSX.Element {
         </div>
       </div>
 
-      <div className="profile_medias">
+      <div className="profile_medias relative">
+        <DividerSvg />
+
         <div className="profile_media">
           <h3 className="profile_media_title">Vidéos</h3>
           <div className="gallery">

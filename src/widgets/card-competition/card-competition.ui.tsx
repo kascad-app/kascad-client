@@ -10,10 +10,16 @@ export function CardCompetition({
   cardProps: CardCompetitionProps;
 }) {
   return (
-    <div className="rounded-lg max-w-[15rem] max-h-[18rem] h-full w-full bg-[#F7F7F7]">
-      <div className="bg-gray-400 w-full rounded-lg h-[9rem]">
+    <div className="rounded-lg max-w-[15rem] min-w-[15rem] max-h-[18rem] h-full w-full bg-[#F7F7F7]">
+      <div className="w-full rounded-lg h-[9rem] relative">
         {/* slot image card */}
-        {/* <Image src="" layout="fill" objectFit="cover" /> */}
+        <Image
+          src={cardProps.linkImage}
+          fill
+          objectFit="cover"
+          alt="Image présentation concours"
+          className="rounded-lg"
+        />
       </div>
       <div className="flex flex-col gap-4 px-4 py-2">
         <div className="px-8 py-2 bg-[#DCECFF] rounded-full w-fit">
@@ -37,7 +43,7 @@ export function CardCompetition({
                 fill="black"
               />
             </svg>
-            <p>localisation</p>
+            <p>{cardProps.localisation}</p>
           </div>
         </div>
       </div>

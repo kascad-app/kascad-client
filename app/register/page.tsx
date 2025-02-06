@@ -89,16 +89,14 @@ const Register: React.FC = () => {
   };
 
   const handleRegister = (data: { [key: string]: string }) => {
-    console.log("data", data);
-
     AuthentificationTypes.API.auth
       .register({
         email: data.email,
         password: data.password,
         type: ProfileType.RIDER,
         birthDate: new Date(),
-        firstName: "John",
-        lastName: "Doe",
+        firstName: "",
+        lastName: "",
         gender: GenderIdentity.MALE,
       })
       .then((res) => {

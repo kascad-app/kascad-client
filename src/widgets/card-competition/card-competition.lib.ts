@@ -1,7 +1,7 @@
 export type CardCompetitionProps = {
   title: string;
   date: string;
-  image: string;
+  linkImage: string;
   link: string;
   localisation: string;
 };

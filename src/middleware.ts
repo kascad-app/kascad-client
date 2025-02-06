@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
     try {
       const verifiedToken = await jwtVerify(
         accessToken!,
-        new TextEncoder().encode(process.env.JWT_ACCESSTOKEN_SECRET)
+        new TextEncoder().encode(process.env.JWT_ACCESSTOKEN_SECRET),
       );
     } catch (error: any) {
       console.log(error.message);

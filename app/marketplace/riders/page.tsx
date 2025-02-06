@@ -1,9 +1,10 @@
 import React from "react";
-
 import { DashboardRidersWidget } from "@/widgets/dashboard-rider";
 
-const DashboardRiders: React.FC = () => {
+/**
+ * Page of dashboard Riders
+ * @returns
+ */
+export default function DashboardRider() {
   return <DashboardRidersWidget />;
-};
-
-export default DashboardRiders;
+}

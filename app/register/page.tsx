@@ -11,6 +11,7 @@ import {
   RiderIdentity,
 } from "@kascad-app/shared-types";
 import "./register.css";
+import { toast } from "sonner";
 
 const Register: React.FC = () => {
   const session = useSession();
@@ -67,18 +68,15 @@ const Register: React.FC = () => {
       }, 2250);
     } else {
       setIsRider(!isRider);
-      // On empeche le bug des sections qui s'inverse au retour
       refRegisterSection.current?.classList.add("order-3");
       refPath2.current?.classList.remove("opacity-0");
       refPath2.current?.classList.add("animate-draw-reverse");
-      // on anime les 2 sections pour les intervertirs
       refRegisterSection.current?.classList.add("animate-login-reverse");
 
       refImageSection.current?.classList.add("animate-image-reverse");
       // fix de fin d'anim
       setTimeout(() => {
         setTextConnect("Connect as sponsor");
-        // on change definitivement les backgrounds
         refImageSection.current?.classList.add("bg-login-rider");
         refImageSection.current?.classList.remove("bg-login-sponsor");
         refRegisterSection.current?.classList.remove("animate-login");
@@ -98,31 +96,31 @@ const Register: React.FC = () => {
     // remove animations classes
   };
 
-  const handleRegister = (data: { [key: string]: string }) => {
-    AuthentificationTypes.API.auth
-      .register({
-        email: data.email,
-        password: data.password,
-        type: ProfileType.RIDER,
-        birthDate: new Date(),
-        firstName: "",
-        lastName: "",
-        gender: GenderIdentity.MALE,
-      })
-      .then((res) => {
-        if (res.success) {
-          if (res.data.type == "rider") {
-            router.push("/marketplace/riders");
-          } else {
-            router.push("/marketplace/sponsors");
-          }
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        setError(err);
-        setIsCatchResponse((prevState) => !prevState);
+  const handleRegister = async (data: { [key: string]: string }) => {
+    const response = await AuthentificationTypes.API.auth.register({
+      email: data.email,
+      password: data.password,
+      type: ProfileType.RIDER,
+      birthDate: new Date(),
+      firstName: "",
+      lastName: "",
+      gender: GenderIdentity.MALE,
+    });
+
+    if (!response.success) {
+      toast.error(response.message, {
+        position: "bottom-left",
       });
+      setError(response.message);
+      setIsCatchResponse((prevState) => !prevState);
+      return;
+    }
+
+    if (response.data.type === "rider") {
+      router.push("/marketplace/riders");
+    } else {
+      router.push("/marketplace/sponsors");
+    }
   };
 
   return (

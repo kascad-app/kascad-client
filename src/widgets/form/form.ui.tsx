@@ -20,9 +20,9 @@ export const Form: React.FC<FormTypes.FormProps> = ({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const baseClasses =
     "w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-blue-300 transition duration-200";
-  // // Classes supplémentaires que vous souhaitez ajouter
+  // Classes supplémentaires que vous souhaitez ajouter
   // const additionalClasses = "";
-  // // Concaténation des classes
+  // Concaténation des classes
   // const buttonClasses = `${baseClasses} ${additionalClasses}`;
 
   const router = useRouter();
@@ -79,7 +79,7 @@ export const Form: React.FC<FormTypes.FormProps> = ({
             />
           </div>
         ))}
-        <p className="text-red">{errorMessage}</p>
+        <p className="text-red-600">{errorMessage}</p>
         <button ref={buttonRef} type="submit" className={baseClasses}>
           {submitButtonText}
         </button>
@@ -90,7 +90,6 @@ export const Form: React.FC<FormTypes.FormProps> = ({
         </div>
       </form>
       <button
-        ref={buttonRef}
         onClick={redirectTo}
         className="w-full py-2 bg-white text-medium px-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-md hover:bg-blue-300 hover:border-blue-300 hover:text-white  transition duration-200"
       >

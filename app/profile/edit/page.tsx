@@ -28,6 +28,9 @@ interface Option {
 export default function EditProfile() {
   const session = useSession();
   const router = useRouter();
+  const [date, setDate] = useState<Date>(
+    (session.user?.identity as RiderIdentity)?.birthDate || new Date(),
+  );
 
   // const refPath = useRef<SVGPathElement>(null);
 
@@ -45,6 +48,7 @@ export default function EditProfile() {
     description: session.user?.description as string,
     trainingFrequency: 3,
     trainingUnit: "week",
+    birthDate: date,
     sponsors: ["RedBull", "Salomon", "Adidas"],
     events: [
       {
@@ -207,17 +211,37 @@ export default function EditProfile() {
               label="Email"
               value={email}
             />
-            <Input
-              className="w-full mt-8"
-              label="Adresse postale"
-              value={address}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setProfile((prev) => ({
-                  ...prev,
-                  address: e.target.value,
-                }));
-              }}
-            />
+            <div className="flex gap-4 w-full">
+              <Input
+                className="w-full mt-8"
+                label="Adresse postale"
+                value={address}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setProfile((prev) => ({
+                    ...prev,
+                    address: e.target.value,
+                  }));
+                }}
+              />
+
+              <input
+                className="w-full mt-8"
+                type="date"
+                // label="Date de naissance"
+                value={
+                  profile.birthDate.toISOString().split("T")[0] ||
+                  new Date().toISOString().split("T")[0]
+                }
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setDate(new Date(e.target.value));
+                  setProfile((prev) => ({
+                    ...prev,
+                    birthDate: date,
+                  }));
+                }}
+              />
+            </div>
+
             <Textarea
               className="w-full mt-12"
               label="Description"
@@ -369,33 +393,10 @@ export default function EditProfile() {
                 firstName: profile.firstName,
                 lastName: profile.lastName,
                 gender: GenderIdentity.MALE,
-                birthDate: new Date(),
+                birthDate: profile.birthDate || new Date(),
                 fullName: `${profile.firstName} ${profile.lastName}`,
               },
-              identifier: {
-                email: profile.email,
-              },
               description: profile.description,
-              password: "",
-              preferences: {
-                sports: [],
-                languages: Language.FR,
-                networks: [],
-              },
-              partnerships: [],
-              type: ProfileType.RIDER,
-              role: ProfileRole.ADMIN,
-              status: {
-                status: AccountStatus.ACTIVE,
-                reason: undefined,
-                since: undefined,
-                onboardingCompleted: false,
-              },
-              verified: false,
-              isAvailable: false,
-              _id: session.user?._id as string,
-              createdAt: new Date(),
-              updatedAt: new Date(),
             }).then(() => {
               console.log("Profile updated");
               toast.success("Profil mis à jour avec succès");

@@ -20,12 +20,21 @@ export default function ProfileComponent(): JSX.Element {
         ? (session.user.identity as RiderIdentity).fullName
         : "",
     sport: "BMX",
-    bio: session.user?.description ?? "Aucune description",
+    bio:
+      session.user?.description ??
+      "Skieur professionnel, freeskieur et snowboardeur, défie les conventions avec son style unique et ses exploits audacieux.",
     stats: {
-      age: { label: "ans", value: 19 },
-      podiums: { label: "podiums", value: 5 },
-      videos: { label: "vidéos", value: 16 },
-      photos: { label: "photos", value: 16 },
+      age: {
+        label: "ans",
+        value:
+          session.user?.identity != null &&
+          (session.user?.identity as RiderIdentity).birthDate != null
+            ? new Date().getFullYear() -
+              new Date(
+                (session.user?.identity as RiderIdentity).birthDate,
+              ).getFullYear()
+            : 0,
+      },
     },
     location: "Paris, France",
     socials: {

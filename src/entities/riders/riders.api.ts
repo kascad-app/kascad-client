@@ -2,6 +2,6 @@
 import { Rider } from "@kascad-app/shared-types";
 import { Requester } from "@/shared/lib/requester";
 
-export const updateProfile = async (idRider: string, data: Rider) => {
+export const updateProfile = async (idRider: string, data: Partial<Rider>) => {
   Requester.requester().put<Rider>(`/riders/${idRider}`, { data });
 };

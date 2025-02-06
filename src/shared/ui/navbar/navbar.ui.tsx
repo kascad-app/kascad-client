@@ -45,9 +45,14 @@ export const Navbar = () => {
   }, [pathname]);
 
   return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex justify-center">
+    <div
+      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex justify-center"
+      style={{
+        display: `${session.loggedIn ? "block" : "none"}`,
+      }}
+    >
       <div className="bg-[#EEEEEE] px-6 w-auto opacity-90 text-[#7B7B7B] py-2 flex items-center justify-center rounded-[18rem] gap-4 relative">
-        <Link href="/" passHref>
+        <Link href="/">
           <img
             src="/views/logos/logoSquare.svg"
             alt="Logo"
@@ -61,13 +66,7 @@ export const Navbar = () => {
           onClick={() => {
             toast.info("Fonctionnalité en cours de développement");
           }}
-          href={
-            "#"
-            // session.user?.type == "rider"
-            //   ? "/marketplace/sponsors"
-            //   : "/marketplace/riders"
-          }
-          passHref
+          href={"#"}
         >
           <p>Paramètres</p>
         </Link>

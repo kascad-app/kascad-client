@@ -9,51 +9,54 @@ import useSession from "@/shared/api/use-session";
 import { RiderIdentity } from "@kascad-app/shared-types";
 import { Button } from "@/shared/ui/button/Button.ui";
 
-const Profile = {
-  name: "Marie-Claire QUENOT",
-  sport: "BMX",
-  bio: [
-    "Skieur professionnel, freeskieur et snowboardeur, défie les conventions avec son style unique et ses exploits audacieux.",
-    "Sur les pentes, il repousse les limites de l'impossible, enchaînant figures acrobatiques et descentes périlleuses avec une grâce inégalée.",
-    "Ses vidéos virales, capturant ses prouesses, ont fait de lui une icône des sports d'hiver.",
-    "Son engagement ne se limite pas au sport, il est également entrepreneur et créateur de contenu.",
-    "Candide Thovex, un virtuose de la neige qui inspire et émerveille.",
-  ],
-  stats: {
-    age: { label: "ans", value: 19 },
-    podiums: { label: "podiums", value: 5 },
-    videos: { label: "vidéos", value: 16 },
-    photos: { label: "photos", value: 16 },
-  },
-  location: "Paris, France",
-  socials: {
-    label: "Suivez-moi sur",
-    links: {
-      youtube: "https://www.youtube.com/",
-      twitter: "https://x.com/",
-      instagram: "https://www.instagram.com/",
-    },
-  },
-  media: {
-    videos: Array(12).fill("https://www.youtube.com/embed/y7nuxXCX97o"),
-    images: Array(16).fill("/views/profile/profile.png"),
-  },
-  instagram: {
-    username: "@marieclairekeno",
-    description: [
-      "Exploring the 🌎 from skiing's point of view🙏📹",
-      "@dynafit📍Montana",
-      "Let’s go to Japan!👇",
-      "@freerideworldtour Champion 2020",
-    ],
-    posts: Array(8).fill("/views/profile/profile.png"),
-  },
-};
-
 export default function ProfileComponent(): JSX.Element {
   const [visibleVideos, setVisibleVideos] = useState(4);
   const [visibleImages, setVisibleImages] = useState(4);
   const session = useSession();
+
+  const Profile = {
+    name:
+      session.user != null
+        ? (session.user.identity as RiderIdentity).fullName
+        : "",
+    sport: "BMX",
+    bio: [
+      "Skieur professionnel, freeskieur et snowboardeur, défie les conventions avec son style unique et ses exploits audacieux.",
+      "Sur les pentes, il repousse les limites de l'impossible, enchaînant figures acrobatiques et descentes périlleuses avec une grâce inégalée.",
+      "Ses vidéos virales, capturant ses prouesses, ont fait de lui une icône des sports d'hiver.",
+      "Son engagement ne se limite pas au sport, il est également entrepreneur et créateur de contenu.",
+      "Candide Thovex, un virtuose de la neige qui inspire et émerveille.",
+    ],
+    stats: {
+      age: { label: "ans", value: 19 },
+      podiums: { label: "podiums", value: 5 },
+      videos: { label: "vidéos", value: 16 },
+      photos: { label: "photos", value: 16 },
+    },
+    location: "Paris, France",
+    socials: {
+      label: "Suivez-moi sur",
+      links: {
+        youtube: "https://www.youtube.com/",
+        twitter: "https://x.com/",
+        instagram: "https://www.instagram.com/",
+      },
+    },
+    media: {
+      videos: Array(12).fill("https://www.youtube.com/embed/y7nuxXCX97o"),
+      images: Array(16).fill("/views/profile/profile.png"),
+    },
+    instagram: {
+      username: "@marieclairekeno",
+      description: [
+        "Exploring the 🌎 from skiing's point of view🙏📹",
+        "@dynafit📍Montana",
+        "Let’s go to Japan!👇",
+        "@freerideworldtour Champion 2020",
+      ],
+      posts: Array(8).fill("/views/profile/profile.png"),
+    },
+  };
 
   const handleShowMoreVideos = () => {
     setVisibleVideos((prev) =>
@@ -82,12 +85,15 @@ export default function ProfileComponent(): JSX.Element {
   return (
     <div className="profile">
       <div className="profile_hero">
-        <Link
-          href="/profile/edit"
-          className="absolute top-5 right-5 rounded-lg"
-        >
-          <Button>Modifier le profil</Button>
-        </Link>
+        <div className="absolute top-5 right-5 flex flex-col gap-2">
+          <Link href="/profile/edit">
+            <Button>Modifier le profil</Button>
+          </Link>
+          <Button onClick={() => session.loggedIn && session.signOut()}>
+            Déconnexion
+          </Button>
+        </div>
+
         <ShapeCanvas className="profile_hero_canva" />
         <p>{Profile.sport}</p>
         <h1>
@@ -100,7 +106,7 @@ export default function ProfileComponent(): JSX.Element {
         <div className="profile_infos_image">
           <Image
             src={"/views/profile/profile.png"}
-            alt={Profile.name}
+            alt={Profile.name ?? "Profile picture"}
             width={900}
             height={900}
           />

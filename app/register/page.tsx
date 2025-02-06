@@ -5,7 +5,11 @@ import { Form } from "@/widgets/form";
 import { useRouter } from "next/navigation";
 import { AuthentificationTypes } from "@/entities/authentification";
 import useSession from "@/shared/api/use-session";
-import { ProfileType, GenderIdentity } from "@kascad-app/shared-types";
+import {
+  ProfileType,
+  GenderIdentity,
+  RiderIdentity,
+} from "@kascad-app/shared-types";
 import "./register.css";
 
 const Register: React.FC = () => {
@@ -15,7 +19,6 @@ const Register: React.FC = () => {
   const router = useRouter();
   const [isRider, setIsRider] = useState<boolean>(true);
   const [textConnect, setTextConnect] = useState<string>("Connect as sponsor");
-
   const refRegister = useRef<HTMLDivElement>(null);
   const refRegisterSection = useRef<HTMLDivElement>(null);
   const refImageSection = useRef<HTMLDivElement>(null);
@@ -25,7 +28,14 @@ const Register: React.FC = () => {
   useEffect(() => {
     if (session.loggedIn) {
       if (session.user.type == "rider") {
-        router.push("/marketplace/riders");
+        if (
+          (session.user.identity as RiderIdentity).firstName == "" &&
+          (session.user.identity as RiderIdentity).lastName == ""
+        ) {
+          router.push("/profile/edit");
+        } else {
+          router.push("/marketplace/riders");
+        }
       } else {
         router.push("/marketplace/sponsors");
       }

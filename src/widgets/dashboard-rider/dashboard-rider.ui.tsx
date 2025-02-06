@@ -143,7 +143,7 @@ export const DashboardRidersWidget: React.FC = () => {
               <TabsTrigger value="riders">Riders selon pays</TabsTrigger>
               <TabsTrigger value="abonnes">Abonnés</TabsTrigger>
             </TabsList>
-            <div className="h-[calc(100%-theme(spacing.32))] w-full">
+            <div>
               <canvas id="myChart"></canvas>
             </div>
           </Tabs>

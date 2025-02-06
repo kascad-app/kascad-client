@@ -6,6 +6,7 @@ import { AuthentificationTypes } from "@/entities/authentification";
 import useSession from "@/shared/api/use-session";
 import { ProfileType } from "@kascad-app/shared-types";
 import "./login.css";
+import { toast } from "sonner";
 
 const Login: React.FC = () => {
   const session = useSession();
@@ -93,8 +94,6 @@ const Login: React.FC = () => {
   };
 
   const handleLogin = (data: { [key: string]: string }) => {
-    console.log("data", data);
-
     AuthentificationTypes.API.auth
       .login({
         email: data.email,
@@ -103,12 +102,15 @@ const Login: React.FC = () => {
       })
       .then((res) => {
         if (res.success) {
+          toast.success("Vous êtes connecté");
           if (res.data.type == "rider") {
             router.push("/marketplace/riders");
           } else {
             router.push("/marketplace/sponsors");
           }
-        } else {
+        } else if (res.success === false) {
+          toast.error("Erreur lors de la connexion");
+          console.error(res.message);
           setError(res.message);
           setBCatchResponse((prevState) => !prevState);
         }

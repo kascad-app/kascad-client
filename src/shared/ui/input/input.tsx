@@ -3,12 +3,13 @@ import React from "react";
 interface InputProps {
   label: string;
   className?: string;
-  value: number | string;
+  value: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: "text" | "range";
   min?: number;
   max?: number;
   step?: number;
+  disabled?: boolean;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -20,11 +21,13 @@ export const Input: React.FC<InputProps> = ({
   min,
   max,
   step,
+  disabled = false,
 }) => {
   return (
     <div className={`flex flex-col ${className}`}>
       <label className="text-sm font-light">{label}</label>
       <input
+        disabled={disabled}
         type={type}
         value={value}
         onChange={onChange}

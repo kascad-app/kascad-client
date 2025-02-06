@@ -147,7 +147,10 @@ const Login: React.FC = () => {
         >
           <div className="w-full flex justify-center">
             <Form
-              errorMessage={error}
+              error={{
+                get: error,
+                set: setError,
+              }}
               fields={fields}
               onSubmit={handleLogin}
               onChangeUserType={changeLogin}

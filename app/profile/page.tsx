@@ -83,9 +83,7 @@ export default function ProfileComponent(): JSX.Element {
           <Link href="/profile/edit">
             <Button>Modifier le profil</Button>
           </Link>
-          <Button onClick={() => session.loggedIn && session.signOut()}>
-            Déconnexion
-          </Button>
+          <Button>Déconnexion</Button>
         </div>
 
         <ShapeCanvas className="profile_hero_canva" />

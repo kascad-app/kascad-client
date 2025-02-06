@@ -81,7 +81,9 @@ export const Form: React.FC<FormTypes.FormProps> = ({
             />
           </div>
         ))}
-        {error.get !== "" && <p className="text-red-600">{error.get}</p>}
+        {Boolean(error) && error.get !== "" && (
+          <p className="text-red-600">{error.get}</p>
+        )}
         <button ref={buttonRef} type="submit" className={baseClasses}>
           {submitButtonText}
         </button>

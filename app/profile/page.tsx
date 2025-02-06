@@ -37,8 +37,26 @@ export default function ProfileComponent(): JSX.Element {
       },
     },
     media: {
-      videos: Array(12).fill("https://www.youtube.com/embed/y7nuxXCX97o"),
-      images: Array(16).fill("/views/profile/profile.png"),
+      videos: [
+        "https://www.youtube.com/embed/y7nuxXCX97o",
+        "https://www.youtube.com/embed/AFcTaLQ4bys",
+        "https://www.youtube.com/embed/jPadxaRLGkw",
+        "https://www.youtube.com/embed/8JGm6KJ-AWA",
+        "https://www.youtube.com/embed/KWMerpf5c6Q",
+        "https://www.youtube.com/embed/eB1e5MZ78b8",
+        "https://www.youtube.com/embed/zZTx1F5X4S0",
+        "https://www.youtube.com/embed/T7TYv1QGp7s",
+      ],
+      images: [
+        "https://images.unsplash.com/photo-1542531365-8cedfed02b04?q=80&w=2477&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1563297592-fc163070b609?q=80&w=2565&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1584890131712-18ee8e3ed49c?q=80&w=2500&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "/views/profile/profile.png",
+        "https://images.unsplash.com/photo-1549044759-bc149b504a80?q=80&w=2306&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1616431627899-191cffb5fd5c?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1569135579442-d37b7a0ea74e?q=80&w=2050&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1489228949628-35d7cf932bd1?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      ],
     },
     instagram: {
       username: "@marieclairekeno",
@@ -48,7 +66,16 @@ export default function ProfileComponent(): JSX.Element {
         "Let’s go to Japan!👇",
         "@freerideworldtour Champion 2020",
       ],
-      posts: Array(8).fill("/views/profile/profile.png"),
+      posts: [
+        "/views/profile/profile.png",
+        "https://images.unsplash.com/photo-1542531365-8cedfed02b04?q=80&w=2477&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1563297592-fc163070b609?q=80&w=2565&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1584890131712-18ee8e3ed49c?q=80&w=2500&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1549044759-bc149b504a80?q=80&w=2306&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1616431627899-191cffb5fd5c?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1569135579442-d37b7a0ea74e?q=80&w=2050&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1489228949628-35d7cf932bd1?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      ],
     },
   };
 

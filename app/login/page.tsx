@@ -4,17 +4,19 @@ import { useRouter } from "next/navigation";
 import { Form } from "@/widgets/form";
 import { AuthentificationTypes } from "@/entities/authentification";
 import useSession from "@/shared/api/use-session";
-import { ProfileType } from "@kascad-app/shared-types";
+import { GenderIdentity, ProfileType } from "@kascad-app/shared-types";
 import "./login.css";
 import { toast } from "sonner";
 
 const Login: React.FC = () => {
   const session = useSession();
   const [error, setError] = useState<string>("");
-  const [bCatchResponse, setBCatchResponse] = useState<boolean>(false);
+  const [bCatchResponseLogin, setBCatchResponseLogin] =
+    useState<boolean>(false);
+  const [bCatchResponseRegister, setBCatchResponseRegister] =
+    useState<boolean>(false);
   const router = useRouter();
-  const [bRider, setBRider] = useState<boolean>(true);
-  const [textConnect, setTextConnect] = useState<string>("Connect as sponsor");
+  const [bLoginAuth, setbLoginAuth] = useState<boolean>(true);
 
   const refLogin = useRef<HTMLDivElement>(null);
   const refLoginSection = useRef<HTMLDivElement>(null);
@@ -24,17 +26,35 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (session.loggedIn) {
-      if (session.user.type == "rider") {
-        router.push("/marketplace/riders");
-      } else {
-        router.push("/marketplace/sponsors");
-      }
+      router.push("/marketplace/riders");
     }
   }, [session]);
 
-  const fields = [
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash == "#register") {
+        changeLogin();
+      }
+    };
+
+    handleHashChange(); // Vérifier l'état initial
+
+    window.addEventListener("hashchange", handleHashChange); // Écouter les changements d'URL
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
+
+  const Loginfields = [
     { name: "email", label: "Email", type: "email" },
     { name: "password", label: "Password", type: "password" },
+  ];
+
+  const Registerfields = [
+    { name: "email", label: "Email", type: "email" },
+    { name: "password", label: "Password", type: "password" },
+    { name: "confirm-password", label: "Confirm password", type: "password" },
   ];
 
   const changeLogin = () => {
@@ -47,21 +67,21 @@ const Login: React.FC = () => {
     svg?.classList.toggle("opacity-0");
 
     svg2?.classList.add("opacity-0");
-    if (bRider) {
-      setBRider(!bRider);
+    if (bLoginAuth) {
+      router.push("#register");
       // trait
       svg?.classList.add("animate-draw-reverse");
       loginSection?.classList.add("animate-login");
       imageSection?.classList.add("animate-image");
 
       setTimeout(() => {
-        setTextConnect("Connect as rider");
+        setbLoginAuth(!bLoginAuth);
         imageSection?.classList.remove("bg-login-rider");
         imageSection?.classList.add("bg-login-sponsor");
         svg2?.classList.remove("animate-draw-reverse");
       }, 2250);
     } else {
-      setBRider(!bRider);
+      router.replace("#login");
       // On empeche le bug des sections qui s'inverse au retour
       loginSection?.classList.add("order-3");
       svg2?.classList.remove("opacity-0");
@@ -72,7 +92,7 @@ const Login: React.FC = () => {
       imageSection?.classList.add("animate-image-reverse");
       // fix de fin d'anim
       setTimeout(() => {
-        setTextConnect("Connect as sponsor");
+        setbLoginAuth(!bLoginAuth);
         // on change definitivement les backgrounds
         imageSection?.classList.add("bg-login-rider");
         imageSection?.classList.remove("bg-login-sponsor");
@@ -102,19 +122,37 @@ const Login: React.FC = () => {
       })
       .then((res) => {
         if (res.success) {
-          toast.success("Vous êtes connecté");
-          if (res.data.type == "rider") {
-            router.push("/marketplace/riders");
-          } else {
-            router.push("/marketplace/sponsors");
-          }
+          toast.success("You are now connected");
+          router.push("/marketplace/riders");
         } else if (res.success === false) {
-          toast.error("Erreur lors de la connexion");
-          console.error(res.message);
+          toast.error("Connection failure");
           setError(res.message);
-          setBCatchResponse((prevState) => !prevState);
+          setBCatchResponseLogin((prevState) => !prevState);
         }
       });
+  };
+
+  const handleRegister = async (data: { [key: string]: string }) => {
+    const response = await AuthentificationTypes.API.auth.register({
+      email: data.email,
+      password: data.password,
+      type: ProfileType.RIDER,
+      birthDate: new Date(),
+      firstName: "",
+      lastName: "",
+      gender: GenderIdentity.MALE,
+    });
+
+    if (!response.success) {
+      toast.error(response.message, {
+        position: "bottom-left",
+      });
+      setError(response.message);
+      setBCatchResponseRegister((prevState) => !prevState);
+      return;
+    }
+
+    router.push("/marketplace/riders");
   };
 
   return (
@@ -123,7 +161,6 @@ const Login: React.FC = () => {
         ref={refLoginSection}
         className="w-5/12 flex items-center justify-center relative transition-all duration-500 ease-in"
       >
-        {/*  vector dessin */}
         <svg
           width="753"
           height="599"
@@ -146,20 +183,33 @@ const Login: React.FC = () => {
           className="z-10 w-2/3 flex flex-col items-center relative justify-center"
         >
           <div className="w-full flex justify-center">
-            <Form
-              error={{
-                get: error,
-                set: setError,
-              }}
-              fields={fields}
-              onSubmit={handleLogin}
-              onChangeUserType={changeLogin}
-              textConnect={textConnect}
-              submitButtonText="Log in"
-              switchAuthButtonText="Register"
-              bCatchResponse={bCatchResponse}
-              route="/register"
-            />
+            {bLoginAuth ? (
+              <Form
+                error={{
+                  get: error,
+                  set: setError,
+                }}
+                fields={Loginfields}
+                onSubmit={handleLogin}
+                onChangeAuth={changeLogin}
+                submitButtonText={"Log in"}
+                switchAuthButtonText={"Register"}
+                bCatchResponse={bCatchResponseLogin}
+              />
+            ) : (
+              <Form
+                error={{
+                  get: error,
+                  set: setError,
+                }}
+                fields={Registerfields}
+                onSubmit={handleRegister}
+                onChangeAuth={changeLogin}
+                submitButtonText={"Register"}
+                switchAuthButtonText={"Log in"}
+                bCatchResponse={bCatchResponseRegister}
+              />
+            )}
           </div>
         </div>
 

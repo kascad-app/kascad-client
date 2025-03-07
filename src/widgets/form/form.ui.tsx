@@ -9,21 +9,15 @@ export const Form: React.FC<FormTypes.FormProps> = ({
   error,
   fields,
   onSubmit,
-  onChangeUserType,
-  textConnect,
+  onChangeAuth,
   submitButtonText,
   switchAuthButtonText,
   bCatchResponse,
-  route,
 }) => {
   const [formState, setFormState] = useState<{ [key: string]: string }>({});
   const buttonRef = useRef<HTMLButtonElement>(null);
   const baseClasses =
     "w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-blue-300 transition duration-200";
-  // Classes supplémentaires que vous souhaitez ajouter
-  // const additionalClasses = "";
-  // Concaténation des classes
-  // const buttonClasses = `${baseClasses} ${additionalClasses}`;
 
   const router = useRouter();
   useEffect(() => {
@@ -40,10 +34,6 @@ export const Form: React.FC<FormTypes.FormProps> = ({
     }));
   };
 
-  const redirectTo = () => {
-    router.push(route);
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (buttonRef.current) {
@@ -52,10 +42,10 @@ export const Form: React.FC<FormTypes.FormProps> = ({
     onSubmit(formState);
   };
 
-  const handleClickChangeUserType = () => {
+  const handleClickChangeAuth = () => {
     setFormState({});
     error.set("");
-    onChangeUserType();
+    onChangeAuth();
   };
 
   return (
@@ -94,17 +84,11 @@ export const Form: React.FC<FormTypes.FormProps> = ({
         </div>
       </form>
       <button
-        onClick={redirectTo}
+        onClick={handleClickChangeAuth}
         className="w-full py-2 bg-white text-medium px-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-md hover:bg-blue-300 hover:border-blue-300 hover:text-white  transition duration-200"
       >
         {switchAuthButtonText}
       </button>
-      <p
-        onClick={handleClickChangeUserType}
-        className=" w-fit mx-auto text-blue-600 cursor-pointer text-center"
-      >
-        {textConnect}
-      </p>
     </div>
   );
 };

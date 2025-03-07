@@ -73,8 +73,8 @@ export const DashboardRidersWidget: React.FC = () => {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-semibold">
           Bonjour{" "}
-          {session.user != null && "fullName" in session.user.identity
-            ? session.user?.identity?.fullName
+          {session.user?.identity != null && "fullName" in session.user.identity
+            ? session.user.identity.fullName
             : ""}
           !
         </h1>

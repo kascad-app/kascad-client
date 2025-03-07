@@ -18,12 +18,11 @@ export async function middleware(request: NextRequest) {
         new TextEncoder().encode(process.env.JWT_ACCESSTOKEN_SECRET),
       );
     } catch (error: any) {
-      console.log(error.message);
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
 }
 
 export const config = {
-  matcher: ["/marketplace/riders", "/marketplace/sponsors", "/profile"],
+  matcher: ["/marketplace/riders", "/profile"],
 };

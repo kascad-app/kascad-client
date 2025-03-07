@@ -1,14 +1,14 @@
-import { APIResponse, UnknowProfile } from "@kascad-app/shared-types";
+import { APIResponse, Rider } from "@kascad-app/shared-types";
 import { KeyedMutator } from "swr";
 import { APIAuthentication, apiAuthentication } from "./authentification.api";
 
 export type Session = {
-  mutate: KeyedMutator<APIResponse<UnknowProfile>>;
+  mutate: KeyedMutator<APIResponse<Rider>>;
 } & (SignedOutSession | SignedInSession);
 
 export type SignedInSession = {
   loggedIn: true;
-  user: UnknowProfile;
+  user: Rider;
   loading: boolean;
   validating: boolean;
   signOut: () => Promise<void>;

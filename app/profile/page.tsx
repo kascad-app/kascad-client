@@ -142,9 +142,6 @@ export default function ProfileComponent(): JSX.Element {
         </div>
         <div className="profile_infos_content">
           <p>{Profile.bio}</p>
-          {/* {Profile.bio.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-          ))} */}
 
           <div className="profile_infos_stats">
             {Object.entries(Profile.stats).map(([key, stat]) => (
@@ -191,18 +188,18 @@ export default function ProfileComponent(): JSX.Element {
       <div className="profile_medias relative">
         <DividerSvg />
 
-        <div className="profile_media">
-          <h3 className="profile_media_title">Vidéos</h3>
-          <div className="gallery">
+        <div className="mt-64">
+          <h3 className="mb-10 text-4xl leading-[30px] font-[Michroma] text-white uppercase">
+            Vidéos
+          </h3>
+          <div className="flex flex-wrap gap-6 w-full">
             {Profile.media.videos
               .slice(0, visibleVideos)
               .map((video, index) => (
                 <iframe
                   key={index}
-                  width="560"
-                  height="315"
+                  className="w-full  gallery_video"
                   src={video}
-                  className="gallery_video"
                   title={`YouTube video ${index + 1}`}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -210,9 +207,12 @@ export default function ProfileComponent(): JSX.Element {
                 ></iframe>
               ))}
           </div>
-          <div className="gallery_buttons">
+          <div>
             {visibleVideos < Profile.media.videos.length ? (
-              <button onClick={handleShowMoreVideos}>
+              <button
+                className="block mx-auto mt-12 px-4 py-2 bg-[#454545] text-white rounded-lg"
+                onClick={handleShowMoreVideos}
+              >
                 Voir plus de vidéos
               </button>
             ) : (
@@ -221,9 +221,11 @@ export default function ProfileComponent(): JSX.Element {
           </div>
         </div>
 
-        <div className="profile_media">
-          <h3 className="profile_media_title">Images</h3>
-          <div className="gallery">
+        <div className="mt-64 ">
+          <h3 className="mb-10 text-4xl leading-[30px] font-[Michroma] text-white uppercase">
+            Images
+          </h3>
+          <div className="flex flex-wrap gap-6 w-full">
             {Profile.media.images
               .slice(0, visibleImages)
               .map((image, index) => (
@@ -237,16 +239,21 @@ export default function ProfileComponent(): JSX.Element {
                 />
               ))}
           </div>
-          <div className="gallery_buttons">
+          <div>
             {visibleImages < Profile.media.images.length ? (
-              <button onClick={handleShowMoreImages}>Voir plus d'images</button>
+              <button
+                className="block mx-auto mt-12 px-4 py-2 bg-[#454545] text-white rounded-lg"
+                onClick={handleShowMoreImages}
+              >
+                Voir plus d'images
+              </button>
             ) : (
               <button onClick={handleResetImages}>Réinitialiser</button>
             )}
           </div>
         </div>
 
-        <div className="profile_media">
+        <div className="mt-64">
           <div className="logo_insta"></div>
           <div className="profile_insta_name">{Profile.instagram.username}</div>
           <div className="profile_insta_desc">

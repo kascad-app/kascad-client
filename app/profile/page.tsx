@@ -23,7 +23,7 @@ export default function ProfileComponent(): JSX.Element {
     sport: "BMX",
     bio:
       session.user?.description ??
-      "Skieur professionnel, freeskieur et snowboardeur, défie les conventions avec son style unique et ses exploits audacieux.",
+      "Skieur professionnel, freeskieur et snowboardeur, défie les conventions avec son style unique et ses exploits audacieux. \n Sur les pentes, il repousse les limites de l'impossible, enchaînant figures acrobatiques et descentes périlleuses avec une grâce inégalée. Ses vidéos virales, capturant ses prouesses, ont fait de lui une icône des sports d'hiver. Son palmarès impressionnant témoigne de son talent et de sa détermination. Son engagement ne se limite pas au sport, il est également entrepreneur et créateur de contenu, partageant sa passion avec le monde entier. Candid Thovex, un virtuose de la neige qui inspire et émerveille.",
     stats: {
       age: {
         label: "ans",
@@ -95,6 +95,7 @@ export default function ProfileComponent(): JSX.Element {
         ? Profile.media.videos.length
         : prev + 4,
     );
+    console.log(visibleVideos);
   };
 
   const handleResetVideos = () => {
@@ -114,8 +115,8 @@ export default function ProfileComponent(): JSX.Element {
   };
 
   return (
-    <div className="profile">
-      <div className="profile_hero">
+    <div className="overflow-x-hidden">
+      <div className="relative flex justify-center items-center flex-col w-screen h-[100dvh]">
         <div className="absolute top-5 right-5 flex flex-col gap-2">
           <Link href="/profile/edit">
             <Button>Modifier le profil</Button>
@@ -123,15 +124,15 @@ export default function ProfileComponent(): JSX.Element {
           <Button>Déconnexion</Button>
         </div>
 
-        <ShapeCanvas className="profile_hero_canva" />
-        <p>{Profile.sport}</p>
+        <ShapeCanvas className="absolute z-[-1] pointer-events-none filter blur-[20px]" />
+        <p className="text-2xl leading-[30px] font-michroma">{Profile.sport}</p>
         <h1>
           {session.user != null && session.user.type === "rider"
             ? (session.user.identity as RiderIdentity).fullName
             : Profile.name}
         </h1>
       </div>
-      <div className="profile_infos">
+      <div className="flex mt-24 mx-auto max-w-[1200px]">
         <div className="profile_infos_image">
           <Image
             src={"/views/profile/profile.png"}
@@ -142,9 +143,6 @@ export default function ProfileComponent(): JSX.Element {
         </div>
         <div className="profile_infos_content">
           <p>{Profile.bio}</p>
-          {/* {Profile.bio.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-          ))} */}
 
           <div className="profile_infos_stats">
             {Object.entries(Profile.stats).map(([key, stat]) => (
@@ -191,18 +189,18 @@ export default function ProfileComponent(): JSX.Element {
       <div className="profile_medias relative">
         <DividerSvg />
 
-        <div className="profile_media">
-          <h3 className="profile_media_title">Vidéos</h3>
-          <div className="gallery">
+        <div className="mt-64">
+          <h3 className="mb-10 text-4xl leading-[30px] font-[Michroma] text-white uppercase">
+            Vidéos
+          </h3>
+          <div className="flex flex-wrap gap-6 w-full">
             {Profile.media.videos
               .slice(0, visibleVideos)
               .map((video, index) => (
                 <iframe
                   key={index}
-                  width="560"
-                  height="315"
+                  className="w-[calc(50%-12px)] rounded-[16px] object-cover aspect-[1.78]"
                   src={video}
-                  className="gallery_video"
                   title={`YouTube video ${index + 1}`}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -210,20 +208,30 @@ export default function ProfileComponent(): JSX.Element {
                 ></iframe>
               ))}
           </div>
-          <div className="gallery_buttons">
+          <div>
             {visibleVideos < Profile.media.videos.length ? (
-              <button onClick={handleShowMoreVideos}>
+              <button
+                className="block mx-auto mt-12 px-4 py-2 bg-[#454545] text-white rounded-lg"
+                onClick={handleShowMoreVideos}
+              >
                 Voir plus de vidéos
               </button>
             ) : (
-              <button onClick={handleResetVideos}>Réinitialiser</button>
+              <button
+                className="block mx-auto mt-12 px-4 py-2 bg-[#454545] text-white rounded-lg"
+                onClick={handleResetVideos}
+              >
+                Réinitialiser
+              </button>
             )}
           </div>
         </div>
 
-        <div className="profile_media">
-          <h3 className="profile_media_title">Images</h3>
-          <div className="gallery">
+        <div className="mt-64 ">
+          <h3 className="mb-10 text-4xl leading-[30px] font-[Michroma] text-white uppercase">
+            Images
+          </h3>
+          <div className="flex flex-wrap gap-6 w-full">
             {Profile.media.images
               .slice(0, visibleImages)
               .map((image, index) => (
@@ -233,28 +241,42 @@ export default function ProfileComponent(): JSX.Element {
                   alt={`Image ${index + 1}`}
                   width={300}
                   height={300}
-                  className="gallery_image"
+                  className="w-[calc(50%-12px)] rounded-[16px] object-cover aspect-[0.94]"
                 />
               ))}
           </div>
-          <div className="gallery_buttons">
+          <div>
             {visibleImages < Profile.media.images.length ? (
-              <button onClick={handleShowMoreImages}>Voir plus d'images</button>
+              <button
+                className="block mx-auto mt-12 px-4 py-2 bg-[#454545] text-white rounded-lg"
+                onClick={handleShowMoreImages}
+              >
+                Voir plus d'images
+              </button>
             ) : (
-              <button onClick={handleResetImages}>Réinitialiser</button>
+              <button
+                className="block mx-auto mt-12 px-4 py-2 bg-[#454545] text-white rounded-lg"
+                onClick={handleResetImages}
+              >
+                Réinitialiser
+              </button>
             )}
           </div>
         </div>
 
-        <div className="profile_media">
+        <div className="mt-64">
           <div className="logo_insta"></div>
-          <div className="profile_insta_name">{Profile.instagram.username}</div>
-          <div className="profile_insta_desc">
+          <div className="mb-[18px] text-[32px] leading-[30px] font-michroma text-white text-center">
+            {Profile.instagram.username}
+          </div>
+          <div className="mx-auto block text-white w-fit text-[16px] leading-[22px]">
             {Profile.instagram.description.map((desc, index) => (
-              <p key={index}>{desc}</p>
+              <p className="w-fit" key={index}>
+                {desc}
+              </p>
             ))}
           </div>
-          <div className="profile_insta_posts">
+          <div className="flex mt-[42px] flex-wrap gap-[4px] max-w-[1200px] mx-auto">
             {Profile.instagram.posts.map((post, index) => (
               <Image
                 key={index}
@@ -262,7 +284,7 @@ export default function ProfileComponent(): JSX.Element {
                 alt={`Post Instagram ${index + 1}`}
                 width={300}
                 height={300}
-                className="insta_post"
+                className="aspect-square w-[calc(25%-3px)]"
               />
             ))}
           </div>

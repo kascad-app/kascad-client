@@ -13,8 +13,8 @@ module.exports = {
         "arrow-down": 'url("/views/shared/arrow-down.svg")',
       },
       backgroundImage: {
-        "login-sponsor": "url('/views/connexion/connexionBackground.png')",
-        "login-rider": "url('/views/connexion/loginRider.png')",
+        register: "url('/views/connexion/connexionBackground.png')",
+        login: "url('/views/connexion/loginRider.png')",
         "footer-background": "url('/views/footer/footerBackground.png')",
         "dark-gradient": "linear-gradient(180deg, #212121 0%, #0B0B0B 100%)",
         "eclipse-gradient": "url('/views/onBoard/Eclipse.svg')",

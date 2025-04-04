@@ -5,13 +5,14 @@ export type FormField = {
 };
 
 export type FormProps = {
-  errorMessage: string;
+  error: {
+    get: string;
+    set: (v: string) => void;
+  };
   fields: FormField[];
   onSubmit: (data: { [key: string]: string }) => void;
-  onChangeUserType: () => void;
-  textConnect: string;
+  onChangeAuth: () => void;
   submitButtonText: string;
   switchAuthButtonText: string;
   bCatchResponse: boolean;
-  route: string;
 };

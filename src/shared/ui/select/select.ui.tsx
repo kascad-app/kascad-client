@@ -9,6 +9,7 @@ interface Option {
 interface SelectProps {
   label: string;
   options: Option[];
+  onChange?: (option: Option) => void; 
 }
 
 export const Select: React.FC<SelectProps> = ({ label, options }) => {

@@ -109,8 +109,26 @@
   background-color: black;
 }
 
+.profile_media {
+}
 .profile_media + .profile_media {
   margin-top: 96px;
+}
+
+.profile_media_title {
+  margin-bottom: 42px;
+  font-size: 32px;
+  line-height: 30px;
+  font-family: "Michroma";
+  color: white;
+  text-transform: uppercase;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  width: 100%;
 }
 
 .gallery_video,
@@ -126,6 +144,16 @@
 
 .gallery_image {
   aspect-ratio: 0.94;
+}
+
+.gallery_buttons button {
+  display: block;
+  margin: auto;
+  margin-top: 48px;
+  padding: 8px 16px;
+  background-color: #454545;
+  color: white;
+  border-radius: 8px;
 }
 
 .profile_insta_name {

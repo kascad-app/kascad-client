@@ -1,0 +1,112 @@
+[
+    {
+        "id": "1",
+        "title": "Comment bien préparer son portfolio sportif",
+        "image": "/assets/img/blog-1.jpg",
+        "excerpt": "Découvrez nos conseils pour créer un portfolio qui attire les sponsors.",
+        "description": "Créer un bon portfolio sportif, ce n’est pas seulement empiler des photos ou des titres. Il faut raconter une histoire. Celle de ton parcours, de tes objectifs, de tes valeurs. \n\nDans cet article, nous te guidons pas à pas pour structurer ton portfolio, choisir les bons éléments, et éviter les pièges classiques. On te montre aussi des exemples qui ont attiré l'attention des sponsors.",
+        "content": "Voici un article complet pour apprendre à construire un portfolio impactant, avec des exemples concrets et des templates...",
+        "date": "2025-04-20",
+        "slug": "preparer-portfolio-sportif",
+        "relatedArticles": [ "visibilite-en-ligne", "rediger-bio-profil" ]
+    },
+    {
+        "id": "2",
+        "title": "Les erreurs à éviter quand on postule",
+        "image": "/assets/img/blog-2.jpg",
+        "excerpt": "Même les meilleures athlètes peuvent tomber dans ces pièges. Voici comment les éviter.",
+        "description": "La candidature parfaite n’existe pas, mais les erreurs flagrantes peuvent être évitées. \n\nCet article te présente les 5 fautes les plus fréquentes observées par les recruteurs : fautes d’orthographe, incohérences dans les dates, absence de message personnalisé… \n\nEt surtout, on te donne des solutions simples pour les corriger.",
+        "content": "On vous guide à travers les erreurs les plus fréquentes repérées par les recruteurs...",
+        "date": "2025-04-22",
+        "slug": "erreurs-postuler-sponsor",
+        "relatedArticles": [ "pitcher-son-projet", "repondre-aux-sponsors" ]
+    },
+    {
+        "id": "3",
+        "title": "Optimiser sa visibilité en ligne",
+        "image": "/assets/img/blog-3.jpg",
+        "excerpt": "Instagram, TikTok, LinkedIn : où être actif pour les sponsors ?",
+        "description": "Tu veux qu'on te voie ? Il faut être là où les regards se posent. Et sur le web, ils bougent vite.\n\nDans cet article, on t’aide à comprendre comment construire une présence digitale cohérente, alignée avec tes objectifs. \n\nTu découvriras aussi des erreurs de positionnement fréquentes, et comment les éviter.",
+        "content": "Dans cet article, on explore les stratégies digitales pour booster ta présence et ton image.",
+        "date": "2025-04-27",
+        "slug": "visibilite-en-ligne",
+        "relatedArticles": [ "reseaux-sociaux-sportives", "contenu-pour-communaute" ]
+    },
+    {
+        "id": "4",
+        "title": "Bien rédiger sa bio de profil",
+        "image": "/assets/img/blog-4.jpg",
+        "excerpt": "Ta bio est la première chose qu’un sponsor lit. Autant qu’elle soit percutante.",
+        "description": "Ta bio, c’est ton accroche. En quelques lignes, elle doit dire qui tu es, ce que tu fais, et pourquoi on doit te suivre.\n\nOn te propose ici une structure en 3 parties pour la rédiger efficacement, des exemples réels, et des formules qui fonctionnent.",
+        "content": "On te montre les meilleures pratiques pour écrire une bio claire, engageante et crédible.",
+        "date": "2025-04-30",
+        "slug": "rediger-bio-profil",
+        "relatedArticles": [ "preparer-portfolio-sportif", "pitcher-son-projet" ]
+    },
+    {
+        "id": "5",
+        "title": "S’entraîner à pitcher son projet en 30 secondes",
+        "image": "/assets/img/blog-1.jpg",
+        "excerpt": "Tu as peu de temps pour convaincre. Voici comment captiver dès les premières secondes.",
+        "description": "Le pitch est un art. Trop long, on décroche. Trop court, on ne comprend rien.\n\nCet article t’aide à formuler ton message essentiel en 30 secondes, avec des modèles, des erreurs à éviter, et des astuces pour t'entraîner à l'oral.",
+        "content": "Cet article t’aide à structurer un pitch court, percutant, avec des exemples et des pièges à éviter.",
+        "date": "2025-05-01",
+        "slug": "pitcher-son-projet",
+        "relatedArticles": [ "rediger-bio-profil", "repondre-aux-sponsors" ]
+    },
+    {
+        "id": "6",
+        "title": "Quels réseaux sociaux pour les sportives de demain ?",
+        "image": "/assets/img/blog-2.jpg",
+        "excerpt": "Chaque plateforme a ses codes. Apprends à les utiliser stratégiquement.",
+        "description": "Instagram, TikTok, YouTube, LinkedIn… chaque réseau a sa propre logique. Mais où dois-tu vraiment être présente ?\n\nNous analysons les avantages de chaque plateforme en fonction de ton sport, ton style, et tes objectifs.",
+        "content": "On compare les plateformes majeures selon leur impact potentiel pour ta visibilité sportive.",
+        "date": "2025-05-02",
+        "slug": "reseaux-sociaux-sportives",
+        "relatedArticles": [ "visibilite-en-ligne", "contenu-pour-communaute" ]
+    },
+    {
+        "id": "7",
+        "title": "Exemples de profils qui ont attiré des sponsors",
+        "image": "/assets/img/blog-3.jpg",
+        "excerpt": "Ils ou elles ont su capter l’attention. Qu’ont-ils fait de différent ?",
+        "description": "Certain.e.s sportives ont réussi à sortir du lot. On analyse ici des cas concrets : qu’ont-elles en commun ? Quels éléments les rendent attractives ?\n\nTu pourras t’en inspirer pour ajuster ton propre profil.",
+        "content": "Analyse de profils inspirants, avec retours de sponsors et éléments-clés à reproduire.",
+        "date": "2025-05-03",
+        "slug": "exemples-profils-sponsors",
+        "relatedArticles": [ "preparer-portfolio-sportif", "faut-il-site-perso" ]
+    },
+    {
+        "id": "8",
+        "title": "Faut-il créer un site perso ?",
+        "image": "/assets/img/blog-4.jpg",
+        "excerpt": "Un site perso est-il vraiment utile ou juste une perte de temps ?",
+        "description": "Un site peut donner un cadre pro à ton image. Mais attention à ne pas te disperser.\n\nDans cet article, on te donne les pour, les contre, et une méthode simple pour te lancer si tu décides d’en créer un.",
+        "content": "On explore les cas où avoir un site peut booster ta crédibilité, et comment le créer simplement.",
+        "date": "2025-05-04",
+        "slug": "faut-il-site-perso",
+        "relatedArticles": [ "exemples-profils-sponsors", "contenu-pour-communaute" ]
+    },
+    {
+        "id": "9",
+        "title": "Comment répondre aux sponsors efficacement",
+        "image": "/assets/img/blog-1.jpg",
+        "excerpt": "Tu as été contactée ? Voici comment garder le lead dans l’échange.",
+        "description": "Répondre vite, mais bien. Cet article te propose des exemples de mails, les infos à inclure absolument, et les bonnes attitudes à adopter.\n\nCar une première réponse peut sceller un partenariat… ou l’enterrer.",
+        "content": "On te donne des modèles de réponses, les points clés à évoquer, et les erreurs à éviter.",
+        "date": "2025-05-05",
+        "slug": "repondre-aux-sponsors",
+        "relatedArticles": [ "erreurs-postuler-sponsor", "pitcher-son-projet" ]
+    },
+    {
+        "id": "10",
+        "title": "Créer du contenu utile pour sa communauté",
+        "image": "/assets/img/blog-2.jpg",
+        "excerpt": "Partager ta pratique peut t’aider à fédérer... et attirer des marques.",
+        "description": "Ton contenu peut faire la différence. Que tu sois sur Insta ou YouTube, ce que tu partages façonne ton image.\n\nOn te propose 10 idées simples à adapter à ton sport pour inspirer, informer ou engager ta communauté.",
+        "content": "L’article propose des idées concrètes de contenu à publier régulièrement selon ton sport.",
+        "date": "2025-05-06",
+        "slug": "contenu-pour-communaute",
+        "relatedArticles": [ "reseaux-sociaux-sportives", "visibilite-en-ligne" ]
+    }
+]

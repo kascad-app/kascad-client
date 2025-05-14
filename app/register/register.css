@@ -1,0 +1,23 @@
+@keyframes draw {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    stroke-dasharray: 1340; /*  A modifier pour le départ ud trait*/
+    stroke-dashoffset: 1000;
+  }
+  90% {
+    visibility: visible;
+    opacity: 1;
+  }
+  100% {
+    stroke-dasharray: 1700; /* fin du trait */
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-draw {
+  stroke-dasharray: 0;
+  stroke-dashoffset: 0;
+  animation: draw 2s ease-in-out forwards 0.5s;
+}

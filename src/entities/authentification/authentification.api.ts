@@ -1,9 +1,7 @@
 import {
   loginRiderDto,
-  loginSponsorDto,
   registerRiderDto,
-  registerSponsorDto,
-  UnknowProfile,
+  Rider,
 } from "@kascad-app/shared-types";
 import { Requester } from "@/shared/lib/requester";
 import Cookies from "js-cookie";
@@ -16,16 +14,16 @@ type APIAuthentication = {
   logout: typeof logout;
 };
 
-const me = async () => Requester.requester().get<UnknowProfile>("/auth/me");
+const me = async () => Requester.requester().get<Rider>("/auth/me");
 
-const login = async (data: loginRiderDto | loginSponsorDto) =>
-  Requester.requester().post<UnknowProfile>("/auth/login", { data });
+const login = async (data: loginRiderDto) =>
+  Requester.requester().post<Rider>("/auth/login", { data });
 
-const register = async (data: registerRiderDto | registerSponsorDto) =>
-  Requester.requester().post<UnknowProfile>("/auth/register", { data });
+const register = async (data: registerRiderDto) =>
+  Requester.requester().post<Rider>("/auth/register", { data });
 
 const refreshToken = async () =>
-  Requester.requester().post<UnknowProfile>("/auth/refresh-token");
+  Requester.requester().post<Rider>("/auth/refresh-token");
 
 const logout = async () => {
   Requester.requester().post("/auth/logout", { data: {} });

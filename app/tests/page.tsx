@@ -2,7 +2,6 @@
 
 import { AuthentificationTypes } from "@/entities/authentification";
 import useSession from "@/shared/api/use-session";
-import { ProfileType } from "@kascad-app/shared-types";
 import Link from "next/link";
 
 export default function TestAuth() {
@@ -15,7 +14,6 @@ export default function TestAuth() {
       .login({
         email: "test@test.com",
         password: "Ouiouioui1",
-        type: ProfileType.RIDER,
       })
       .then((res) => {});
   };

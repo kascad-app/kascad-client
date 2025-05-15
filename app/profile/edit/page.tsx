@@ -387,6 +387,10 @@ export default function EditProfile() {
                 gender: profile.gender,
                 birthDate: profile.birthDate || new Date(),
                 fullName: `${profile.firstName} ${profile.lastName}`,
+                country: "",
+                languageSpoken: [],
+                city: "",
+                practiceLocation: "",
               },
               description: profile.description,
             });

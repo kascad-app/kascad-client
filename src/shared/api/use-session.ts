@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import Cookies from "js-cookie";
 import { useAPI } from "./use-api";
-import { UnknowProfile } from "@kascad-app/shared-types";
+import { Rider } from "@kascad-app/shared-types";
 import {
   AuthentificationAPi,
   AuthentificationTypes,
@@ -14,11 +14,11 @@ const useSession = (mustAuth = false): AuthentificationTypes.Session => {
   const router = useRouter();
 
   const {
-    data: user,
+    data: sessionReponse,
     mutate,
     isLoading,
     isValidating,
-  } = useAPI<UnknowProfile>(loggedIn ? "/auth/me" : null);
+  } = useAPI<Rider>(loggedIn ? "/auth/me" : null);
 
   const signOut = React.useCallback(async () => {
     await AuthentificationAPi.apiAuthentication.logout();
@@ -26,28 +26,28 @@ const useSession = (mustAuth = false): AuthentificationTypes.Session => {
   }, []);
 
   const redirectToLogin = React.useCallback(() => {
-    router.push("/tests");
+    router.push("/login");
   }, []);
 
   React.useEffect(() => {
-    if (mustAuth && !user && !isLoading) {
+    if (mustAuth && !sessionReponse && !isLoading) {
       redirectToLogin();
     }
-  }, [mustAuth, user, isLoading]);
+  }, [mustAuth, sessionReponse, isLoading]);
 
   return {
     mutate,
     loading: isLoading,
-    ...(user
+    ...(sessionReponse && sessionReponse.success
       ? {
           loggedIn: true,
-          user: user as unknown as UnknowProfile,
+          user: sessionReponse.data,
           validating: isValidating,
           signOut,
         }
       : {
           loggedIn: false,
-          user,
+          user: undefined,
         }),
   };
 };

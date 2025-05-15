@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { Form } from "@/widgets/form";
 import { AuthentificationTypes } from "@/entities/authentification";
 import useSession from "@/shared/api/use-session";
-import { GenderIdentity, ProfileType } from "@kascad-app/shared-types";
 import "./login.css";
 import { toast } from "sonner";
 
@@ -37,7 +36,6 @@ const Login: React.FC = () => {
       .login({
         email: data.email,
         password: data.password,
-        type: ProfileType.RIDER,
       })
       .then((res) => {
         if (res.success) {

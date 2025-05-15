@@ -7,6 +7,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { Star, MapPin, DollarSign, Gift, MountainSnow } from "lucide-react";
+import { Proposition, getPropositions } from "@/shared/model/proposition"
+import { MessageThread, getMessages } from "@/shared/model/message";
+
 
 // Type sponsor enrichi
 type Sponsor = {
@@ -32,22 +35,22 @@ export default function Messagerie() {
     const [messageDialogOpen, setMessageDialogOpen] = useState(false);
 
     useEffect(() => {
-        Promise.all([
-            fetch("/datas/propositions.json").then((res) => res.json()),
-            fetch("/datas/messages.json").then((res) => res.json())
-        ]).then(([propositionsData, messagesData]) => {
-            setMessages(messagesData);
-            const messagedSponsorIds = new Set(messagesData.map((m: any) => m.id));
-            const filteredPropositions = propositionsData.filter((p: any) => !messagedSponsorIds.has(p.id));
-            setSponsors(filteredPropositions);
-        });
-    }, []);
+        async function fetchData() {
+            try {
+                const [propositions, messages] = await Promise.all([
+                    getPropositions(),
+                    getMessages()
+                ]);
+                const messageIds = new Set(messages.map((msg) => msg.id));
+                const filtered = propositions.filter((p) => !messageIds.has(p.id));
     
-
-    useEffect(() => {
-        fetch("/datas/messages.json")
-            .then((res) => res.json())
-            .then((data) => setMessages(data));
+                setMessages(messages);
+                setSponsors(filtered);
+            } catch (err) {
+                console.error("Erreur chargement data:", err);
+            }
+        }
+        fetchData();
     }, []);
 
     return (

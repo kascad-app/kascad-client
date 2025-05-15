@@ -5,7 +5,7 @@ export interface MessageEntry {
 }
 
 export interface MessageThread {
-    id: string;
+    id: number;
     name: string;
     logo: string;
     sport: string;

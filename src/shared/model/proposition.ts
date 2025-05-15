@@ -1,5 +1,5 @@
 export interface Proposition {
-    id: string;
+    id: number;
     name: string;
     logo?: string;
     message: string;

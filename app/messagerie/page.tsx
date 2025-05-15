@@ -27,15 +27,32 @@ export default function Messagerie() {
     const [sponsors, setSponsors] = useState<Sponsor[]>([]);
     const [selectedSponsor, setSelectedSponsor] = useState<Sponsor | null>(null);
     const [open, setOpen] = useState(false);
+    const [messages, setMessages] = useState<any[]>([]);
+    const [selectedConversation, setSelectedConversation] = useState<any | null>(null);
+    const [messageDialogOpen, setMessageDialogOpen] = useState(false);
+
+    useEffect(() => {
+        Promise.all([
+            fetch("/datas/propositions.json").then((res) => res.json()),
+            fetch("/datas/messages.json").then((res) => res.json())
+        ]).then(([propositionsData, messagesData]) => {
+            setMessages(messagesData);
+            const messagedSponsorIds = new Set(messagesData.map((m: any) => m.id));
+            const filteredPropositions = propositionsData.filter((p: any) => !messagedSponsorIds.has(p.id));
+            setSponsors(filteredPropositions);
+        });
+    }, []);
+    
 
     useEffect(() => {
         fetch("/datas/messages.json")
             .then((res) => res.json())
-            .then((data) => setSponsors(data));
+            .then((data) => setMessages(data));
     }, []);
 
     return (
         <div className="p-6 text-black bg-white min-h-screen">
+            <Button variant="ghost" className="fixed right-6 top-6 bg-black border border-transparent text-white hover:bg-white hover:text-black hover:border-black">Nouveau message</Button>
             <h2 className="text-2xl font-bold mb-6">Propositions de sponsors</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {sponsors.map((sponsor) => (
@@ -83,7 +100,7 @@ export default function Messagerie() {
             </div>
 
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent className="w-[80vw] h-[90vh] max-w-[80vw] overflow-y-auto p-12 bg-white rounded-xl absolute">
+                <DialogContent className="w-[80vw] h-[90vh] max-w-[80vw] overflow-y-auto p-12 bg-white rounded-xl absolute overflow-x-hidden">
                     {selectedSponsor && (
                         <>
                             <h1 className="absolute top-8 left-1/2 -translate-x-1/2 text-[18rem] font-bold text-gray-100 uppercase tracking-wider pointer-events-none z-0 whitespace-nowrap">
@@ -155,6 +172,109 @@ export default function Messagerie() {
                     )}
                 </DialogContent>
             </Dialog>
+
+            <h2 className="text-2xl font-bold mb-6 mt-12">Messages</h2>
+            <div className="space-y-4">
+                {messages.map((conversation) => (
+                    <div
+                        key={conversation.id}
+                        onClick={() => {
+                            setSelectedConversation(conversation);
+                            setMessageDialogOpen(true);
+                        }}
+                        className="w-full p-4 flex items-center justify-between bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-lg transition"
+                    >
+                        <div className="flex items-center gap-4">
+                            <Image src={conversation.logo} alt={conversation.name} width={40} height={40} className="rounded-full" />
+                            <div>
+                                <p className="font-semibold text-black">{conversation.name}</p>
+                                <p className="text-sm text-gray-600 truncate w-[240px]">{conversation.lastMessage.slice(0, 90)}{conversation.lastMessage.length > 90 ? "..." : ""}</p>
+                            </div>
+                        </div>
+                        <span className="text-sm text-gray-500">{conversation.lastDate}</span>
+                    </div>
+                ))}
+            </div>
+
+            <Dialog open={messageDialogOpen} onOpenChange={setMessageDialogOpen}>
+                <DialogContent className="w-[80vw] max-w-[80vw] h-[90vh] overflow-y-auto p-8 bg-white rounded-xl">
+                    {selectedConversation && (
+                        <div className="space-y-8">
+                            {/* Header marque */}
+                            <div className="flex items-center gap-4">
+                                <Image src={selectedConversation.logo} alt={selectedConversation.name} width={60} height={60} className="rounded-full" />
+                                <div>
+                                    <h3 className="text-xl font-bold">{selectedConversation.name}</h3>
+                                    <p className="text-gray-500">{selectedConversation.location}</p>
+                                </div>
+                            </div>
+
+                            {/* Récapitulatif de la proposition */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-base">
+                                <div className="space-y-4">
+                                    <p className="flex items-center gap-2 text-black">
+                                        <MountainSnow size={18} /> <strong>Sport :</strong> {selectedConversation.sport}
+                                    </p>
+                                    <p className="flex items-center gap-2 text-black">
+                                        <MapPin size={18} /> <strong>Lieu :</strong> {selectedConversation.location}
+                                    </p>
+                                    <p className="flex items-center gap-2 text-black">
+                                        <DollarSign size={18} /> <strong>Budget :</strong> {selectedConversation.budget}
+                                    </p>
+                                </div>
+                                <div className="space-y-4">
+                                    <p className="flex items-center gap-2 text-black">
+                                        <Gift size={18} /> <strong>Avantages :</strong>
+                                    </p>
+                                    <ul className="list-disc list-inside text-black">
+                                        {selectedConversation.perks.map((perk: string, index: number) => (
+                                            <li key={index}>{perk}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+
+                            {selectedConversation.description && (
+                                <div className="space-y-2 mt-6">
+                                    <h4 className="text-lg font-semibold text-black">À propos du sponsor</h4>
+                                    <Separator />
+                                    <p className="text-black leading-relaxed text-base">{selectedConversation.description}</p>
+                                </div>
+                            )}
+
+                            {selectedConversation.conditions && (
+                                <div className="space-y-2 mt-6">
+                                    <h4 className="text-lg font-semibold text-black">Conditions du partenariat</h4>
+                                    <Separator />
+                                    <p className="text-black leading-relaxed text-base">{selectedConversation.conditions}</p>
+                                </div>
+                            )}
+
+
+                            {/* Messages */}
+                            <div className="space-y-4 max-h-[40vh] overflow-y-auto pr-2">
+                                <h4 className="text-lg font-semibold text-black">Messages</h4>
+                                <Separator />
+                                <div className=" max-w-[40vw] mr-auto">
+                                    {selectedConversation.messages.map((msg: any, i: number) => (
+                                        <div key={i} className={`p-3 rounded-lg ${msg.from === 'me' ? 'bg-black text-white ml-auto max-w-[70%]' : 'bg-gray-200 text-black mr-auto max-w-[70%]'}`}>
+                                            <p className="text-sm">{msg.text}</p>
+                                            <p className="text-xs mt-1 text-right opacity-60">{msg.date}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Actions */}
+                            <div className="pt-4 flex justify-end">
+                                <Button className="bg-black text-white hover:bg-gray-900">Répondre</Button>
+                            </div>
+                        </div>
+                    )}
+                </DialogContent>
+            </Dialog>
+
+
         </div>
     );
 }

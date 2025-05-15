@@ -3,65 +3,30 @@
         "id": 1,
         "name": "Red Bull",
         "logo": "/logos/redbull.png",
-        "message": "Nous aimerions vous proposer un contrat pour la saison 2025.",
-        "sport": "Snowboard",
         "location": "Chamonix, France",
+        "sport": "Snowboard",
         "budget": "10 000€",
         "perks": [ "Matériel pro", "Couverture médiatique", "Stage d'entraînement" ],
         "description": "Red Bull cherche à s'associer à des riders extrêmes pour renforcer sa présence sur les événements freestyle internationaux.",
         "conditions": "Présence sur 3 compétitions minimum. Partage de contenu sur les réseaux sociaux.",
-        "rating": 4
-    },
-    {
-        "id": 2,
-        "name": "The North Face",
-        "logo": "/logos/tnf.png",
-        "message": "Intéressés par votre profil pour une campagne de communication.",
-        "sport": "Ski Freeride",
-        "location": "La Clusaz, France",
-        "budget": "8 500€",
-        "perks": [ "Tenue complète", "Sessions photos", "Sponsorisation d'événements" ],
-        "description": "Dans le cadre de sa nouvelle collection, TNF cherche des ambassadeurs pratiquant le freeride pour une série de vidéos et photos.",
-        "conditions": "1 tournage photo, 2 posts Instagram, port des produits en compétition.",
-        "rating": 5
-    },
-    {
-        "id": 3,
-        "name": "GoPro",
-        "logo": "/logos/gopro.png",
-        "message": "Capturez vos rides avec GoPro !",
-        "sport": "Kitesurf",
-        "location": "Tarifa, Espagne",
-        "budget": "6 000€",
-        "perks": [ "Caméras gratuites", "Partenariats réseaux", "Mise en avant sur le site" ],
-        "description": "GoPro recherche des sportifs créateurs de contenu pour mettre en avant leurs dernières caméras.",
-        "conditions": "Livrer 5 vidéos/mois + stories Instagram régulières.",
-        "rating": 4
-    },
-    {
-        "id": 4,
-        "name": "Oakley",
-        "logo": "/logos/oakley.png",
-        "message": "Participez à notre nouvelle campagne visuelle.",
-        "sport": "VTT",
-        "location": "Alpes françaises",
-        "budget": "7 000€",
-        "perks": [ "Équipement complet", "Shooting professionnel", "Spot pub" ],
-        "description": "Oakley cherche un rider stylé pour incarner sa nouvelle collection outdoor.",
-        "conditions": "3 jours de tournage, présence en salon.",
-        "rating": 3
-    },
-    {
-        "id": 5,
-        "name": "Decathlon",
-        "logo": "/logos/decathlon.png",
-        "message": "Nous lançons une gamme pour jeunes riders, soyez notre visage.",
-        "sport": "Skateboard",
-        "location": "Lille, France",
-        "budget": "5 000€",
-        "perks": [ "Matériel custom", "Sponsoring annuel", "Interviews" ],
-        "description": "Decathlon veut promouvoir l'accessibilité du skate via des ambassadeurs authentiques.",
-        "conditions": "Série de 5 vidéos tutos + présence sur évènements locaux.",
-        "rating": 4
+        "lastMessage": "Merci pour votre retour, nous reviendrons vers vous très bientôt.",
+        "lastDate": "2025-05-10",
+        "messages": [
+            {
+                "from": "Red Bull",
+                "text": "Nous aimerions vous proposer un contrat pour la saison 2025.",
+                "date": "2025-05-01"
+            },
+            {
+                "from": "me",
+                "text": "Merci, je suis intéressé. Pouvez-vous m'envoyer plus de détails ?",
+                "date": "2025-05-03"
+            },
+            {
+                "from": "Red Bull",
+                "text": "Merci pour votre retour, nous reviendrons vers vous très bientôt.",
+                "date": "2025-05-10"
+            }
+        ]
     }
 ]

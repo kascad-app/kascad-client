@@ -1,0 +1,20 @@
+.name-side svg {
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: drawInfinite 10s ease-in-out infinite reverse;
+}
+  
+@keyframes drawInfinite {
+    0% {
+      stroke-dashoffset: 400;
+    }
+    20% {
+      stroke-dashoffset: 0;
+    }
+    80% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: 400;
+    }
+}

@@ -32,19 +32,19 @@ export default function EditProfile() {
   const [openDialog, setOpenDialog] = useState(false);
   const router = useRouter();
   const [date, setDate] = useState<Date>(
-    (session.user?.identity as RiderIdentity)?.birthDate || new Date()
+    (session.user?.identity as RiderIdentity)?.birthDate || new Date(),
   );
 
   const [profile, setProfile] = useState({
-    firstName: (session.user?.identity as RiderIdentity)?.firstName || "",
-    lastName: (session.user?.identity as RiderIdentity)?.lastName || "",
+    firstName: session.user?.identity?.firstName || "",
+    lastName: session.user?.identity?.lastName || "",
     email: session.user?.identifier.email || "",
     address: "",
     description: session.user?.description || "",
     trainingFrequency: 3,
     trainingUnit: "week",
     birthDate: date,
-    gender: (session.user?.identity as RiderIdentity)?.gender || GenderIdentity.MALE,
+    gender: session.user?.identity?.gender || GenderIdentity.MALE,
     sponsors: ["RedBull", "Salomon", "Adidas"],
     events: [
       {
@@ -109,7 +109,10 @@ export default function EditProfile() {
     setProfile((prev) => ({
       ...prev,
       trainingUnit: value,
-      trainingFrequency: Math.min(prev.trainingFrequency, value === "week" ? 7 : 30),
+      trainingFrequency: Math.min(
+        prev.trainingFrequency,
+        value === "week" ? 7 : 30,
+      ),
     }));
   };
 
@@ -119,7 +122,6 @@ export default function EditProfile() {
     date: "",
     image: "",
   });
-
 
   const maxFrequency = profile.trainingUnit === "week" ? 7 : 30;
   const slides = [
@@ -139,8 +141,11 @@ export default function EditProfile() {
         {slides.map((label, index) => (
           <button
             key={label}
-            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${slide === index ? "border-blue-500 text-blue-600" : "border-transparent text-gray-500"
-              }`}
+            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${
+              slide === index
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500"
+            }`}
             onClick={() => setSlide(index)}
           >
             {label}
@@ -158,14 +163,24 @@ export default function EditProfile() {
                 <label className="block text-sm font-medium mb-1">Prénom</label>
                 <Input
                   value={profile.firstName}
-                  onChange={(e) => setProfile((prev) => ({ ...prev, firstName: e.target.value }))}
+                  onChange={(e) =>
+                    setProfile((prev) => ({
+                      ...prev,
+                      firstName: e.target.value,
+                    }))
+                  }
                 />
               </div>
               <div className="w-1/2">
                 <label className="block text-sm font-medium mb-1">Nom</label>
                 <Input
                   value={profile.lastName}
-                  onChange={(e) => setProfile((prev) => ({ ...prev, lastName: e.target.value }))}
+                  onChange={(e) =>
+                    setProfile((prev) => ({
+                      ...prev,
+                      lastName: e.target.value,
+                    }))
+                  }
                 />
               </div>
             </div>
@@ -177,20 +192,28 @@ export default function EditProfile() {
 
             <div className="flex gap-4 w-full">
               <div className="w-1/2">
-                <label className="block text-sm font-medium mb-1">Adresse postale</label>
+                <label className="block text-sm font-medium mb-1">
+                  Adresse postale
+                </label>
                 <Input
                   value={profile.address}
-                  onChange={(e) => setProfile((prev) => ({ ...prev, address: e.target.value }))}
+                  onChange={(e) =>
+                    setProfile((prev) => ({ ...prev, address: e.target.value }))
+                  }
                 />
               </div>
               <div className="w-1/2">
-                <label className="block text-sm font-medium mb-1">Date de naissance</label>
+                <label className="block text-sm font-medium mb-1">
+                  Date de naissance
+                </label>
                 <Input
                   type="date"
                   value={(() => {
                     try {
                       return profile.birthDate
-                        ? new Date(profile.birthDate).toISOString().split("T")[0]
+                        ? new Date(profile.birthDate)
+                            .toISOString()
+                            .split("T")[0]
                         : new Date().toISOString().split("T")[0];
                     } catch {
                       return new Date().toISOString().split("T")[0];
@@ -206,10 +229,17 @@ export default function EditProfile() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Description</label>
+              <label className="block text-sm font-medium mb-1">
+                Description
+              </label>
               <Textarea
                 value={profile.description}
-                onChange={(e) => setProfile((prev) => ({ ...prev, description: e.target.value }))}
+                onChange={(e) =>
+                  setProfile((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
               />
             </div>
           </div>
@@ -220,16 +250,23 @@ export default function EditProfile() {
           <div className="flex flex-col gap-6">
             {/* Fréquence d'entraînement */}
             <div className="w-full">
-              <label className="text-sm font-medium mb-2 block">Fréquence d’entraînement</label>
+              <label className="text-sm font-medium mb-2 block">
+                Fréquence d’entraînement
+              </label>
               <div className="flex items-center gap-6">
                 <div className="w-1/3">
-                  <Select onValueChange={handleTrainingUnitChange} defaultValue={profile.trainingUnit}>
+                  <Select
+                    onValueChange={handleTrainingUnitChange}
+                    defaultValue={profile.trainingUnit}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Unité" />
                     </SelectTrigger>
                     <SelectContent>
                       {trainingOptions.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                        <SelectItem key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -249,7 +286,9 @@ export default function EditProfile() {
                   />
                   <span className="text-sm text-muted-foreground mt-2">
                     {profile.trainingFrequency} entraînements{" "}
-                    {profile.trainingUnit === "week" ? "par semaine" : "par mois"}
+                    {profile.trainingUnit === "week"
+                      ? "par semaine"
+                      : "par mois"}
                   </span>
                 </div>
               </div>
@@ -259,7 +298,9 @@ export default function EditProfile() {
             <div className="w-full">
               <div className="flex justify-between items-center mb-2">
                 <p className="text-sm font-medium">Sponsors actuels</p>
-                <Button variant="outline" size="sm">Ajouter +</Button>
+                <Button variant="outline" size="sm">
+                  Ajouter +
+                </Button>
               </div>
               <div className="flex flex-wrap gap-2">
                 {profile.sponsors.map((sponsor) => (
@@ -278,22 +319,25 @@ export default function EditProfile() {
 
         {/* Slide 3: Réalisations et Expériences */}
         {slide === 2 && (
-
           <div className="flex flex-col gap-12">
-
-
             {/* Événements sportifs */}
             <div className="w-full">
               <div className="flex justify-between items-center mb-2">
                 <p className="text-sm font-medium">Vos événements sportifs</p>
                 <EventUploader
                   mode="event"
-                  trigger={<Button variant="outline" size="sm">Ajouter +</Button>}
+                  trigger={
+                    <Button variant="outline" size="sm">
+                      Ajouter +
+                    </Button>
+                  }
                   onAdd={(newEvent) =>
-                    setProfile((prev) => ({ ...prev, events: [...prev.events, newEvent] }))
+                    setProfile((prev) => ({
+                      ...prev,
+                      events: [...prev.events, newEvent],
+                    }))
                   }
                 />
-
               </div>
               <div className="flex gap-4 overflow-x-auto whitespace-nowrap py-2">
                 {profile.events.map((event, index) => (
@@ -306,10 +350,14 @@ export default function EditProfile() {
                       alt={`Image ${index}`}
                       className="w-36 h-24 bg-gray-200 rounded object-cover"
                     />
-                    <span className="text-xs text-muted-foreground">{event.date}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {event.date}
+                    </span>
                     <div className="flex flex-col text-sm">
                       <span>{event.name}</span>
-                      <span className="text-muted-foreground">{event.location}</span>
+                      <span className="text-muted-foreground">
+                        {event.location}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -322,9 +370,16 @@ export default function EditProfile() {
                 <p className="text-sm font-medium">Vos vidéos enregistrées</p>
                 <EventUploader
                   mode="video"
-                  trigger={<Button variant="outline" size="sm">Ajouter +</Button>}
+                  trigger={
+                    <Button variant="outline" size="sm">
+                      Ajouter +
+                    </Button>
+                  }
                   onAdd={(newVideoUrl) =>
-                    setProfile((prev) => ({ ...prev, videos: [...prev.videos, newVideoUrl] }))
+                    setProfile((prev) => ({
+                      ...prev,
+                      videos: [...prev.videos, newVideoUrl],
+                    }))
                   }
                 />
               </div>
@@ -351,7 +406,12 @@ export default function EditProfile() {
                 <EventUploader
                   mode="image"
                   trigger={<Button variant="outline">Ajouter une image</Button>}
-                  onAdd={(url) => setProfile((prev) => ({ ...prev, images: [...prev.images, url] }))}
+                  onAdd={(url) =>
+                    setProfile((prev) => ({
+                      ...prev,
+                      images: [...prev.images, url],
+                    }))
+                  }
                 />
               </div>
               <div className="flex gap-4 overflow-x-auto py-2">
@@ -367,15 +427,11 @@ export default function EditProfile() {
             </div>
           </div>
         )}
-
       </div>
 
       {/* Actions */}
       <div className="flex justify-end gap-4 mt-8">
-        <Button
-          variant="outline"
-          onClick={() => router.push("/profile")}
-        >
+        <Button variant="outline" onClick={() => router.push("/profile")}>
           Annuler
         </Button>
         <Button
@@ -387,6 +443,10 @@ export default function EditProfile() {
                 gender: profile.gender,
                 birthDate: profile.birthDate || new Date(),
                 fullName: `${profile.firstName} ${profile.lastName}`,
+                country: "",
+                languageSpoken: [],
+                city: "",
+                practiceLocation: "",
               },
               description: profile.description,
             });

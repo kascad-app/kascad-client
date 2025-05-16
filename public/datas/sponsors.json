@@ -1,0 +1,178 @@
+[
+    {
+        "id": "1",
+        "name": "Atao Surf",
+        "slug": "atao-surf",
+        "logo": "/logos/logo-atao.svg",
+        "description": "Équipements éco-conçus pour surfeurs engagés.",
+        "details": "Atao Surf est une marque bretonne de référence dans le domaine du surf éthique. Nous proposons des planches, combinaisons et accessoires fabriqués à partir de matériaux recyclés ou biosourcés, avec une production locale et responsable. Notre mission est de concilier performance et respect de l'océan.",
+        "sports": [ "Surf" ],
+        "isFollowed": true,
+        "isLocal": false,
+        "applicationsOpen": true,
+        "news": [
+            {
+                "title": "Lancement de la nouvelle combinaison ProWave X",
+                "date": "2025-06-15"
+            },
+            {
+                "title": "Soutien au championnat de surf junior Bretagne",
+                "date": "2025-07-10"
+            }
+        ],
+        "website": "https://atao-surf.fr",
+        "socials": {
+            "instagram": "https://instagram.com/atao.surf",
+            "facebook": "https://facebook.com/ataosurf",
+            "twitter": "https://twitter.com/ataosurf"
+        },
+        "values": [
+            "Production locale",
+            "Matériaux recyclés",
+            "Engagement pour la protection des océans",
+            "Soutien aux jeunes riders"
+        ],
+        "athletes": [
+            {
+                "name": "Justin Becret",
+                "image": "/assets/img/sportifs/surf/JustinBecret.jpg",
+                "sport": "Surf"
+            },
+            {
+                "name": "Cannelle Bulard",
+                "image": "/assets/img/sportifs/surf/CannelleBulard.png",
+                "sport": "Surf"
+            },
+            {
+                "name": "Justin Becret",
+                "image": "/assets/img/sportifs/surf/JustinBecret.jpg",
+                "sport": "Surf"
+            },
+            {
+                "name": "Cannelle Bulard",
+                "image": "/assets/img/sportifs/surf/JustinBecret.jpg",
+                "sport": "Surf"
+            },
+            {
+                "name": "Justin Becret",
+                "image": "/assets/img/sportifs/surf/JustinBecret.jpg",
+                "sport": "Surf"
+            },
+            {
+                "name": "Cannelle Bulard",
+                "image": "/assets/img/sportifs/surf/JustinBecret.jpg",
+                "sport": "Surf"
+            }
+        ],
+        "products": [
+            {
+                "name": "Planche de surf en liège recyclé",
+                "image": "/products/atao/atao-magic-diamond.jpg",
+                "link": "https://atao-surf.fr/produits/planche-liège"
+            },
+            {
+                "name": "Combinaison néoprène bio",
+                "image": "/products/atao/combinaison-atoa.webp",
+                "link": "https://atao-surf.fr/produits/combinaison-bio"
+            },
+            {
+                "name": "Planche de surf en liège recyclé",
+                "image": "/products/atao/atao-magic-diamond.jpg",
+                "link": "https://atao-surf.fr/produits/planche-liège"
+            },
+            {
+                "name": "Combinaison néoprène bio",
+                "image": "/products/atao/combinaison-atoa.webp",
+                "link": "https://atao-surf.fr/produits/combinaison-bio"
+            },
+            {
+                "name": "Planche de surf en liège recyclé",
+                "image": "/products/atao/atao-magic-diamond.jpg",
+                "link": "https://atao-surf.fr/produits/planche-liège"
+            },
+            {
+                "name": "Combinaison néoprène bio",
+                "image": "/products/atao/combinaison-atoa.webp",
+                "link": "https://atao-surf.fr/produits/combinaison-bio"
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "name": "DriftMotion",
+        "slug": "driftmotion",
+        "logo": "/logos/driftmotion.png",
+        "description": "Gear ultra-résistant pour downhill et skate urbain.",
+        "details": "DriftMotion conçoit des équipements dédiés à la descente urbaine, au longboard et au skate extrême. Nos planches sont testées par les meilleurs riders sur les routes les plus techniques d’Europe. Nous nous engageons à produire localement avec des matériaux innovants et durables.",
+        "sports": [ "Skate", "Longboard", "Downhill" ],
+        "website": "https://driftmotion-gear.com",
+        "isFollowed": true,
+        "isLocal": false,
+        "applicationsOpen": true,
+        "news": [
+            {
+                "title": "Lancement de la nouvelle combinaison ProWave X",
+                "date": "2025-06-15"
+            },
+            {
+                "title": "Soutien au championnat de surf junior Bretagne",
+                "date": "2025-07-10"
+            }
+        ],
+        "socials": {
+            "instagram": "https://instagram.com/driftmotiongear",
+            "facebook": "https://facebook.com/driftmotiongear",
+            "twitter": "https://twitter.com/driftmotiongear"
+        },
+        "values": [
+            "Innovation continue",
+            "Fabrication européenne",
+            "Tests extrêmes en conditions réelles",
+            "Support de la scène indépendante"
+        ],
+        "athletes": [
+            {
+                "name": "Justin Becret",
+                "image": "/sportifs/surf/JustinBecret.jpg",
+                "sport": "Surf"
+            },
+            {
+                "name": "Cannelle Bulard",
+                "image": "/sportifs/surf/CannelleBulard.png",
+                "sport": "Surf"
+            },
+            {
+                "name": "Justin Becret",
+                "image": "/sportifs/surf/JustinBecret.jpg",
+                "sport": "Surf"
+            },
+            {
+                "name": "Cannelle Bulard",
+                "image": "/sportifs/surf/CannelleBulard.png",
+                "sport": "Surf"
+            },
+            {
+                "name": "Justin Becret",
+                "image": "/sportifs/surf/JustinBecret.jpg",
+                "sport": "Surf"
+            },
+            {
+                "name": "Cannelle Bulard",
+                "image": "/sportifs/surf/CannelleBulard.png",
+                "sport": "Surf"
+            }
+        ],
+        "products": [
+            {
+                "name": "Longboard Carbone-Flex",
+                "image": "/products/driftmotion-longboard.jpg",
+                "link": "https://driftmotion-gear.com/products/longboard"
+            },
+            {
+                "name": "Casque intégral Drift X",
+                "image": "/products/driftmotion-casque.jpg",
+                "link": "https://driftmotion-gear.com/products/casque"
+            }
+        ]
+    }
+]

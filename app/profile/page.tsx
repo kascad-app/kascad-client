@@ -29,11 +29,11 @@ export default function ProfileComponent(): JSX.Element {
         label: "ans",
         value:
           session.user?.identity != null &&
-          (session.user?.identity as RiderIdentity).birthDate != null
+            (session.user?.identity as RiderIdentity).birthDate != null
             ? new Date().getFullYear() -
-              new Date(
-                (session.user?.identity as RiderIdentity).birthDate,
-              ).getFullYear()
+            new Date(
+              (session.user?.identity as RiderIdentity).birthDate,
+            ).getFullYear()
             : 0,
       },
     },
@@ -187,8 +187,6 @@ export default function ProfileComponent(): JSX.Element {
       </div>
 
       <div className="profile_medias relative">
-        <DividerSvg />
-
         <div className="mt-64">
           <h3 className="mb-10 text-4xl leading-[30px] font-[Michroma] text-white uppercase">
             Vidéos

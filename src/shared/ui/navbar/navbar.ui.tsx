@@ -19,16 +19,13 @@ export const Navbar = () => {
   const [pathMarketSponsors, setPathMarketSponsors] = useState(true);
 
   useEffect(() => {
-    if (session.user?.type == "rider") {
+    if (session.user) {
       const riderIdentity = session.user.identity as RiderIdentity;
       setProfileName(
         riderIdentity.fullName
           ? riderIdentity.fullName
           : riderIdentity.firstName,
       );
-    } else if (session.user?.type == "sponsor") {
-      const sponsorIdentity = session.user.identity as SponsorIdentity;
-      setProfileName(sponsorIdentity.companyName);
     }
   }, [session]);
 

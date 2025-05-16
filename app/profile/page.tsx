@@ -9,6 +9,7 @@ import useSession from "@/shared/api/use-session";
 import { RiderIdentity } from "@kascad-app/shared-types";
 import { Button } from "@/shared/ui/button/Button.ui";
 import { DividerSvg } from "@/widgets/divider-svg";
+import InstagramFeed from "@/components/ui/Insta";
 
 export default function ProfileComponent(): JSX.Element {
   const [visibleVideos, setVisibleVideos] = useState(4);
@@ -264,7 +265,9 @@ export default function ProfileComponent(): JSX.Element {
           </div>
         </div>
 
-        <div className="mt-64">
+        <InstagramFeed />
+
+        {/* <div className="mt-64">
           <div className="logo_insta"></div>
           <div className="mb-[18px] text-[32px] leading-[30px] font-michroma text-white text-center">
             {Profile.instagram.username}
@@ -287,8 +290,8 @@ export default function ProfileComponent(): JSX.Element {
                 className="aspect-square w-[calc(25%-3px)]"
               />
             ))}
-          </div>
-        </div>
+          </div> 
+        </div>*/}
       </div>
     </div>
   );

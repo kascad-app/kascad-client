@@ -14,19 +14,19 @@ type APIAuthentication = {
   logout: typeof logout;
 };
 
-const me = async () => Requester.requester().get<Rider>("/auth/me");
+const me = async () => Requester.requester().get<Rider>("/auth/rider/me");
 
 const login = async (data: loginRiderDto) =>
-  Requester.requester().post<Rider>("/auth/login", { data });
+  Requester.requester().post<Rider>("/auth/rider/login", { data });
 
 const register = async (data: registerRiderDto) =>
-  Requester.requester().post<Rider>("/auth/register", { data });
+  Requester.requester().post<Rider>("/auth/rider/register", { data });
 
 const refreshToken = async () =>
-  Requester.requester().post<Rider>("/auth/refresh-token");
+  Requester.requester().post<Rider>("/auth/rider/refresh-token");
 
 const logout = async () => {
-  Requester.requester().post("/auth/logout", { data: {} });
+  Requester.requester().post("/auth/rider/logout", { data: {} });
   Cookies.remove("authToken");
 };
 

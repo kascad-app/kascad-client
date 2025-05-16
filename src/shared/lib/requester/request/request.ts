@@ -6,12 +6,11 @@ type FetchOptions = Omit<RequestInit, "body"> & {
 
 const request = async <TData>(
   url: string,
-  options?: FetchOptions
+  options?: FetchOptions,
 ): APIResponsePromise<TData> => {
   const headers = new Headers({
     "Content-Type": "application/json",
     Accept: "application/json",
-    credentials: "include",
     ...options?.headers,
   });
 
@@ -20,11 +19,11 @@ const request = async <TData>(
     headers,
     body: options?.data ? JSON.stringify(options.data) : undefined,
     method: options?.method || "GET",
+    credentials: "include",
   };
-
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_PATH}${url}`,
-    config
+    config,
   );
   const data: APIResponse<TData> = await response.json();
 

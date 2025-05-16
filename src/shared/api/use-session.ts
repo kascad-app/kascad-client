@@ -18,7 +18,7 @@ const useSession = (mustAuth = false): AuthentificationTypes.Session => {
     mutate,
     isLoading,
     isValidating,
-  } = useAPI<Rider>(loggedIn ? "/auth/me" : null);
+  } = useAPI<Rider>(loggedIn ? "/auth/rider/me" : null);
 
   const signOut = React.useCallback(async () => {
     await AuthentificationAPi.apiAuthentication.logout();

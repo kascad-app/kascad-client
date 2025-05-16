@@ -9,7 +9,7 @@ const createAuthHeaders = (jwtToken: string): HeadersInit => ({
 
 type BaseRequest = <TData>(
   url: string,
-  options?: ApiRequestConfig
+  options?: ApiRequestConfig,
 ) => APIResponsePromise<TData>;
 
 type RequestResponse = {
@@ -28,7 +28,7 @@ const requester = (auth = true): RequestResponse => {
     (method: string) =>
     async <TData = any>(
       url: string,
-      options?: ApiRequestConfig
+      options?: ApiRequestConfig,
     ): Promise<APIResponse<TData>> => {
       return request<TData>(url, { ...baseOptions, ...options, method });
     };

@@ -15,7 +15,7 @@ export const Navbar = () => {
   const [profileName, setProfileName] = useState("");
   const [profileNameVisible, setProfileNameVisible] = useState(true);
 
-  const [pathMarketRiders, setPathMarketRiders] = useState(true);
+  const [pathHome, setPathHome] = useState(true);
   const [pathMarketSponsors, setPathMarketSponsors] = useState(true);
 
   useEffect(() => {
@@ -30,10 +30,8 @@ export const Navbar = () => {
   }, [session]);
 
   useEffect(() => {
-    if (pathname.includes("marketplace/riders")) {
-      setPathMarketRiders(false);
-    } else if (pathname.includes("marketplace/sponsors")) {
-      setPathMarketSponsors(false);
+    if (pathname.includes("home")) {
+      setPathHome(false);
     }
 
     pathname.includes("profile")
@@ -45,7 +43,7 @@ export const Navbar = () => {
   return (
     <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex justify-center">
       <div className="bg-[#EEEEEE] px-6 w-auto opacity-90 border border-color border-gray-400 text-[#7B7B7B] py-2 flex items-center justify-center rounded-[18rem] gap-8 relative">
-        <Link href="/marketplace/riders">
+        <Link href="/home">
           <Home />
         </Link>
         <Link href="/profile">

@@ -18,7 +18,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (session.loggedIn) {
-      router.push("/marketplace/riders");
+      router.push("/home");
     }
   }, [session]);
 
@@ -40,7 +40,7 @@ const Login: React.FC = () => {
       .then((res) => {
         if (res.success) {
           toast.success("You are now connected");
-          router.push("/marketplace/riders");
+          router.push("/home");
         } else if (res.success === false) {
           toast.error("Connection failure");
           setError(res.message);

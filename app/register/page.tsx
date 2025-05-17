@@ -17,7 +17,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (session.loggedIn) {
-      router.push("/marketplace/riders");
+      router.push("/home");
     }
   }, [session]);
 
@@ -50,7 +50,7 @@ const Login: React.FC = () => {
       return;
     }
 
-    router.push("/marketplace/riders");
+    router.push("/home");
   };
 
   return (

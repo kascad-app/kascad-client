@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AuthentificationTypes } from "@/entities/authentification";
+import { AuthentificationTypes } from "@/entities/authentication";
 import useSession from "@/shared/api/use-session";
 import { RiderIdentity, SponsorIdentity } from "@kascad-app/shared-types";
 import { Home, LogOut, Settings, User } from "lucide-react";

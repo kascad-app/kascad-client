@@ -2,11 +2,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Form } from "@/widgets/form";
-import { AuthentificationTypes } from "@/entities/authentification";
+import { AuthentificationTypes } from "@/entities/authentication";
 import useSession from "@/shared/api/use-session";
 import { GenderIdentity } from "@kascad-app/shared-types";
 import "./register.css";
 import { toast } from "sonner";
+import { ApiError } from "next/dist/server/api-utils";
 
 const Login: React.FC = () => {
   const session = useSession();
@@ -41,7 +42,7 @@ const Login: React.FC = () => {
       gender: GenderIdentity.MALE,
     });
 
-    if (!response.success) {
+    if (response instanceof ApiError) {
       toast.error(response.message, {
         position: "bottom-left",
       });

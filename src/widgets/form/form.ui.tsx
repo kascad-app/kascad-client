@@ -16,10 +16,7 @@ export const Form: React.FC<FormTypes.FormProps> = ({
 }) => {
   const [formState, setFormState] = useState<{ [key: string]: string }>({});
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const baseClasses =
-    "w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-blue-300 transition duration-200";
 
-  const router = useRouter();
   useEffect(() => {
     if (buttonRef.current) {
       buttonRef.current.classList.remove("sending");
@@ -74,7 +71,11 @@ export const Form: React.FC<FormTypes.FormProps> = ({
         {Boolean(error) && error.get !== "" && (
           <p className="text-red-600">{error.get}</p>
         )}
-        <button ref={buttonRef} type="submit" className={baseClasses}>
+        <button
+          ref={buttonRef}
+          type="submit"
+          className="w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-blue-300"
+        >
           {submitButtonText}
         </button>
         <div className="flex flex-row items-center justify-center">

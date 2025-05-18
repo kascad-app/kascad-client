@@ -2,10 +2,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Form } from "@/widgets/form";
-import { AuthentificationTypes } from "@/entities/authentification";
-import useSession from "@/shared/api/use-session";
+import { AuthenticationTypes } from "@/entities/authentication";
+import { useSession } from "@/shared/api";
+import { useLogin } from "@/entities/authentication/authentication.hooks";
 import "./login.css";
 import { toast } from "sonner";
+import { ApiError } from "next/dist/server/api-utils";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 const Login: React.FC = () => {
   const session = useSession();
@@ -13,14 +16,14 @@ const Login: React.FC = () => {
   const [bCatchResponseLogin, setBCatchResponseLogin] =
     useState<boolean>(false);
   const router = useRouter();
-
+  const loginMutation = useLogin();
   const refLogin = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (session.loggedIn) {
-      router.push("/home");
+      router.push(ROUTES.HOMEPAGE);
     }
-  }, [session]);
+  }, [session.loggedIn, router]);
 
   const Loginfields = [
     { name: "email", label: "Email", type: "email" },
@@ -31,23 +34,23 @@ const Login: React.FC = () => {
     router.push("/register");
   };
 
-  const handleLogin = (data: { [key: string]: string }) => {
-    AuthentificationTypes.API.auth
-      .login({
+  async function handleLogin(data: { [key: string]: string }) {
+    setBCatchResponseLogin(true);
+    loginMutation
+      .trigger({
         email: data.email,
         password: data.password,
       })
-      .then((res) => {
-        if (res.success) {
-          toast.success("You are now connected");
-          router.push("/home");
-        } else if (res.success === false) {
-          toast.error("Connection failure");
-          setError(res.message);
-          setBCatchResponseLogin((prevState) => !prevState);
-        }
+      .then(async (res) => {
+        toast.success("Login successful");
+        await session.mutate();
+        router.push(ROUTES.HOMEPAGE);
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Login failed");
       });
-  };
+  }
   return (
     <div className="w-screen max-w-screen flex h-screen overflow-hidden">
       <div className="w-5/12 flex items-center justify-center relative transition-all duration-500 ease-in">

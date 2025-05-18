@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthentificationTypes } from "@/entities/authentification";
+import { AuthentificationTypes } from "@/entities/authentication";
 import useSession from "@/shared/api/use-session";
 import Link from "next/link";
 

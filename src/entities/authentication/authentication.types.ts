@@ -1,13 +1,13 @@
 import { KeyedMutator } from "swr";
 
-import { Sponsor } from "@kascad-app/shared-types";
+import { Rider } from "@kascad-app/shared-types";
 export type Session = {
-  mutate: KeyedMutator<Sponsor>;
+  mutate: KeyedMutator<Rider>;
 } & (SignedOutSession | SignedInSession);
 
 export type SignedInSession = {
   loggedIn: true;
-  user: Sponsor;
+  user: Rider;
   loading: boolean;
   validating: boolean;
 };

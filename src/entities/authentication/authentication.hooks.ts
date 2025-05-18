@@ -2,22 +2,22 @@ import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 
 import {
-  loginSponsorDto,
-  registerSponsorDto,
-  Sponsor,
+  loginRiderDto,
+  registerRiderDto,
+  Rider,
 } from "@kascad-app/shared-types";
 import { requester } from "@/lib/requester/requester";
 import { sendSWRRequest } from "@/lib/swr/use-swr";
 import { SWR_KEY } from "@/shared/constants/SWR_KEY";
 
 export function useMe() {
-  return useSWR<Sponsor>(SWR_KEY.AUTH.ME, () =>
-    requester().get<Sponsor>(SWR_KEY.AUTH.ME),
+  return useSWR<Rider>(SWR_KEY.AUTH.ME, () =>
+    requester().get<Rider>(SWR_KEY.AUTH.ME),
   );
 }
 
 export function useLogin() {
-  return useSWRMutation<Sponsor, Error, string, loginSponsorDto>(
+  return useSWRMutation<Rider, Error, string, loginRiderDto>(
     SWR_KEY.AUTH.LOGIN,
     sendSWRRequest,
     {
@@ -34,7 +34,7 @@ export function useLogin() {
 }
 
 export function useRegister() {
-  return useSWRMutation<Sponsor, Error, string, registerSponsorDto>(
+  return useSWRMutation<Rider, Error, string, registerRiderDto>(
     SWR_KEY.AUTH.REGISTER,
     sendSWRRequest,
     {

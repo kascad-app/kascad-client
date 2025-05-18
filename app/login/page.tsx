@@ -1,56 +1,9 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Form } from "@/widgets/form";
-import { AuthenticationTypes } from "@/entities/authentication";
-import { useSession } from "@/shared/api";
-import { useLogin } from "@/entities/authentication/authentication.hooks";
+import React from "react";
 import "./login.css";
-import { toast } from "sonner";
-import { ApiError } from "next/dist/server/api-utils";
-import { ROUTES } from "@/shared/constants/ROUTES";
+import { LoginFormWidget } from "@/widgets/auth/login-form";
 
 const Login: React.FC = () => {
-  const session = useSession();
-  const [error, setError] = useState<string>("");
-  const [bCatchResponseLogin, setBCatchResponseLogin] =
-    useState<boolean>(false);
-  const router = useRouter();
-  const loginMutation = useLogin();
-  const refLogin = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (session.loggedIn) {
-      router.push(ROUTES.HOMEPAGE);
-    }
-  }, [session.loggedIn, router]);
-
-  const Loginfields = [
-    { name: "email", label: "Email", type: "email" },
-    { name: "password", label: "Password", type: "password" },
-  ];
-
-  const changeLogin = () => {
-    router.push("/register");
-  };
-
-  async function handleLogin(data: { [key: string]: string }) {
-    setBCatchResponseLogin(true);
-    loginMutation
-      .trigger({
-        email: data.email,
-        password: data.password,
-      })
-      .then(async (res) => {
-        toast.success("Login successful");
-        await session.mutate();
-        router.push(ROUTES.HOMEPAGE);
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error("Login failed");
-      });
-  }
   return (
     <div className="w-screen max-w-screen flex h-screen overflow-hidden">
       <div className="w-5/12 flex items-center justify-center relative transition-all duration-500 ease-in">
@@ -70,23 +23,9 @@ const Login: React.FC = () => {
           />
         </svg>
 
-        <div
-          ref={refLogin}
-          className="z-10 w-2/3 flex flex-col items-center relative justify-center"
-        >
+        <div className="z-10 w-2/3 flex flex-col items-center relative justify-center">
           <div className="w-full flex justify-center">
-            <Form
-              error={{
-                get: error,
-                set: setError,
-              }}
-              fields={Loginfields}
-              onSubmit={handleLogin}
-              onChangeAuth={changeLogin}
-              submitButtonText={"Log in"}
-              switchAuthButtonText={"Register"}
-              bCatchResponse={bCatchResponseLogin}
-            />
+            <LoginFormWidget />
           </div>
         </div>
       </div>

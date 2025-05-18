@@ -17,9 +17,6 @@ const useSession = (mustAuth = true): AuthenticationTypes.Session => {
   }, [router]);
 
   React.useEffect(() => {
-    console.log("user", user);
-    console.log("isLoading", isLoading);
-    console.log("mustAuth", mustAuth);
     if (mustAuth && !isAuthenticated(user) && !isLoading) {
       redirectToLogin();
     }

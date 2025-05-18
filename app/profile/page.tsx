@@ -29,11 +29,11 @@ export default function ProfileComponent(): JSX.Element {
         label: "ans",
         value:
           session.user?.identity != null &&
-            (session.user?.identity as RiderIdentity).birthDate != null
+          (session.user?.identity as RiderIdentity).birthDate != null
             ? new Date().getFullYear() -
-            new Date(
-              (session.user?.identity as RiderIdentity).birthDate,
-            ).getFullYear()
+              new Date(
+                (session.user?.identity as RiderIdentity).birthDate,
+              ).getFullYear()
             : 0,
       },
     },

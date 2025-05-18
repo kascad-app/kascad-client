@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 import { Navbar } from "@/shared/ui/navbar/navbar.ui";
+import { Header } from "@/widgets/header";
 import "./globals.css";
 import { Toaster } from "sonner";
 import BottomNav from "./components/BottomNav";
@@ -20,6 +21,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Header />
         {children}
         <Navbar />
         {/* <BottomNav /> */}

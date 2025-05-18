@@ -3,13 +3,14 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AuthentificationTypes } from "@/entities/authentication";
 import useSession from "@/shared/api/use-session";
 import { RiderIdentity, SponsorIdentity } from "@kascad-app/shared-types";
 import { Home, LogOut, Settings, User } from "lucide-react";
+import { useLogout } from "@/entities/authentication/authentication.hooks";
 
 export const Navbar = () => {
-  const session: AuthentificationTypes.Session = useSession();
+  const session = useSession();
+  const logoutMutation = useLogout();
   const pathname = usePathname();
 
   const [profileName, setProfileName] = useState("");
@@ -52,7 +53,7 @@ export const Navbar = () => {
         <Link href={"/profile/edit"}>
           <Settings />
         </Link>
-        <p onClick={() => session.loggedIn && session.signOut()}>
+        <p onClick={() => session.loggedIn && logoutMutation.trigger()}>
           <LogOut />
         </p>
       </div>

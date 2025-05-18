@@ -6,4 +6,8 @@ export const SWR_KEY = {
     REFRESH_TOKEN: "/auth/rider/refresh-token",
     LOGOUT: "/auth/rider/logout",
   },
+  RIDER: {
+    RIDERS: "/riders",
+    RIDER: (id: string) => `/riders/${id}`,
+  },
 };

@@ -9,11 +9,7 @@ export default function Page() {
 
   useEffect(() => {
     if (session.loggedIn) {
-      if (session.user.type == "rider") {
-        router.push("/marketplace/riders");
-      } else {
-        router.push("/marketplace/sponsors");
-      }
+      router.push("/home");
     } else {
       router.push("/login");
     }

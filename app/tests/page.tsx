@@ -1,17 +1,22 @@
 "use client";
 
-import { AuthentificationTypes } from "@/entities/authentification";
+import {
+  useLogin,
+  useLogout,
+} from "@/entities/authentication/authentication.hooks";
 import useSession from "@/shared/api/use-session";
 import Link from "next/link";
 
 export default function TestAuth() {
   const session = useSession();
+  const loginMutation = useLogin();
+  const logoutMutation = useLogout();
 
   // console.log(session);
 
   const handleLogin = () => {
-    AuthentificationTypes.API.auth
-      .login({
+    loginMutation
+      .trigger({
         email: "test@test.com",
         password: "Ouiouioui1",
       })
@@ -19,7 +24,7 @@ export default function TestAuth() {
   };
 
   const handleLogout = () => {
-    session.loggedIn && session.signOut();
+    session.loggedIn && logoutMutation.trigger();
   };
 
   return (

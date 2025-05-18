@@ -1,58 +1,9 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Form } from "@/widgets/form";
-import { AuthentificationTypes } from "@/entities/authentification";
-import useSession from "@/shared/api/use-session";
-import { GenderIdentity } from "@kascad-app/shared-types";
+import React from "react";
 import "./register.css";
-import { toast } from "sonner";
+import { RegisterFormWidget } from "@/widgets/auth/register-form";
 
-const Login: React.FC = () => {
-  const session = useSession();
-  const [error, setError] = useState<string>("");
-  const [bCatchResponseRegister, setBCatchResponseRegister] =
-    useState<boolean>(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (session.loggedIn) {
-      router.push("/marketplace/riders");
-    }
-  }, [session]);
-
-  const Registerfields = [
-    { name: "email", label: "Email", type: "email" },
-    { name: "password", label: "Password", type: "password" },
-    { name: "confirm-password", label: "Confirm password", type: "password" },
-  ];
-
-  const changeLogin = () => {
-    router.push("/login");
-  };
-
-  const handleRegister = async (data: { [key: string]: string }) => {
-    const response = await AuthentificationTypes.API.auth.register({
-      email: data.email,
-      password: data.password,
-      birthDate: new Date(),
-      firstName: "",
-      lastName: "",
-      gender: GenderIdentity.MALE,
-    });
-
-    if (!response.success) {
-      toast.error(response.message, {
-        position: "bottom-left",
-      });
-      setError(response.message);
-      setBCatchResponseRegister((prevState) => !prevState);
-      return;
-    }
-
-    router.push("/marketplace/riders");
-  };
-
+const Register: React.FC = () => {
   return (
     <div className="w-screen max-w-screen flex h-screen overflow-hidden">
       <div className="bg-register z-2 bg-no-repeat bg-center bg-cover h-full w-7/12 flex justify-center items-center px-16 relative transition duration-500 ease-in">
@@ -65,18 +16,7 @@ const Login: React.FC = () => {
       <div className="w-5/12 flex items-center justify-center relative transition-all duration-500 ease-in">
         <div className="z-10 w-2/3 flex flex-col items-center relative justify-center">
           <div className="w-full flex justify-center">
-            <Form
-              error={{
-                get: error,
-                set: setError,
-              }}
-              fields={Registerfields}
-              onSubmit={handleRegister}
-              onChangeAuth={changeLogin}
-              submitButtonText={"Register"}
-              switchAuthButtonText={"Log in"}
-              bCatchResponse={bCatchResponseRegister}
-            />
+            <RegisterFormWidget />
           </div>
         </div>
 
@@ -100,4 +40,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Register;

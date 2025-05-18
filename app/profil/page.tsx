@@ -187,8 +187,6 @@ export default function ProfileComponent(): JSX.Element {
       </div>
 
       <div className="profile_medias relative">
-        <DividerSvg />
-
         <div className="mt-64">
           <h3 className="mb-10 text-4xl leading-[30px] font-[Michroma] text-white uppercase">
             Vidéos

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 import { ROUTES } from "../constants/ROUTES";
@@ -11,8 +11,11 @@ import { Sponsor } from "@kascad-app/shared-types";
 const useSession = (mustAuth = true): AuthenticationTypes.Session => {
   const router = useRouter();
   const { data: user, mutate, isLoading, isValidating } = useMe();
+  const pathname = usePathname();
 
   const redirectToLogin = React.useCallback(() => {
+    if (pathname === ROUTES.AUTH.LOGIN) return;
+    if (pathname === ROUTES.AUTH.REGISTER) return;
     router.push(ROUTES.AUTH.LOGIN);
   }, [router]);
 

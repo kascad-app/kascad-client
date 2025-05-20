@@ -4,7 +4,8 @@ import { Navbar } from "@/shared/ui/navbar/navbar.ui";
 import { Header } from "@/widgets/header";
 import "./globals.css";
 import { Toaster } from "sonner";
-import BottomNav from "./components/BottomNav";
+import { ROUTES } from "@/shared/constants/ROUTES";
+import { LayoutApp } from "@/widgets/layout-app";
 
 const inter = Figtree({ subsets: ["latin"] });
 
@@ -21,11 +22,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Header />
-        {children}
-        <Navbar />
-        {/* <BottomNav /> */}
-        <Toaster position="top-right" richColors />
+        <LayoutApp> {children} </LayoutApp>
       </body>
     </html>
   );

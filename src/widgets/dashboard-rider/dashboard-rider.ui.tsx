@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import useSession from "@/shared/api/use-session";
+import { useSession } from "@/shared/context/SessionContext";
 import { Bell, HelpCircle } from "lucide-react";
 import { Button } from "@/shared/ui/button/Button.ui";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs/Tabs.ui";

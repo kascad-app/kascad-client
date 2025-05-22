@@ -1,7 +1,8 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import useSession from "@/shared/api/use-session";
+import { useSession } from "@/shared/context/SessionContext";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 export default function Page() {
   const router = useRouter();
@@ -9,9 +10,9 @@ export default function Page() {
 
   useEffect(() => {
     if (session.loggedIn) {
-      router.push("/home");
+      router.push(ROUTES.HOMEPAGE);
     } else {
-      router.push("/login");
+      router.push(ROUTES.AUTH.LOGIN);
     }
   }, [session, router]);
 

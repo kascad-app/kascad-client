@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import "./form.style.css";
 import { useRouter } from "next/navigation";
-import { useSession } from "@/shared/api";
+import { useSession } from "@/shared/context/SessionContext";
 import { useLogin } from "@/entities/authentication/authentication.hooks";
 import { ROUTES } from "@/shared/constants/ROUTES";
 import { useForm } from "react-hook-form";

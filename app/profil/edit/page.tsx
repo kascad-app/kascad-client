@@ -3,8 +3,8 @@
 import { useState } from "react";
 import "./edit.css";
 
-import useSession from "@/shared/api/use-session";
-import { updateProfile } from "@/entities/riders/riders.api";
+import { useSession } from "@/shared/context/SessionContext";
+import { useUpdateOne } from "@/entities/riders/riders.hooks";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -34,6 +34,8 @@ export default function EditProfile() {
   const [date, setDate] = useState<Date>(
     (session.user?.identity as RiderIdentity)?.birthDate || new Date(),
   );
+
+  const updateMutation = useUpdateOne(session.user?._id as string);
 
   const [profile, setProfile] = useState({
     firstName: session.user?.identity?.firstName || "",
@@ -435,7 +437,7 @@ export default function EditProfile() {
         </Button>
         <Button
           onClick={async () => {
-            await updateProfile(session.user?._id as string, {
+            await updateMutation.trigger({
               identity: {
                 firstName: profile.firstName,
                 lastName: profile.lastName,

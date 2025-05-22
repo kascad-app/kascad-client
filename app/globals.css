@@ -28,17 +28,11 @@ html {
   height: 100%;
 }
 
-body {
-  padding-top: 97px;
-}
-
 /* // Use in dashboard rider */
 .right-col-dashboard-rider canvas {
   height: auto !important;
   width: 100% !important;
 }
-
-
 
 @layer base {
   :root {
@@ -96,8 +90,6 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {

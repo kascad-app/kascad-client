@@ -1,0 +1,71 @@
+[
+  {
+    "id": "1",
+    "name": "Justine Dupont",
+    "slug": "justine-dupont",
+    "sport": "Surf",
+    "bio": "Justine Dupont est une surfeuse fran\u00e7aise sp\u00e9cialis\u00e9e dans les grosses vagues. Elle est reconnue internationalement pour ses performances \u00e0 Nazar\u00e9 et dans d'autres spots mythiques. Justine incarne le courage, la t\u00e9nacit\u00e9 et l'engagement pour le surf f\u00e9minin.",
+    "age": 33,
+    "location": "Lacanau, France",
+    "image": "/assets/img/sportifs/surf/JustineDupont.jpg",
+    "videos": [
+      "https://www.youtube.com/embed/MgKYY4xxfT0",
+      "https://www.youtube.com/embed/JmQG5M_kh8g"
+    ],
+    "images": [
+      "/",
+      "https://images.unsplash.com/photo-1563297592-fc163070b609"
+    ],
+    "instagram": {
+      "username": "@justinedupont33",
+      "description": [
+        "Surfeuse professionnelle \ud83c\udf0a",
+        "Big wave rider \u26a1\ufe0f",
+        "Ambassadrice de l'oc\u00e9an \ud83d\udc99"
+      ],
+      "posts": [
+        "https://images.unsplash.com/photo-1584890131712-18ee8e3ed49c",
+        "https://images.unsplash.com/photo-1549044759-bc149b504a80"
+      ]
+    },
+    "sponsors": [
+      "atao-surf",
+      "patagonia"
+    ],
+    "favorites": 5820
+  },
+  {
+    "id": "2",
+    "name": "Edouard Delpero",
+    "slug": "edouard-delpero",
+    "sport": "Longboard",
+    "bio": "Edouard Delpero est l\u2019un des meilleurs longboardeurs fran\u00e7ais. Originaire de la C\u00f4te basque, il allie style et technicit\u00e9 sur les vagues du monde entier. Champion d'Europe et finaliste sur le tour mondial, il est une figure incontournable du longboard.",
+    "age": 33,
+    "location": "Biarritz, France",
+    "image": "/athletes/edouard.jpg",
+    "videos": [
+      "https://www.youtube.com/embed/7Hix0-Duhd8",
+      "https://www.youtube.com/embed/jXoHff2iHLI"
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1616431627899-191cffb5fd5c",
+      "https://images.unsplash.com/photo-1569135579442-d37b7a0ea74e"
+    ],
+    "instagram": {
+      "username": "@edouarddelpero",
+      "description": [
+        "Longboard Champion \ud83c\udf0a",
+        "C\u00f4te Basque \ud83c\uddeb\ud83c\uddf7",
+        "Life on a board \ud83c\udfc4\u200d\u2642\ufe0f"
+      ],
+      "posts": [
+        "https://images.unsplash.com/photo-1489228949628-35d7cf932bd1",
+        "https://images.unsplash.com/photo-1542531365-8cedfed02b04"
+      ]
+    },
+    "sponsors": [
+      "atao-surf"
+    ],
+    "favorites": 4372
+  }
+]

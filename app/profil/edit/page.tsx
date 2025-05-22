@@ -17,7 +17,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import ShapeCanvas from "../ShapeCanvas";
+import ShapeCanvas from "../../components/ShapeCanvas";
 import { RiderIdentity, GenderIdentity } from "@kascad-app/shared-types";
 import { Dialog, DialogContent, DialogTrigger } from "@components/ui/dialog";
 import EventUploader from "../../components/EventUploader";
@@ -141,11 +141,10 @@ export default function EditProfile() {
         {slides.map((label, index) => (
           <button
             key={label}
-            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${
-              slide === index
+            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${slide === index
                 ? "border-blue-500 text-blue-600"
                 : "border-transparent text-gray-500"
-            }`}
+              }`}
             onClick={() => setSlide(index)}
           >
             {label}
@@ -212,8 +211,8 @@ export default function EditProfile() {
                     try {
                       return profile.birthDate
                         ? new Date(profile.birthDate)
-                            .toISOString()
-                            .split("T")[0]
+                          .toISOString()
+                          .split("T")[0]
                         : new Date().toISOString().split("T")[0];
                     } catch {
                       return new Date().toISOString().split("T")[0];

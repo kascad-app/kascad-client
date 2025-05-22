@@ -9,7 +9,6 @@ import { Home, LogOut, Settings, User } from "lucide-react";
 import { useLogout } from "@/entities/authentication/authentication.hooks";
 
 export const Navbar = () => {
-  const session = useSession();
   const logoutMutation = useLogout();
   const pathname = usePathname();
 
@@ -17,18 +16,6 @@ export const Navbar = () => {
   const [profileNameVisible, setProfileNameVisible] = useState(true);
 
   const [pathHome, setPathHome] = useState(true);
-  const [pathMarketSponsors, setPathMarketSponsors] = useState(true);
-
-  useEffect(() => {
-    if (session.user) {
-      const riderIdentity = session.user.identity as RiderIdentity;
-      setProfileName(
-        riderIdentity.fullName
-          ? riderIdentity.fullName
-          : riderIdentity.firstName,
-      );
-    }
-  }, [session]);
 
   useEffect(() => {
     if (pathname.includes("home")) {
@@ -40,7 +27,7 @@ export const Navbar = () => {
       : setProfileNameVisible(false);
   }, [pathname]);
 
-  if (!session.loggedIn) return null;
+  // if (!session.loggedIn) return null;
   return (
     <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex justify-center">
       <div className="bg-[#EEEEEE] px-6 w-auto opacity-90 border border-color border-gray-400 text-[#7B7B7B] py-2 flex items-center justify-center rounded-[18rem] gap-8 relative">
@@ -53,9 +40,9 @@ export const Navbar = () => {
         <Link href={"/profile/edit"}>
           <Settings />
         </Link>
-        <p onClick={() => session.loggedIn && logoutMutation.trigger()}>
+        {/* <p onClick={() => session.loggedIn && logoutMutation.trigger()}>
           <LogOut />
-        </p>
+        </p> */}
       </div>
     </div>
   );

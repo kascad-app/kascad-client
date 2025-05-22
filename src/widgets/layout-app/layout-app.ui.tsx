@@ -5,20 +5,22 @@ import { Toaster } from "sonner";
 import { Header } from "../header";
 import { usePathname } from "next/navigation";
 import { ROUTES } from "@/shared/constants/ROUTES";
+import { useSession } from "@/shared/api";
 
 export default function LayoutApp({ children }: { children: React.ReactNode }) {
+  const session = useSession();
   const pathName = usePathname();
-  const hideHeader: boolean = [
+  const hideComponents: boolean = [
     ROUTES.AUTH.LOGIN,
     ROUTES.AUTH.REGISTER,
     ROUTES.LOADER,
   ].includes(pathName);
 
   return (
-    <div className={hideHeader ? "" : "pt-[97px]"}>
-      {!hideHeader && <Header />}
+    <div className={hideComponents ? "" : "pt-[97px]"}>
+      {!hideComponents && <Header />}
       {children}
-      <Navbar />
+      {!hideComponents && <Navbar />}
       <Toaster position="top-right" richColors />
     </div>
   );

@@ -3,12 +3,13 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import useSession from "@/shared/api/use-session";
+import { useSession } from "@/shared/context/SessionContext";
 import { RiderIdentity, SponsorIdentity } from "@kascad-app/shared-types";
 import { Home, LogOut, Settings, User } from "lucide-react";
 import { useLogout } from "@/entities/authentication/authentication.hooks";
 
 export const Navbar = () => {
+  const session = useSession();
   const logoutMutation = useLogout();
   const pathname = usePathname();
 

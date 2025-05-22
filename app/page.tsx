@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import useSession from "@/shared/api/use-session";
+import { useSession } from "@/shared/context/SessionContext";
 import { ROUTES } from "@/shared/constants/ROUTES";
 
 export default function Page() {

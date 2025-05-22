@@ -3,7 +3,7 @@
 import { useState } from "react";
 import "./edit.css";
 
-import useSession from "@/shared/api/use-session";
+import { useSession } from "@/shared/context/SessionContext";
 import { useUpdateOne } from "@/entities/riders/riders.hooks";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";

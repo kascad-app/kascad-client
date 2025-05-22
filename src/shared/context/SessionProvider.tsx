@@ -3,10 +3,10 @@
 
 import { ReactNode } from "react";
 import { SessionContext } from "./SessionContext";
-import { useSession } from "../api";
+import { useCreateSession } from "../api";
 
 export const SessionProvider = ({ children }: { children: ReactNode }) => {
-  const session = useSession(); // ou useCreateSession(false) selon ton besoin
+  const session = useCreateSession(); // ou useCreateSession(false) selon ton besoin
 
   return (
     <SessionContext.Provider value={session}>

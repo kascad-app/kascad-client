@@ -5,10 +5,9 @@ import "./profile.css";
 import Link from "next/link";
 import { useState } from "react";
 import ShapeCanvas from "./ShapeCanvas";
-import useSession from "@/shared/api/use-session";
+import { useSession } from "@/shared/context/SessionContext";
 import { RiderIdentity } from "@kascad-app/shared-types";
 import { Button } from "@/shared/ui/button/Button.ui";
-import { DividerSvg } from "@/widgets/divider-svg";
 
 export default function ProfileComponent(): JSX.Element {
   const [visibleVideos, setVisibleVideos] = useState(4);

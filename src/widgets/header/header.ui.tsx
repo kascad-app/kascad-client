@@ -2,6 +2,8 @@ import React from "react";
 import { Settings, CircleHelp } from "lucide-react";
 import "./header.css";
 import { useSession } from "@/shared/context/SessionContext";
+import Link from "next/link";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 export const Header: React.FC = () => {
   const session = useSession();
@@ -10,7 +12,9 @@ export const Header: React.FC = () => {
       {/* <img src="/views/logos/logoSquare.svg" alt="Logo" className="h-12 mr-4" /> */}
       <div className="flex gap-4 name-side">
         <h2 className="font-michroma font-medium text-lg">
-          {session.user?.identity != null && session.user.identity.firstName}
+          <Link href={ROUTES.RIDER.PROFILE}>
+            {session.user?.identity != null && session.user.identity.firstName}
+          </Link>
         </h2>
         <svg
           width="52"

@@ -1,5 +1,9 @@
 name: CI
 
+permissions:
+  packages: read
+  contents: read
+
 on:
   push:
     branches: ["main"]

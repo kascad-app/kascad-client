@@ -8,7 +8,7 @@ import { AuthenticationTypes } from "@/entities/authentication";
 import { useMe } from "@/entities/authentication/authentication.hooks";
 import { Sponsor } from "@kascad-app/shared-types";
 
-const useSession = (mustAuth = true): AuthenticationTypes.Session => {
+const useCreateSession = (mustAuth = true): AuthenticationTypes.Session => {
   const router = useRouter();
   const { data: user, mutate, isLoading, isValidating } = useMe();
   const pathname = usePathname();
@@ -23,7 +23,7 @@ const useSession = (mustAuth = true): AuthenticationTypes.Session => {
     if (mustAuth && !isAuthenticated(user) && !isLoading) {
       redirectToLogin();
     }
-  }, [mustAuth, user, isLoading, redirectToLogin]);
+  }, [mustAuth, user, isLoading, redirectToLogin, pathname]);
 
   function isAuthenticated(user: unknown): user is Sponsor {
     return (
@@ -55,4 +55,4 @@ const useSession = (mustAuth = true): AuthenticationTypes.Session => {
   };
 };
 
-export default useSession;
+export default useCreateSession;

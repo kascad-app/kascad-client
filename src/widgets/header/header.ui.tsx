@@ -1,27 +1,16 @@
-import { RiderIdentity, SponsorIdentity } from "@kascad-app/shared-types";
 import React from "react";
 import { Settings, CircleHelp } from "lucide-react";
 import "./header.css";
+import { useSession } from "@/shared/context/SessionContext";
 
-type HeaderProps = {
-  identity?: RiderIdentity | SponsorIdentity;
-};
-
-export const Header: React.FC<HeaderProps> = ({ identity }) => {
-  const isRiderIdentity = (
-    identity: RiderIdentity | SponsorIdentity,
-  ): identity is RiderIdentity => {
-    return (identity as RiderIdentity).firstName !== undefined;
-  };
-
+export const Header: React.FC = () => {
+  const session = useSession();
   return (
     <header className="bg-white text-gray-800 fixed z-[100] top-0 px-24 py-8 flex items-center w-full justify-between">
       {/* <img src="/views/logos/logoSquare.svg" alt="Logo" className="h-12 mr-4" /> */}
       <div className="flex gap-4 name-side">
         <h2 className="font-michroma font-medium text-lg">
-          {identity && isRiderIdentity(identity)
-            ? identity.firstName
-            : "Marie-Claire"}
+          {session.user?.identity != null && session.user.identity.firstName}
         </h2>
         <svg
           width="52"

@@ -22,11 +22,8 @@ export function useLogin() {
     sendSWRRequest,
     {
       rollbackOnError: true,
-      onError() {
-        console.log("error in useLogin");
-      },
+      onError() {},
       onSuccess() {
-        console.log("success in useLogin");
         mutate(SWR_KEY.AUTH.ME, undefined, true);
       },
     },
@@ -40,7 +37,6 @@ export function useRegister() {
     {
       rollbackOnError: true,
       onSuccess() {
-        console.log("success in useLogin");
         mutate(SWR_KEY.AUTH.ME, undefined, true);
       },
     },

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import ShapeCanvas from "../../profil/ShapeCanvas";
+import ShapeCanvas from "../../components/ShapeCanvas";
 
 export default function AthleteProfile() {
   const params = useParams();

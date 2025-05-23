@@ -8,6 +8,7 @@ import ShapeCanvas from "./ShapeCanvas";
 import { useSession } from "@/shared/context/SessionContext";
 import { RiderIdentity } from "@kascad-app/shared-types";
 import { Button } from "@/shared/ui/button/Button.ui";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 export default function ProfileComponent(): JSX.Element {
   const [visibleVideos, setVisibleVideos] = useState(4);
@@ -117,7 +118,7 @@ export default function ProfileComponent(): JSX.Element {
     <div className="overflow-x-hidden">
       <div className="relative flex justify-center items-center flex-col w-screen h-[100dvh]">
         <div className="absolute top-5 right-5 flex flex-col gap-2">
-          <Link href="/profile/edit">
+          <Link href={ROUTES.RIDER.EDIT_PROFILE}>
             <Button>Modifier le profil</Button>
           </Link>
           <Button>Déconnexion</Button>

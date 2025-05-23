@@ -14,6 +14,7 @@ import {
   chartDatasets,
 } from "@/shared/utils/riders/riders.utils";
 import { toast } from "sonner";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 export const DashboardRidersWidget: React.FC = () => {
   const session = useSession();
@@ -110,7 +111,7 @@ export const DashboardRidersWidget: React.FC = () => {
                 <h2 className="text-xl text-gray-900">
                   Votre profil manque d&apos;informations !
                 </h2>
-                <Link href="/profile">
+                <Link href={ROUTES.RIDER.PROFILE}>
                   <Button variant="default" className="bg-blue-600 text-white">
                     {" "}
                     Accéder à mon profil{" "}

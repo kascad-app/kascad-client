@@ -32,8 +32,9 @@
     "lucide-react": "^0.468.0",
     "next": "15.1.8",
     "next-auth": "^4.24.11",
-    "react": "^18",
-    "react-dom": "^18",
+    "postcss": "^8.4.38",
+    "react": "^19",
+    "react-dom": "^19",
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.56.3",
     "redaxios": "^0.5.1",
@@ -42,20 +43,18 @@
     "swiper": "^11.2.2",
     "swr": "^2.3.3",
     "tailwind-merge": "^2.5.5",
+    "tailwindcss": "^3.4.4",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
-    "@tailwindcss/postcss": "^4.1.7",
     "@types/axios": "^0.14.4",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.1.7",
     "typescript": "^5"
   }
 }

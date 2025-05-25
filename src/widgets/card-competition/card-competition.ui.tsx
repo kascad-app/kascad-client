@@ -15,10 +15,10 @@ export function CardCompetition({
   };
   return (
     <div
-      className="rounded-lg max-w-[15rem] min-w-[15rem] max-h-[18rem] h-full w-full bg-[#F7F7F7] flex flex-col gap-4 hover:cursor-pointer hover:opacity-70 transition-all"
+      className="rounded-lg max-w-60 min-w-60 max-h-72 h-full w-full bg-[#F7F7F7] flex flex-col gap-4 hover:cursor-pointer hover:opacity-70 transition-all"
       onClick={handleOnClick}
     >
-      <div className="w-full rounded-lg h-[9rem] relative">
+      <div className="w-full rounded-lg h-36 relative">
         {/* slot image card */}
         <Image
           src={cardProps.linkImage}

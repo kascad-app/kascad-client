@@ -1,7 +1,7 @@
 import React from "react";
 
 interface ButtonProps {
-  variant?: "outline" | "solid";
+  variant?: "outline-solid" | "solid";
   children: React.ReactNode;
   size?: string;
   delete?: boolean;
@@ -21,7 +21,7 @@ export const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       className={`
         group relative rounded transition-colors 
-        ${variant === "outline" ? "border" : "bg-blue-500 text-white"} 
+        ${variant === "outline-solid" ? "border" : "bg-blue-500 text-white"} 
         ${size === "small" ? "px-4 py-1" : "px-4 py-2"}
         ${isDelete ? "hover:bg-red-500" : ""}
       `}

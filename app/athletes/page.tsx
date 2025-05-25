@@ -22,7 +22,7 @@ export default async function AthletesPage() {
                                 height={500}
                                 className="object-cover w-full h-80 transition-transform duration-300 group-hover:scale-105"
                             />
-                            <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-white via-white/70 to-transparent p-4">
+                            <div className="absolute bottom-0 left-0 w-full bg-linear-to-t from-white via-white/70 to-transparent p-4">
                                 <h2 className="text-lg font-semibold text-gray-800">{athlete.name}</h2>
                                 <p className="text-xs text-gray-500">{athlete.sport}</p>
                             </div>

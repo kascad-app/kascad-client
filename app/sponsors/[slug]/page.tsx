@@ -151,7 +151,7 @@ export default async function SponsorPage(props: { params: Params }) {
                     alt={athlete.name}
                     className="w-full h-64 object-cover"
                   />
-                  <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 w-full h-1/2 bg-linear-to-t from-white via-white/80 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 text-sm font-medium text-gray-900">
                     {athlete.name}
                     <p className="text-xs text-gray-500">{athlete.sport}</p>

@@ -10,7 +10,7 @@ export const MainBanner = ({
       className="rounded-lg relative h-64 bg-cover bg-center flex items-center p-4"
       style={{ backgroundImage: `url(${banner.img})` }}
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-white/100 to-transparent"></div>
+      <div className="absolute inset-0 bg-linear-to-r from-white to-transparent"></div>
       <img
         src={`/${banner.logo}`}
         alt={`${banner.name} logo`}

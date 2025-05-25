@@ -7,11 +7,7 @@ const Register: React.FC = () => {
   return (
     <div className="w-screen max-w-screen flex h-screen overflow-hidden">
       <div className="bg-register z-2 bg-no-repeat bg-center bg-cover h-full w-7/12 flex justify-center items-center px-16 relative transition duration-500 ease-in">
-        <img
-          className="absolute w-64 top-50 left-50"
-          src="/views/connexion/logo-opacity.png"
-          alt=""
-        />
+        <img className="w-64" src="/views/connexion/logo-opacity.png" alt="" />
       </div>
       <div className="w-5/12 flex items-center justify-center relative transition-all duration-500 ease-in">
         <div className="z-10 w-2/3 flex flex-col items-center relative justify-center">

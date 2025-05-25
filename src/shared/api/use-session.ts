@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { ROUTES } from "../constants/ROUTES";
 import { AuthenticationTypes } from "@/entities/authentication";
@@ -13,17 +13,23 @@ const useCreateSession = (mustAuth = true): AuthenticationTypes.Session => {
   const { data: user, mutate, isLoading, isValidating } = useMe();
   const pathname = usePathname();
 
-  const redirectToLogin = React.useCallback(() => {
-    if (pathname === ROUTES.AUTH.LOGIN) return;
-    if (pathname === ROUTES.AUTH.REGISTER) return;
-    router.push(ROUTES.AUTH.LOGIN);
-  }, [router]);
+  useEffect(() => {
+    mutate();
+  }, [pathname, mutate]);
 
-  React.useEffect(() => {
-    if (mustAuth && !isAuthenticated(user) && !isLoading) {
-      redirectToLogin();
+  useEffect(() => {
+    if (!mustAuth) return;
+
+    const onUnauthenticated = () => {
+      if (pathname !== ROUTES.AUTH.LOGIN && pathname !== ROUTES.AUTH.REGISTER) {
+        router.push(ROUTES.AUTH.LOGIN);
+      }
+    };
+
+    if (!isLoading && !isAuthenticated(user)) {
+      onUnauthenticated();
     }
-  }, [mustAuth, user, isLoading, redirectToLogin, pathname]);
+  }, [user, isLoading, mustAuth, pathname, router]);
 
   function isAuthenticated(user: unknown): user is Sponsor {
     return (

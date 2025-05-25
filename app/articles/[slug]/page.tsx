@@ -2,13 +2,13 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getArticles } from "@/shared/model/articles";
 import Link from "next/link";
+import { Params } from "@/shared/types/Params";
 import { ROUTES } from "@/shared/constants/ROUTES";
 
-type Props = {
-  params: { slug: string };
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Params;
+}): Promise<Metadata> {
+  const params = await props.params;
   const articles = await getArticles();
   const article = articles.find((a) => a.slug === params.slug);
   if (!article) return {};
@@ -18,7 +18,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ArticlePage({ params }: Props) {
+export default async function ArticlePage(props: { params: Params }) {
+  const params = await props.params;
   const articles = await getArticles();
   const article = articles.find((a) => a.slug === params.slug);
   if (!article) notFound();

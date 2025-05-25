@@ -8,6 +8,7 @@ import { useSession } from "@/shared/context/SessionContext";
 import { RiderIdentity } from "@kascad-app/shared-types";
 import { Button } from "@/shared/ui/button/Button.ui";
 import { ROUTES } from "@/shared/constants/ROUTES";
+import ShapeCanvas from "../components/ShapeCanvas";
 
 export default function ProfileComponent(): JSX.Element {
   const [visibleVideos, setVisibleVideos] = useState(4);
@@ -28,11 +29,11 @@ export default function ProfileComponent(): JSX.Element {
         label: "ans",
         value:
           session.user?.identity != null &&
-            (session.user?.identity as RiderIdentity).birthDate != null
+          (session.user?.identity as RiderIdentity).birthDate != null
             ? new Date().getFullYear() -
-            new Date(
-              (session.user?.identity as RiderIdentity).birthDate,
-            ).getFullYear()
+              new Date(
+                (session.user?.identity as RiderIdentity).birthDate,
+              ).getFullYear()
             : 0,
       },
     },

@@ -6,6 +6,7 @@ import Link from "next/link";
 import BottomNav from "../components/BottomNav";
 import ArticleSlider from "@components/ui/articleSlider";
 import { useSession } from "@/shared/context/SessionContext";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 export default function Home() {
   const session = useSession();
@@ -31,8 +32,8 @@ export default function Home() {
           {/* <p className="text-lg max-w-xl mb-6">
                         Ne soyez plus seulement celle qui cherche, soyez aussi celle que l’on trouve.
                     </p> */}
-          <Link href="/profil">
-            <Button className="bg-transparent border-white border-2 text-white font-semibold hover:bg-gray-100 hover:text-black p-6">
+          <Link href={ROUTES.RIDER.PROFILE}>
+            <Button className="bg-transparent border-white border-2 text-white font-semibold hover:bg-gray-100 hover:text-black p-[1.5rem]">
               Accéder à mon profil
             </Button>
           </Link>
@@ -57,7 +58,7 @@ export default function Home() {
               <p className="text-center md:text-start">
                 Accéder à votre profil et rentrez vos informations !
               </p>
-              <Link href="/profil">
+              <Link href={ROUTES.RIDER.PROFILE}>
                 <Button className="bg-blue-700 text-white font-semibold hover:bg-blue-800 w-full z-4">
                   Accéder à mon profil
                 </Button>
@@ -78,7 +79,7 @@ export default function Home() {
                 <MessageSquare className="w-10 h-10 text-white bg-blue-700 rounded-md p-2" />
                 <p className="text-4xl text-blue-700 font-bold">23</p>
               </div>
-              <Link href="/portfolio" className="w-1/2">
+              <Link href={ROUTES.RIDER.PROFILE} className="w-1/2">
                 <Button
                   variant="outline"
                   className="text-blue-700 bg-white text-white border-blue-700 hover:bg-blue-700 hover:text-white text-blue-700 w-full"
@@ -94,7 +95,7 @@ export default function Home() {
                 <ThumbsUp className="w-10 h-10 text-white bg-blue-700 rounded-md p-2" />
                 <p className="text-4xl font-bold text-blue-700">54</p>
               </div>
-              <Link href="/portfolio" className="w-1/2">
+              <Link href={ROUTES.RIDER.PROFILE} className="w-1/2">
                 <Button
                   variant="outline"
                   className="text-blue-700 bg-white text-white border-blue-700 hover:bg-blue-700 hover:text-white text-blue-700 w-full"
@@ -117,8 +118,8 @@ export default function Home() {
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
             Complétez votre profil pour apparaître dans les recherches
           </h2>
-          <Link href="/profil">
-            <Button className="bg-transparent border-white border-2 text-white font-semibold hover:bg-gray-100 hover:text-black p-6">
+          <Link href={ROUTES.RIDER.PROFILE}>
+            <Button className="bg-transparent border-white border-2 text-white font-semibold hover:bg-gray-100 hover:text-black p-[1.5rem]">
               Compléter mon profil
             </Button>
           </Link>

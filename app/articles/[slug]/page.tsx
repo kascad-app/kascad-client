@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { getArticles } from "@/shared/model/articles";
 import Link from "next/link";
 import { Params } from "@/shared/types/Params";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 export async function generateMetadata(props: {
   params: Params;
@@ -32,7 +33,7 @@ export default async function ArticlePage(props: { params: Params }) {
       {/* Header retour */}
       <div className="mb-6">
         <Link
-          href="/home"
+          href={ROUTES.HOMEPAGE}
           className="text-sm text-blue-600 hover:underline flex items-center gap-1"
         >
           ← Retour

@@ -5,10 +5,8 @@ import { Toaster } from "sonner";
 import { Header } from "../header";
 import { usePathname } from "next/navigation";
 import { ROUTES } from "@/shared/constants/ROUTES";
-import { useSession } from "@/shared/context/SessionContext";
 
 export default function LayoutApp({ children }: { children: React.ReactNode }) {
-  const session = useSession();
   const pathName = usePathname();
   const hideComponents: boolean = [
     ROUTES.AUTH.LOGIN,

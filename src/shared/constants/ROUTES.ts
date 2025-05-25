@@ -6,4 +6,14 @@ export const ROUTES = {
     LOGIN: "/login",
     REGISTER: "/register",
   },
+
+  RIDER: {
+    PROFILE: "/profil",
+    EDIT_PROFILE: "/profil/edit",
+  },
+
+  RIDERS: {
+    LIST: "/athletes",
+    DETAIL: (slug: string) => `/athletes/${slug}`,
+  },
 };

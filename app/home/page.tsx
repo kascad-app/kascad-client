@@ -160,7 +160,7 @@ export default function Home() {
                     {[1, 2, 3, 4].map((n) => (
                         <div
                             key={n}
-                            className="min-w-[200px] bg-white rounded-xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition"
+                            className="min-w-[200px] bg-white rounded-xl border border-gray-200 p-4 shadow-xs hover:shadow-md transition"
                         >
                             <h4 className="text-lg font-semibold mb-1">Contest #{n}</h4>
                             <p className="text-sm text-gray-500 mb-1">Date : 2025-03-0{n}</p>

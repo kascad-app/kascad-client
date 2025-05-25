@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import ShapeCanvas from "../../profil/ShapeCanvas";
+import ShapeCanvas from "../../components/ShapeCanvas";
 
 export default function AthleteProfile() {
   const params = useParams();
@@ -33,7 +33,7 @@ export default function AthleteProfile() {
 
   return (
     <div className="overflow-x-hidden">
-      <div className="relative flex justify-center items-center flex-col w-full h-[100dvh]">
+      <div className="relative flex justify-center items-center flex-col w-full h-dvh">
         <ShapeCanvas className="absolute z-[-1] pointer-events-none filter blur-[20px]" />
         <p className="text-2xl leading-[30px] font-michroma">{Profile.sport}</p>
         <h1>{Profile.name}</h1>

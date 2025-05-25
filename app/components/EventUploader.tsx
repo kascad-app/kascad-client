@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { uploadToCloudinary } from "@/uploadToCloudinary";
 
 interface EventData {
     name: string;
@@ -30,14 +31,15 @@ export default function EventUploader({ onAdd, trigger, mode }: EventUploaderPro
         image: "",
     });
 
-    const onDrop = (acceptedFiles: File[]) => {
+    const onDrop = async (acceptedFiles: File[]) => {
         const file = acceptedFiles[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setNewEvent((prev) => ({ ...prev, image: reader.result as string }));
-            };
-            reader.readAsDataURL(file);
+            try {
+                const imageUrl = await uploadToCloudinary(file);
+                setNewEvent((prev) => ({ ...prev, image: imageUrl }));
+            } catch (error) {
+                console.error("Erreur lors de l'envoi à Cloudinary", error);
+            }
         }
     };
 

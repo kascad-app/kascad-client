@@ -4,7 +4,6 @@ import Image from "next/image";
 import "./profile.css";
 import Link from "next/link";
 import { useState } from "react";
-import ShapeCanvas from "./ShapeCanvas";
 import { useSession } from "@/shared/context/SessionContext";
 import { RiderIdentity } from "@kascad-app/shared-types";
 import { Button } from "@/shared/ui/button/Button.ui";
@@ -29,11 +28,11 @@ export default function ProfileComponent(): JSX.Element {
         label: "ans",
         value:
           session.user?.identity != null &&
-          (session.user?.identity as RiderIdentity).birthDate != null
+            (session.user?.identity as RiderIdentity).birthDate != null
             ? new Date().getFullYear() -
-              new Date(
-                (session.user?.identity as RiderIdentity).birthDate,
-              ).getFullYear()
+            new Date(
+              (session.user?.identity as RiderIdentity).birthDate,
+            ).getFullYear()
             : 0,
       },
     },
@@ -116,7 +115,7 @@ export default function ProfileComponent(): JSX.Element {
 
   return (
     <div className="overflow-x-hidden">
-      <div className="relative flex justify-center items-center flex-col w-screen h-[100dvh]">
+      <div className="relative flex justify-center items-center flex-col w-screen h-dvh">
         <div className="absolute top-5 right-5 flex flex-col gap-2">
           <Link href={ROUTES.RIDER.EDIT_PROFILE}>
             <Button>Modifier le profil</Button>

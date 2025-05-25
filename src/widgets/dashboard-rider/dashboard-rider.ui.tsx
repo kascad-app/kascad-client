@@ -70,7 +70,7 @@ export const DashboardRidersWidget: React.FC = () => {
   }, [chartData]);
 
   return (
-    <div className="p-6 max-w-7xl mx-auto w-full h-[calc(100vh-theme(spacing.24))]">
+    <div className="p-6 max-w-7xl mx-auto w-full h-[calc(100vh-(--spacing(24)))]">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-semibold">
           Bonjour{" "}
@@ -97,7 +97,7 @@ export const DashboardRidersWidget: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[calc(100%-theme(spacing.20))]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[calc(100%-(--spacing(20)))]">
         <div className="flex flex-col gap-20">
           <h2 className="text-xl font-semibold mb-4">Compétitions à venir</h2>
           <div className="flex items-start justify-start gap-4 overflow-x-scroll pb-4">
@@ -105,8 +105,8 @@ export const DashboardRidersWidget: React.FC = () => {
               <CardCompetition key={index} cardProps={competition} />
             ))}
           </div>
-          <div className="w-full max-w-3xl mx-auto h-48 overflow-hidden rounded-lg border-[2px] border-[#EDEDED]">
-            <div className="relative h-full flex items-center justify-between p-6 bg-gradient-to-r from-white to-blue-50">
+          <div className="w-full max-w-3xl mx-auto h-48 overflow-hidden rounded-lg border-2 border-[#EDEDED]">
+            <div className="relative h-full flex items-center justify-between p-6 bg-linear-to-r from-white to-blue-50">
               <div className="z-10 flex flex-col justify-between space-y-4 w-2/3">
                 <h2 className="text-xl text-gray-900">
                   Votre profil manque d&apos;informations !

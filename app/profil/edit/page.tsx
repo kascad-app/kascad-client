@@ -17,7 +17,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import ShapeCanvas from "../ShapeCanvas";
+import ShapeCanvas from "../../components/ShapeCanvas";
 import { RiderIdentity, GenderIdentity } from "@kascad-app/shared-types";
 import { Dialog, DialogContent, DialogTrigger } from "@components/ui/dialog";
 import EventUploader from "../../components/EventUploader";
@@ -135,7 +135,7 @@ export default function EditProfile() {
   const [slide, setSlide] = useState(0);
 
   return (
-    <div className="relative max-w-7xl mx-auto p-6 space-y-6  w-[100vw] flex flex-col">
+    <div className="relative max-w-7xl mx-auto p-6 space-y-6  w-screen flex flex-col">
       {/* <ShapeCanvas canvasHeight={700} canvasWidth={700} className="absolute pointer-events-none bottom-0 translate-y-1/2 left-8" /> */}
       <h2 className="text-2xl font-semibold">Modifier le profil</h2>
 
@@ -144,11 +144,10 @@ export default function EditProfile() {
         {slides.map((label, index) => (
           <button
             key={label}
-            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${
-              slide === index
+            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${slide === index
                 ? "border-blue-500 text-blue-600"
                 : "border-transparent text-gray-500"
-            }`}
+              }`}
             onClick={() => setSlide(index)}
           >
             {label}
@@ -215,8 +214,8 @@ export default function EditProfile() {
                     try {
                       return profile.birthDate
                         ? new Date(profile.birthDate)
-                            .toISOString()
-                            .split("T")[0]
+                          .toISOString()
+                          .split("T")[0]
                         : new Date().toISOString().split("T")[0];
                     } catch {
                       return new Date().toISOString().split("T")[0];
@@ -346,7 +345,7 @@ export default function EditProfile() {
                 {profile.events.map((event, index) => (
                   <div
                     key={index}
-                    className="w-36 flex-shrink-0 flex flex-col gap-2 rounded shadow-sm bg-white p-2 border"
+                    className="w-36 shrink-0 flex flex-col gap-2 rounded shadow-xs bg-white p-2 border"
                   >
                     <img
                       src={event.image}

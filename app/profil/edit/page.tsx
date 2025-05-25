@@ -21,6 +21,7 @@ import ShapeCanvas from "../../components/ShapeCanvas";
 import { RiderIdentity, GenderIdentity } from "@kascad-app/shared-types";
 import { Dialog, DialogContent, DialogTrigger } from "@components/ui/dialog";
 import EventUploader from "../../components/EventUploader";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 interface Option {
   label: string;
@@ -432,7 +433,10 @@ export default function EditProfile() {
 
       {/* Actions */}
       <div className="flex justify-end gap-4 mt-8">
-        <Button variant="outline" onClick={() => router.push("/profile")}>
+        <Button
+          variant="outline"
+          onClick={() => router.push(ROUTES.RIDER.PROFILE)}
+        >
           Annuler
         </Button>
         <Button
@@ -452,7 +456,7 @@ export default function EditProfile() {
               description: profile.description,
             });
             toast.success("Profil mis à jour avec succès");
-            router.push("/profile");
+            router.push(ROUTES.RIDER.PROFILE);
           }}
         >
           Sauvegarder

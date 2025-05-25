@@ -18,7 +18,6 @@ module.exports = {
         login: "url('/views/connexion/loginRider.png')",
         "footer-background": "url('/views/footer/footerBackground.png')",
         "dark-gradient": "linear-gradient(180deg, #212121 0%, #0B0B0B 100%)",
-        "eclipse-gradient": "url('/views/onBoard/Eclipse.svg')",
       },
       colors: {
         "black-gradient": "linear-gradient(180deg, #212121, #0B0B0B)",

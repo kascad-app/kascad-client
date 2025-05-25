@@ -6,7 +6,7 @@ export default function SponsorCard({ sponsor }: { sponsor: any; }) {
     const [liked, setLiked] = useState(false);
 
     return (
-        <div className="relative rounded-lg overflow-hidden shadow hover:shadow-md transition bg-white">
+        <div className="relative rounded-lg overflow-hidden shadow-sm hover:shadow-md transition bg-white">
             <img
                 src={sponsor.image}
                 alt={sponsor.name}

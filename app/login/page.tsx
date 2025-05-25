@@ -30,11 +30,7 @@ const Login: React.FC = () => {
         </div>
       </div>
       <div className="bg-login z-2 bg-no-repeat bg-center bg-cover h-full w-7/12 flex justify-center items-center px-16 relative transition duration-500 ease-in">
-        <img
-          className="absolute w-64 top-50 left-50"
-          src="/views/connexion/logo-opacity.png"
-          alt=""
-        />
+        <img className="w-64" src="/views/connexion/logo-opacity.png" alt="" />
       </div>
     </div>
   );

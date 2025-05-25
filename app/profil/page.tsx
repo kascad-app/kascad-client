@@ -115,7 +115,7 @@ export default function ProfileComponent(): JSX.Element {
 
   return (
     <div className="overflow-x-hidden">
-      <div className="relative flex justify-center items-center flex-col w-screen h-[100dvh]">
+      <div className="relative flex justify-center items-center flex-col w-screen h-dvh">
         <div className="absolute top-5 right-5 flex flex-col gap-2">
           <Link href="/profile/edit">
             <Button>Modifier le profil</Button>

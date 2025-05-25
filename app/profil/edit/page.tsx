@@ -134,7 +134,7 @@ export default function EditProfile() {
   const [slide, setSlide] = useState(0);
 
   return (
-    <div className="relative max-w-7xl mx-auto p-6 space-y-6  w-[100vw] flex flex-col">
+    <div className="relative max-w-7xl mx-auto p-6 space-y-6  w-screen flex flex-col">
       {/* <ShapeCanvas canvasHeight={700} canvasWidth={700} className="absolute pointer-events-none bottom-0 translate-y-1/2 left-8" /> */}
       <h2 className="text-2xl font-semibold">Modifier le profil</h2>
 
@@ -344,7 +344,7 @@ export default function EditProfile() {
                 {profile.events.map((event, index) => (
                   <div
                     key={index}
-                    className="w-36 flex-shrink-0 flex flex-col gap-2 rounded shadow-sm bg-white p-2 border"
+                    className="w-36 shrink-0 flex flex-col gap-2 rounded shadow-xs bg-white p-2 border"
                   >
                     <img
                       src={event.image}

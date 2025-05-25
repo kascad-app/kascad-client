@@ -6,7 +6,7 @@ import { useSession } from "@/shared/context/SessionContext";
 export const Header: React.FC = () => {
   const session = useSession();
   return (
-    <header className="bg-white text-gray-800 fixed z-[100] top-0 px-24 py-8 flex items-center w-full justify-between">
+    <header className="bg-white text-gray-800 fixed z-100 top-0 px-24 py-8 flex items-center w-full justify-between">
       {/* <img src="/views/logos/logoSquare.svg" alt="Logo" className="h-12 mr-4" /> */}
       <div className="flex gap-4 name-side">
         <h2 className="font-michroma font-medium text-lg">

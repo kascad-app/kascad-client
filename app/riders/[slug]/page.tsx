@@ -1,61 +1,79 @@
-// app/riders/[slug]/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Image from "next/image";
-import { getRiders, RiderDisplay } from "@/shared/model/riders";
+import { useGetRider } from "@/entities/riders/riders.hooks";
 import { DividerSvg } from "@/widgets/divider-svg";
-import * as React from "react";
+import Image from "next/image";
+import { useParams } from "next/navigation";
 import ShapeCanvas from "../../components/ShapeCanvas";
 
 export default function RiderPage() {
     const { slug } = useParams();
-    const [rider, setRider] = useState<RiderDisplay | null>(null);
+    const { data: rider, isLoading, error } = useGetRider(slug as string);
 
-    useEffect(() => {
-        getRiders().then((riders) => {
-            const found = riders.find((r) => r.slug === slug);
-            if (found) setRider(found);
-            console.log(found);
-        });
-    }, [slug]);
+    if (isLoading) return <p className="p-8">Chargement du profil...</p>;
+    if (error || !rider) return <p className="p-8 text-red-500">Rider introuvable.</p>;
 
-    if (!rider) return null;
+    const fullName =
+        rider.identity.fullName ||
+        `${rider.identity.firstName} ${rider.identity.lastName}`;
+    const sports = rider.preferences?.sports?.map((s) => s.name) || [];
+    const age = new Date().getFullYear() - new Date(rider.identity.birthDate).getFullYear();
+    const location = `${rider.identity.city}, ${rider.identity.country}`;
+    const images = rider.images?.map((img) => img.url) || [];
 
     return (
-        <div className="overflow-x-hidden">
-            <div className="relative flex justify-center items-center flex-col w-screen h-[100dvh]">
-                <ShapeCanvas className="absolute z-[-1] pointer-events-none filter blur-[20px]" />
-
-                <p className="text-2xl leading-[30px] font-michroma">{rider.sport.join(", ")}</p>
-                <h1 className="text-4xl font-bold text-center">{rider.name}</h1>
+        <div className="">
+            <div className="flex justify-center items-center flex-col w-screen min-h-[100dvh]">
+                <ShapeCanvas className="absolute z-[-1] pointer-events-none filter blur-[20px] max-h-[100dvh]" />
+                <p className="text-2xl leading-[30px] font-michroma">{sports.join(", ")}</p>
+                <h1 className="text-4xl font-bold text-center">{fullName}</h1>
             </div>
 
             <div className="flex mt-24 mx-auto max-w-[1200px] gap-10">
                 <div className="profile_infos_image w-1/2">
-                    <Image
-                        src={rider.images?.[0] || "/placeholder.jpg"}
-                        alt={rider.name}
+                    {/* <Image
+                        src={images[0] || "/placeholder.jpg"}
+                        alt={fullName}
                         width={600}
                         height={800}
                         className="rounded-2xl object-cover w-full h-full"
+                        onError={(e) => {
+                            const target = e.currentTarget as HTMLImageElement;
+                            target.src = "./assets/img/blog-5.jpg";
+                        }}
+                    /> */}
+                    <Image
+                        src={"https://images.unsplash.com/photo-1563297592-fc163070b609?q=80&w=2565&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+                        alt={fullName}
+                        width={600}
+                        height={800}
+                        className="rounded-2xl object-cover w-full h-full"
+                        onError={(e) => {
+                            const target = e.currentTarget as HTMLImageElement;
+                            target.src = "./assets/img/blog-5.jpg";
+                        }}
                     />
+
                 </div>
                 <div className="profile_infos_content w-1/2">
-                    <p className="mb-4 text-sm text-gray-700 whitespace-pre-line">{rider.bio}</p>
+                    <p className="mb-4 text-sm text-gray-700 whitespace-pre-line">
+                        {rider.identity.practiceLocation || "Pas de bio disponible."}
+                    </p>
                     <div className="profile_infos_stats grid grid-cols-2 gap-4 mb-4">
                         <div>
-                            <div className="text-2xl font-bold">{rider.age}</div>
+                            <div className="text-2xl font-bold">{age}</div>
                             <div className="text-sm text-gray-500">ans</div>
                         </div>
                         <div>
-                            <div className="text-sm text-gray-700">{rider.location}</div>
+                            <div className="text-sm text-gray-700">{location}</div>
                         </div>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                        {rider.sport.map((s, i) => (
-                            <span key={i} className="px-3 py-1 text-xs border rounded-full bg-gray-100">
+                        {sports.map((s, i) => (
+                            <span
+                                key={i}
+                                className="px-3 py-1 text-xs border rounded-full bg-gray-100"
+                            >
                                 {s}
                             </span>
                         ))}
@@ -64,19 +82,34 @@ export default function RiderPage() {
             </div>
 
             <div className="profile_medias relative">
-                <DividerSvg />
 
                 <div className="mt-32 px-4">
                     <h3 className="mb-6 text-3xl font-[Michroma] text-white uppercase">Images</h3>
-                    <div className="flex flex-wrap gap-4">
-                        {rider.images.map((img, index) => (
+                    <div className="flex flex-wrap justify-center gap-4">
+                        {images.map((img, index) => (
+                            // <Image
+                            //     key={index}
+                            //     src={img || "/placeholder.jpg"}
+                            //     alt={`Image ${index + 1}`}
+                            //     width={300}
+                            //     height={300}
+                            //     className="rounded-xl object-cover aspect-[3/4] w-[calc(25%-8px)]"
+                            //     onError={(e) => {
+                            //         const target = e.currentTarget as HTMLImageElement;
+                            //         target.src = "/placeholder.jpg";
+                            //     }}
+                            // />
                             <Image
                                 key={index}
-                                src={img}
+                                src={"https://images.unsplash.com/photo-1542531365-8cedfed02b04?q=80&w=2477&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
                                 alt={`Image ${index + 1}`}
                                 width={300}
                                 height={300}
                                 className="rounded-xl object-cover aspect-[3/4] w-[calc(25%-8px)]"
+                                onError={(e) => {
+                                    const target = e.currentTarget as HTMLImageElement;
+                                    target.src = "/placeholder.jpg";
+                                }}
                             />
                         ))}
                     </div>

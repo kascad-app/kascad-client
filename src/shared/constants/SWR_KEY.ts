@@ -10,4 +10,8 @@ export const SWR_KEY = {
     RIDERS: "/riders",
     RIDER: (id: string) => `/riders/${id}`,
   },
+  CONTRACT: {
+    CONTRACTS: "/contracts",
+    CONTRACT: (id: string) => `/contracts/${id}`,
+  },
 };

@@ -9,6 +9,7 @@ import Image from "next/image";
 import { Star, MapPin, DollarSign, Gift, MountainSnow } from "lucide-react";
 import { Proposition, getPropositions } from "@/shared/model/proposition"
 import { MessageThread, getMessages } from "@/shared/model/message";
+import { useGetContracts, useGetContract } from "@/entities/contracts/contracts.hooks";
 
 
 // Type sponsor enrichi
@@ -35,7 +36,16 @@ export default function Messagerie() {
     const [messageDialogOpen, setMessageDialogOpen] = useState(false);
     const [showResponseInput, setShowResponseInput] = useState(false);
     const [responseText, setResponseText] = useState("");
-    
+
+    const dataContracts = useGetContracts();
+    dataContracts.trigger();
+    console.log('dataContracts: ', dataContracts);
+
+    dataContracts.data?.forEach((contract) => {
+        const contractData = useGetContract(contract.id);
+        contractData.trigger();
+        console.log('contractData: ', contractData);
+    });
 
     useEffect(() => {
         async function fetchData() {

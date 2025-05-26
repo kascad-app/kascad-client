@@ -18,8 +18,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       '@kascad-app/shared-types':
-        specifier: ^1.3.14
-        version: 1.3.14
+        specifier: ^1.4.1
+        version: 1.4.1
       '@radix-ui/react-dialog':
         specifier: ^1.1.14
         version: 1.1.14(@types/react-dom@18.3.7(@types/react@18.3.22))(@types/react@18.3.22)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -856,8 +856,8 @@ packages:
   '@kascad-app/prettier-config@1.0.0':
     resolution: {integrity: sha512-oL3PIPHz2zF9RM+WPIWzRIErXEjsSRNSVl79FYchh8U87fKbRV9FVywBdIsro+Qu+K0jgE1+n1OXFIuwFbSbaw==, tarball: https://npm.pkg.github.com/download/@kascad-app/prettier-config/1.0.0/806738848d696cd1c98e7a0a66b9294a2ae41ea6}
 
-  '@kascad-app/shared-types@1.3.14':
-    resolution: {integrity: sha512-HqrsDsxmLDs/B7ysi5N8Vwx2VJdoWqOFPWXy27SZaPnMwD/HlHLgnzVp+/7YgSyI73Xirh+6VkULGhdTSNIEkg==, tarball: https://npm.pkg.github.com/download/@kascad-app/shared-types/1.3.14/8e92247f26a7182be098949b97d09634536552d7}
+  '@kascad-app/shared-types@1.4.1':
+    resolution: {integrity: sha512-pAAI+82wd2+NKXrmrbQW6HQLy7ZViyOhcbX0lVpkEN9ouVpM0iHkr38ixv43LaCtFU9yxrpOMqS9kFmh+r0SkQ==, tarball: https://npm.pkg.github.com/download/@kascad-app/shared-types/1.4.1/c6ee69189dabf10520460a3bd3c11c7d566473fe}
 
   '@kurkle/color@0.3.4':
     resolution: {integrity: sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==}
@@ -3182,7 +3182,7 @@ snapshots:
 
   '@kascad-app/prettier-config@1.0.0': {}
 
-  '@kascad-app/shared-types@1.3.14': {}
+  '@kascad-app/shared-types@1.4.1': {}
 
   '@kurkle/color@0.3.4': {}
 

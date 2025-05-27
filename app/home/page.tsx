@@ -89,10 +89,14 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl transition w-full border border-blue-700">
-              <p className="text-md text-blue-700 mb-4">Vues sur mon profil</p>
+              <p className="text-md text-blue-700 mb-4">
+                Vues sur mon profil ce mois
+              </p>
               <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
                 <ThumbsUp className="w-10 h-10 text-white bg-blue-700 rounded-md p-2" />
-                <p className="text-4xl font-bold text-blue-700">54</p>
+                <p className="text-4xl font-bold text-blue-700">
+                  {session.user?.tempViewsStats.monthlyViews || 0}
+                </p>
               </div>
               <Link href="/portfolio" className="w-1/2">
                 <Button

@@ -8,6 +8,6 @@ export const SWR_KEY = {
   },
   RIDER: {
     RIDERS: "/riders",
-    RIDER: (id: string) => `/riders/${id}`,
+    RIDER: (slug: string) => `/riders/${slug}`,
   },
 };

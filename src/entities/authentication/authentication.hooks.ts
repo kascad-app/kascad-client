@@ -5,14 +5,15 @@ import {
   loginRiderDto,
   registerRiderDto,
   Rider,
+  RiderMe,
 } from "@kascad-app/shared-types";
 import { requester } from "@/lib/requester/requester";
 import { sendSWRRequest } from "@/lib/swr/use-swr";
 import { SWR_KEY } from "@/shared/constants/SWR_KEY";
 
 export function useMe() {
-  return useSWR<Rider>(SWR_KEY.AUTH.ME, () =>
-    requester().get<Rider>(SWR_KEY.AUTH.ME),
+  return useSWR<RiderMe>(SWR_KEY.AUTH.ME, () =>
+    requester().get<RiderMe>(SWR_KEY.AUTH.ME),
   );
 }
 

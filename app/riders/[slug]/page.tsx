@@ -1,10 +1,8 @@
 "use client";
 
 import { useGetRider } from "@/entities/riders/riders.hooks";
-import { DividerSvg } from "@/widgets/divider-svg";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import ShapeCanvas from "../../components/ShapeCanvas";
 
 export default function RiderPage() {
     const { slug } = useParams();
@@ -24,7 +22,6 @@ export default function RiderPage() {
     return (
         <div className="">
             <div className="flex justify-center items-center flex-col w-screen min-h-[100dvh]">
-                <ShapeCanvas className="absolute z-[-1] pointer-events-none filter blur-[20px] max-h-[100dvh]" />
                 <p className="text-2xl leading-[30px] font-michroma">{sports.join(", ")}</p>
                 <h1 className="text-4xl font-bold text-center">{fullName}</h1>
             </div>

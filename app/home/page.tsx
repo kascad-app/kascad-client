@@ -174,7 +174,7 @@ export default function Home() {
                 </div>
             </section> */}
 
-      <BottomNav />
+      {/* <BottomNav /> */}
     </main>
   );
 }

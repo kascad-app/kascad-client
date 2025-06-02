@@ -35,10 +35,10 @@ export const Navbar = () => {
         <Link href="/home">
           <Home />
         </Link>
-        <Link href="/profile">
+        <Link href="/profil">
           <User />
         </Link>
-        <Link href={"/profile/edit"}>
+        <Link href={"/profil/edit"}>
           <Settings />
         </Link>
         {/* <p onClick={() => session.loggedIn && logoutMutation.trigger()}>

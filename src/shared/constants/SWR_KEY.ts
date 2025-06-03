@@ -5,6 +5,7 @@ export const SWR_KEY = {
     REGISTER: "/auth/rider/register",
     REFRESH_TOKEN: "/auth/rider/refresh-token",
     LOGOUT: "/auth/rider/logout",
+    UPDATE: "/auth/rider/update",
   },
   RIDER: {
     RIDERS: "/riders",

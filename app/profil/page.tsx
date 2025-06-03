@@ -2,7 +2,7 @@
 
 import { useSession } from "@/shared/context/SessionContext";
 import { useState } from "react";
-import { RiderIdentity, TricksVideo, Image as RiderImage } from "@kascad-app/shared-types";
+import { RiderIdentity, TricksVideo, Image as RiderImage, SocialNetwork } from "@kascad-app/shared-types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
@@ -28,9 +28,8 @@ export default function ProfileComponent() {
   const images: RiderImage[] = session.user.images || [];
   const videos: TricksVideo[] = session.user.performanceSummary?.performanceVideos || [];
 
-  const networks = session.user.preferences?.networks || [];
-  const getSocialUrl = (type: string) =>
-    networks.find((n) => n.type === type)?.url || "#";
+  const networks: SocialNetwork[] = session.user.preferences?.networks || [];
+  const hasNetwork = (type: SocialNetwork) => networks.includes(type);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
@@ -119,17 +118,18 @@ export default function ProfileComponent() {
       <section>
         <h2 className="text-2xl font-semibold mb-4">Réseaux sociaux</h2>
         <div className="flex gap-6 items-center">
-          <Link href={getSocialUrl("instagram")} target="_blank">
+          {hasNetwork(SocialNetwork.INSTAGRAM) && (
             <img src="/views/logos/instagram-line.svg" alt="Instagram" className="w-8 h-8" />
-          </Link>
-          <Link href={getSocialUrl("youtube")} target="_blank">
-            <img src="/views/logos/facebook-circle-fill.svg" alt="YouTube" className="w-8 h-8" />
-          </Link>
-          <Link href={getSocialUrl("twitter")} target="_blank">
+          )}
+          {hasNetwork(SocialNetwork.YOUTUBE) && (
+            <img src="/views/logos/youtube-fill.svg" alt="YouTube" className="w-8 h-8" />
+          )}
+          {hasNetwork(SocialNetwork.TWITTER) && (
             <img src="/views/logos/twitter-x-line.svg" alt="Twitter" className="w-8 h-8" />
-          </Link>
+          )}
         </div>
       </section>
+
     </div>
   );
 }

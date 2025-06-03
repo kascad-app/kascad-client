@@ -128,7 +128,9 @@ export default function EditProfile() {
       identifier: {
         email: profile.email,
         slug: slugify(fullName || profile.email, { lower: true }),
-        // strava: "",
+        strava: {
+          isLinked: false,
+        }
       },
       identity: {
         fullName,

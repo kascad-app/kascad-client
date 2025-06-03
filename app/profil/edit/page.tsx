@@ -79,7 +79,9 @@ export default function EditProfile() {
       sponsors: session.user.sponsorSummary?.currentSponsors || [],
       events: [],
       videos: [],
-      images: session.user.images || [],
+      images: (session.user.images || []).map((img) =>
+        typeof img === "string" ? img : img.url
+      ),
     };
 
     const parse = profileSchema.safeParse(loadedProfile);
@@ -126,23 +128,27 @@ export default function EditProfile() {
       identifier: {
         email: profile.email,
         slug: slugify(fullName || profile.email, { lower: true }),
+        // strava: "",
       },
       identity: {
         fullName,
         firstName: profile.firstName,
         lastName: profile.lastName,
         gender: profile.gender,
-        birthDate: new Date(profile.birthDate).getTime(),
+        birthDate: new Date(profile.birthDate),
         city: profile.address,
         country: "",
         languageSpoken: [],
         practiceLocation: "",
         bio: profile.bio,
       },
-      currentSponsorSummary: {
-        currentSponsors: profile.sponsors,
-      },
-      images: profile.images,
+      // currentSponsorSummary: {
+      //   currentSponsors: profile.sponsors,
+      // },
+      images: profile.images.map((url) => ({
+        url,
+        uploadDate: new Date(),
+      })),
     };
   }
 

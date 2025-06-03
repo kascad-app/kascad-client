@@ -17,10 +17,25 @@ export const useAPI = <T = unknown>(
 
 export async function sendSWRRequest<T, P>(
   url: string,
-  { arg }: { arg: P } = { arg: {} as P },
+  { arg }: { arg: P; } = { arg: {} as P },
 ): Promise<T> {
   return requester()
     .post<T>(url, {
+      data: arg === undefined ? {} : arg,
+    })
+    .then((res) => res)
+    .catch((err) => {
+      throw err;
+    });
+}
+
+
+export async function sendPUTSWRRequest<T, P>(
+  url: string,
+  { arg }: { arg: P; } = { arg: {} as P },
+): Promise<T> {
+  return requester()
+    .put<T>(url, {
       data: arg === undefined ? {} : arg,
     })
     .then((res) => res)

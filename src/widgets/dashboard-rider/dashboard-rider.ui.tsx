@@ -111,7 +111,7 @@ export const DashboardRidersWidget: React.FC = () => {
                 <h2 className="text-xl text-gray-900">
                   Votre profil manque d&apos;informations !
                 </h2>
-                <Link href={ROUTES.RIDER.PROFILE}>
+                <Link href="/profil">
                   <Button variant="default" className="bg-blue-600 text-white">
                     {" "}
                     Accéder à mon profil{" "}

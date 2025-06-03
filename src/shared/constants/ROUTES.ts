@@ -13,7 +13,7 @@ export const ROUTES = {
   },
 
   RIDERS: {
-    LIST: "/athletes",
-    DETAIL: (slug: string) => `/athletes/${slug}`,
+    LIST: "/riders",
+    DETAIL: (slug: string) => `/riders/${slug}`,
   },
 };

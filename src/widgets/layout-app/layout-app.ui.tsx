@@ -5,8 +5,9 @@ import { Toaster } from "sonner";
 import { Header } from "../header";
 import { usePathname } from "next/navigation";
 import { ROUTES } from "@/shared/constants/ROUTES";
+import BottomNav from "../../../app/components/BottomNav";
 
-export default function LayoutApp({ children }: { children: React.ReactNode }) {
+export default function LayoutApp({ children }: { children: React.ReactNode; }) {
   const pathName = usePathname();
   const hideComponents: boolean = [
     ROUTES.AUTH.LOGIN,
@@ -18,7 +19,7 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
     <div className={hideComponents ? "" : "pt-[97px]"}>
       {!hideComponents && <Header />}
       {children}
-      {!hideComponents && <Navbar />}
+      {!hideComponents && <BottomNav />}
       <Toaster position="top-right" richColors />
     </div>
   );

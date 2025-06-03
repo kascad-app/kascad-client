@@ -2,7 +2,13 @@
 
 import { useSession } from "@/shared/context/SessionContext";
 import { useState } from "react";
-import { RiderIdentity, TricksVideo, Image as RiderImage, SocialNetwork } from "@kascad-app/shared-types";
+import {
+  RiderIdentity,
+  TricksVideo,
+  Image as RiderImage,
+  SocialNetwork,
+  Language,
+} from "@kascad-app/shared-types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
@@ -20,16 +26,25 @@ export default function ProfileComponent() {
 
   const identity = session.user.identity as RiderIdentity;
   const fullName = identity.fullName || `${identity.firstName} ${identity.lastName}`;
-  const birthYear = identity.birthDate ? new Date(identity.birthDate).getFullYear() : null;
-  const age = birthYear ? new Date().getFullYear() - birthYear : "N/A";
+  const birthDate = identity.birthDate ? new Date(identity.birthDate) : null;
+  const age = birthDate
+    ? new Date().getFullYear() - birthDate.getFullYear() -
+    (new Date().getMonth() < birthDate.getMonth() ||
+      (new Date().getMonth() === birthDate.getMonth() && new Date().getDate() < birthDate.getDate())
+      ? 1
+      : 0)
+    : "N/A";
   const location = identity.city ? `${identity.city}, ${identity.country}` : identity.country || "Localisation inconnue";
-  const bio = session.user.description || "Ce rider n'a pas encore renseigné sa biographie.";
+  const bio = session.user.identity.bio || "Ce rider n'a pas encore renseigné sa biographie.";
 
   const images: RiderImage[] = session.user.images || [];
   const videos: TricksVideo[] = session.user.performanceSummary?.performanceVideos || [];
 
-  const networks: SocialNetwork[] = session.user.preferences?.networks || [];
+  const networks: SocialNetwork[] = session.user.preferences?.networks?.map(n => n as SocialNetwork) || [];
   const hasNetwork = (type: SocialNetwork) => networks.includes(type);
+
+  const rawLanguages = session.user.identity?.languageSpoken || [];
+  const languages: Language[] = rawLanguages.map((lang) => typeof lang === "string" ? Language[lang as keyof typeof Language] : lang);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
@@ -38,6 +53,7 @@ export default function ProfileComponent() {
           <h1 className="text-3xl font-bold tracking-tight">{fullName}</h1>
           <p className="text-muted-foreground">{location}</p>
           <p className="text-sm">Âge : {age}</p>
+          {birthDate && <p className="text-sm">Date de naissance : {birthDate.toLocaleDateString("fr-FR")}</p>}
         </div>
         <div className="flex gap-2">
           <Link href="/profil/edit">
@@ -115,21 +131,29 @@ export default function ProfileComponent() {
         </section>
       )}
 
-      <section>
+      <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Réseaux sociaux</h2>
-        <div className="flex gap-6 items-center">
-          {hasNetwork(SocialNetwork.INSTAGRAM) && (
-            <img src="/views/logos/instagram-line.svg" alt="Instagram" className="w-8 h-8" />
-          )}
-          {hasNetwork(SocialNetwork.YOUTUBE) && (
-            <img src="/views/logos/youtube-fill.svg" alt="YouTube" className="w-8 h-8" />
-          )}
-          {hasNetwork(SocialNetwork.TWITTER) && (
-            <img src="/views/logos/twitter-x-line.svg" alt="Twitter" className="w-8 h-8" />
-          )}
+        <div className="flex gap-4 flex-wrap">
+          {Object.values(SocialNetwork).map((network) => (
+            hasNetwork(network as SocialNetwork) && (
+              <span key={network} className="text-sm border px-3 py-1 rounded-full bg-gray-100">
+                {(network as string).charAt(0).toUpperCase() + (network as string).slice(1)}
+              </span>
+            )
+          ))}
         </div>
       </section>
 
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold mb-4">Langues parlées</h2>
+        <div className="flex gap-4 flex-wrap">
+          {languages.map((lang, i) => (
+            <span key={i} className="text-sm border px-3 py-1 rounded-full bg-gray-100">
+              {lang === Language.FR ? "Français" : "Anglais"}
+            </span>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

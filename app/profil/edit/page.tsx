@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateOne } from "@/entities/riders/riders.hooks";
 import { useSession } from "@/shared/context/SessionContext";
-import { GenderIdentity, Rider, RiderIdentity } from "@kascad-app/shared-types";
+import { GenderIdentity, Language, Rider, RiderIdentity, SocialNetwork } from "@kascad-app/shared-types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -40,6 +40,8 @@ const profileSchema = z.object({
   })),
   videos: z.array(z.string()),
   images: z.array(z.string()),
+  language: z.nativeEnum(Language),
+  socialNetworks: z.array(z.nativeEnum(SocialNetwork)),
 });
 
 type ProfileState = z.infer<typeof profileSchema>;
@@ -50,7 +52,6 @@ export default function EditProfile() {
   const updateRiderMutation = useUpdateOne();
 
   const [profile, setProfile] = useState<ProfileState | null>(null);
-  const [openDialog, setOpenDialog] = useState(false);
   const [slide, setSlide] = useState(0);
 
   useEffect(() => {
@@ -64,7 +65,6 @@ export default function EditProfile() {
         : typeof identity?.birthDate === "string"
           ? new Date(identity.birthDate).toISOString()
           : new Date().toISOString();
-
 
     const loadedProfile: ProfileState = {
       firstName: identity?.firstName || "Prénom",
@@ -82,6 +82,8 @@ export default function EditProfile() {
       images: (session.user.images || []).map((img) =>
         typeof img === "string" ? img : img.url
       ),
+      language: Language.FR,
+      socialNetworks: session.user.preferences?.networks || [],
     };
 
     const parse = profileSchema.safeParse(loadedProfile);
@@ -93,28 +95,6 @@ export default function EditProfile() {
     setProfile(loadedProfile);
   }, [session.user]);
 
-  const trainingOptions: Option[] = [
-    { label: "Par semaine", value: "week" },
-    { label: "Par mois", value: "month" },
-  ];
-
-  const handleTrainingUnitChange = (value: string) => {
-    if (!profile) return;
-    setProfile((prev) =>
-      prev
-        ? {
-          ...prev,
-          trainingUnit: value as "week" | "month",
-          trainingFrequency: Math.min(
-            prev.trainingFrequency,
-            value === "week" ? 7 : 30
-          ),
-        }
-        : prev
-    );
-  };
-
-  const maxFrequency = profile?.trainingUnit === "week" ? 7 : 30;
   const slides = [
     "À propos",
     "Engagement et Visibilité",
@@ -130,7 +110,7 @@ export default function EditProfile() {
         slug: slugify(fullName || profile.email, { lower: true }),
         strava: {
           isLinked: false,
-        }
+        },
       },
       identity: {
         fullName,
@@ -140,13 +120,15 @@ export default function EditProfile() {
         birthDate: new Date(profile.birthDate),
         city: profile.address,
         country: "",
-        languageSpoken: [],
+        languageSpoken: [Language[profile.language] as keyof typeof Language],
         practiceLocation: "",
         bio: profile.bio,
       },
-      // currentSponsorSummary: {
-      //   currentSponsors: profile.sponsors,
-      // },
+      preferences: {
+        networks: profile.socialNetworks,
+        sports: [],
+        languages: profile.language,
+      },
       images: profile.images.map((url) => ({
         url,
         uploadDate: new Date(),
@@ -196,10 +178,12 @@ export default function EditProfile() {
               />
             </div>
           </div>
+
           <div>
             <label className="block text-sm font-medium mb-1">Email</label>
             <Input value={profile.email} disabled />
           </div>
+
           <div>
             <label className="block text-sm font-medium mb-1">Adresse</label>
             <Input
@@ -209,6 +193,64 @@ export default function EditProfile() {
               }
             />
           </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Langue</label>
+            <select
+              className="w-full border rounded-md px-3 py-2"
+              value={profile.language}
+              onChange={(e) =>
+                setProfile((prev) =>
+                  prev && {
+                    ...prev,
+                    language: Number(e.target.value) as Language,
+                  }
+                )
+              }
+            >
+              <option value={Language.FR}>Français</option>
+              <option value={Language.EN}>Anglais</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Date de naissance</label>
+            <Input
+              type="date"
+              value={profile.birthDate.slice(0, 10)} // ISO string -> 'YYYY-MM-DD'
+              onChange={(e) =>
+                setProfile((prev) =>
+                  prev ? { ...prev, birthDate: e.target.value } : prev
+                )
+              }
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Réseaux sociaux</label>
+            <div className="flex flex-wrap gap-2">
+              {Object.values(SocialNetwork).map((network) => {
+                const isSelected = profile.socialNetworks.includes(network);
+                return (
+                  <Button
+                    key={network}
+                    variant={isSelected ? "default" : "outline"}
+                    onClick={() => {
+                      setProfile((prev) => {
+                        if (!prev) return prev;
+                        const updated = isSelected
+                          ? prev.socialNetworks.filter((n) => n !== network)
+                          : [...prev.socialNetworks, network];
+                        return { ...prev, socialNetworks: updated };
+                      });
+                    }}
+                  >
+                    {network.charAt(0).toUpperCase() + network.slice(1)}
+                  </Button>
+                );
+              })}
+            </div>
+          </div>
+
           <div>
             <label className="block text-sm font-medium mb-1">Bio</label>
             <Textarea
@@ -221,7 +263,6 @@ export default function EditProfile() {
         </div>
       )}
 
-      {/* BOUTONS ACTIONS */}
       <div className="flex justify-end gap-4 mt-8">
         <Button variant="outline" onClick={() => router.push("/profil")}>Annuler</Button>
         <Button

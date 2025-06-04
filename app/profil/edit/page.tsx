@@ -8,7 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateOne } from "@/entities/riders/riders.hooks";
 import { useSession } from "@/shared/context/SessionContext";
-import { GenderIdentity, Language, Rider, RiderIdentity, SocialNetwork } from "@kascad-app/shared-types";
+import {
+  GenderIdentity,
+  Language,
+  Rider,
+  RiderIdentity,
+  SocialNetwork,
+} from "@kascad-app/shared-types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -32,12 +38,14 @@ const profileSchema = z.object({
   }),
   gender: z.nativeEnum(GenderIdentity),
   sponsors: z.array(z.string()),
-  events: z.array(z.object({
-    name: z.string(),
-    location: z.string(),
-    date: z.string(),
-    image: z.string(),
-  })),
+  events: z.array(
+    z.object({
+      name: z.string(),
+      location: z.string(),
+      date: z.string(),
+      image: z.string(),
+    }),
+  ),
   videos: z.array(z.string()),
   images: z.array(z.string()),
   language: z.nativeEnum(Language),
@@ -63,8 +71,8 @@ export default function EditProfile() {
       identity?.birthDate instanceof Date
         ? identity.birthDate.toISOString()
         : typeof identity?.birthDate === "string"
-          ? new Date(identity.birthDate).toISOString()
-          : new Date().toISOString();
+        ? new Date(identity.birthDate).toISOString()
+        : new Date().toISOString();
 
     const loadedProfile: ProfileState = {
       firstName: identity?.firstName || "Prénom",
@@ -80,7 +88,7 @@ export default function EditProfile() {
       events: [],
       videos: [],
       images: (session.user.images || []).map((img) =>
-        typeof img === "string" ? img : img.url
+        typeof img === "string" ? img : img.url,
       ),
       language: Language.FR,
       socialNetworks: session.user.preferences?.networks || [],
@@ -106,10 +114,10 @@ export default function EditProfile() {
 
     return {
       identifier: {
-        email: profile.email,
-        slug: slugify(fullName || profile.email, { lower: true }),
+        email: session.user?.identifier.email || "",
+        slug: session.user?.identifier.slug || "",
         strava: {
-          isLinked: false,
+          isLinked: session.user?.identifier.strava?.isLinked || false,
         },
       },
       identity: {
@@ -145,10 +153,11 @@ export default function EditProfile() {
         {slides.map((label, index) => (
           <button
             key={label}
-            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${slide === index
-              ? "border-blue-500 text-blue-600"
-              : "border-transparent text-gray-500"
-              }`}
+            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${
+              slide === index
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500"
+            }`}
             onClick={() => setSlide(index)}
           >
             {label}
@@ -164,7 +173,9 @@ export default function EditProfile() {
               <Input
                 value={profile.firstName}
                 onChange={(e) =>
-                  setProfile((prev) => prev && { ...prev, firstName: e.target.value })
+                  setProfile(
+                    (prev) => prev && { ...prev, firstName: e.target.value },
+                  )
                 }
               />
             </div>
@@ -173,7 +184,9 @@ export default function EditProfile() {
               <Input
                 value={profile.lastName}
                 onChange={(e) =>
-                  setProfile((prev) => prev && { ...prev, lastName: e.target.value })
+                  setProfile(
+                    (prev) => prev && { ...prev, lastName: e.target.value },
+                  )
                 }
               />
             </div>
@@ -189,7 +202,9 @@ export default function EditProfile() {
             <Input
               value={profile.address}
               onChange={(e) =>
-                setProfile((prev) => prev && { ...prev, address: e.target.value })
+                setProfile(
+                  (prev) => prev && { ...prev, address: e.target.value },
+                )
               }
             />
           </div>
@@ -200,11 +215,12 @@ export default function EditProfile() {
               className="w-full border rounded-md px-3 py-2"
               value={profile.language}
               onChange={(e) =>
-                setProfile((prev) =>
-                  prev && {
-                    ...prev,
-                    language: Number(e.target.value) as Language,
-                  }
+                setProfile(
+                  (prev) =>
+                    prev && {
+                      ...prev,
+                      language: Number(e.target.value) as Language,
+                    },
                 )
               }
             >
@@ -213,20 +229,24 @@ export default function EditProfile() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Date de naissance</label>
+            <label className="block text-sm font-medium mb-1">
+              Date de naissance
+            </label>
             <Input
               type="date"
               value={profile.birthDate.slice(0, 10)} // ISO string -> 'YYYY-MM-DD'
               onChange={(e) =>
                 setProfile((prev) =>
-                  prev ? { ...prev, birthDate: e.target.value } : prev
+                  prev ? { ...prev, birthDate: e.target.value } : prev,
                 )
               }
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Réseaux sociaux</label>
+            <label className="block text-sm font-medium mb-1">
+              Réseaux sociaux
+            </label>
             <div className="flex flex-wrap gap-2">
               {Object.values(SocialNetwork).map((network) => {
                 const isSelected = profile.socialNetworks.includes(network);
@@ -264,7 +284,9 @@ export default function EditProfile() {
       )}
 
       <div className="flex justify-end gap-4 mt-8">
-        <Button variant="outline" onClick={() => router.push("/profil")}>Annuler</Button>
+        <Button variant="outline" onClick={() => router.push("/profil")}>
+          Annuler
+        </Button>
         <Button
           onClick={async () => {
             try {
@@ -278,7 +300,9 @@ export default function EditProfile() {
               toast.error("Erreur : " + (error as Error).message);
             }
           }}
-        >Sauvegarder</Button>
+        >
+          Sauvegarder
+        </Button>
       </div>
     </div>
   );

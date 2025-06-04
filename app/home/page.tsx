@@ -7,9 +7,11 @@ import BottomNav from "../components/BottomNav";
 import ArticleSlider from "@components/ui/articleSlider";
 import { useSession } from "@/shared/context/SessionContext";
 import { ROUTES } from "@/shared/constants/ROUTES";
+import { useGetCountNewMessages } from "@/entities/contracts/contracts.hook";
 
 export default function Home() {
   const session = useSession();
+  const { data: NewMessages, isLoading, error } = useGetCountNewMessages();
 
   return (
     <main className="min-h-screen bg-white text-black flex flex-col justify-between relative">
@@ -77,7 +79,9 @@ export default function Home() {
               <p className="text-md text-blue-700 mb-4">Messages reçus</p>
               <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
                 <MessageSquare className="w-10 h-10 text-white bg-blue-700 rounded-md p-2" />
-                <p className="text-4xl text-blue-700 font-bold">23</p>
+                <p className="text-4xl text-blue-700 font-bold">
+                  {NewMessages?.count ?? 0}
+                </p>
               </div>
               <Link href={ROUTES.RIDER.PROFILE} className="w-1/2">
                 <Button

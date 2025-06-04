@@ -9,9 +9,11 @@ import Image from "next/image";
 import { Star, MapPin, DollarSign, Gift, MountainSnow } from "lucide-react";
 import { useGetContracts, useGetContract } from "@/entities/contracts/contracts.hooks";
 import { contractOfferDto } from "@kascad-app/shared-types";
+import { set } from "zod";
 
 
 export default function Messagerie() {
+
     const [selectedSponsor, setSelectedSponsor] = useState<contractOfferDto | null>(null);
     const [selectedSponsorId, setSelectedSponsorId] = useState<string | null>(null);
     const [open, setOpen] = useState(false);
@@ -21,16 +23,31 @@ export default function Messagerie() {
     const [showResponseInput, setShowResponseInput] = useState(false);
     const [responseText, setResponseText] = useState("");
 
-    const { data: contracts = [], trigger: fetchContracts } = useGetContracts();
+    const { data: contracts = [], isLoading, error } = useGetContracts();
 
-    useEffect(() => {
-        fetchContracts();
-    }, [fetchContracts]);
+    const findMutation = useGetContract(selectedSponsorId!);
+
 
     function handleCardClick(contractId: string): void {
         setSelectedSponsorId(contractId);
-        setOpen(true);
+        
     }
+
+    useEffect(() => {
+        if(selectedSponsorId) {
+            findMutation.trigger().then((data) => {
+                if (data) {
+                    setSelectedSponsor(data);
+                    setOpen(true);
+                } else {
+                    console.error("Contract not found");
+                }
+            });
+        } else {
+            setSelectedSponsor(null);
+            setOpen(false);
+        }
+    }, [selectedSponsorId]);
 
     return (
         <div className="p-6 text-black bg-white min-h-screen">
@@ -38,9 +55,10 @@ export default function Messagerie() {
             <h2 className="text-2xl font-bold mb-6">Propositions de sponsors</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {contracts.map((contract: contractOfferDto) => (
+                    
                     <Card
-                        key={contract.id}
-                        onClick={() => handleCardClick(contract.id)}
+                        key={contract._id}
+                        onClick={() => handleCardClick(contract._id)}
                         className="cursor-pointer overflow-hidden rounded-xl hover:shadow-xl transition border border-gray-200 bg-white"
                     >
                         <CardContent className="p-4 relative h-[180px] flex flex-col justify-between">
@@ -62,7 +80,7 @@ export default function Messagerie() {
                                 {contract.sport && (
                                     <div>
                                         <div className="flex flex-wrap gap-2 mt-4">
-                                            <span className="bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded">{contract.sport}</span>
+                                            <span className="bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded">{contract._id}</span>
                                         </div>
                                     </div>
                                 )}
@@ -76,7 +94,16 @@ export default function Messagerie() {
             </div>
 
             <Dialog open={open} onOpenChange={setOpen}>
+                
                 <DialogContent className="w-[80vw] h-[90vh] max-w-[80vw] overflow-y-auto p-12 bg-white rounded-xl absolute overflow-x-hidden">
+                    {selectedSponsor ? (
+
+<DialogTitle className="text-xl font-extrabold text-black relative z-20">{selectedSponsor.sponsorName}
+</DialogTitle>
+                    ) : (
+                        <DialogTitle className="text-xl font-extrabold text-black relative z-20">Offre de Contrat
+</DialogTitle>
+                    )}
                     {selectedSponsor ? (
                         <>
                             <h1 className="absolute top-8 left-1/2 -translate-x-1/2 text-[18rem] font-bold text-gray-100 uppercase tracking-wider pointer-events-none z-0 whitespace-nowrap">

@@ -1,35 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { Star, MapPin, DollarSign, Gift, MountainSnow } from "lucide-react";
-import { Proposition, getPropositions } from "@/shared/model/proposition"
-import { MessageThread, getMessages } from "@/shared/model/message";
+import { SponsorDisplay, getSponsors } from "@/shared/model/sponsor";
 import { useGetContracts, useGetContract } from "@/entities/contracts/contracts.hooks";
-
-
-// Type sponsor enrichi
-type Sponsor = {
-    id: number;
-    name: string;
-    logo?: string;
-    message: string;
-    sport: string;
-    location: string;
-    budget: string;
-    perks: string[];
-    description?: string;
-    conditions?: string;
-    rating?: number;
-};
+import { getContractsDto } from "@kascad-app/shared-types";
 
 export default function Messagerie() {
-    const [sponsors, setSponsors] = useState<Sponsor[]>([]);
-    const [selectedSponsor, setSelectedSponsor] = useState<Sponsor | null>(null);
+    const [sponsors, setSponsors] = useState<SponsorDisplay[]>([]);
+    const [selectedSponsor, setSelectedSponsor] = useState<getContractsDto | null>(null);
     const [open, setOpen] = useState(false);
     const [messages, setMessages] = useState<any[]>([]);
     const [selectedConversation, setSelectedConversation] = useState<any | null>(null);
@@ -37,45 +21,25 @@ export default function Messagerie() {
     const [showResponseInput, setShowResponseInput] = useState(false);
     const [responseText, setResponseText] = useState("");
 
-    const dataContracts = useGetContracts();
-    dataContracts.trigger();
-    console.log('dataContracts: ', dataContracts);
-
-    dataContracts.data?.forEach((contract) => {
-        const contractData = useGetContract(contract.id);
-        contractData.trigger();
-        console.log('contractData: ', contractData);
-    });
+    const { data: contracts = [], trigger: fetchContracts } = useGetContracts();
 
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const [propositions, messages] = await Promise.all([
-                    getPropositions(),
-                    getMessages()
-                ]);
-                const messageIds = new Set(messages.map((msg) => msg.id));
-                const filtered = propositions.filter((p) => !messageIds.has(p.id));
-    
-                setMessages(messages);
-                setSponsors(filtered);
-            } catch (err) {
-                console.error("Erreur chargement data:", err);
-            }
-        }
-        fetchData();
-    }, []);
+        fetchContracts();
+    }, [fetchContracts]);
+
+    console.log("Contracts:", contracts);
+    console.log("Messages: ", contracts[0]?.messages);
 
     return (
         <div className="p-6 text-black bg-white min-h-screen">
             <Button variant="ghost" className="fixed right-6 top-6 bg-black border border-transparent text-white hover:bg-white hover:text-black hover:border-black">Nouveau message</Button>
             <h2 className="text-2xl font-bold mb-6">Propositions de sponsors</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {sponsors.map((sponsor) => (
+                {contracts.map((contract: getContractsDto) => (
                     <Card
-                        key={sponsor.id}
+                        key={contract.id}
                         onClick={() => {
-                            setSelectedSponsor(sponsor);
+                            setSelectedSponsor(contract);
                             setOpen(true);
                         }}
                         className="cursor-pointer overflow-hidden rounded-xl hover:shadow-xl transition border border-gray-200 bg-white"
@@ -89,20 +53,14 @@ export default function Messagerie() {
                         </div>
 
                             <div className="flex items-center gap-3">
-                                {sponsor.logo && (
-                                    <Image src={sponsor.logo} alt={sponsor.name} width={36} height={36} className="rounded-full" />
-                                )}
                                 <div>
-                                    <h3 className="text-lg font-semibold text-gray-900 whitespace-nowrap">{sponsor.name}</h3>
-                                    <p className="text-sm text-gray-500">{sponsor.location}</p>
+                                    <h3 className="text-lg font-semibold text-gray-900 whitespace-nowrap">{contract.authorName}</h3>
                                 </div>
                             </div>
                             <div>
                                 <div className="flex flex-wrap gap-2 mt-4">
-                                    <span className="bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded">{sponsor.sport}</span>
-                                    <span className="bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded">{sponsor.budget}</span>
+                                    <span className="bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded">{contract.sport}</span>
                                 </div>
-                                <p className="text-sm text-gray-600 line-clamp-2 mt-2">{sponsor.message}</p>
                             </div>
                         </CardContent>
                     </Card>
@@ -114,64 +72,26 @@ export default function Messagerie() {
                     {selectedSponsor && (
                         <>
                             <h1 className="absolute top-8 left-1/2 -translate-x-1/2 text-[18rem] font-bold text-gray-100 uppercase tracking-wider pointer-events-none z-0 whitespace-nowrap">
-                                {selectedSponsor.name}
+                                {selectedSponsor.authorName}
                             </h1>
 
                             <div className="space-y-10 relative z-10">
                                 <DialogHeader>
                                     <div className="flex items-center gap-4 relative z-20">
-                                        {selectedSponsor.logo && (
-                                            <Image src={selectedSponsor.logo} alt={selectedSponsor.name} width={70} height={70} className="rounded-full" />
-                                        )}
                                         <DialogTitle className="text-xl font-extrabold text-black relative z-20">
-                                            {selectedSponsor.name}
+                                            {selectedSponsor.authorName}
                                         </DialogTitle>
                                     </div>
                                 </DialogHeader>
 
-                                <p className="text-xl text-black italic z-20 relative leading-relaxed">
-                                    {selectedSponsor.message}
-                                </p>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-base">
+                                {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-base">
                                     <div className="space-y-4">
                                         <p className="flex items-center gap-2 text-black">
-                                            <MountainSnow size={18} /> <strong>Sport :</strong> {selectedSponsor.sport}
-                                        </p>
-                                        <p className="flex items-center gap-2 text-black">
-                                            <MapPin size={18} /> <strong>Lieu :</strong> {selectedSponsor.location}
-                                        </p>
-                                        <p className="flex items-center gap-2 text-black">
-                                            <DollarSign size={18} /> <strong>Budget :</strong> {selectedSponsor.budget}
+                                            <MountainSnow size={18} /> <strong>Sport :</strong> {selectedSponsor.sport.join(', ')}
                                         </p>
                                     </div>
-                                    <div className="space-y-4">
-                                        <p className="flex items-center gap-2 text-black">
-                                            <Gift size={18} /> <strong>Avantages :</strong>
-                                        </p>
-                                        <ul className="list-disc list-inside text-black">
-                                            {selectedSponsor.perks.map((perk, index) => (
-                                                <li key={index}>{perk}</li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </div>
+                                </div> */}
 
-                                {selectedSponsor.description && (
-                                    <div className="space-y-2">
-                                        <h4 className="text-lg font-semibold text-black">À propos du sponsor</h4>
-                                        <Separator />
-                                        <p className="text-black leading-relaxed text-base">{selectedSponsor.description}</p>
-                                    </div>
-                                )}
-
-                                {selectedSponsor.conditions && (
-                                    <div className="space-y-2">
-                                        <h4 className="text-lg font-semibold text-black">Conditions du partenariat</h4>
-                                        <Separator />
-                                        <p className="text-black leading-relaxed text-base">{selectedSponsor.conditions}</p>
-                                    </div>
-                                )}
                                 <div className="flex flex-col gap-4 pt-8">
                                     <div className="flex justify-end gap-4">
                                         <Button variant="ghost" className="text-black border border-black hover:bg-gray-100">Refuser</Button>
@@ -218,7 +138,7 @@ export default function Messagerie() {
 
             <h2 className="text-2xl font-bold mb-6 mt-12">Messages</h2>
             <div className="space-y-4">
-            {messages.map((conversation) => {
+            {messages.map((conversation :any) => {
                 const lastMessage = conversation.messages?.[conversation.messages.length - 1];
                 const isFromSponsor = lastMessage?.from !== "me";
 

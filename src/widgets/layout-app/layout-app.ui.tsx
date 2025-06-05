@@ -1,13 +1,12 @@
 "use client";
 
-import { Navbar } from "@/shared/ui/navbar/navbar.ui";
 import { Toaster } from "sonner";
 import { Header } from "../header";
 import { usePathname } from "next/navigation";
 import { ROUTES } from "@/shared/constants/ROUTES";
 import BottomNav from "../../../app/components/BottomNav";
 
-export default function LayoutApp({ children }: { children: React.ReactNode; }) {
+export default function LayoutApp({ children }: { children: React.ReactNode }) {
   const pathName = usePathname();
   const hideComponents: boolean = [
     ROUTES.AUTH.LOGIN,

@@ -8,7 +8,16 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateOne } from "@/entities/riders/riders.hooks";
 import { useSession } from "@/shared/context/SessionContext";
-import { ContractType, GenderIdentity, Language, Rider, RiderIdentifier, RiderIdentity, SocialNetwork, Sport } from "@kascad-app/shared-types";
+import {
+  ContractType,
+  GenderIdentity,
+  Language,
+  Rider,
+  RiderIdentifier,
+  RiderIdentity,
+  SocialNetwork,
+  Sport,
+} from "@kascad-app/shared-types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -102,8 +111,6 @@ export default function EditProfile() {
       language: Number(session.user.preferences?.languages) ?? Language.FR,
       spokenLanguages: identity.languageSpoken.map(stringToLanguage),
 
-
-
       socialNetworks: session.user.preferences?.networks || [],
       practiceLocation: identity.practiceLocation,
       sports: session.user.preferences?.sports?.map((s: Sport) => s.name) || [],
@@ -171,10 +178,11 @@ export default function EditProfile() {
         {slideLabels.map((label, index) => (
           <button
             key={label}
-            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${slide === index
-              ? "border-blue-500 text-blue-600"
-              : "border-transparent text-gray-500"
-              }`}
+            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${
+              slide === index
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500"
+            }`}
             onClick={() => setSlide(index)}
           >
             {label}
@@ -215,46 +223,18 @@ export default function EditProfile() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Numéro de téléphone</label>
+            <label className="block text-sm font-medium mb-1">
+              Numéro de téléphone
+            </label>
             <Input
               type="tel"
               value={profile.phoneNumber ?? ""}
               onChange={(e) =>
-                setProfile((prev) => prev && { ...prev, phoneNumber: e.target.value })
-              }
-            />
-          </div>
-
-          {/* <div>
-            <label className="block text-sm font-medium mb-1">Adresse</label>
-            <Input
-              value={profile.address}
-              onChange={(e) =>
                 setProfile(
-                  (prev) => prev && { ...prev, address: e.target.value },
+                  (prev) => prev && { ...prev, phoneNumber: e.target.value },
                 )
               }
             />
-          </div> */}
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Pays</label>
-            <Input
-              value={profile.country}
-              onChange={(e) =>
-                setProfile((prev) => prev && { ...prev, country: e.target.value })
-              }
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Ville</label>
-            <Input
-              value={profile.city}
-              onChange={(e) =>
-                setProfile((prev) => prev && { ...prev, city: e.target.value })
-              }
-            />
           </div>
 
           <div>
@@ -262,7 +242,9 @@ export default function EditProfile() {
             <Input
               value={profile.country}
               onChange={(e) =>
-                setProfile((prev) => prev && { ...prev, country: e.target.value })
+                setProfile(
+                  (prev) => prev && { ...prev, country: e.target.value },
+                )
               }
             />
           </div>
@@ -283,18 +265,18 @@ export default function EditProfile() {
               className="w-full border rounded-md px-3 py-2"
               value={profile.language}
               onChange={(e) =>
-                setProfile((prev) =>
-                  prev && {
-                    ...prev,
-                    language: parseInt(e.target.value, 10) as Language,
-                  }
+                setProfile(
+                  (prev) =>
+                    prev && {
+                      ...prev,
+                      language: parseInt(e.target.value, 10) as Language,
+                    },
                 )
               }
             >
               <option value={Language.FR}>Français</option>
               <option value={Language.EN}>Anglais</option>
             </select>
-
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">

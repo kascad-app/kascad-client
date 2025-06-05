@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { MessageSquare, ThumbsUp } from "lucide-react";
 import Link from "next/link";
-import BottomNav from "../components/BottomNav";
 import ArticleSlider from "@components/ui/articleSlider";
 import { useSession } from "@/shared/context/SessionContext";
 import { ROUTES } from "@/shared/constants/ROUTES";
@@ -125,7 +124,6 @@ export default function Home() {
         <div className="relative z-10 h-full flex flex-col justify-center items-center text-white text-center px-6">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
             Trouve ton prochain sponsor dès aujourd’hui.
-
           </h2>
           <Link href={ROUTES.SPONSORS.LIST}>
             <Button className="bg-transparent border-white border-2 text-white font-semibold hover:bg-gray-100 hover:text-black p-[1.5rem]">

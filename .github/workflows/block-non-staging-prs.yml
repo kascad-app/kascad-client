@@ -9,12 +9,12 @@ jobs:
   check-branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Fail if PR is not from 'staging'
+      - name: Fail if PR is not from 'development'
         run: |
           echo "PR from: ${{ github.head_ref }}"
-          if [ "${{ github.head_ref }}" != "staging" ]; then
-            echo "❌ Pull requests to 'main' must come from 'staging'."
+          if [ "${{ github.head_ref }}" != "development" ]; then
+            echo "❌ Pull requests to 'main' must come from 'development'."
             exit 1
           else
-            echo "✅ PR source is 'staging'."
+            echo "✅ PR source is 'development'."
           fi

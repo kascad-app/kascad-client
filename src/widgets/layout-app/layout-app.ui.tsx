@@ -16,7 +16,7 @@ export default function LayoutApp({ children }: { children: React.ReactNode; }) 
   ].includes(pathName);
 
   return (
-    <div className={hideComponents ? "" : "pt-[97px]"}>
+    <div>
       {!hideComponents && <Header />}
       {children}
       {!hideComponents && <BottomNav />}

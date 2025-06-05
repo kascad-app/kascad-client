@@ -8,28 +8,19 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateOne } from "@/entities/riders/riders.hooks";
 import { useSession } from "@/shared/context/SessionContext";
-import {
-  GenderIdentity,
-  Language,
-  Rider,
-  RiderIdentity,
-  SocialNetwork,
-} from "@kascad-app/shared-types";
+import { ContractType, GenderIdentity, Language, Rider, RiderIdentifier, RiderIdentity, SocialNetwork, Sport } from "@kascad-app/shared-types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
 import slugify from "slugify";
 
-interface Option {
-  label: string;
-  value: string;
-}
-
 const profileSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),
   email: z.string().email(),
-  address: z.string(),
+  city: z.string(),
+  country: z.string(),
+  phoneNumber: z.string(),
   bio: z.string(),
   trainingFrequency: z.number().min(1),
   trainingUnit: z.enum(["week", "month"]),
@@ -49,7 +40,13 @@ const profileSchema = z.object({
   videos: z.array(z.string()),
   images: z.array(z.string()),
   language: z.nativeEnum(Language),
+  address: z.string(),
+
+  spokenLanguages: z.array(z.nativeEnum(Language)),
   socialNetworks: z.array(z.nativeEnum(SocialNetwork)),
+  practiceLocation: z.string(),
+  sports: z.array(z.string()),
+  isAvailable: z.boolean(),
 });
 
 type ProfileState = z.infer<typeof profileSchema>;
@@ -58,40 +55,59 @@ export default function EditProfile() {
   const session = useSession();
   const router = useRouter();
   const updateRiderMutation = useUpdateOne();
-
   const [profile, setProfile] = useState<ProfileState | null>(null);
   const [slide, setSlide] = useState(0);
+  const slideLabels = [
+    "À propos",
+    "Engagement et Visibilité",
+    "Réalisations et Expériences",
+  ];
+
+  function stringToLanguage(value: string): Language {
+    const intVal = parseInt(value, 10);
+    if (intVal in Language) return intVal as Language;
+    throw new Error("Langue inconnue : " + value);
+  }
 
   useEffect(() => {
     if (!session.user) return;
 
     const identity = session.user.identity as RiderIdentity;
+    const identifier = session.user.identifier as RiderIdentifier;
 
     const birthDate =
-      identity?.birthDate instanceof Date
+      identity.birthDate instanceof Date
         ? identity.birthDate.toISOString()
-        : typeof identity?.birthDate === "string"
-        ? new Date(identity.birthDate).toISOString()
-        : new Date().toISOString();
+        : new Date(identity.birthDate).toISOString();
 
     const loadedProfile: ProfileState = {
-      firstName: identity?.firstName || "Prénom",
-      lastName: identity?.lastName || "Nom",
+      firstName: identity.firstName,
+      lastName: identity.lastName,
       email: session.user.identifier.email || "",
-      address: identity?.city || "",
-      bio: identity?.bio || "",
-      trainingFrequency: 3,
+      city: identity.city,
+      address: "",
+      country: identity.country,
+      phoneNumber: identifier.phoneNumber || "",
+      bio: identity.bio || "",
+      trainingFrequency: session.user.trainingFrequency?.sessionsPerWeek || 3,
       trainingUnit: "week",
       birthDate,
-      gender: identity?.gender || GenderIdentity.MALE,
+      gender: identity.gender,
       sponsors: session.user.sponsorSummary?.currentSponsors || [],
       events: [],
       videos: [],
       images: (session.user.images || []).map((img) =>
         typeof img === "string" ? img : img.url,
       ),
-      language: Language.FR,
+      language: Number(session.user.preferences?.languages) ?? Language.FR,
+      spokenLanguages: identity.languageSpoken.map(stringToLanguage),
+
+
+
       socialNetworks: session.user.preferences?.networks || [],
+      practiceLocation: identity.practiceLocation,
+      sports: session.user.preferences?.sports?.map((s: Sport) => s.name) || [],
+      isAvailable: session.user.availibility?.isAvailable ?? true,
     };
 
     const parse = profileSchema.safeParse(loadedProfile);
@@ -103,46 +119,48 @@ export default function EditProfile() {
     setProfile(loadedProfile);
   }, [session.user]);
 
-  const slides = [
-    "À propos",
-    "Engagement et Visibilité",
-    "Réalisations et Expériences",
-  ];
-
-  function mapProfileToRawRider(profile: ProfileState): Partial<Rider> {
+  const mapProfileToRawRider = (profile: ProfileState): Partial<Rider> => {
     const fullName = `${profile.firstName} ${profile.lastName}`.trim();
 
     return {
       identifier: {
-        email: session.user?.identifier.email || "",
-        slug: session.user?.identifier.slug || "",
-        strava: {
-          isLinked: session.user?.identifier.strava?.isLinked || false,
-        },
+        email: profile.email,
+        slug: slugify(fullName || profile.email, { lower: true }),
+        phoneNumber: profile.phoneNumber,
+        strava: { isLinked: false },
       },
       identity: {
         fullName,
         firstName: profile.firstName,
         lastName: profile.lastName,
         gender: profile.gender,
+
         birthDate: new Date(profile.birthDate),
-        city: profile.address,
-        country: "",
-        languageSpoken: [Language[profile.language] as keyof typeof Language],
-        practiceLocation: "",
+        city: profile.city,
+        country: profile.country,
+        languageSpoken: profile.spokenLanguages.map((lang) => lang.toString()),
+        practiceLocation: profile.practiceLocation,
         bio: profile.bio,
       },
       preferences: {
         networks: profile.socialNetworks,
-        sports: [],
+        sports: profile.sports.map((name) => ({ name } as Sport)),
         languages: profile.language,
       },
       images: profile.images.map((url) => ({
         url,
         uploadDate: new Date(),
       })),
+      availibility: {
+        isAvailable: profile.isAvailable,
+        contractType: ContractType.UGC, // valeur par défaut ou à configurer plus tard
+      },
+      trainingFrequency: {
+        sessionsPerWeek: profile.trainingFrequency,
+        hoursPerSession: 1, // valeur par défaut à ajuster
+      },
     };
-  }
+  };
 
   if (!profile) return <p className="p-6">Chargement du profil...</p>;
 
@@ -150,14 +168,13 @@ export default function EditProfile() {
     <div className="relative max-w-7xl mx-auto p-6 space-y-6 w-[100vw] flex flex-col">
       <h2 className="text-2xl font-semibold">Modifier le profil</h2>
       <div className="flex justify-between border-b mb-6">
-        {slides.map((label, index) => (
+        {slideLabels.map((label, index) => (
           <button
             key={label}
-            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${
-              slide === index
+            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${slide === index
                 ? "border-blue-500 text-blue-600"
                 : "border-transparent text-gray-500"
-            }`}
+              }`}
             onClick={() => setSlide(index)}
           >
             {label}
@@ -198,6 +215,17 @@ export default function EditProfile() {
           </div>
 
           <div>
+            <label className="block text-sm font-medium mb-1">Numéro de téléphone</label>
+            <Input
+              type="tel"
+              value={profile.phoneNumber ?? ""}
+              onChange={(e) =>
+                setProfile((prev) => prev && { ...prev, phoneNumber: e.target.value })
+              }
+            />
+          </div>
+
+          {/* <div>
             <label className="block text-sm font-medium mb-1">Adresse</label>
             <Input
               value={profile.address}
@@ -205,6 +233,26 @@ export default function EditProfile() {
                 setProfile(
                   (prev) => prev && { ...prev, address: e.target.value },
                 )
+              }
+            />
+          </div> */}
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Pays</label>
+            <Input
+              value={profile.country}
+              onChange={(e) =>
+                setProfile((prev) => prev && { ...prev, country: e.target.value })
+              }
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Ville</label>
+            <Input
+              value={profile.city}
+              onChange={(e) =>
+                setProfile((prev) => prev && { ...prev, city: e.target.value })
               }
             />
           </div>
@@ -215,18 +263,18 @@ export default function EditProfile() {
               className="w-full border rounded-md px-3 py-2"
               value={profile.language}
               onChange={(e) =>
-                setProfile(
-                  (prev) =>
-                    prev && {
-                      ...prev,
-                      language: Number(e.target.value) as Language,
-                    },
+                setProfile((prev) =>
+                  prev && {
+                    ...prev,
+                    language: parseInt(e.target.value, 10) as Language,
+                  }
                 )
               }
             >
               <option value={Language.FR}>Français</option>
               <option value={Language.EN}>Anglais</option>
             </select>
+
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">
@@ -293,6 +341,7 @@ export default function EditProfile() {
               const parsed = profileSchema.safeParse(profile);
               if (!parsed.success) throw new Error("Validation échouée");
               const rawRider = mapProfileToRawRider(parsed.data);
+              console.log("Raw Rider Data:", rawRider);
               await updateRiderMutation.trigger(rawRider);
               toast.success("Profil mis à jour avec succès");
               router.push("/profil");

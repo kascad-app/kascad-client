@@ -23,7 +23,7 @@ export function useLogin() {
     sendSWRRequest,
     {
       rollbackOnError: true,
-      onError() {},
+      onError() { },
       onSuccess() {
         mutate(SWR_KEY.AUTH.ME, undefined, true);
       },

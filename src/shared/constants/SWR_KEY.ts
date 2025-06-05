@@ -11,4 +11,8 @@ export const SWR_KEY = {
     RIDERS: "/riders",
     RIDER: (slug: string) => `/riders/${slug}`,
   },
+  SPONSORS: {
+    SPONSORS: "/sponsors",
+    SPONSOR: (slug: string) => `/sponsors/${slug}`,
+  },
 };

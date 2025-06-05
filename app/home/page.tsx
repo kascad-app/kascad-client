@@ -26,7 +26,7 @@ export default function Home() {
         </video>
         <div className="absolute inset-0 bg-black/70" />
         <div className="relative z-10 h-full flex flex-col justify-center items-center gap-10 px-10 text-white">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 font-michroma">
+          <h1 className="text-[8dvw] text-center md:text-5xl font-bold mb-4 font-michroma">
             Bonjour {session.user?.identity.firstName}👋
           </h1>
           {/* <p className="text-lg max-w-xl mb-6">
@@ -120,11 +120,12 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 h-full flex flex-col justify-center items-center text-white text-center px-6">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            Complétez votre profil pour apparaître dans les recherches
+            Trouve ton prochain sponsor dès aujourd’hui.
+
           </h2>
-          <Link href={ROUTES.RIDER.PROFILE}>
+          <Link href={ROUTES.SPONSORS.LIST}>
             <Button className="bg-transparent border-white border-2 text-white font-semibold hover:bg-gray-100 hover:text-black p-[1.5rem]">
-              Compléter mon profil
+              Rechercher des sponsors
             </Button>
           </Link>
         </div>

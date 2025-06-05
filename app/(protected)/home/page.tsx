@@ -7,6 +7,7 @@ import ArticleSlider from "@components/ui/articleSlider";
 import { useSession } from "@/shared/context/SessionContext";
 import { ROUTES } from "@/shared/constants/ROUTES";
 import { useGetCountNewMessages } from "@/entities/contracts/contracts.hook";
+import { GenderIdentity } from "@kascad-app/shared-types";
 
 export default function Home() {
   const session = useSession();
@@ -30,9 +31,6 @@ export default function Home() {
           <h1 className="text-[8dvw] text-center md:text-5xl font-bold mb-4 font-michroma">
             Bonjour {session.user?.identity.firstName}👋
           </h1>
-          {/* <p className="text-lg max-w-xl mb-6">
-                        Ne soyez plus seulement celle qui cherche, soyez aussi celle que l’on trouve.
-                    </p> */}
           <Link href={ROUTES.RIDER.PROFILE}>
             <Button className="bg-transparent border-white border-2 text-white font-semibold hover:bg-gray-100 hover:text-black p-[1.5rem]">
               Accéder à mon profil
@@ -45,8 +43,9 @@ export default function Home() {
       <section className="p-8 md:px-[12%] md:py-[7%] bg-white flex flex-col gap-8 text-center md:text-start items-center justify-center">
         <p className="text-lg mb-6 w-full">
           <span className="text-3xl md:text-4xl block mb-4">
-            Ne soyez plus seulement celle qui cherche, soyez aussi celle que
-            l’on trouve.
+            {session.user?.identity.gender == GenderIdentity.FEMALE
+              ? "Ne soyez plus seulement celle qui cherche, soyez aussi celle que l’on trouve."
+              : "Ne soyez plus seulement celui qui cherche, soyez aussi celui que l’on trouve."}
           </span>
           Indiquez votre disponibilité et complétez votre profil pour que les
           sponsors qui recrutent vous contactent directement.

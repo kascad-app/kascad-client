@@ -7,18 +7,11 @@ import { ROUTES } from "@/shared/constants/ROUTES";
 import BottomNav from "../../../app/components/BottomNav";
 
 export default function LayoutApp({ children }: { children: React.ReactNode }) {
-  const pathName = usePathname();
-  const hideComponents: boolean = [
-    ROUTES.AUTH.LOGIN,
-    ROUTES.AUTH.REGISTER,
-    ROUTES.LOADER,
-  ].includes(pathName);
-
   return (
     <div>
-      {!hideComponents && <Header />}
+      <Header />
       {children}
-      {!hideComponents && <BottomNav />}
+      <BottomNav />
       <Toaster position="top-right" richColors />
     </div>
   );

@@ -34,9 +34,10 @@ export const Header: React.FC = () => {
 
       <div className="flex gap-4">
         <CircleHelp className="cursor-pointer" />
-        <Settings className="cursor-pointer" />
+        <Link href={ROUTES.RIDER.EDIT_PROFILE}>
+          <Settings className="cursor-pointer" />
+        </Link>
       </div>
     </header>
-
   );
 };

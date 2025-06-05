@@ -1,8 +1,8 @@
-name: Deploy Sponsor App - Staging
+name: Deploy Sponsor App - development
 
 on:
   push:
-    branches: [staging]
+    branches: [development]
 
 env:
   GCP_PROJECT_ID: kascad-staging

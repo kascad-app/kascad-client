@@ -14,7 +14,7 @@ export function useUpdateOne() {
     {
       rollbackOnError: true,
       onSuccess() {
-        console.log("success update");
+        console.log("success update", SWR_KEY.AUTH.UPDATE);
       },
     },
 
@@ -25,12 +25,14 @@ export function useUpdateOne() {
 export function useGetRiders() {
   return useSWR<Rider[]>(SWR_KEY.RIDER.RIDERS, () =>
     requester().get<Rider[]>(SWR_KEY.RIDER.RIDERS)
+    // console.log("useGetRiders", SWR_KEY.RIDER.RIDERS)
   );
 }
 
 
-export function useGetRider(slug: string) {
-  return useSWR<Rider>(SWR_KEY.RIDER.RIDER(slug), () =>
-    requester().get<Rider>(SWR_KEY.RIDER.RIDER(slug)),
+export function useGetRider(_id: string) {
+  console.log("useGetRider", _id);
+  return useSWR<Rider>(SWR_KEY.RIDER.RIDER(_id), () =>
+    requester().get<Rider>(SWR_KEY.RIDER.RIDER(_id)),
   );
 }

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { MessageSquare, ThumbsUp } from "lucide-react";
 import Link from "next/link";
-import BottomNav from "../components/BottomNav";
+import BottomNav from "../../components/BottomNav";
 import ArticleSlider from "@components/ui/articleSlider";
 import { useSession } from "@/shared/context/SessionContext";
 import { ROUTES } from "@/shared/constants/ROUTES";

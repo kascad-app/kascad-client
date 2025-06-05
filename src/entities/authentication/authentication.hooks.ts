@@ -10,6 +10,8 @@ import {
 import { requester } from "@/lib/requester/requester";
 import { sendSWRRequest } from "@/lib/swr/use-swr";
 import { SWR_KEY } from "@/shared/constants/SWR_KEY";
+import { redirect } from "next/navigation";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 export function useMe() {
   return useSWR<RiderMe>(SWR_KEY.AUTH.ME, () =>
@@ -54,6 +56,7 @@ export function useLogout() {
         mutate(SWR_KEY.AUTH.ME, undefined, false);
         mutate(SWR_KEY.AUTH.LOGIN, undefined, false);
         mutate(SWR_KEY.AUTH.REGISTER, undefined, false);
+        redirect(ROUTES.AUTH.LOGIN);
       },
     },
   );

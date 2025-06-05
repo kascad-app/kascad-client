@@ -1,6 +1,6 @@
 import { KeyedMutator } from "swr";
 
-import { Rider, RiderMe } from "@kascad-app/shared-types";
+import { RiderMe } from "@kascad-app/shared-types";
 export type Session = {
   mutate: KeyedMutator<RiderMe>;
 } & (SignedOutSession | SignedInSession);

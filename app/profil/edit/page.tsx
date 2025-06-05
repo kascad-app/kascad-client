@@ -255,6 +255,26 @@ export default function EditProfile() {
                 setProfile((prev) => prev && { ...prev, city: e.target.value })
               }
             />
+          </div> */}
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Pays</label>
+            <Input
+              value={profile.country}
+              onChange={(e) =>
+                setProfile((prev) => prev && { ...prev, country: e.target.value })
+              }
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Ville</label>
+            <Input
+              value={profile.city}
+              onChange={(e) =>
+                setProfile((prev) => prev && { ...prev, city: e.target.value })
+              }
+            />
           </div>
 
           <div>

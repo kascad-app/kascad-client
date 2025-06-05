@@ -1,7 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
-import { LayoutApp } from "@/widgets/layout-app";
 import { SessionProvider } from "@/shared/context/SessionProvider"; // 💡 nouveau
 
 export const metadata: Metadata = {
@@ -17,9 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SessionProvider>
-          <LayoutApp>{children}</LayoutApp>
-        </SessionProvider>
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );

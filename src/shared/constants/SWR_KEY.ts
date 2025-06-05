@@ -7,8 +7,16 @@ export const SWR_KEY = {
     LOGOUT: "/auth/rider/logout",
     UPDATE: "/auth/rider/me",
   },
+
+  CONTRACT: {
+    COUNTNEWMESSAGES: "/contracts/me/countNewMessages",
+  },
   RIDER: {
     RIDERS: "/riders",
     RIDER: (slug: string) => `/riders/${slug}`,
+  },
+  SPONSORS: {
+    SPONSORS: "/sponsors",
+    SPONSOR: (slug: string) => `/sponsors/${slug}`,
   },
 };

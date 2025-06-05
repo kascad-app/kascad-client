@@ -3,13 +3,15 @@
 import { Button } from "@/components/ui/button";
 import { MessageSquare, ThumbsUp } from "lucide-react";
 import Link from "next/link";
-import BottomNav from "../components/BottomNav";
 import ArticleSlider from "@components/ui/articleSlider";
 import { useSession } from "@/shared/context/SessionContext";
 import { ROUTES } from "@/shared/constants/ROUTES";
+import { useGetCountNewMessages } from "@/entities/contracts/contracts.hook";
+import { GenderIdentity } from "@kascad-app/shared-types";
 
 export default function Home() {
   const session = useSession();
+  const { data: NewMessages, isLoading, error } = useGetCountNewMessages();
 
   return (
     <main className="min-h-screen bg-white text-black flex flex-col justify-between relative">
@@ -26,12 +28,9 @@ export default function Home() {
         </video>
         <div className="absolute inset-0 bg-black/70" />
         <div className="relative z-10 h-full flex flex-col justify-center items-center gap-10 px-10 text-white">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 font-michroma">
+          <h1 className="text-[8dvw] text-center md:text-5xl font-bold mb-4 font-michroma">
             Bonjour {session.user?.identity.firstName}👋
           </h1>
-          {/* <p className="text-lg max-w-xl mb-6">
-                        Ne soyez plus seulement celle qui cherche, soyez aussi celle que l’on trouve.
-                    </p> */}
           <Link href={ROUTES.RIDER.PROFILE}>
             <Button className="bg-transparent border-white border-2 text-white font-semibold hover:bg-gray-100 hover:text-black p-[1.5rem]">
               Accéder à mon profil
@@ -44,8 +43,9 @@ export default function Home() {
       <section className="p-8 md:px-[12%] md:py-[7%] bg-white flex flex-col gap-8 text-center md:text-start items-center justify-center">
         <p className="text-lg mb-6 w-full">
           <span className="text-3xl md:text-4xl block mb-4">
-            Ne soyez plus seulement celle qui cherche, soyez aussi celle que
-            l’on trouve.
+            {session.user?.identity.gender == GenderIdentity.FEMALE
+              ? "Ne soyez plus seulement celle qui cherche, soyez aussi celle que l’on trouve."
+              : "Ne soyez plus seulement celui qui cherche, soyez aussi celui que l’on trouve."}
           </span>
           Indiquez votre disponibilité et complétez votre profil pour que les
           sponsors qui recrutent vous contactent directement.
@@ -77,7 +77,9 @@ export default function Home() {
               <p className="text-md text-blue-700 mb-4">Messages reçus</p>
               <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
                 <MessageSquare className="w-10 h-10 text-white bg-blue-700 rounded-md p-2" />
-                <p className="text-4xl text-blue-700 font-bold">23</p>
+                <p className="text-4xl text-blue-700 font-bold">
+                  {NewMessages?.count ?? 0}
+                </p>
               </div>
               <Link href={ROUTES.RIDER.PROFILE} className="w-1/2">
                 <Button
@@ -120,11 +122,11 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 h-full flex flex-col justify-center items-center text-white text-center px-6">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            Complétez votre profil pour apparaître dans les recherches
+            Trouve ton prochain sponsor dès aujourd’hui.
           </h2>
-          <Link href={ROUTES.RIDER.PROFILE}>
+          <Link href={ROUTES.SPONSORS.LIST}>
             <Button className="bg-transparent border-white border-2 text-white font-semibold hover:bg-gray-100 hover:text-black p-[1.5rem]">
-              Compléter mon profil
+              Rechercher des sponsors
             </Button>
           </Link>
         </div>

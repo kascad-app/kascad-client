@@ -8,14 +8,14 @@ import { ROUTES } from "@/shared/constants/ROUTES";
 export const Header: React.FC = () => {
   const session = useSession();
   return (
-    <header className="bg-white text-gray-800 fixed z-100 top-0 px-24 py-8 flex items-center w-full justify-between">
-      {/* <img src="/views/logos/logoSquare.svg" alt="Logo" className="h-12 mr-4" /> */}
+    <header className="fixed z-[100] top-0 left-0 w-full px-10 py-4 flex justify-between items-center ">
       <div className="flex gap-4 name-side">
-        <h2 className="font-michroma font-medium text-lg">
+        <h2 className="font-michroma font-medium text-lg mix-blend-difference text-white">
           <Link href={ROUTES.RIDER.PROFILE}>
             {session.user?.identity != null && session.user.identity.firstName}
           </Link>
         </h2>
+
         <svg
           width="52"
           height="33"
@@ -31,9 +31,12 @@ export const Header: React.FC = () => {
           />
         </svg>
       </div>
+
       <div className="flex gap-4">
         <CircleHelp className="cursor-pointer" />
-        <Settings className="cursor-pointer" />
+        <Link href={ROUTES.RIDER.EDIT_PROFILE}>
+          <Settings className="cursor-pointer" />
+        </Link>
       </div>
     </header>
   );

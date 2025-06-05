@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import ShapeCanvas from "../../components/ShapeCanvas";
+import ShapeCanvas from "../../../components/ShapeCanvas";
 import { useGetRider } from "@/entities/riders/riders.hooks";
 
 export default function AthleteProfile() {

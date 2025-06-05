@@ -172,8 +172,8 @@ export default function EditProfile() {
           <button
             key={label}
             className={`pb-2 px-2 text-sm border-b-2 transition-colors ${slide === index
-                ? "border-blue-500 text-blue-600"
-                : "border-transparent text-gray-500"
+              ? "border-blue-500 text-blue-600"
+              : "border-transparent text-gray-500"
               }`}
             onClick={() => setSlide(index)}
           >
@@ -255,7 +255,7 @@ export default function EditProfile() {
                 setProfile((prev) => prev && { ...prev, city: e.target.value })
               }
             />
-          </div> */}
+          </div>
 
           <div>
             <label className="block text-sm font-medium mb-1">Pays</label>

@@ -10,6 +10,8 @@ export const SWR_KEY = {
 
   CONTRACT: {
     COUNTNEWMESSAGES: "/contracts/me/countNewMessages",
+    CONTRACTS: "/contracts",
+    CONTRACT: (id: string) => `/contracts/${id}`,
   },
   RIDER: {
     RIDERS: "/riders",

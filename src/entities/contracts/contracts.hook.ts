@@ -1,4 +1,4 @@
-import useSWR from "swr";
+ import useSWR from "swr";
 
 import { SWR_KEY } from "@/shared/constants/SWR_KEY";
 import { contractOfferDto } from "@kascad-app/shared-types";

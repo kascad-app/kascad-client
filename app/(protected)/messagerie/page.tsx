@@ -11,7 +11,14 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import { CornerDownRight, Gift, MountainSnow, Calendar, CalendarX2, CalendarCheck2 } from "lucide-react";
+import {
+  CornerDownRight,
+  Gift,
+  MountainSnow,
+  Calendar,
+  CalendarX2,
+  CalendarCheck2,
+} from "lucide-react";
 import { contractOfferDto, registerMessageDto } from "@kascad-app/shared-types";
 import { set } from "zod";
 import {
@@ -32,11 +39,18 @@ export default function Messagerie() {
   const [responseText, setResponseText] = useState("");
   const [refreshTrigger, setRefreshTrigger] = useState(false);
 
-
   const { data: contracts = [], isLoading, error } = useGetContracts();
 
   const findMutation = useGetContract(selectedSponsorId!);
   const sendMessageMutation = useSendMessage(selectedSponsorId!);
+
+  const [newContracts, setNewContracts] = useState<contractOfferDto[]>([]);
+  const [oldContracts, setOldContracts] = useState<contractOfferDto[]>([]);
+
+  useEffect(() => {
+    setNewContracts(contracts.filter((contract: contractOfferDto) => contract.isNew));
+    setOldContracts(contracts.filter((contract: contractOfferDto) => !contract.isNew));
+  }, [contracts]);
 
   function handleCardClick(contractId: string): void {
     if (contractId === selectedSponsorId) {
@@ -61,16 +75,9 @@ export default function Messagerie() {
     } else {
       setSelectedSponsor(null);
       setOpen(false);
-      setShowResponseInput(false)
+      setShowResponseInput(false);
     }
   }, [selectedSponsorId, refreshTrigger]);
-
-  const newContracts = contracts.filter(
-    (contract: contractOfferDto) => contract.isNew,
-  );
-  const oldContracts = contracts.filter(
-    (contract: contractOfferDto) => !contract.isNew,
-  );
 
   return (
     <div className="p-6 text-black bg-white min-h-screen">
@@ -90,20 +97,26 @@ export default function Messagerie() {
             className="cursor-pointer overflow-hidden rounded-xl hover:shadow-xl transition border border-gray-200 bg-white"
           >
             <CardContent className="p-4 relative h-[180px] flex flex-col justify-between">
-              <div className="absolute top-4 right-4 z-10">
-                <span className="relative flex h-2 w-2">
-                  {!contract.isOpenByRider && 
+              {!contract.isOpenByRider && (
+                <div className="absolute top-4 right-4 z-10">
+                  <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-600 opacity-75"></span>
-                  }
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
-                </span>
-              </div>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+                  </span>
+                </div>
+              )}
 
               <div className="flex items-center gap-3">
                 <div>
                   <div className="flex flex-row">
                     {contract.sponsorAvatar && (
-                      <img src={contract.sponsorAvatar} alt={contract.sponsorName} width={36} height={36} className="rounded-full mr-4" />
+                      <img
+                        src={contract.sponsorAvatar}
+                        alt={contract.sponsorName}
+                        width={36}
+                        height={36}
+                        className="rounded-full mr-4"
+                      />
                     )}
                     <h3 className="text-lg font-semibold text-gray-900 whitespace-nowrap">
                       {contract.sponsorName}
@@ -144,20 +157,26 @@ export default function Messagerie() {
             className="cursor-pointer overflow-hidden rounded-xl hover:shadow-xl transition border border-gray-200 bg-white"
           >
             <CardContent className="p-4 relative h-[180px] flex flex-col justify-between">
-              <div className="absolute top-4 right-4 z-10">
-                <span className="relative flex h-2 w-2">
-                  {!contract.isOpenByRider && 
+              {!contract.isOpenByRider && (
+                <div className="absolute top-4 right-4 z-10">
+                  <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-600 opacity-75"></span>
-                  }
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
-                </span>
-              </div>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+                  </span>
+                </div>
+              )}
 
               <div className="flex items-center gap-3">
                 <div>
                   <div className="flex flex-row">
                     {contract.sponsorAvatar && (
-                      <img src={contract.sponsorAvatar} alt={contract.sponsorName} width={36} height={36} className="rounded-full mr-4" />
+                      <img
+                        src={contract.sponsorAvatar}
+                        alt={contract.sponsorName}
+                        width={36}
+                        height={36}
+                        className="rounded-full mr-4"
+                      />
                     )}
                     <h3 className="text-lg font-semibold text-gray-900 whitespace-nowrap">
                       {contract.sponsorName}
@@ -168,16 +187,6 @@ export default function Messagerie() {
                   </p>
                 </div>
               </div>
-              <div>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {contract.sport &&
-                    <span className="bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded">{contract.sport}</span>
-                  }
-                  {/* <span className="bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded">{contract.budget}</span> */}
-                </div>
-                {/* <p className="text-sm text-gray-600 line-clamp-2 mt-2">{contract.message}</p> */}
-              </div>
-
               <div>
                 {contract.sport && (
                   <div>
@@ -211,88 +220,128 @@ export default function Messagerie() {
       >
         <DialogContent className="w-[80vw] h-[90vh] max-w-[80vw] overflow-y-auto p-12 bg-white rounded-xl absolute overflow-x-hidden">
           {selectedSponsor ? (
-            <DialogTitle className="text-xl font-extrabold text-black relative z-20">
+            <DialogTitle className="hidden text-xl font-extrabold text-black">
               <p>{selectedSponsor.sponsorName}</p>
             </DialogTitle>
           ) : (
-            <DialogTitle className="text-xl font-extrabold text-black relative z-20">
+            <DialogTitle className="hidden text-xl font-extrabold text-black">
               Offre de Contrat
             </DialogTitle>
           )}
           {selectedSponsor ? (
             <>
+            {selectedSponsor.sponsorName &&
               <h3 className="absolute top-8 left-1/2 -translate-x-1/2 text-[18rem] font-bold text-gray-100 uppercase tracking-wider pointer-events-none z-[-1] whitespace-nowrap">
                 {selectedSponsor.sponsorName}
               </h3>
-              <div className="flex flex-col gap-4 pt-20">
+            }
+              <div className="flex flex-col gap-4">
+                {selectedSponsor.sponsorName &&
+                  <span className="text-xl font-extrabold text-black mb-20">{selectedSponsor.sponsorName}</span>
+                }
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-20 text-base">
                   <div className="space-y-4">
-                    {selectedSponsor.sport && 
+                    {selectedSponsor.sport && (
                       <p className="flex items-center gap-2 text-black">
-                        <MountainSnow size={18} /> <strong>Sport :</strong> {selectedSponsor.sport}
+                        <MountainSnow size={18} /> <strong>Sport :</strong>{" "}
+                        {selectedSponsor.sport}
                       </p>
-                    }
-                    {selectedSponsor.type &&
+                    )}
+                    {selectedSponsor.type && (
                       <p className="flex items-center gap-2 text-black">
-                        <CornerDownRight size={18} /> <strong>Type :</strong> {selectedSponsor.type}
+                        <CornerDownRight size={18} /> <strong>Type :</strong>{" "}
+                        {selectedSponsor.type}
                       </p>
-                    }
-                    { selectedSponsor.startDate && 
+                    )}
+                    {selectedSponsor.startDate && (
                       <p className="flex items-center gap-2 text-black">
-                        <CalendarCheck2 size={18} /> <strong>Début :</strong> {selectedSponsor.startDate ? new Date(selectedSponsor.startDate).toLocaleDateString() : 'N/A'}
+                        <CalendarCheck2 size={18} /> <strong>Début :</strong>{" "}
+                        {selectedSponsor.startDate
+                          ? new Date(
+                              selectedSponsor.startDate,
+                            ).toLocaleDateString()
+                          : "N/A"}
                       </p>
-                    }
-                  {selectedSponsor.endDate &&
-                    <p className="flex items-center gap-2 text-black">
-                      <CalendarX2 size={18} /> <strong>Fin :</strong> {selectedSponsor.endDate ? new Date(selectedSponsor.endDate).toLocaleDateString() : 'N/A'}
-                  </p>
-                  }
+                    )}
+                    {selectedSponsor.endDate && (
+                      <p className="flex items-center gap-2 text-black">
+                        <CalendarX2 size={18} /> <strong>Fin :</strong>{" "}
+                        {selectedSponsor.endDate
+                          ? new Date(
+                              selectedSponsor.endDate,
+                            ).toLocaleDateString()
+                          : "N/A"}
+                      </p>
+                    )}
                   </div>
-                  {selectedSponsor.perks ? (
+                  {selectedSponsor.perks && selectedSponsor.perks.length > 0 ? (
                     <div className="space-y-4">
                       <p className="flex items-center gap-2 text-black">
-                          <Gift size={18} /> <strong>Avantages :</strong>
+                        <Gift size={18} /> <strong>Avantages :</strong>
                       </p>
                       <ul className="list-disc list-inside text-black">
                         {selectedSponsor.perks.map((perk, index) => (
-                            <li key={index}>{perk}</li>
+                          <li key={index}>{perk}</li>
                         ))}
                       </ul>
-                    </div>) : (<></>)
-                  }
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <p className="flex items-center gap-2 text-black">
+                        <Gift size={18} /> <strong>Avantages :</strong>
+                      </p>
+                      <p>Aucuns avantages pour cette offre.</p>
+                    </div>
+                  )}
                 </div>
 
-              <div className="space-y-10 relative z-10">
-
+                <div className="space-y-10 relative z-10">
                   {selectedSponsor.description && (
-                    <div className="space-y-2">
-                      <h4 className="text-lg font-semibold text-black">À propos du sponsor</h4>
+                    <div className="space-y-2 mt-8">
+                      <h4 className="text-lg font-semibold text-black">
+                        À propos du sponsor
+                      </h4>
                       <Separator />
-                      <p className="text-black leading-relaxed text-base">{selectedSponsor.description}</p>
+                      <p className="text-black leading-relaxed text-base">
+                        {selectedSponsor.description}
+                      </p>
                     </div>
                   )}
 
-                  <div className="space-y-6 mt-6">
-                    {selectedSponsor.messages.map((msg: any, i: number) => (
-                      <div key={i} className="p-4 border border-gray-200 rounded-lg bg-white shadow-sm">
-                      <div className="text-sm text-gray-500 mb-2">
-                      <div className="flex justify-between w-full">
-                        <p>
-                          <strong>From: </strong> 
-                          <span className={msg.authorType !== "sponsor" ? "text-blue-600 font-semibold" : "text-gray-800"}>
-                            {msg.authorMail}
-                          </span>
-                        </p>
-                        <p>{new Date(msg.createdAt).toLocaleDateString()}</p>
-                      </div>
-                      </div>
-                      <div className="text-base text-black whitespace-pre-line"> 
-                        {msg.content}
-                      </div>
-                      </div>
-                    ))}
-                  </div>
-                  {!showResponseInput && 
+                  {selectedSponsor.messages && selectedSponsor.messages.length > 0 && (
+                    <div className="space-y-6 mt-6">
+                      {selectedSponsor.messages.map((msg: any, i: number) => (
+                        <div
+                          key={i}
+                          className="p-4 border border-gray-200 rounded-lg bg-white shadow-sm"
+                        >
+                          <div className="text-sm text-gray-500 mb-2">
+                            <div className="flex justify-between w-full">
+                              <p>
+                                <strong>From: </strong>
+                                <span
+                                  className={
+                                    msg.authorType !== "sponsor"
+                                      ? "text-blue-600 font-semibold"
+                                      : "text-gray-800"
+                                  }
+                                >
+                                  {msg.authorMail}
+                                </span>
+                              </p>
+                              <p>
+                                {new Date(msg.createdAt).toLocaleDateString()}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="text-base text-black whitespace-pre-line">
+                            {msg.content}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {!showResponseInput && (
                     <div className="flex justify-end gap-4">
                       <Button
                         variant="ghost"
@@ -307,7 +356,7 @@ export default function Messagerie() {
                         Répondre à la proposition
                       </Button>
                     </div>
-                  }
+                  )}
 
                   {showResponseInput && (
                     <div className="flex items-end gap-2 mt-2">
@@ -321,18 +370,19 @@ export default function Messagerie() {
                       <Button
                         className="bg-black text-white hover:bg-gray-900"
                         onClick={() => {
-                          sendMessageMutation.trigger({
-                            content: responseText,
-                          })
-                          .then(async (res) => {
-                            toast.success("Message sent");
-                            setResponseText("");
-                            setShowResponseInput(false);
-                            setRefreshTrigger((prev) => !prev);
-                          })
-                          .catch((err) => {
-                            toast.error("Message failed");
-                          });
+                          sendMessageMutation
+                            .trigger({
+                              content: responseText,
+                            })
+                            .then(async (res) => {
+                              toast.success("Message sent");
+                              setResponseText("");
+                              setShowResponseInput(false);
+                              setRefreshTrigger((prev) => !prev);
+                            })
+                            .catch((err) => {
+                              toast.error("Message failed");
+                            });
                         }}
                       >
                         Envoyer

@@ -12,8 +12,8 @@ import { sendSWRRequest } from "@/lib/swr/use-swr";
 import { SWR_KEY } from "@/shared/constants/SWR_KEY";
 
 export function useMe() {
-  return useSWR<RiderMe>(SWR_KEY.AUTH.ME, () =>
-    requester().get<RiderMe>(SWR_KEY.AUTH.ME),
+  return useSWR<RiderMe>(SWR_KEY.AUTH.GET_ME, () =>
+    requester().get<RiderMe>(SWR_KEY.AUTH.GET_ME),
   );
 }
 
@@ -23,9 +23,9 @@ export function useLogin() {
     sendSWRRequest,
     {
       rollbackOnError: true,
-      onError() { },
+      onError() {},
       onSuccess() {
-        mutate(SWR_KEY.AUTH.ME, undefined, true);
+        mutate(SWR_KEY.AUTH.GET_ME, undefined, true);
       },
     },
   );
@@ -38,7 +38,7 @@ export function useRegister() {
     {
       rollbackOnError: true,
       onSuccess() {
-        mutate(SWR_KEY.AUTH.ME, undefined, true);
+        mutate(SWR_KEY.AUTH.GET_ME, undefined, true);
       },
     },
   );
@@ -51,7 +51,7 @@ export function useLogout() {
     {
       optimisticData: () => undefined,
       onSuccess() {
-        mutate(SWR_KEY.AUTH.ME, undefined, false);
+        mutate(SWR_KEY.AUTH.GET_ME, undefined, false);
         mutate(SWR_KEY.AUTH.LOGIN, undefined, false);
         mutate(SWR_KEY.AUTH.REGISTER, undefined, false);
       },

@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import "./edit.css";
 
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useUpdateOne } from "@/entities/riders/riders.hooks";
+import { useUpdateInfo } from "@/entities/riders/riders.hooks";
 import { useSession } from "@/shared/context/SessionContext";
 import {
   ContractType,
@@ -17,6 +18,8 @@ import {
   RiderIdentity,
   SocialNetwork,
   Sport,
+  updateRiderDto,
+  ImageDto,
 } from "@kascad-app/shared-types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -63,8 +66,9 @@ type ProfileState = z.infer<typeof profileSchema>;
 export default function EditProfile() {
   const session = useSession();
   const router = useRouter();
-  const updateRiderMutation = useUpdateOne();
+  const updateRiderMutation = useUpdateInfo();
   const [profile, setProfile] = useState<ProfileState | null>(null);
+  const [selectedImageFile, setSelectedImageFile] = useState<any>(null);
   const [slide, setSlide] = useState(0);
   const slideLabels = [
     "À propos",
@@ -126,15 +130,14 @@ export default function EditProfile() {
     setProfile(loadedProfile);
   }, [session.user]);
 
-  const mapProfileToRawRider = (profile: ProfileState): Partial<Rider> => {
+  const mapProfileToRawRider = (
+    profile: ProfileState,
+  ): Partial<updateRiderDto> => {
     const fullName = `${profile.firstName} ${profile.lastName}`.trim();
 
     return {
       identifier: {
-        email: profile.email,
-        slug: slugify(fullName || profile.email, { lower: true }),
         phoneNumber: profile.phoneNumber,
-        strava: { isLinked: false },
       },
       identity: {
         fullName,
@@ -168,6 +171,26 @@ export default function EditProfile() {
       },
     };
   };
+
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setSelectedImageFile(file);
+    // Pour l'affichage immédiat, tu peux garder le DataURL si tu veux un aperçu
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfile((prev) =>
+        prev
+          ? {
+              ...prev,
+              images: [reader.result as string, ...(prev.images || [])],
+            }
+          : prev,
+      );
+    };
+    reader.readAsDataURL(file);
+  }
 
   if (!profile) return <p className="p-6">Chargement du profil...</p>;
 
@@ -332,6 +355,19 @@ export default function EditProfile() {
           </div>
         </div>
       )}
+      {slide === 1 && (
+        <div className="flex flex-col gap-6">
+          <div className="grid w-full max-w-sm items-center gap-3">
+            <Label htmlFor="picture">Picture</Label>
+            <Input
+              id="picture"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          </div>
+        </div>
+      )}
 
       <div className="flex justify-end gap-4 mt-8">
         <Button variant="outline" onClick={() => router.push("/profil")}>
@@ -344,6 +380,16 @@ export default function EditProfile() {
               if (!parsed.success) throw new Error("Validation échouée");
               const rawRider = mapProfileToRawRider(parsed.data);
               console.log("Raw Rider Data:", rawRider);
+
+              console.log(selectedImageFile);
+              rawRider.images = [
+                {
+                  url: "",
+                  alt: "Image de profil",
+                  isToDelete: false,
+                  uploadDate: new Date(),
+                },
+              ];
               await updateRiderMutation.trigger(rawRider);
               toast.success("Profil mis à jour avec succès");
               router.push("/profil");

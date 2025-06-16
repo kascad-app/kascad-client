@@ -19,7 +19,6 @@ export async function sendSWRRequest<T, P>(
   url: string,
   { arg }: { arg: P } = { arg: {} as P },
 ): Promise<T> {
-  console.log(arg);
   // Si arg est un FormData, on l'envoie tel quel
   if (arg instanceof FormData) {
     return requester()

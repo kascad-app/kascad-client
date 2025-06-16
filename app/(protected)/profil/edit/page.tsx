@@ -14,78 +14,36 @@ import {
 } from "@/entities/riders/riders.hooks";
 import { useSession } from "@/shared/context/SessionContext";
 import {
-  ContractType,
-  GenderIdentity,
   Language,
-  Rider,
   RiderIdentifier,
   RiderIdentity,
-  SocialNetwork,
   Sport,
-  updateRiderDto,
-  ImageDto,
 } from "@kascad-app/shared-types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
-import slugify from "slugify";
 import { ROUTES } from "@/shared/constants/ROUTES";
-
-const profileSchema = z.object({
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  email: z.string().email(),
-  city: z.string(),
-  country: z.string(),
-  phoneNumber: z.string(),
-  bio: z.string(),
-  trainingFrequency: z.number().min(1),
-  trainingUnit: z.enum(["week", "month"]),
-  birthDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Date invalide",
-  }),
-  gender: z.nativeEnum(GenderIdentity),
-  sponsors: z.array(z.string()),
-  events: z.array(
-    z.object({
-      name: z.string(),
-      location: z.string(),
-      date: z.string(),
-      image: z.string(),
-    }),
-  ),
-  videos: z.array(z.string()),
-  images: z.array(z.string()),
-  language: z.nativeEnum(Language),
-  address: z.string(),
-
-  spokenLanguages: z.array(z.nativeEnum(Language)),
-  socialNetworks: z.array(z.nativeEnum(SocialNetwork)),
-  practiceLocation: z.string(),
-  sports: z.array(z.string()),
-  isAvailable: z.boolean(),
-});
-
-type ProfileState = z.infer<typeof profileSchema>;
+import EditProfileSlideAchievements from "@/widgets/edit-profile/EditProfileSlideAchievements.ui";
+import EditProfileSlideVisibility from "@/widgets/edit-profile/EditProfileSlideVisibility.ui";
+import {
+  mapProfileToRawRider,
+  profileSchema,
+  ProfileState,
+} from "@/shared/types/profileSchema";
+import EditProfileSlideAbout from "@/widgets/edit-profile/EditProfileSlideAbout.ui";
 
 export default function EditProfile() {
   const session = useSession();
   const router = useRouter();
   const updateRiderMutation = useUpdateInfo();
   const uploadAvatarMutation = useUploadAvatar();
-  const uploadImagesMutation = useUploadImages();
+
   const [profile, setProfile] = useState<ProfileState | null>(null);
-  const [selectedImageFile, setSelectedImageFile] = useState<any>(null);
   const [slide, setSlide] = useState(0);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(
     session.user?.avatarUrl ?? null,
   );
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const slideLabels = [
-    "À propos",
-    "Engagement et Visibilité",
-    "Réalisations et Expériences",
-  ];
 
   function stringToLanguage(value: string): Language {
     const intVal = parseInt(value, 10);
@@ -104,7 +62,7 @@ export default function EditProfile() {
         ? identity.birthDate.toISOString()
         : new Date(identity.birthDate).toISOString();
 
-    const loadedProfile: ProfileState = {
+    setProfile({
       firstName: identity.firstName,
       lastName: identity.lastName,
       email: session.user.identifier.email || "",
@@ -130,95 +88,23 @@ export default function EditProfile() {
       practiceLocation: identity.practiceLocation,
       sports: session.user.preferences?.sports?.map((s: Sport) => s.name) || [],
       isAvailable: session.user.availibility?.isAvailable ?? true,
-    };
+    });
 
-    const parse = profileSchema.safeParse(loadedProfile);
+    if (!profile) return;
+    const parse = profileSchema.safeParse(profile);
     if (!parse.success) {
       console.error("Erreur de validation des données:", parse.error);
       return;
     }
-
-    setProfile(loadedProfile);
   }, [session.user]);
 
-  function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setAvatarFile(file);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setAvatarPreview(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-  }
+  async function handleSave() {
+    if (!profile) return;
 
-  const mapProfileToRawRider = (
-    profile: ProfileState,
-  ): Partial<updateRiderDto> => {
-    const fullName = `${profile.firstName} ${profile.lastName}`.trim();
-
-    return {
-      identifier: {
-        phoneNumber: profile.phoneNumber,
-      },
-      identity: {
-        fullName,
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        gender: profile.gender,
-
-        birthDate: new Date(profile.birthDate),
-        city: profile.city,
-        country: profile.country,
-        languageSpoken: profile.spokenLanguages.map((lang) => lang.toString()),
-        practiceLocation: profile.practiceLocation,
-        bio: profile.bio,
-      },
-      preferences: {
-        networks: profile.socialNetworks,
-        sports: profile.sports.map((name) => ({ name } as Sport)),
-        languages: profile.language,
-      },
-      images: profile.images.map((url) => ({
-        url,
-        uploadDate: new Date(),
-      })),
-      availibility: {
-        isAvailable: profile.isAvailable,
-        contractType: ContractType.UGC, // valeur par défaut ou à configurer plus tard
-      },
-      trainingFrequency: {
-        sessionsPerWeek: profile.trainingFrequency,
-        hoursPerSession: 1, // valeur par défaut à ajuster
-      },
-    };
-  };
-
-  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setSelectedImageFile(file);
-    // Pour l'affichage immédiat, tu peux garder le DataURL si tu veux un aperçu
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfile((prev) =>
-        prev
-          ? {
-              ...prev,
-              images: [reader.result as string, ...(prev.images || [])],
-            }
-          : prev,
-      );
-    };
-    reader.readAsDataURL(file);
-  }
-
-  async function updateRider() {
     try {
       const parsed = profileSchema.safeParse(profile);
       if (!parsed.success) throw new Error("Validation échouée");
-      const rawRider = mapProfileToRawRider(parsed.data);
+      const riderPayload = mapProfileToRawRider(parsed.data);
 
       if (avatarFile) {
         const formData = new FormData();
@@ -226,15 +112,20 @@ export default function EditProfile() {
         await uploadAvatarMutation.trigger(formData);
       }
 
-      await updateRiderMutation.trigger(rawRider);
+      // TODO : BUG A FIX
+      await updateRiderMutation.trigger(riderPayload);
       toast.success("Profil mis à jour avec succès");
-      router.push("/profil");
-    } catch (error) {
-      toast.error("Erreur : " + (error as Error).message);
-    }
+      router.push(ROUTES.RIDER.PROFILE);
+    } catch (error) {}
   }
 
   if (!profile) return <p className="p-6">Chargement du profil...</p>;
+
+  const slideLabels = [
+    "À propos",
+    "Engagement et Visibilité",
+    "Réalisations et Expériences",
+  ];
 
   return (
     <div className="relative max-w-7xl mx-auto p-6 space-y-6 w-[100vw] flex flex-col">
@@ -256,185 +147,22 @@ export default function EditProfile() {
       </div>
 
       {slide === 0 && (
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2 w-full max-w-xs">
-            <label className="font-medium text-gray-700">Avatar</label>
-            <div className="flex items-center gap-4">
-              <img
-                src={avatarPreview ?? "/assets/img/blog-4.jpg"}
-                alt="Aperçu avatar"
-                className="w-20 h-20 max-w-[80px] max-h-[80px] rounded-full object-cover border shadow"
-              />
-              <label
-                htmlFor="avatar"
-                className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
-              >
-                Changer
-                <input
-                  id="avatar"
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleAvatarChange}
-                />
-              </label>
-            </div>
-            <p className="text-xs text-gray-500">
-              Formats acceptés : JPG, PNG, GIF. Max : 5Mo.
-            </p>
-          </div>
-          <div className="flex gap-4 w-full">
-            <div className="w-1/2">
-              <label className="block text-sm font-medium mb-1">Prénom</label>
-              <Input
-                value={profile.firstName}
-                onChange={(e) =>
-                  setProfile(
-                    (prev) => prev && { ...prev, firstName: e.target.value },
-                  )
-                }
-              />
-            </div>
-            <div className="w-1/2">
-              <label className="block text-sm font-medium mb-1">Nom</label>
-              <Input
-                value={profile.lastName}
-                onChange={(e) =>
-                  setProfile(
-                    (prev) => prev && { ...prev, lastName: e.target.value },
-                  )
-                }
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
-            <Input value={profile.email} disabled />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Numéro de téléphone
-            </label>
-            <Input
-              type="tel"
-              value={profile.phoneNumber ?? ""}
-              onChange={(e) =>
-                setProfile(
-                  (prev) => prev && { ...prev, phoneNumber: e.target.value },
-                )
-              }
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Pays</label>
-            <Input
-              value={profile.country}
-              onChange={(e) =>
-                setProfile(
-                  (prev) => prev && { ...prev, country: e.target.value },
-                )
-              }
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Ville</label>
-            <Input
-              value={profile.city}
-              onChange={(e) =>
-                setProfile((prev) => prev && { ...prev, city: e.target.value })
-              }
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Langue</label>
-            <select
-              className="w-full border rounded-md px-3 py-2"
-              value={profile.language}
-              onChange={(e) =>
-                setProfile(
-                  (prev) =>
-                    prev && {
-                      ...prev,
-                      language: parseInt(e.target.value, 10) as Language,
-                    },
-                )
-              }
-            >
-              <option value={Language.FR}>Français</option>
-              <option value={Language.EN}>Anglais</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Date de naissance
-            </label>
-            <Input
-              type="date"
-              value={profile.birthDate.slice(0, 10)} // ISO string -> 'YYYY-MM-DD'
-              onChange={(e) =>
-                setProfile((prev) =>
-                  prev ? { ...prev, birthDate: e.target.value } : prev,
-                )
-              }
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Réseaux sociaux
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {Object.values(SocialNetwork).map((network) => {
-                const isSelected = profile.socialNetworks.includes(network);
-                return (
-                  <Button
-                    key={network}
-                    variant={isSelected ? "default" : "outline"}
-                    onClick={() => {
-                      setProfile((prev) => {
-                        if (!prev) return prev;
-                        const updated = isSelected
-                          ? prev.socialNetworks.filter((n) => n !== network)
-                          : [...prev.socialNetworks, network];
-                        return { ...prev, socialNetworks: updated };
-                      });
-                    }}
-                  >
-                    {network.charAt(0).toUpperCase() + network.slice(1)}
-                  </Button>
-                );
-              })}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Bio</label>
-            <Textarea
-              value={profile.bio}
-              onChange={(e) =>
-                setProfile((prev) => prev && { ...prev, bio: e.target.value })
-              }
-            />
-          </div>
-        </div>
+        <EditProfileSlideAbout
+          profile={profile}
+          setProfile={setProfile}
+          avatarPreview={avatarPreview}
+          setAvatarFile={setAvatarFile}
+          setAvatarPreview={setAvatarPreview}
+        />
       )}
       {slide === 1 && (
-        <div className="flex flex-col gap-6">
-          <div className="grid w-full max-w-sm items-center gap-3">
-            <Label htmlFor="picture">Picture</Label>
-            <Input
-              id="picture"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-          </div>
-        </div>
+        <EditProfileSlideVisibility profile={profile} setProfile={setProfile} />
+      )}
+      {slide === 2 && (
+        <EditProfileSlideAchievements
+          profile={profile}
+          setProfile={setProfile}
+        />
       )}
 
       <div className="flex justify-end gap-4 mt-8">
@@ -444,7 +172,7 @@ export default function EditProfile() {
         >
           Annuler
         </Button>
-        <Button onClick={async () => updateRider()}>Sauvegarder</Button>
+        <Button onClick={async () => handleSave()}>Sauvegarder</Button>
       </div>
     </div>
   );

@@ -1,1 +1,0 @@
-export * as OnBoardingTypes from "./onboarding.type"

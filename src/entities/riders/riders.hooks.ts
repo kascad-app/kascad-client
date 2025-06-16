@@ -34,8 +34,8 @@ export function useUploadImages() {
 }
 
 export function useUploadAvatar() {
-  return useSWRMutation<Rider, Error, string, File>(
-    SWR_KEY.RIDER.ME.UPLOAD_IMAGES,
+  return useSWRMutation<any, Error, string, FormData>(
+    SWR_KEY.RIDER.ME.UPLOAD_AVATAR,
     sendSWRRequest,
     {
       rollbackOnError: true,
@@ -53,6 +53,22 @@ export function useGetRiders() {
     // console.log("useGetRiders", SWR_KEY.RIDER.RIDERS)
   );
 }
+
+// export function useUploadAvatar() {
+//   return useSWRMutation<any, Error, string, FormData>(
+//     SWR_KEY.RIDER.ME.UPLOAD_AVATAR,
+//     async (url, { arg }) => {// arg est le File
+
+//       const res = await fetch(url, {
+//         method: "POST",
+//         body: formData,
+//       });
+
+//       if (!res.ok) throw new Error("Erreur upload avatar");
+//       return await res.json();
+//     },
+//   );
+// }
 
 export function useGetRider(_id: string) {
   console.log("useGetRider", _id);

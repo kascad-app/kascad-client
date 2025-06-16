@@ -7,7 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useUpdateInfo } from "@/entities/riders/riders.hooks";
+import {
+  useUpdateInfo,
+  useUploadAvatar,
+  useUploadImages,
+} from "@/entities/riders/riders.hooks";
 import { useSession } from "@/shared/context/SessionContext";
 import {
   ContractType,
@@ -25,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
 import slugify from "slugify";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 const profileSchema = z.object({
   firstName: z.string().min(1),
@@ -67,9 +72,15 @@ export default function EditProfile() {
   const session = useSession();
   const router = useRouter();
   const updateRiderMutation = useUpdateInfo();
+  const uploadAvatarMutation = useUploadAvatar();
+  const uploadImagesMutation = useUploadImages();
   const [profile, setProfile] = useState<ProfileState | null>(null);
   const [selectedImageFile, setSelectedImageFile] = useState<any>(null);
   const [slide, setSlide] = useState(0);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(
+    session.user?.avatarUrl ?? null,
+  );
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const slideLabels = [
     "À propos",
     "Engagement et Visibilité",
@@ -129,6 +140,17 @@ export default function EditProfile() {
 
     setProfile(loadedProfile);
   }, [session.user]);
+
+  function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setAvatarFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setAvatarPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  }
 
   const mapProfileToRawRider = (
     profile: ProfileState,
@@ -192,6 +214,26 @@ export default function EditProfile() {
     reader.readAsDataURL(file);
   }
 
+  async function updateRider() {
+    try {
+      const parsed = profileSchema.safeParse(profile);
+      if (!parsed.success) throw new Error("Validation échouée");
+      const rawRider = mapProfileToRawRider(parsed.data);
+
+      if (avatarFile) {
+        const formData = new FormData();
+        formData.append("file", avatarFile);
+        await uploadAvatarMutation.trigger(formData);
+      }
+
+      await updateRiderMutation.trigger(rawRider);
+      toast.success("Profil mis à jour avec succès");
+      router.push("/profil");
+    } catch (error) {
+      toast.error("Erreur : " + (error as Error).message);
+    }
+  }
+
   if (!profile) return <p className="p-6">Chargement du profil...</p>;
 
   return (
@@ -215,6 +257,32 @@ export default function EditProfile() {
 
       {slide === 0 && (
         <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2 w-full max-w-xs">
+            <label className="font-medium text-gray-700">Avatar</label>
+            <div className="flex items-center gap-4">
+              <img
+                src={avatarPreview ?? "/assets/img/blog-4.jpg"}
+                alt="Aperçu avatar"
+                className="w-20 h-20 max-w-[80px] max-h-[80px] rounded-full object-cover border shadow"
+              />
+              <label
+                htmlFor="avatar"
+                className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
+              >
+                Changer
+                <input
+                  id="avatar"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleAvatarChange}
+                />
+              </label>
+            </div>
+            <p className="text-xs text-gray-500">
+              Formats acceptés : JPG, PNG, GIF. Max : 5Mo.
+            </p>
+          </div>
           <div className="flex gap-4 w-full">
             <div className="w-1/2">
               <label className="block text-sm font-medium mb-1">Prénom</label>
@@ -370,36 +438,13 @@ export default function EditProfile() {
       )}
 
       <div className="flex justify-end gap-4 mt-8">
-        <Button variant="outline" onClick={() => router.push("/profil")}>
+        <Button
+          variant="outline"
+          onClick={() => router.push(ROUTES.RIDER.PROFILE)}
+        >
           Annuler
         </Button>
-        <Button
-          onClick={async () => {
-            try {
-              const parsed = profileSchema.safeParse(profile);
-              if (!parsed.success) throw new Error("Validation échouée");
-              const rawRider = mapProfileToRawRider(parsed.data);
-              console.log("Raw Rider Data:", rawRider);
-
-              console.log(selectedImageFile);
-              rawRider.images = [
-                {
-                  url: "",
-                  alt: "Image de profil",
-                  isToDelete: false,
-                  uploadDate: new Date(),
-                },
-              ];
-              await updateRiderMutation.trigger(rawRider);
-              toast.success("Profil mis à jour avec succès");
-              router.push("/profil");
-            } catch (error) {
-              toast.error("Erreur : " + (error as Error).message);
-            }
-          }}
-        >
-          Sauvegarder
-        </Button>
+        <Button onClick={async () => updateRider()}>Sauvegarder</Button>
       </div>
     </div>
   );

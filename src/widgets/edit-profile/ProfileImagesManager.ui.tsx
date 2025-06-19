@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { Undo2, X } from "lucide-react";
-import { ImageDto } from "@kascad-app/shared-types";
-import { TempImage } from "../../../app/(protected)/profil/edit/page";
+import { ImageDto, TempImage } from "@kascad-app/shared-types";
 
 export default function ProfileImagesManager({
   currentImages,
@@ -50,7 +49,7 @@ export default function ProfileImagesManager({
         {currentImages.map((img, idx) => (
           <div
             key={`existing-${idx}`}
-            className={`relative group w-32 h-32 rounded overflow-hidden border shadow ${
+            className={`relative group w-60 h-40 rounded overflow-hidden shadow ${
               img.isToDelete ? "opacity-50 grayscale" : ""
             }`}
           >
@@ -82,7 +81,7 @@ export default function ProfileImagesManager({
         {imageFiles.map((img, idx) => (
           <div
             key={`new-${idx}`}
-            className="relative group w-32 h-32 rounded overflow-hidden border shadow"
+            className="relative group w-60 h-40 rounded overflow-hidden shadow ring-2 ring-blue-400 ring-offset-2"
           >
             <img
               src={img.preview}
@@ -97,10 +96,13 @@ export default function ProfileImagesManager({
             >
               <X className="w-5 h-5 text-red-500" />
             </button>
+            <span className="absolute bottom-2 left-2 bg-blue-400 text-white text-xs px-2 py-1 rounded">
+              Nouvelle
+            </span>
           </div>
         ))}
         {/* Zone d'ajout */}
-        <label className="flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-blue-400 transition">
+        <label className="flex flex-col items-center justify-center w-60 h-40 border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-blue-400 transition">
           <span className="text-gray-400 text-3xl">+</span>
           <span className="text-xs text-gray-500 mt-1">Ajouter</span>
           <input

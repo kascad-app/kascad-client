@@ -18,6 +18,7 @@ import {
   RiderIdentifier,
   RiderIdentity,
   Sport,
+  TempImage,
 } from "@kascad-app/shared-types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -220,5 +221,3 @@ export default function EditProfile() {
     </div>
   );
 }
-
-export type TempImage = { file: File; preview: string };

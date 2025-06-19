@@ -164,11 +164,12 @@ export default function ProfileComponent() {
             ))}
           </div>
           <div className="mt-6 text-center">
-            {visibleImages < images.length ? (
+            {visibleImages < images.length && (
               <Button onClick={() => setVisibleImages((v) => v + 4)}>
                 Voir plus d'images
               </Button>
-            ) : (
+            )}
+            {visibleImages >= images.length && (
               <Button variant="outline" onClick={() => setVisibleImages(4)}>
                 Réinitialiser
               </Button>

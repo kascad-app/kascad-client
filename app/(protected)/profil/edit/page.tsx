@@ -134,8 +134,6 @@ export default function EditProfile() {
       }
 
       if (imageFiles.length > 0) {
-        console.log("Uploading images:", imageFiles);
-
         const formData = new FormData();
         imageFiles.forEach((img) => {
           formData.append("files", img.file);

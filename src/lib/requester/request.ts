@@ -15,7 +15,6 @@ const request = async <TData>(
 
   if (options?.data instanceof FormData) {
     body = options.data;
-    // Surtout NE PAS mettre Content-Type, fetch le gère pour FormData
   } else if (options?.data !== undefined) {
     headers.set("Content-Type", "application/json");
     body = JSON.stringify(options.data);

@@ -21,7 +21,7 @@ export function useUpdateInfo() {
 }
 
 export function useUploadImages() {
-  return useSWRMutation<Rider, Error, string, File[]>(
+  return useSWRMutation<Rider, Error, string, FormData>(
     SWR_KEY.RIDER.ME.UPLOAD_IMAGES,
     sendSWRRequest,
     {

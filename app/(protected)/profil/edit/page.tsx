@@ -37,6 +37,7 @@ export default function EditProfile() {
   const router = useRouter();
   const updateRiderMutation = useUpdateInfo();
   const uploadAvatarMutation = useUploadAvatar();
+  const uploadImagesMutation = useUploadImages();
 
   const [profile, setProfile] = useState<ProfileState | null>(null);
   const [slide, setSlide] = useState(0);
@@ -45,6 +46,8 @@ export default function EditProfile() {
   );
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
+  const [imageFiles, setImageFiles] = useState<TempImage[]>([]);
+
   function stringToLanguage(value: string): Language {
     const intVal = parseInt(value, 10);
     if (intVal in Language) return intVal as Language;
@@ -52,43 +55,55 @@ export default function EditProfile() {
   }
 
   useEffect(() => {
-    if (!session.user) return;
+    if (!session.user || profile) return;
+    const draft = localStorage.getItem("profile-edit-draft");
+    if (draft) {
+      setProfile(JSON.parse(draft));
+    } else {
+      const identity = session.user.identity as RiderIdentity;
+      const identifier = session.user.identifier as RiderIdentifier;
 
-    const identity = session.user.identity as RiderIdentity;
-    const identifier = session.user.identifier as RiderIdentifier;
+      const birthDate =
+        identity.birthDate instanceof Date
+          ? identity.birthDate.toISOString()
+          : new Date(identity.birthDate).toISOString();
 
-    const birthDate =
-      identity.birthDate instanceof Date
-        ? identity.birthDate.toISOString()
-        : new Date(identity.birthDate).toISOString();
+      setProfile({
+        firstName: identity.firstName,
+        lastName: identity.lastName,
+        email: session.user.identifier.email || "",
+        city: identity.city,
+        address: "",
+        country: identity.country,
+        phoneNumber: identifier.phoneNumber || "",
+        bio: identity.bio || "",
+        trainingFrequency: session.user.trainingFrequency?.sessionsPerWeek || 3,
+        trainingUnit: "week",
+        birthDate,
+        gender: identity.gender,
+        sponsors: session.user.sponsorSummary?.currentSponsors || [],
+        events: [],
+        videos: [],
+        images: (session.user.images || []).map((img) =>
+          typeof img === "string"
+            ? { url: img, uploadDate: new Date() }
+            : {
+                url: img.url,
+                uploadDate: img.uploadDate ?? new Date(),
+                alt: img.alt,
+                isToDelete: false,
+              },
+        ),
+        language: Number(session.user.preferences?.languages) ?? Language.FR,
+        spokenLanguages: identity.languageSpoken.map(stringToLanguage),
 
-    setProfile({
-      firstName: identity.firstName,
-      lastName: identity.lastName,
-      email: session.user.identifier.email || "",
-      city: identity.city,
-      address: "",
-      country: identity.country,
-      phoneNumber: identifier.phoneNumber || "",
-      bio: identity.bio || "",
-      trainingFrequency: session.user.trainingFrequency?.sessionsPerWeek || 3,
-      trainingUnit: "week",
-      birthDate,
-      gender: identity.gender,
-      sponsors: session.user.sponsorSummary?.currentSponsors || [],
-      events: [],
-      videos: [],
-      images: (session.user.images || []).map((img) =>
-        typeof img === "string" ? img : img.url,
-      ),
-      language: Number(session.user.preferences?.languages) ?? Language.FR,
-      spokenLanguages: identity.languageSpoken.map(stringToLanguage),
-
-      socialNetworks: session.user.preferences?.networks || [],
-      practiceLocation: identity.practiceLocation,
-      sports: session.user.preferences?.sports?.map((s: Sport) => s.name) || [],
-      isAvailable: session.user.availibility?.isAvailable ?? true,
-    });
+        socialNetworks: session.user.preferences?.networks || [],
+        practiceLocation: identity.practiceLocation,
+        sports:
+          session.user.preferences?.sports?.map((s: Sport) => s.name) || [],
+        isAvailable: session.user.availibility?.isAvailable ?? true,
+      });
+    }
 
     if (!profile) return;
     const parse = profileSchema.safeParse(profile);
@@ -97,6 +112,12 @@ export default function EditProfile() {
       return;
     }
   }, [session.user]);
+
+  useEffect(() => {
+    if (profile) {
+      localStorage.setItem("profile-edit-draft", JSON.stringify(profile));
+    }
+  }, [profile]);
 
   async function handleSave() {
     if (!profile) return;
@@ -112,11 +133,33 @@ export default function EditProfile() {
         await uploadAvatarMutation.trigger(formData);
       }
 
+      if (imageFiles.length > 0) {
+        console.log("Uploading images:", imageFiles);
+
+        const formData = new FormData();
+        imageFiles.forEach((img) => {
+          formData.append("files", img.file);
+        });
+        await uploadImagesMutation.trigger(formData);
+      }
+
       // TODO : BUG A FIX
       await updateRiderMutation.trigger(riderPayload);
+      localStorage.removeItem("profile-edit-draft");
       toast.success("Profil mis à jour avec succès");
       router.push(ROUTES.RIDER.PROFILE);
     } catch (error) {}
+  }
+
+  async function handleCancel() {
+    if (
+      confirm(
+        "Êtes-vous sûr de vouloir annuler ? Toutes les modifications seront perdues.",
+      )
+    ) {
+      localStorage.removeItem("profile-edit-draft");
+      router.push(ROUTES.RIDER.PROFILE);
+    }
   }
 
   if (!profile) return <p className="p-6">Chargement du profil...</p>;
@@ -156,7 +199,12 @@ export default function EditProfile() {
         />
       )}
       {slide === 1 && (
-        <EditProfileSlideVisibility profile={profile} setProfile={setProfile} />
+        <EditProfileSlideVisibility
+          profile={profile}
+          setProfile={setProfile}
+          imageFiles={imageFiles}
+          setImageFiles={setImageFiles}
+        />
       )}
       {slide === 2 && (
         <EditProfileSlideAchievements
@@ -166,10 +214,7 @@ export default function EditProfile() {
       )}
 
       <div className="flex justify-end gap-4 mt-8">
-        <Button
-          variant="outline"
-          onClick={() => router.push(ROUTES.RIDER.PROFILE)}
-        >
+        <Button variant="outline" onClick={() => handleCancel()}>
           Annuler
         </Button>
         <Button onClick={async () => handleSave()}>Sauvegarder</Button>
@@ -177,3 +222,5 @@ export default function EditProfile() {
     </div>
   );
 }
+
+export type TempImage = { file: File; preview: string };

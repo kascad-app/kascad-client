@@ -6,7 +6,14 @@ import {
   SocialNetwork,
   Sport,
   updateRiderDto,
-} from "@kascad-app/shared-types"; // adapte selon ton projet
+} from "@kascad-app/shared-types";
+
+export const imageDtoSchema = z.object({
+  url: z.string(),
+  alt: z.string().optional(),
+  isToDelete: z.boolean().optional(),
+  uploadDate: z.union([z.string(), z.date()]),
+});
 
 export const profileSchema = z.object({
   firstName: z.string().min(1),
@@ -32,7 +39,7 @@ export const profileSchema = z.object({
     }),
   ),
   videos: z.array(z.string()),
-  images: z.array(z.string()),
+  images: z.array(imageDtoSchema),
   language: z.nativeEnum(Language),
   address: z.string(),
 
@@ -72,9 +79,14 @@ export const mapProfileToRawRider = (
       sports: profile.sports.map((name) => ({ name } as Sport)),
       languages: profile.language,
     },
-    images: profile.images.map((url) => ({
-      url,
-      uploadDate: new Date(),
+    images: profile.images.map((img) => ({
+      url: img.url,
+      alt: img.alt,
+      isToDelete: img.isToDelete,
+      uploadDate:
+        typeof img.uploadDate === "string"
+          ? new Date(img.uploadDate)
+          : img.uploadDate,
     })),
     availibility: {
       isAvailable: profile.isAvailable,

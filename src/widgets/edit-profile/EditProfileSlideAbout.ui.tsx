@@ -35,7 +35,7 @@ export default function EditProfileSlideAbout({
           <img
             src={avatarPreview ?? "/default-avatar.png"}
             alt="Aperçu avatar"
-            className="w-20 h-20 max-w-[80px] max-h-[80px] rounded-full object-cover border shadow"
+            className="w-40 h-40 max-w-[150px] max-h-[150px] rounded-full object-cover border shadow"
           />
           <label
             htmlFor="avatar"
@@ -52,7 +52,7 @@ export default function EditProfileSlideAbout({
           </label>
         </div>
         <p className="text-xs text-gray-500">
-          Formats acceptés : JPG, PNG, GIF. Max : 5Mo.
+          Formats acceptés : JPG, PNG Max : 10Mo.
         </p>
       </div>
       <div>

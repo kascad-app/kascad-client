@@ -71,7 +71,7 @@ export default function ProfileComponent() {
               session.user.avatarUrl
                 ? session.user.avatarUrl
                 : "/assets/img/blog-4.jpg"
-            } // ← ajoute cette image dans ton dossier public/images
+            }
             alt="Photo de profil"
             width={100}
             height={100}
@@ -224,7 +224,7 @@ export default function ProfileComponent() {
           ))}
         </div>
       </section>
-      <section className="mb-12 relative">
+      {/* <section className="mb-12 relative">
         <h2 className="text-2xl font-semibold mb-4">Galerie d'images</h2>
 
         <div
@@ -256,7 +256,7 @@ export default function ProfileComponent() {
             {showAllGalleryImages ? "Voir moins" : "Voir plus"}
           </Button>
         </div>
-      </section>
+      </section> */}
       <section className="mb-12 relative">
         <h2 className="text-2xl font-semibold mb-4">Vidéos YouTube</h2>
 

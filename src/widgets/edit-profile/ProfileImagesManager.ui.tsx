@@ -43,7 +43,7 @@ export default function ProfileImagesManager({
 
   return (
     <div className="flex flex-col gap-4">
-      <h3 className="text-lg font-semibold">Images</h3>
+      <h3 className="text-lg font-semibold">Ma galerie d'images</h3>
       <div className="flex flex-wrap gap-4">
         {/* Images existantes */}
         {currentImages.map((img, idx) => (

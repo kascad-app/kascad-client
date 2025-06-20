@@ -171,7 +171,7 @@ export default function EditProfile() {
 
   const slideLabels = [
     "À propos",
-    "Engagement et Visibilité",
+    "Contenues et Visibilité",
     "Réalisations et Expériences",
   ];
 

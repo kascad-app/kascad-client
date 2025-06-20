@@ -127,10 +127,16 @@ export default function EditProfile() {
       const parsed = profileSchema.safeParse(profile);
       if (!parsed.success) throw new Error("Validation échouée");
       const riderPayload = mapProfileToRawRider(parsed.data);
-
       if (avatarFile) {
         const formData = new FormData();
         formData.append("file", avatarFile);
+        await uploadAvatarMutation.trigger(formData);
+      }
+
+      if (avatarPreview == null) {
+        // si l'image a été reset
+        const formData = new FormData();
+        formData.append("file", new Blob(), "kascadResetAvatar");
         await uploadAvatarMutation.trigger(formData);
       }
 
@@ -216,7 +222,12 @@ export default function EditProfile() {
         <Button variant="outline" onClick={() => handleCancel()}>
           Annuler
         </Button>
-        <Button onClick={async () => handleSave()}>Sauvegarder</Button>
+        <Button
+          disabled={updateRiderMutation.isMutating}
+          onClick={async () => handleSave()}
+        >
+          Sauvegarder
+        </Button>
       </div>
     </div>
   );

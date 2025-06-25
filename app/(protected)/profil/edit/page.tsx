@@ -139,7 +139,6 @@ export default function EditProfile() {
         formData.append("file", new Blob(), "kascadResetAvatar");
         await uploadAvatarMutation.trigger(formData);
       }
-
       if (imageFiles.length > 0) {
         const formData = new FormData();
         imageFiles.forEach((img) => {
@@ -232,3 +231,5 @@ export default function EditProfile() {
     </div>
   );
 }
+
+export type TempImage = { file: File; preview: string };

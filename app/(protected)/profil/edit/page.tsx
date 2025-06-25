@@ -231,5 +231,3 @@ export default function EditProfile() {
     </div>
   );
 }
-
-export type TempImage = { file: File; preview: string };

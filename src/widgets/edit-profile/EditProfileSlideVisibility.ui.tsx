@@ -1,10 +1,7 @@
-import { AuthenticationTypes } from "@/entities/authentication";
 import { ProfileState } from "@/shared/types/profileSchema";
-import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import ProfileImagesManager from "./ProfileImagesManager.ui";
-import { ImageDto } from "@kascad-app/shared-types";
-import { TempImage } from "../../../app/(protected)/profil/edit/page";
+import { ImageDto, TempImage } from "@kascad-app/shared-types";
 
 export default function EditProfileSlideVisibility({
   profile,

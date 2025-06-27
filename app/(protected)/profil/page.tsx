@@ -150,7 +150,7 @@ export default function ProfileComponent() {
 
       {images.length > 0 && (
         <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-4">Images</h2>
+          <h2 className="text-2xl font-semibold mb-4">Ma galerie d'images</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {images.slice(0, visibleImages).map((img, i) => (
               <Image

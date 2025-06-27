@@ -15,9 +15,14 @@ export default function EditProfileSlideAbout({
   profile: ProfileState;
   setProfile: React.Dispatch<React.SetStateAction<ProfileState | null>>;
   avatarPreview: string | null;
-  setAvatarFile: (file: File) => void;
-  setAvatarPreview: (url: string) => void;
+  setAvatarFile: (file: File | null) => void;
+  setAvatarPreview: (url: string | null) => void;
 }) {
+  function handleAvatarReset() {
+    setAvatarFile(null);
+    setAvatarPreview(null);
+  }
+
   function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -33,23 +38,39 @@ export default function EditProfileSlideAbout({
         <label className="font-medium text-gray-700">Avatar</label>
         <div className="flex items-center gap-4">
           <img
-            src={avatarPreview ?? "/default-avatar.png"}
+            src={
+              avatarPreview && avatarPreview != ""
+                ? avatarPreview
+                : "/assets/img/blog-4.jpg"
+            }
             alt="Aperçu avatar"
             className="w-40 h-40 max-w-[150px] max-h-[150px] rounded-full object-cover border shadow"
           />
-          <label
-            htmlFor="avatar"
-            className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
-          >
-            Changer
-            <input
-              id="avatar"
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleAvatarChange}
-            />
-          </label>
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="avatar"
+              className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition text-center"
+            >
+              Changer
+              <input
+                id="avatar"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarChange}
+              />
+            </label>
+            {avatarPreview && (
+              <label className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition text-center">
+                Réinitialiser
+                <Button
+                  id="avatar"
+                  className="hidden"
+                  onClick={handleAvatarReset}
+                />
+              </label>
+            )}
+          </div>
         </div>
         <p className="text-xs text-gray-500">
           Formats acceptés : JPG, PNG Max : 10Mo.

@@ -66,7 +66,7 @@ export default function ProfileComponent() {
       </p>
       <div className="flex justify-between items-start flex-wrap gap-6 mb-12">
         <div className="flex gap-14 items-start">
-          <Image
+          <img
             src={
               session.user.avatarUrl
                 ? session.user.avatarUrl
@@ -153,7 +153,7 @@ export default function ProfileComponent() {
           <h2 className="text-2xl font-semibold mb-4">Ma galerie d'images</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {images.slice(0, visibleImages).map((img, i) => (
-              <Image
+              <img
                 key={i}
                 src={img.url}
                 alt={img.alt || `Image ${i + 1}`}

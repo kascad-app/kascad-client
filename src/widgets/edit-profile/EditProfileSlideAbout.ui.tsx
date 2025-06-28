@@ -4,6 +4,7 @@ import { ProfileState } from "@/shared/types/profileSchema";
 import { Button } from "@components/ui/button";
 import { Textarea } from "@components/ui/textarea";
 import { Language, SocialNetwork } from "@kascad-app/shared-types";
+import Avatar from "../avatar/avatar.ui";
 
 export default function EditProfileSlideAbout({
   profile,
@@ -37,15 +38,7 @@ export default function EditProfileSlideAbout({
       <div className="flex flex-col gap-2 w-full max-w-xs">
         <label className="font-medium text-gray-700">Avatar</label>
         <div className="flex items-center gap-4">
-          <img
-            src={
-              avatarPreview && avatarPreview != ""
-                ? avatarPreview
-                : "/assets/img/blog-4.jpg"
-            }
-            alt="Aperçu avatar"
-            className="w-40 h-40 max-w-[150px] max-h-[150px] rounded-full object-cover border shadow"
-          />
+          <Avatar src={avatarPreview} size="L" alt="Aperçu avatar"></Avatar>
           <div className="flex flex-col gap-2">
             <label
               htmlFor="avatar"

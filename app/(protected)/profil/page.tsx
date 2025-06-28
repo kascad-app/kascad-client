@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
 import { Skeleton } from "@components/ui/skeleton";
+import Avatar from "@/widgets/avatar/avatar.ui";
 
 export default function ProfileComponent() {
   const session = useSession();
@@ -66,17 +67,7 @@ export default function ProfileComponent() {
       </p>
       <div className="flex justify-between items-start flex-wrap gap-6 mb-12">
         <div className="flex gap-14 items-start">
-          <Image
-            src={
-              session.user.avatarUrl
-                ? session.user.avatarUrl
-                : "/assets/img/blog-4.jpg"
-            }
-            alt="Photo de profil"
-            width={100}
-            height={100}
-            className="rounded-full object-cover border h-[100px] w-[100px]"
-          />
+          <Avatar src={session.user.avatarUrl}></Avatar>
           <div className="flex flex-col gap-2">
             <h1 className="text-3xl font-bold tracking-tight font-michroma">
               {fullName}

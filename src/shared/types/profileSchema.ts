@@ -15,6 +15,12 @@ export const imageDtoSchema = z.object({
   uploadDate: z.union([z.string(), z.date()]),
 });
 
+export const videoDtoSchema = z.object({
+  url: z.string(),
+  title: z.string(),
+  description: z.string().optional(),
+});
+
 export const profileSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),
@@ -38,11 +44,28 @@ export const profileSchema = z.object({
       image: z.string(),
     }),
   ),
-  videos: z.array(z.string()),
+  videos: z.array(videoDtoSchema),
   images: z.array(imageDtoSchema),
   language: z.nativeEnum(Language),
   address: z.string(),
-
+  // performanceSummary: z.object({
+  //   totalPodiums: z.number(),
+  //   performances: z.array(
+  //     z.object({
+  //       startDate: z.string(),
+  //       endDate: z.string(),
+  //       eventName: z.string(),
+  //       category: z.string(),
+  //       ranking: z.number().optional(),
+  //       location: z.object({
+  //         country: z.string(),
+  //         city: z.string(),
+  //       }),
+  //       weather: z.string(),
+  //       notes: z.string().optional(),
+  //     }),
+  //   ),
+  // }),
   spokenLanguages: z.array(z.nativeEnum(Language)),
   socialNetworks: z.array(z.nativeEnum(SocialNetwork)),
   practiceLocation: z.string(),
@@ -87,6 +110,11 @@ export const mapProfileToRawRider = (
         typeof img.uploadDate === "string"
           ? new Date(img.uploadDate)
           : img.uploadDate,
+    })),
+    videos: profile.videos.map((video) => ({
+      url: video.url,
+      title: video.title,
+      description: video.description,
     })),
     availibility: {
       isAvailable: profile.isAvailable,

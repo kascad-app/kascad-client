@@ -4,7 +4,6 @@ import { useSession } from "@/shared/context/SessionContext";
 import { useState } from "react";
 import {
   RiderIdentity,
-  TricksVideo,
   Image as RiderImage,
   SocialNetwork,
   Language,
@@ -15,12 +14,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Skeleton } from "@components/ui/skeleton";
 import Avatar from "@/widgets/avatar/avatar.ui";
+import { profile } from "console";
 
 export default function ProfileComponent() {
   const session = useSession();
-  const [visibleVideos, setVisibleVideos] = useState(4);
   const [visibleImages, setVisibleImages] = useState(4);
-  const [showAllGalleryImages, setShowAllGalleryImages] = useState(false);
   const [showAllYoutubeVideos, setShowAllYoutubeVideos] = useState(false);
 
   if (session.loading || !session.user) {
@@ -31,6 +29,19 @@ export default function ProfileComponent() {
   const fullName =
     identity.fullName || `${identity.firstName} ${identity.lastName}`;
   const birthDate = identity.birthDate ? new Date(identity.birthDate) : null;
+
+  // Fonction pour convertir une URL YouTube en URL d'embed
+  const getYouTubeEmbedUrl = (url: string): string => {
+    const regex =
+      /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    if (match) {
+      const videoId = match[1];
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    return url; // Retourne l'URL originale si pas de match
+  };
+
   const age = birthDate
     ? new Date().getFullYear() -
       birthDate.getFullYear() -
@@ -48,8 +59,6 @@ export default function ProfileComponent() {
     "Ce rider n'a pas encore renseigné sa biographie.";
 
   const images: RiderImage[] = session.user.images || [];
-  const videos: TricksVideo[] =
-    session.user.performanceSummary?.performanceVideos || [];
 
   const networks: SocialNetwork[] =
     session.user.preferences?.networks?.map((n) => n as SocialNetwork) || [];
@@ -108,36 +117,6 @@ export default function ProfileComponent() {
           <p className="text-sm whitespace-pre-line">{bio}</p>
         </CardContent>
       </Card>
-
-      {videos.length > 0 && (
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-4">Vidéos</h2>
-          <div className="grid sm:grid-cols-2 gap-4">
-            {videos.slice(0, visibleVideos).map((video, i) => (
-              <div key={i} className="rounded-lg overflow-hidden aspect-video">
-                <iframe
-                  src={video.url}
-                  title={video.title}
-                  className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-            ))}
-          </div>
-          <div className="mt-6 text-center">
-            {visibleVideos < videos.length ? (
-              <Button onClick={() => setVisibleVideos((v) => v + 4)}>
-                Voir plus de vidéos
-              </Button>
-            ) : (
-              <Button variant="outline" onClick={() => setVisibleVideos(4)}>
-                Réinitialiser
-              </Button>
-            )}
-          </div>
-        </section>
-      )}
 
       {images.length > 0 && (
         <section className="mb-16">
@@ -257,39 +236,32 @@ export default function ProfileComponent() {
             !showAllYoutubeVideos ? "max-h-[50vh] overflow-hidden" : ""
           }`}
         >
-          {[
-            "https://www.youtube.com/embed/dQw4w9WgXcQ",
-            "https://www.youtube.com/embed/tgbNymZ7vqY",
-            "https://www.youtube.com/embed/L_jWHffIx5E",
-            "https://www.youtube.com/embed/oHg5SJYRHA0",
-            "https://www.youtube.com/embed/dQw4w9WgXcQ",
-            "https://www.youtube.com/embed/tgbNymZ7vqY",
-            "https://www.youtube.com/embed/L_jWHffIx5E",
-            "https://www.youtube.com/embed/oHg5SJYRHA0",
-          ].map((url, i) => (
+          {session.user.videos.map((video, i) => (
             <div
               key={i}
               className="rounded-xl overflow-hidden aspect-video shadow-lg"
             >
               <iframe
-                src={url}
+                src={getYouTubeEmbedUrl(video.url)}
                 className="w-full h-full"
-                title={`YouTube Video ${i + 1}`}
+                title={video.title || `Vidéo YouTube ${i + 1}`}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
             </div>
           ))}
 
-          {!showAllYoutubeVideos && (
+          {!showAllYoutubeVideos && session.user.videos.length > 4 && (
             <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent pointer-events-none z-10" />
           )}
         </div>
 
         <div className="mt-6 text-center z-20 relative">
-          <Button onClick={() => setShowAllYoutubeVideos((prev) => !prev)}>
-            {showAllYoutubeVideos ? "Voir moins" : "Voir plus"}
-          </Button>
+          {session.user.videos.length > 4 && (
+            <Button onClick={() => setShowAllYoutubeVideos((prev) => !prev)}>
+              {showAllYoutubeVideos ? "Voir moins" : "Voir plus"}
+            </Button>
+          )}
         </div>
       </section>
     </div>

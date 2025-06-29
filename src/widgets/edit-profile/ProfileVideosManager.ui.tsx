@@ -3,6 +3,15 @@ import { X, Plus, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import Link from "next/link";
 import { OnlineVideo } from "@kascad-app/shared-types";
 
@@ -16,6 +25,13 @@ export default function ProfileVideosManager({
   setCurrentVideos,
 }: ProfileVideosManagerProps) {
   const [newVideoUrl, setNewVideoUrl] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [pendingVideoUrl, setPendingVideoUrl] = useState("");
+  const [videoTitle, setVideoTitle] = useState("");
+  const [videoDescription, setVideoDescription] = useState("");
+
+  // Debug pour voir les vidéos reçues
+  console.log("ProfileVideosManager - currentVideos:", currentVideos);
 
   // Fonction pour extraire l'ID de la vidéo YouTube
   const getYouTubeVideoId = (url: string): string | null => {
@@ -55,17 +71,39 @@ export default function ProfileVideosManager({
       return;
     }
 
+    setPendingVideoUrl(newVideoUrl);
+    setVideoTitle("");
+    setVideoDescription("");
+    setIsDialogOpen(true);
+  };
+
+  const handleConfirmAddVideo = () => {
+    if (!videoTitle.trim()) {
+      alert("Le titre est obligatoire");
+      return;
+    }
+
     const newVideo: OnlineVideo = {
-      url: newVideoUrl,
-      title: "Vidéo YouTube", // Titre par défaut, pourrait être amélioré
-      description: "", // Description vide par défaut
+      url: pendingVideoUrl,
+      title: videoTitle.trim(),
+      description: videoDescription.trim(),
     };
 
     setCurrentVideos((prev) => [...prev, newVideo]);
 
-    console.log("Vidéo ajoutée :", currentVideos);
-
+    // Reset des champs
     setNewVideoUrl("");
+    setPendingVideoUrl("");
+    setVideoTitle("");
+    setVideoDescription("");
+    setIsDialogOpen(false);
+  };
+
+  const handleCancelAddVideo = () => {
+    setIsDialogOpen(false);
+    setPendingVideoUrl("");
+    setVideoTitle("");
+    setVideoDescription("");
   };
 
   const handleRemoveVideo = (index: number) => {
@@ -83,7 +121,6 @@ export default function ProfileVideosManager({
     <div className="flex flex-col gap-4">
       <h3 className="text-lg font-semibold">Mes vidéos</h3>
 
-      {/* Formulaire d'ajout de vidéo */}
       <div className="flex flex-col gap-2">
         <Label htmlFor="video-url">Ajouter une vidéo YouTube</Label>
         <div className="flex gap-2">
@@ -112,11 +149,10 @@ export default function ProfileVideosManager({
         </p>
       </div>
 
-      {/* Liste des vidéos */}
       {currentVideos.length > 0 ? (
         <div className="flex flex-wrap gap-4">
           {currentVideos.map((video, idx) => {
-            // Vérification de sécurité pour éviter les erreurs
+            console.log("Rendering video:", video);
             if (!video || !video.url) {
               return null;
             }
@@ -138,7 +174,6 @@ export default function ProfileVideosManager({
                       e.currentTarget.src = "/assets/img/placeholder-video.svg";
                     }}
                   />
-                  {/* Overlay de lecture */}
                   <Link
                     href={video.url}
                     target="_blank"
@@ -152,13 +187,11 @@ export default function ProfileVideosManager({
                   </Link>
                 </div>
 
-                {/* Actions */}
                 <div className="p-2 flex items-center justify-between">
                   <span className="text-xs text-gray-600 truncate flex-1">
                     {video.title || "Vidéo YouTube"}
                   </span>
                   <div className="flex gap-1">
-                    {/* Bouton pour ouvrir la vidéo */}
                     <Button
                       type="button"
                       size="sm"
@@ -169,7 +202,6 @@ export default function ProfileVideosManager({
                     >
                       <ExternalLink className="w-3 h-3" />
                     </Button>
-                    {/* Bouton de suppression */}
                     <Button
                       type="button"
                       size="sm"
@@ -195,6 +227,57 @@ export default function ProfileVideosManager({
           </p>
         </div>
       )}
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Configurer la vidéo</DialogTitle>
+            <DialogDescription>
+              Ajoutez un titre et une description pour votre vidéo YouTube.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="video-title">
+                Titre <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="video-title"
+                value={videoTitle}
+                onChange={(e) => setVideoTitle(e.target.value)}
+                placeholder="Entrez le titre de la vidéo"
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="video-description">Description</Label>
+              <Textarea
+                id="video-description"
+                value={videoDescription}
+                onChange={(e) => setVideoDescription(e.target.value)}
+                placeholder="Entrez une description (optionnel)"
+                rows={3}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleCancelAddVideo}
+            >
+              Annuler
+            </Button>
+            <Button
+              type="button"
+              onClick={handleConfirmAddVideo}
+              disabled={!videoTitle.trim()}
+            >
+              Ajouter la vidéo
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

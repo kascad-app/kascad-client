@@ -84,7 +84,7 @@ export default function EditProfile() {
         gender: identity.gender,
         sponsors: session.user.sponsorSummary?.currentSponsors || [],
         events: [],
-        videos: [],
+        videos: session.user.videos || [],
         images: (session.user.images || []).map((img) =>
           typeof img === "string"
             ? { url: img, uploadDate: new Date() }

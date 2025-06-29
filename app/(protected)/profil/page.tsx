@@ -14,7 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Skeleton } from "@components/ui/skeleton";
 import Avatar from "@/widgets/avatar/avatar.ui";
-import { profile } from "console";
+import { getUserNetworksWithInfo } from "../../../src/shared/utils/networks/socialNetworks.utils";
 
 export default function ProfileComponent() {
   const session = useSession();
@@ -62,7 +62,6 @@ export default function ProfileComponent() {
 
   const networks: SocialNetwork[] =
     session.user.preferences?.networks?.map((n) => n as SocialNetwork) || [];
-  const hasNetwork = (type: SocialNetwork) => networks.includes(type);
 
   const rawLanguages = session.user.identity?.languageSpoken || [];
   const languages: Language[] = rawLanguages.map((lang) =>
@@ -148,31 +147,22 @@ export default function ProfileComponent() {
         </section>
       )}
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Réseaux sociaux</h2>
-        <div className="flex gap-4 flex-wrap">
-          {Object.values(SocialNetwork).map(
-            (network) =>
-              hasNetwork(network as SocialNetwork) && (
-                <span
-                  key={network}
-                  className="inline-flex items-center gap-1 text-sm font-medium border border-blue-200 px-3 py-1 rounded-full bg-blue-50 text-blue-700 shadow-sm hover:bg-blue-100 transition-colors"
-                >
-                  <svg
-                    className="w-4 h-4 text-blue-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    aria-hidden="true"
-                  >
-                    <circle cx="10" cy="10" r="8" />
-                  </svg>
-                  {(network as string).charAt(0).toUpperCase() +
-                    (network as string).slice(1)}
-                </span>
-              ),
-          )}
-        </div>
-      </section>
+      {networks.length > 0 && (
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold mb-4">Réseaux sociaux</h2>
+          <div className="flex gap-3 flex-wrap">
+            {getUserNetworksWithInfo(networks).map(({ network, info }) => (
+              <div
+                key={network}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 ${info.bgColor} ${info.textColor} cursor-pointer`}
+              >
+                {info.icon}
+                <span className="text-sm font-medium">{info.name}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Langues parlées</h2>

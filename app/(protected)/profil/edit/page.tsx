@@ -49,15 +49,10 @@ export default function EditProfile() {
 
   const [imageFiles, setImageFiles] = useState<TempImage[]>([]);
 
-  function stringToLanguage(value: string): Language {
-    const intVal = parseInt(value, 10);
-    if (intVal in Language) return intVal as Language;
-    throw new Error("Langue inconnue : " + value);
-  }
-
   useEffect(() => {
     if (!session.user || profile) return;
     const draft = localStorage.getItem("profile-edit-draft");
+
     if (draft) {
       setProfile(JSON.parse(draft));
     } else {
@@ -130,12 +125,7 @@ export default function EditProfile() {
     try {
       const parsed = profileSchema.safeParse(profile);
       if (!parsed.success) {
-        console.error("Erreurs de validation détaillées:", parsed.error.issues);
-        const errorMessages = parsed.error.issues
-          .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
-          .join(", ");
-
-        throw new Error(`Validation échouée: ${errorMessages}`);
+        throw new Error(`Infos incomplètes ou incorrectes`);
       }
       const riderPayload = mapProfileToRawRider(parsed.data);
       if (avatarFile) {

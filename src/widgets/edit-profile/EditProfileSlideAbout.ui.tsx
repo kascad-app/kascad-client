@@ -72,11 +72,14 @@ export default function EditProfileSlideAbout({
       <div>
         <Label>Prénom</Label>
         <Input
-          value={profile.firstName}
+          value={profile.identity.firstName}
           onChange={(e) =>
             setProfile(
               (prev: ProfileState | null) =>
-                prev && { ...prev, firstName: e.target.value },
+                prev && {
+                  ...prev,
+                  identity: { ...prev.identity, firstName: e.target.value },
+                },
             )
           }
         />
@@ -84,11 +87,14 @@ export default function EditProfileSlideAbout({
       <div>
         <Label>Nom</Label>
         <Input
-          value={profile.lastName}
+          value={profile.identity.lastName}
           onChange={(e) =>
             setProfile(
               (prev: ProfileState | null) =>
-                prev && { ...prev, lastName: e.target.value },
+                prev && {
+                  ...prev,
+                  identity: { ...prev.identity, lastName: e.target.value },
+                },
             )
           }
         />
@@ -118,11 +124,14 @@ export default function EditProfileSlideAbout({
       <div>
         <label className="block text-sm font-medium mb-1">Pays</label>
         <Input
-          value={profile.country}
+          value={profile.identity.country}
           onChange={(e) =>
             setProfile(
               (prev: ProfileState | null) =>
-                prev && { ...prev, country: e.target.value },
+                prev && {
+                  ...prev,
+                  identity: { ...prev.identity, country: e.target.value },
+                },
             )
           }
         />
@@ -131,37 +140,69 @@ export default function EditProfileSlideAbout({
       <div>
         <label className="block text-sm font-medium mb-1">Ville</label>
         <Input
-          value={profile.city}
+          value={profile.identity.city}
           onChange={(e) =>
             setProfile(
               (prev: ProfileState | null) =>
-                prev && { ...prev, city: e.target.value },
+                prev && {
+                  ...prev,
+                  identity: { ...prev.identity, city: e.target.value },
+                },
             )
           }
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Langue</label>
-        <select
-          className="w-full border rounded-md px-3 py-2"
-          value={profile.preferences.appLanguage}
-          onChange={(e) =>
-            setProfile(
-              (prev) =>
-                prev && {
-                  ...prev,
-                  preferences: {
-                    ...prev.preferences,
-                    appLanguage: parseInt(e.target.value, 10) as Language,
-                  },
-                },
-            )
-          }
-        >
-          <option value={Language.FR}>Français</option>
-          <option value={Language.EN}>Anglais</option>
-        </select>
+        <label className="block text-sm font-medium mb-1">
+          Langues parlées
+        </label>
+        <div className="flex flex-wrap gap-2">
+          {[
+            "Français",
+            "Anglais",
+            "Espagnol",
+            "Allemand",
+            "Italien",
+            "Portugais",
+            "Russe",
+            "Chinois",
+            "Japonais",
+            "Arabe",
+          ].map((language) => {
+            const isSelected =
+              profile.identity.languageSpoken.includes(language);
+            return (
+              <Button
+                key={language}
+                variant={isSelected ? "default" : "outline"}
+                size="sm"
+                onClick={() => {
+                  setProfile((prev) => {
+                    if (!prev) return prev;
+                    const updated = isSelected
+                      ? prev.identity.languageSpoken.filter(
+                          (lang) => lang !== language,
+                        )
+                      : [...prev.identity.languageSpoken, language];
+                    return {
+                      ...prev,
+                      identity: {
+                        ...prev.identity,
+                        languageSpoken: updated,
+                      },
+                    };
+                  });
+                }}
+              >
+                {language}
+              </Button>
+            );
+          })}
+        </div>
+        <p className="text-xs text-gray-500 mt-1">
+          Cliquez sur les langues que vous parlez
+        </p>
       </div>
       <div>
         <label className="block text-sm font-medium mb-1">
@@ -169,10 +210,15 @@ export default function EditProfileSlideAbout({
         </label>
         <Input
           type="date"
-          value={profile.birthDate.slice(0, 10)} // ISO string -> 'YYYY-MM-DD'
+          value={profile.identity.birthDate.slice(0, 10)} // ISO string -> 'YYYY-MM-DD'
           onChange={(e) =>
             setProfile((prev) =>
-              prev ? { ...prev, birthDate: e.target.value } : prev,
+              prev
+                ? {
+                    ...prev,
+                    identity: { ...prev.identity, birthDate: e.target.value },
+                  }
+                : prev,
             )
           }
         />

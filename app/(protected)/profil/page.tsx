@@ -51,22 +51,11 @@ export default function ProfileComponent() {
         ? 1
         : 0)
     : "N/A";
-  const location = identity.city
-    ? `${identity.city}, ${identity.country}`
-    : identity.country || "Localisation inconnue";
   const bio =
     session.user.identity.bio ||
     "Ce rider n'a pas encore renseigné sa biographie.";
 
   const images: RiderImage[] = session.user.images || [];
-
-  const networks: SocialNetwork[] =
-    session.user.preferences?.networks?.map((n) => n as SocialNetwork) || [];
-
-  const rawLanguages = session.user.identity?.languageSpoken || [];
-  const languages: Language[] = rawLanguages.map((lang) =>
-    typeof lang === "string" ? Language[lang as keyof typeof Language] : lang,
-  );
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-[5rem] pt-40">
@@ -80,7 +69,6 @@ export default function ProfileComponent() {
             <h1 className="text-3xl font-bold tracking-tight font-michroma">
               {fullName}
             </h1>
-            {/* <p className="text-muted-foreground">{location}</p> */}
             <p className="text-lg font-figtree">
               <span className="text-gray-400">
                 {session.user.identity.city}
@@ -147,19 +135,21 @@ export default function ProfileComponent() {
         </section>
       )}
 
-      {networks.length > 0 && (
+      {session.user.preferences.networks.length > 0 && (
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-4">Réseaux sociaux</h2>
           <div className="flex gap-3 flex-wrap">
-            {getUserNetworksWithInfo(networks).map(({ network, info }) => (
-              <div
-                key={network}
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 ${info.bgColor} ${info.textColor} cursor-pointer`}
-              >
-                {info.icon}
-                <span className="text-sm font-medium">{info.name}</span>
-              </div>
-            ))}
+            {getUserNetworksWithInfo(session.user.preferences.networks).map(
+              ({ network, info }) => (
+                <div
+                  key={network}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 ${info.bgColor} ${info.textColor} cursor-pointer`}
+                >
+                  {info.icon}
+                  <span className="text-sm font-medium">{info.name}</span>
+                </div>
+              ),
+            )}
           </div>
         </section>
       )}
@@ -167,7 +157,7 @@ export default function ProfileComponent() {
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Langues parlées</h2>
         <div className="flex gap-4 flex-wrap">
-          {languages.map((lang, i) => (
+          {session.user.identity?.languageSpoken.map((lang, i) => (
             <span
               key={i}
               className="inline-flex items-center gap-1 text-sm font-medium border border-blue-200 px-3 py-1 rounded-full bg-blue-50 text-blue-700 shadow-sm hover:bg-blue-100 transition-colors"
@@ -180,7 +170,7 @@ export default function ProfileComponent() {
               >
                 <circle cx="10" cy="10" r="8" />
               </svg>
-              {lang === Language.FR ? "Français" : "Anglais"}
+              {lang}
             </span>
           ))}
         </div>

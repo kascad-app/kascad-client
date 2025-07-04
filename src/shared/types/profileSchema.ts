@@ -7,6 +7,7 @@ import {
   Sport,
   SportName,
   updateRiderDto,
+  WeatherCondition,
 } from "@kascad-app/shared-types";
 
 export const imageDtoSchema = z.object({
@@ -28,19 +29,23 @@ export const sportTypeSchema = z.object({
 });
 
 export const profileSchema = z.object({
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
+  identity: z.object({
+    firstName: z.string().min(1),
+    lastName: z.string().min(1),
+    gender: z.nativeEnum(GenderIdentity),
+    birthDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
+      message: "Date invalide",
+    }),
+    country: z.string(),
+    city: z.string(),
+    practiceLocation: z.string(),
+    languageSpoken: z.array(z.string()),
+  }),
   email: z.string().email(),
-  city: z.string(),
-  country: z.string(),
   phoneNumber: z.string(),
   bio: z.string(),
   trainingFrequency: z.number().min(1),
   trainingUnit: z.enum(["week", "month"]),
-  birthDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Date invalide",
-  }),
-  gender: z.nativeEnum(GenderIdentity),
   sponsors: z.array(z.string()),
   events: z.array(
     z.object({
@@ -72,13 +77,11 @@ export const profileSchema = z.object({
           country: z.string(),
           city: z.string(),
         }),
-        weather: z.string().optional(),
+        weather: z.nativeEnum(WeatherCondition).optional(),
         notes: z.string().optional(),
       }),
     ),
   }),
-  spokenLanguages: z.array(z.nativeEnum(Language)),
-  practiceLocation: z.string(),
   isAvailable: z.boolean(),
 });
 
@@ -87,7 +90,8 @@ export type ProfileState = z.infer<typeof profileSchema>;
 export const mapProfileToRawRider = (
   profile: ProfileState,
 ): Partial<updateRiderDto> => {
-  const fullName = `${profile.firstName} ${profile.lastName}`.trim();
+  const fullName =
+    `${profile.identity.firstName} ${profile.identity.lastName}`.trim();
 
   return {
     identifier: {
@@ -95,15 +99,15 @@ export const mapProfileToRawRider = (
     },
     identity: {
       fullName,
-      firstName: profile.firstName,
-      lastName: profile.lastName,
-      gender: profile.gender,
+      firstName: profile.identity.firstName,
+      lastName: profile.identity.lastName,
+      gender: profile.identity.gender,
 
-      birthDate: new Date(profile.birthDate),
-      city: profile.city,
-      country: profile.country,
-      languageSpoken: profile.spokenLanguages.map((lang) => lang.toString()),
-      practiceLocation: profile.practiceLocation,
+      birthDate: new Date(profile.identity.birthDate),
+      city: profile.identity.city,
+      country: profile.identity.country,
+      languageSpoken: profile.identity.languageSpoken,
+      practiceLocation: profile.identity.practiceLocation,
       bio: profile.bio,
     },
     preferences: {
@@ -111,6 +115,7 @@ export const mapProfileToRawRider = (
       sports: profile.preferences.sports,
       appLanguage: profile.preferences.appLanguage,
     },
+    performanceSummary: profile.performanceSummary,
     images: profile.images.map((img) => ({
       url: img.url,
       alt: img.alt,

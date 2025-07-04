@@ -70,18 +70,22 @@ export default function EditProfile() {
           : new Date(identity.birthDate).toISOString();
 
       setProfile({
-        firstName: identity.firstName,
-        lastName: identity.lastName,
+        identity: {
+          firstName: identity.firstName,
+          lastName: identity.lastName,
+          gender: identity.gender,
+          birthDate,
+          country: identity.country,
+          city: identity.city,
+          practiceLocation: identity.practiceLocation,
+          languageSpoken: identity.languageSpoken,
+        },
         email: session.user.identifier.email || "",
-        city: identity.city,
         address: "",
-        country: identity.country,
         phoneNumber: identifier.phoneNumber || "",
         bio: identity.bio || "",
         trainingFrequency: session.user.trainingFrequency?.sessionsPerWeek || 3,
         trainingUnit: "week",
-        birthDate,
-        gender: identity.gender,
         sponsors: session.user.sponsorSummary?.currentSponsors || [],
         events: [],
         videos: session.user.videos || [],
@@ -101,9 +105,7 @@ export default function EditProfile() {
           appLanguage:
             Number(session.user.preferences?.appLanguage) || Language.FR,
         },
-        spokenLanguages: identity.languageSpoken.map(stringToLanguage),
         performanceSummary: session.user.performanceSummary || null,
-        practiceLocation: identity.practiceLocation,
         isAvailable: session.user.availibility?.isAvailable ?? true,
       });
     }
@@ -132,6 +134,7 @@ export default function EditProfile() {
         const errorMessages = parsed.error.issues
           .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
           .join(", ");
+
         throw new Error(`Validation échouée: ${errorMessages}`);
       }
       const riderPayload = mapProfileToRawRider(parsed.data);
@@ -191,10 +194,10 @@ export default function EditProfile() {
         {slideLabels.map((label, index) => (
           <button
             key={label}
-            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${
+            className={`pb-3 px-4 text-base font-medium border-b-2 transition-all duration-200 hover:text-blue-500 ${
               slide === index
                 ? "border-blue-500 text-blue-600"
-                : "border-transparent text-gray-500"
+                : "border-transparent text-gray-600 hover:border-gray-300"
             }`}
             onClick={() => setSlide(index)}
           >

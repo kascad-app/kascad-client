@@ -100,14 +100,7 @@ export default function EditProfile() {
           appLanguage:
             Number(session.user.preferences?.appLanguage) || Language.FR,
         },
-        performanceSummary: {
-          totalPodiums: session.user.performanceSummary?.totalPodiums || 0,
-          performances: (
-            session.user.performanceSummary?.performances || []
-          ).map((perf: any) => ({
-            ...perf,
-          })),
-        },
+        performanceSummary: session.user.performanceSummary || null,
         isAvailable: session.user.availibility?.isAvailable ?? true,
       });
     }

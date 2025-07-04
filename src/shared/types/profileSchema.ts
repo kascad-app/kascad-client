@@ -5,7 +5,9 @@ import {
   Language,
   SocialNetwork,
   Sport,
+  SportName,
   updateRiderDto,
+  WeatherCondition,
 } from "@kascad-app/shared-types";
 
 export const imageDtoSchema = z.object({
@@ -15,20 +17,35 @@ export const imageDtoSchema = z.object({
   uploadDate: z.union([z.string(), z.date()]),
 });
 
+export const videoDtoSchema = z.object({
+  url: z.string(),
+  title: z.string(),
+  description: z.string().optional(),
+});
+
+export const sportTypeSchema = z.object({
+  name: z.nativeEnum(SportName),
+  description: z.string().optional(),
+});
+
 export const profileSchema = z.object({
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
+  identity: z.object({
+    firstName: z.string().min(1),
+    lastName: z.string().min(1),
+    gender: z.nativeEnum(GenderIdentity),
+    birthDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
+      message: "Date invalide",
+    }),
+    country: z.string(),
+    city: z.string(),
+    practiceLocation: z.string(),
+    languageSpoken: z.array(z.string()),
+  }),
   email: z.string().email(),
-  city: z.string(),
-  country: z.string(),
   phoneNumber: z.string(),
   bio: z.string(),
   trainingFrequency: z.number().min(1),
   trainingUnit: z.enum(["week", "month"]),
-  birthDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Date invalide",
-  }),
-  gender: z.nativeEnum(GenderIdentity),
   sponsors: z.array(z.string()),
   events: z.array(
     z.object({
@@ -38,15 +55,33 @@ export const profileSchema = z.object({
       image: z.string(),
     }),
   ),
-  videos: z.array(z.string()),
+  videos: z.array(videoDtoSchema),
   images: z.array(imageDtoSchema),
-  language: z.nativeEnum(Language),
   address: z.string(),
-
-  spokenLanguages: z.array(z.nativeEnum(Language)),
-  socialNetworks: z.array(z.nativeEnum(SocialNetwork)),
-  practiceLocation: z.string(),
-  sports: z.array(z.string()),
+  preferences: z.object({
+    networks: z.array(z.nativeEnum(SocialNetwork)),
+    sports: z.array(sportTypeSchema),
+    appLanguage: z.nativeEnum(Language),
+  }),
+  performanceSummary: z.object({
+    totalPodiums: z.number(),
+    performances: z.array(
+      z.object({
+        startDate: z.date(),
+        endDate: z.date(),
+        eventName: z.string(),
+        category: z.string(),
+        sport: sportTypeSchema,
+        ranking: z.number().optional(),
+        location: z.object({
+          country: z.string(),
+          city: z.string(),
+        }),
+        weather: z.nativeEnum(WeatherCondition).optional(),
+        notes: z.string().optional(),
+      }),
+    ),
+  }),
   isAvailable: z.boolean(),
 });
 
@@ -55,7 +90,8 @@ export type ProfileState = z.infer<typeof profileSchema>;
 export const mapProfileToRawRider = (
   profile: ProfileState,
 ): Partial<updateRiderDto> => {
-  const fullName = `${profile.firstName} ${profile.lastName}`.trim();
+  const fullName =
+    `${profile.identity.firstName} ${profile.identity.lastName}`.trim();
 
   return {
     identifier: {
@@ -63,22 +99,23 @@ export const mapProfileToRawRider = (
     },
     identity: {
       fullName,
-      firstName: profile.firstName,
-      lastName: profile.lastName,
-      gender: profile.gender,
+      firstName: profile.identity.firstName,
+      lastName: profile.identity.lastName,
+      gender: profile.identity.gender,
 
-      birthDate: new Date(profile.birthDate),
-      city: profile.city,
-      country: profile.country,
-      languageSpoken: profile.spokenLanguages.map((lang) => lang.toString()),
-      practiceLocation: profile.practiceLocation,
+      birthDate: new Date(profile.identity.birthDate),
+      city: profile.identity.city,
+      country: profile.identity.country,
+      languageSpoken: profile.identity.languageSpoken,
+      practiceLocation: profile.identity.practiceLocation,
       bio: profile.bio,
     },
     preferences: {
-      networks: profile.socialNetworks,
-      sports: profile.sports.map((name) => ({ name } as Sport)),
-      languages: profile.language,
+      networks: profile.preferences.networks,
+      sports: profile.preferences.sports,
+      appLanguage: profile.preferences.appLanguage,
     },
+    performanceSummary: profile.performanceSummary,
     images: profile.images.map((img) => ({
       url: img.url,
       alt: img.alt,
@@ -87,6 +124,11 @@ export const mapProfileToRawRider = (
         typeof img.uploadDate === "string"
           ? new Date(img.uploadDate)
           : img.uploadDate,
+    })),
+    videos: profile.videos.map((video) => ({
+      url: video.url,
+      title: video.title,
+      description: video.description,
     })),
     availibility: {
       isAvailable: profile.isAvailable,

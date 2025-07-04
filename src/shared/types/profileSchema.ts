@@ -67,8 +67,8 @@ export const profileSchema = z.object({
     totalPodiums: z.number(),
     performances: z.array(
       z.object({
-        startDate: z.date(),
-        endDate: z.date(),
+        startDate: z.union([z.string(), z.date()]),
+        endDate: z.union([z.string(), z.date()]),
         eventName: z.string(),
         category: z.string(),
         sport: sportTypeSchema,
@@ -115,7 +115,29 @@ export const mapProfileToRawRider = (
       sports: profile.preferences.sports,
       appLanguage: profile.preferences.appLanguage,
     },
-    performanceSummary: profile.performanceSummary,
+    performanceSummary: {
+      totalPodiums: profile.performanceSummary.totalPodiums,
+      performances: profile.performanceSummary.performances.map((perf) => ({
+        startDate:
+          typeof perf.startDate === "string"
+            ? new Date(perf.startDate)
+            : perf.startDate,
+        endDate:
+          typeof perf.endDate === "string"
+            ? new Date(perf.endDate)
+            : perf.endDate,
+        eventName: perf.eventName,
+        category: perf.category,
+        sport: perf.sport,
+        ranking: perf.ranking,
+        location: {
+          country: perf.location.country,
+          city: perf.location.city,
+        },
+        weather: perf.weather,
+        notes: perf.notes,
+      })),
+    },
     images: profile.images.map((img) => ({
       url: img.url,
       alt: img.alt,

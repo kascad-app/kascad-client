@@ -138,7 +138,6 @@ export const mapProfileToRawRider = (
         notes: perf.notes,
       })),
     },
-    performanceSummary: profile.performanceSummary,
     images: profile.images.map((img) => ({
       url: img.url,
       alt: img.alt,

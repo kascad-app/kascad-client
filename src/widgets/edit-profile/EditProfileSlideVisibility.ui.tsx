@@ -30,9 +30,6 @@ export default function EditProfileSlideVisibility({
     profile.videos ?? [],
   );
 
-  // Debug pour voir les vidéos du profil
-  console.log("EditProfileSlideVisibility - profile.videos:", profile.videos);
-
   useEffect(() => {
     setProfile((prev) => (prev ? { ...prev, images: currentImages } : prev));
   }, [currentImages]);

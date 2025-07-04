@@ -95,13 +95,15 @@ export default function EditProfile() {
                 isToDelete: false,
               },
         ),
-        language: Number(session.user.preferences?.languages) ?? Language.FR,
+        preferences: {
+          networks: session.user.preferences?.networks || [],
+          sports: session.user.preferences?.sports || [],
+          appLanguage:
+            Number(session.user.preferences?.appLanguage) || Language.FR,
+        },
         spokenLanguages: identity.languageSpoken.map(stringToLanguage),
-
-        socialNetworks: session.user.preferences?.networks || [],
+        performanceSummary: session.user.performanceSummary || null,
         practiceLocation: identity.practiceLocation,
-        sports:
-          session.user.preferences?.sports?.map((s: Sport) => s.name) || [],
         isAvailable: session.user.availibility?.isAvailable ?? true,
       });
     }
@@ -125,7 +127,13 @@ export default function EditProfile() {
 
     try {
       const parsed = profileSchema.safeParse(profile);
-      if (!parsed.success) throw new Error("Validation échouée");
+      if (!parsed.success) {
+        console.error("Erreurs de validation détaillées:", parsed.error.issues);
+        const errorMessages = parsed.error.issues
+          .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
+          .join(", ");
+        throw new Error(`Validation échouée: ${errorMessages}`);
+      }
       const riderPayload = mapProfileToRawRider(parsed.data);
       if (avatarFile) {
         const formData = new FormData();
@@ -152,7 +160,9 @@ export default function EditProfile() {
       localStorage.removeItem("profile-edit-draft");
       toast.success("Profil mis à jour avec succès");
       router.push(ROUTES.RIDER.PROFILE);
-    } catch (error) {}
+    } catch (error: any) {
+      console.error("Erreur lors de la sauvegarde du profil:", error);
+    }
   }
 
   async function handleCancel() {

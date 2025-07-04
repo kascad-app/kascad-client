@@ -30,9 +30,6 @@ export default function ProfileVideosManager({
   const [videoTitle, setVideoTitle] = useState("");
   const [videoDescription, setVideoDescription] = useState("");
 
-  // Debug pour voir les vidéos reçues
-  console.log("ProfileVideosManager - currentVideos:", currentVideos);
-
   // Fonction pour extraire l'ID de la vidéo YouTube
   const getYouTubeVideoId = (url: string): string | null => {
     if (!url || typeof url !== "string") return null;
@@ -152,7 +149,6 @@ export default function ProfileVideosManager({
       {currentVideos.length > 0 ? (
         <div className="flex flex-wrap gap-4">
           {currentVideos.map((video, idx) => {
-            console.log("Rendering video:", video);
             if (!video || !video.url) {
               return null;
             }

@@ -5,6 +5,7 @@ import {
   Language,
   SocialNetwork,
   Sport,
+  SportName,
   updateRiderDto,
 } from "@kascad-app/shared-types";
 
@@ -18,6 +19,11 @@ export const imageDtoSchema = z.object({
 export const videoDtoSchema = z.object({
   url: z.string(),
   title: z.string(),
+  description: z.string().optional(),
+});
+
+export const sportTypeSchema = z.object({
+  name: z.nativeEnum(SportName),
   description: z.string().optional(),
 });
 
@@ -46,30 +52,33 @@ export const profileSchema = z.object({
   ),
   videos: z.array(videoDtoSchema),
   images: z.array(imageDtoSchema),
-  language: z.nativeEnum(Language),
   address: z.string(),
-  // performanceSummary: z.object({
-  //   totalPodiums: z.number(),
-  //   performances: z.array(
-  //     z.object({
-  //       startDate: z.string(),
-  //       endDate: z.string(),
-  //       eventName: z.string(),
-  //       category: z.string(),
-  //       ranking: z.number().optional(),
-  //       location: z.object({
-  //         country: z.string(),
-  //         city: z.string(),
-  //       }),
-  //       weather: z.string(),
-  //       notes: z.string().optional(),
-  //     }),
-  //   ),
-  // }),
+  preferences: z.object({
+    networks: z.array(z.nativeEnum(SocialNetwork)),
+    sports: z.array(sportTypeSchema),
+    appLanguage: z.nativeEnum(Language),
+  }),
+  performanceSummary: z.object({
+    totalPodiums: z.number(),
+    performances: z.array(
+      z.object({
+        startDate: z.date(),
+        endDate: z.date(),
+        eventName: z.string(),
+        category: z.string(),
+        sport: sportTypeSchema,
+        ranking: z.number().optional(),
+        location: z.object({
+          country: z.string(),
+          city: z.string(),
+        }),
+        weather: z.string().optional(),
+        notes: z.string().optional(),
+      }),
+    ),
+  }),
   spokenLanguages: z.array(z.nativeEnum(Language)),
-  socialNetworks: z.array(z.nativeEnum(SocialNetwork)),
   practiceLocation: z.string(),
-  sports: z.array(z.string()),
   isAvailable: z.boolean(),
 });
 
@@ -98,9 +107,9 @@ export const mapProfileToRawRider = (
       bio: profile.bio,
     },
     preferences: {
-      networks: profile.socialNetworks,
-      sports: profile.sports.map((name) => ({ name } as Sport)),
-      languages: profile.language,
+      networks: profile.preferences.networks,
+      sports: profile.preferences.sports,
+      appLanguage: profile.preferences.appLanguage,
     },
     images: profile.images.map((img) => ({
       url: img.url,

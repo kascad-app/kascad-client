@@ -15,7 +15,7 @@ const registerFormSchema = z
     email: z.string().email(),
     firstName: z.string().min(2, "First name must be at least 2 characters"),
     lastName: z.string().min(2, "Last name must be at least 2 characters"),
-    gender: z.enum(["male", "female", "other"]),
+    gender: z.enum(["homme", "femme", "autre"]),
     password: z
       .string()
       .min(6, "Password must be at least 6 characters")
@@ -44,7 +44,7 @@ export const RegisterFormWidget: React.FC = () => {
       email: "",
       firstName: "",
       lastName: "",
-      gender: "male",
+      gender: "homme",
       password: "",
       confirmPassword: "",
     },
@@ -155,9 +155,9 @@ export const RegisterFormWidget: React.FC = () => {
               {...form.register("gender")}
               className="mt-1 p-2 w-full border border-gray-300 rounded-md"
             >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
+              <option value="homme">Homme</option>
+              <option value="femme">Femme</option>
+              <option value="autre">Autre</option>
             </select>
           </div>
           <div key="password">

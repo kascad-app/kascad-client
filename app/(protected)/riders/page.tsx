@@ -32,7 +32,10 @@ export default function RidersPage() {
 
       const sports = r.preferences?.sports?.map((s) => s.name) || [];
       const matchSport =
-        selectedSport === "Tous" || sports.includes(selectedSport);
+        selectedSport === "Tous" ||
+        sports.includes(
+          selectedSport as Rider["preferences"]["sports"][number]["name"],
+        );
 
       return matchSearch && matchSport;
     });

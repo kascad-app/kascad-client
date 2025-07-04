@@ -145,13 +145,16 @@ export default function EditProfileSlideAbout({
         <label className="block text-sm font-medium mb-1">Langue</label>
         <select
           className="w-full border rounded-md px-3 py-2"
-          value={profile.language}
+          value={profile.preferences.appLanguage}
           onChange={(e) =>
             setProfile(
               (prev) =>
                 prev && {
                   ...prev,
-                  language: parseInt(e.target.value, 10) as Language,
+                  preferences: {
+                    ...prev.preferences,
+                    appLanguage: parseInt(e.target.value, 10) as Language,
+                  },
                 },
             )
           }
@@ -181,7 +184,7 @@ export default function EditProfileSlideAbout({
         </label>
         <div className="flex flex-wrap gap-2">
           {Object.values(SocialNetwork).map((network) => {
-            const isSelected = profile.socialNetworks.includes(network);
+            const isSelected = profile.preferences.networks.includes(network);
             return (
               <Button
                 key={network}
@@ -190,9 +193,15 @@ export default function EditProfileSlideAbout({
                   setProfile((prev) => {
                     if (!prev) return prev;
                     const updated = isSelected
-                      ? prev.socialNetworks.filter((n) => n !== network)
-                      : [...prev.socialNetworks, network];
-                    return { ...prev, socialNetworks: updated };
+                      ? prev.preferences.networks.filter((n) => n !== network)
+                      : [...prev.preferences.networks, network];
+                    return {
+                      ...prev,
+                      preferences: {
+                        ...prev.preferences,
+                        networks: updated,
+                      },
+                    };
                   });
                 }}
               >

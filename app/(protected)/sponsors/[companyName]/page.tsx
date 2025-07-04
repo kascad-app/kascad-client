@@ -5,13 +5,16 @@ import Image from "next/image";
 import { useGetSponsor } from "@/entities/sponsors/sponsors.hooks";
 import { Button } from "@/shared/ui/button/Button.ui";
 
-
 export default function SponsorPage() {
   const { companyName } = useParams();
-  const { data: sponsor, isLoading, error } = useGetSponsor(companyName as string);
-  console.log("Sponsor data:", sponsor);
+  const {
+    data: sponsor,
+    isLoading,
+    error,
+  } = useGetSponsor(companyName as string);
   if (isLoading) return <p className="p-8">Chargement...</p>;
-  if (error || !sponsor) return <p className="p-8 text-red-500">Sponsor introuvable.</p>;
+  if (error || !sponsor)
+    return <p className="p-8 text-red-500">Sponsor introuvable.</p>;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-16">
@@ -25,7 +28,9 @@ export default function SponsorPage() {
             className="object-contain"
           />
           <div>
-            <h1 className="text-4xl font-bold text-black">{sponsor.identity.companyName}</h1>
+            <h1 className="text-4xl font-bold text-black">
+              {sponsor.identity.companyName}
+            </h1>
             <p className="text-gray-500 text-sm">{sponsor.description}</p>
           </div>
         </div>

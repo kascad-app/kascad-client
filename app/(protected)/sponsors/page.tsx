@@ -4,13 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import * as React from "react";
 import { useMemo, useState } from "react";
-import {
-  Sport,
-  Language,
-  SocialNetwork,
-  Profile,
-  Sponsor,
-} from "@kascad-app/shared-types";
+import { Sport, Sponsor } from "@kascad-app/shared-types";
 import { useGetSponsors } from "@/entities/sponsors/sponsors.hooks";
 import {
   Select,

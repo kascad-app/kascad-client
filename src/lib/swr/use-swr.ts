@@ -17,8 +17,20 @@ export const useAPI = <T = unknown>(
 
 export async function sendSWRRequest<T, P>(
   url: string,
-  { arg }: { arg: P; } = { arg: {} as P },
+  { arg }: { arg: P } = { arg: {} as P },
 ): Promise<T> {
+  // Si arg est un FormData, on l'envoie tel quel
+  if (arg instanceof FormData) {
+    return requester()
+      .post<T>(url, {
+        data: arg === undefined ? {} : arg,
+      }) // <-- body, pas data
+      .then((res) => res)
+      .catch((err) => {
+        throw err;
+      });
+  }
+  // Sinon, comportement normal
   return requester()
     .post<T>(url, {
       data: arg === undefined ? {} : arg,
@@ -29,10 +41,9 @@ export async function sendSWRRequest<T, P>(
     });
 }
 
-
 export async function sendPUTSWRRequest<T, P>(
   url: string,
-  { arg }: { arg: P; } = { arg: {} as P },
+  { arg }: { arg: P } = { arg: {} as P },
 ): Promise<T> {
   return requester()
     .put<T>(url, {

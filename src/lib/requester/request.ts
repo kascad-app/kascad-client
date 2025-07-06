@@ -6,16 +6,24 @@ const request = async <TData>(
   url: string,
   options?: FetchOptions,
 ): Promise<TData> => {
-  const headers = new Headers({
-    "Content-Type": "application/json",
+  let headers = new Headers({
     Accept: "application/json",
     ...options?.headers,
   });
 
+  let body: BodyInit | undefined = undefined;
+
+  if (options?.data instanceof FormData) {
+    body = options.data;
+  } else if (options?.data !== undefined) {
+    headers.set("Content-Type", "application/json");
+    body = JSON.stringify(options.data);
+  }
+
   const config: RequestInit = {
     ...options,
     headers,
-    body: options?.data ? JSON.stringify(options.data) : undefined,
+    body,
     method: options?.method || "GET",
     credentials: "include",
   };

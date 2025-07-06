@@ -4,172 +4,178 @@ import { useEffect, useState } from "react";
 import "./edit.css";
 
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useUpdateOne } from "@/entities/riders/riders.hooks";
+import {
+  useUpdateInfo,
+  useUploadAvatar,
+  useUploadImages,
+} from "@/entities/riders/riders.hooks";
 import { useSession } from "@/shared/context/SessionContext";
 import {
-  ContractType,
-  GenderIdentity,
   Language,
-  Rider,
   RiderIdentifier,
   RiderIdentity,
-  SocialNetwork,
   Sport,
+  TempImage,
 } from "@kascad-app/shared-types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
-import slugify from "slugify";
-
-const profileSchema = z.object({
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  email: z.string().email(),
-  city: z.string(),
-  country: z.string(),
-  phoneNumber: z.string(),
-  bio: z.string(),
-  trainingFrequency: z.number().min(1),
-  trainingUnit: z.enum(["week", "month"]),
-  birthDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Date invalide",
-  }),
-  gender: z.nativeEnum(GenderIdentity),
-  sponsors: z.array(z.string()),
-  events: z.array(
-    z.object({
-      name: z.string(),
-      location: z.string(),
-      date: z.string(),
-      image: z.string(),
-    }),
-  ),
-  videos: z.array(z.string()),
-  images: z.array(z.string()),
-  language: z.nativeEnum(Language),
-  address: z.string(),
-
-  spokenLanguages: z.array(z.nativeEnum(Language)),
-  socialNetworks: z.array(z.nativeEnum(SocialNetwork)),
-  practiceLocation: z.string(),
-  sports: z.array(z.string()),
-  isAvailable: z.boolean(),
-});
-
-type ProfileState = z.infer<typeof profileSchema>;
+import { ROUTES } from "@/shared/constants/ROUTES";
+import EditProfileSlideAchievements from "@/widgets/edit-profile/EditProfileSlideAchievements.ui";
+import EditProfileSlideVisibility from "@/widgets/edit-profile/EditProfileSlideVisibility.ui";
+import {
+  mapProfileToRawRider,
+  profileSchema,
+  ProfileState,
+} from "@/shared/types/profileSchema";
+import EditProfileSlideAbout from "@/widgets/edit-profile/EditProfileSlideAbout.ui";
 
 export default function EditProfile() {
   const session = useSession();
   const router = useRouter();
-  const updateRiderMutation = useUpdateOne();
+  const updateRiderMutation = useUpdateInfo();
+  const uploadAvatarMutation = useUploadAvatar();
+  const uploadImagesMutation = useUploadImages();
+
   const [profile, setProfile] = useState<ProfileState | null>(null);
   const [slide, setSlide] = useState(0);
-  const slideLabels = [
-    "À propos",
-    "Engagement et Visibilité",
-    "Réalisations et Expériences",
-  ];
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(
+    session.user?.avatarUrl ?? null,
+  );
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
-  function stringToLanguage(value: string): Language {
-    const intVal = parseInt(value, 10);
-    if (intVal in Language) return intVal as Language;
-    throw new Error("Langue inconnue : " + value);
-  }
+  const [imageFiles, setImageFiles] = useState<TempImage[]>([]);
 
   useEffect(() => {
-    if (!session.user) return;
+    if (!session.user || profile) return;
+    const draft = localStorage.getItem("profile-edit-draft");
 
-    const identity = session.user.identity as RiderIdentity;
-    const identifier = session.user.identifier as RiderIdentifier;
+    if (draft) {
+      setProfile(JSON.parse(draft));
+    } else {
+      const identity = session.user.identity as RiderIdentity;
+      const identifier = session.user.identifier as RiderIdentifier;
 
-    const birthDate =
-      identity.birthDate instanceof Date
-        ? identity.birthDate.toISOString()
-        : new Date(identity.birthDate).toISOString();
+      const birthDate =
+        identity.birthDate instanceof Date
+          ? identity.birthDate.toISOString()
+          : new Date(identity.birthDate).toISOString();
 
-    const loadedProfile: ProfileState = {
-      firstName: identity.firstName,
-      lastName: identity.lastName,
-      email: session.user.identifier.email || "",
-      city: identity.city,
-      address: "",
-      country: identity.country,
-      phoneNumber: identifier.phoneNumber || "",
-      bio: identity.bio || "",
-      trainingFrequency: session.user.trainingFrequency?.sessionsPerWeek || 3,
-      trainingUnit: "week",
-      birthDate,
-      gender: identity.gender,
-      sponsors: session.user.sponsorSummary?.currentSponsors || [],
-      events: [],
-      videos: [],
-      images: (session.user.images || []).map((img) =>
-        typeof img === "string" ? img : img.url,
-      ),
-      language: Number(session.user.preferences?.languages) ?? Language.FR,
-      spokenLanguages: identity.languageSpoken.map(stringToLanguage),
+      setProfile({
+        identity: {
+          firstName: identity.firstName,
+          lastName: identity.lastName,
+          gender: identity.gender,
+          birthDate,
+          country: identity.country,
+          city: identity.city,
+          practiceLocation: identity.practiceLocation,
+          languageSpoken: identity.languageSpoken,
+        },
+        email: session.user.identifier.email || "",
+        address: "",
+        phoneNumber: identifier.phoneNumber || "",
+        bio: identity.bio || "",
+        trainingFrequency: session.user.trainingFrequency?.sessionsPerWeek || 3,
+        trainingUnit: "week",
+        sponsors: session.user.sponsorSummary?.currentSponsors || [],
+        events: [],
+        videos: session.user.videos || [],
+        images: (session.user.images || []).map((img) =>
+          typeof img === "string"
+            ? { url: img, uploadDate: new Date() }
+            : {
+                url: img.url,
+                uploadDate: img.uploadDate ?? new Date(),
+                alt: img.alt,
+                isToDelete: false,
+              },
+        ),
+        preferences: {
+          networks: session.user.preferences?.networks || [],
+          sports: session.user.preferences?.sports || [],
+          appLanguage:
+            Number(session.user.preferences?.appLanguage) || Language.FR,
+        },
+        performanceSummary: session.user.performanceSummary || null,
+        isAvailable: session.user.availibility?.isAvailable ?? true,
+      });
+    }
 
-      socialNetworks: session.user.preferences?.networks || [],
-      practiceLocation: identity.practiceLocation,
-      sports: session.user.preferences?.sports?.map((s: Sport) => s.name) || [],
-      isAvailable: session.user.availibility?.isAvailable ?? true,
-    };
-
-    const parse = profileSchema.safeParse(loadedProfile);
+    if (!profile) return;
+    const parse = profileSchema.safeParse(profile);
     if (!parse.success) {
       console.error("Erreur de validation des données:", parse.error);
       return;
     }
-
-    setProfile(loadedProfile);
   }, [session.user]);
 
-  const mapProfileToRawRider = (profile: ProfileState): Partial<Rider> => {
-    const fullName = `${profile.firstName} ${profile.lastName}`.trim();
+  useEffect(() => {
+    if (profile) {
+      localStorage.setItem("profile-edit-draft", JSON.stringify(profile));
+    }
+  }, [profile]);
 
-    return {
-      identifier: {
-        email: profile.email,
-        slug: slugify(fullName || profile.email, { lower: true }),
-        phoneNumber: profile.phoneNumber,
-        strava: { isLinked: false },
-      },
-      identity: {
-        fullName,
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        gender: profile.gender,
+  async function handleSave() {
+    if (!profile) return;
 
-        birthDate: new Date(profile.birthDate),
-        city: profile.city,
-        country: profile.country,
-        languageSpoken: profile.spokenLanguages.map((lang) => lang.toString()),
-        practiceLocation: profile.practiceLocation,
-        bio: profile.bio,
-      },
-      preferences: {
-        networks: profile.socialNetworks,
-        sports: profile.sports.map((name) => ({ name } as Sport)),
-        languages: profile.language,
-      },
-      images: profile.images.map((url) => ({
-        url,
-        uploadDate: new Date(),
-      })),
-      availibility: {
-        isAvailable: profile.isAvailable,
-        contractType: ContractType.UGC, // valeur par défaut ou à configurer plus tard
-      },
-      trainingFrequency: {
-        sessionsPerWeek: profile.trainingFrequency,
-        hoursPerSession: 1, // valeur par défaut à ajuster
-      },
-    };
-  };
+    try {
+      const parsed = profileSchema.safeParse(profile);
+      if (!parsed.success) {
+        throw new Error(`Infos incomplètes ou incorrectes`);
+      }
+      const riderPayload = mapProfileToRawRider(parsed.data);
+      if (avatarFile) {
+        const formData = new FormData();
+        formData.append("file", avatarFile);
+        await uploadAvatarMutation.trigger(formData);
+      }
+
+      if (avatarPreview == null) {
+        // si l'image a été reset
+        const formData = new FormData();
+        formData.append("file", new Blob(), "kascadResetAvatar");
+        await uploadAvatarMutation.trigger(formData);
+      }
+      if (imageFiles.length > 0) {
+        const formData = new FormData();
+        imageFiles.forEach((img) => {
+          formData.append("files", img.file);
+        });
+        await uploadImagesMutation.trigger(formData);
+      }
+
+      // TODO : BUG A FIX
+      await updateRiderMutation.trigger(riderPayload);
+      localStorage.removeItem("profile-edit-draft");
+      toast.success("Profil mis à jour avec succès");
+      router.push(ROUTES.RIDER.PROFILE);
+    } catch (error: any) {
+      console.error("Erreur lors de la sauvegarde du profil:", error);
+    }
+  }
+
+  async function handleCancel() {
+    if (
+      confirm(
+        "Êtes-vous sûr de vouloir annuler ? Toutes les modifications seront perdues.",
+      )
+    ) {
+      localStorage.removeItem("profile-edit-draft");
+      router.push(ROUTES.RIDER.PROFILE);
+    }
+  }
 
   if (!profile) return <p className="p-6">Chargement du profil...</p>;
+
+  const slideLabels = [
+    "À propos",
+    "Contenues et Visibilité",
+    "Réalisations et Expériences",
+  ];
 
   return (
     <div className="relative max-w-7xl mx-auto p-6 space-y-6 w-[100vw] flex flex-col">
@@ -178,10 +184,10 @@ export default function EditProfile() {
         {slideLabels.map((label, index) => (
           <button
             key={label}
-            className={`pb-2 px-2 text-sm border-b-2 transition-colors ${
+            className={`pb-3 px-4 text-base font-medium border-b-2 transition-all duration-200 hover:text-blue-500 ${
               slide === index
                 ? "border-blue-500 text-blue-600"
-                : "border-transparent text-gray-500"
+                : "border-transparent text-gray-600 hover:border-gray-300"
             }`}
             onClick={() => setSlide(index)}
           >
@@ -191,166 +197,36 @@ export default function EditProfile() {
       </div>
 
       {slide === 0 && (
-        <div className="flex flex-col gap-6">
-          <div className="flex gap-4 w-full">
-            <div className="w-1/2">
-              <label className="block text-sm font-medium mb-1">Prénom</label>
-              <Input
-                value={profile.firstName}
-                onChange={(e) =>
-                  setProfile(
-                    (prev) => prev && { ...prev, firstName: e.target.value },
-                  )
-                }
-              />
-            </div>
-            <div className="w-1/2">
-              <label className="block text-sm font-medium mb-1">Nom</label>
-              <Input
-                value={profile.lastName}
-                onChange={(e) =>
-                  setProfile(
-                    (prev) => prev && { ...prev, lastName: e.target.value },
-                  )
-                }
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
-            <Input value={profile.email} disabled />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Numéro de téléphone
-            </label>
-            <Input
-              type="tel"
-              value={profile.phoneNumber ?? ""}
-              onChange={(e) =>
-                setProfile(
-                  (prev) => prev && { ...prev, phoneNumber: e.target.value },
-                )
-              }
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Pays</label>
-            <Input
-              value={profile.country}
-              onChange={(e) =>
-                setProfile(
-                  (prev) => prev && { ...prev, country: e.target.value },
-                )
-              }
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Ville</label>
-            <Input
-              value={profile.city}
-              onChange={(e) =>
-                setProfile((prev) => prev && { ...prev, city: e.target.value })
-              }
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Langue</label>
-            <select
-              className="w-full border rounded-md px-3 py-2"
-              value={profile.language}
-              onChange={(e) =>
-                setProfile(
-                  (prev) =>
-                    prev && {
-                      ...prev,
-                      language: parseInt(e.target.value, 10) as Language,
-                    },
-                )
-              }
-            >
-              <option value={Language.FR}>Français</option>
-              <option value={Language.EN}>Anglais</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Date de naissance
-            </label>
-            <Input
-              type="date"
-              value={profile.birthDate.slice(0, 10)} // ISO string -> 'YYYY-MM-DD'
-              onChange={(e) =>
-                setProfile((prev) =>
-                  prev ? { ...prev, birthDate: e.target.value } : prev,
-                )
-              }
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Réseaux sociaux
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {Object.values(SocialNetwork).map((network) => {
-                const isSelected = profile.socialNetworks.includes(network);
-                return (
-                  <Button
-                    key={network}
-                    variant={isSelected ? "default" : "outline"}
-                    onClick={() => {
-                      setProfile((prev) => {
-                        if (!prev) return prev;
-                        const updated = isSelected
-                          ? prev.socialNetworks.filter((n) => n !== network)
-                          : [...prev.socialNetworks, network];
-                        return { ...prev, socialNetworks: updated };
-                      });
-                    }}
-                  >
-                    {network.charAt(0).toUpperCase() + network.slice(1)}
-                  </Button>
-                );
-              })}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Bio</label>
-            <Textarea
-              value={profile.bio}
-              onChange={(e) =>
-                setProfile((prev) => prev && { ...prev, bio: e.target.value })
-              }
-            />
-          </div>
-        </div>
+        <EditProfileSlideAbout
+          profile={profile}
+          setProfile={setProfile}
+          avatarPreview={avatarPreview}
+          setAvatarFile={setAvatarFile}
+          setAvatarPreview={setAvatarPreview}
+        />
+      )}
+      {slide === 1 && (
+        <EditProfileSlideVisibility
+          profile={profile}
+          setProfile={setProfile}
+          imageFiles={imageFiles}
+          setImageFiles={setImageFiles}
+        />
+      )}
+      {slide === 2 && (
+        <EditProfileSlideAchievements
+          profile={profile}
+          setProfile={setProfile}
+        />
       )}
 
       <div className="flex justify-end gap-4 mt-8">
-        <Button variant="outline" onClick={() => router.push("/profil")}>
+        <Button variant="outline" onClick={() => handleCancel()}>
           Annuler
         </Button>
         <Button
-          onClick={async () => {
-            try {
-              const parsed = profileSchema.safeParse(profile);
-              if (!parsed.success) throw new Error("Validation échouée");
-              const rawRider = mapProfileToRawRider(parsed.data);
-              console.log("Raw Rider Data:", rawRider);
-              await updateRiderMutation.trigger(rawRider);
-              toast.success("Profil mis à jour avec succès");
-              router.push("/profil");
-            } catch (error) {
-              toast.error("Erreur : " + (error as Error).message);
-            }
-          }}
+          disabled={updateRiderMutation.isMutating}
+          onClick={async () => handleSave()}
         >
           Sauvegarder
         </Button>

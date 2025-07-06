@@ -18,7 +18,7 @@ export default function ArticleSlider() {
             <h2 className="text-2xl font-bold mb-6">Derniers articles</h2>
             <div className="flex gap-4 overflow-x-auto pb-4">
                 {articles.map((article) => (
-                    <Link href={`/articles/${article.slug}`} key={article.id} className="min-w-[250px] bg-white rounded-xl border border-gray-100 hover:shadow-md transition">
+                    <Link href={`/articles/${article.slug}`} key={article.id} className="min-w-[250px] bg-white rounded-xl border border-gray-100 hover:shadow-md shadow-[#d2fa52] transition">
                         <img src={article.image} alt={article.title} className="w-full h-40 object-cover" />
                         <div className="p-4">
                             <h3 className="text-lg font-semibold mb-2">{article.title}</h3>

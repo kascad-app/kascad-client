@@ -9,10 +9,6 @@ export const SWR_KEY = {
   CONTRACT: {
     COUNTNEWMESSAGES: "/contracts/me/countNewMessages",
   },
-
-  CONTRACT: {
-    COUNTNEWMESSAGES: "/contracts/me/countNewMessages",
-  },
   RIDER: {
     ME: {
       UPDATE_INFO: "/riders/me/update-info",

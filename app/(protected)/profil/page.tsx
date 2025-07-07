@@ -44,12 +44,12 @@ export default function ProfileComponent() {
 
   const age = birthDate
     ? new Date().getFullYear() -
-      birthDate.getFullYear() -
-      (new Date().getMonth() < birthDate.getMonth() ||
+    birthDate.getFullYear() -
+    (new Date().getMonth() < birthDate.getMonth() ||
       (new Date().getMonth() === birthDate.getMonth() &&
         new Date().getDate() < birthDate.getDate())
-        ? 1
-        : 0)
+      ? 1
+      : 0)
     : "N/A";
   const bio =
     session.user.identity.bio ||
@@ -59,7 +59,7 @@ export default function ProfileComponent() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-[5rem] pt-40">
-      <p className="text-[8rem] text-gray-200 absolute top-[20%] left-1/2 -translate-x-1/2 -z-1">
+      <p className="text-[8rem] text-gray-200 absolute top-[20%] left-1/2 -translate-x-1/2 -z-1 text-nowrap uppercase font-medium font-figtree">
         {fullName}
       </p>
       <div className="flex justify-between items-start flex-wrap gap-6 mb-12">
@@ -212,9 +212,8 @@ export default function ProfileComponent() {
         <h2 className="text-2xl font-semibold mb-4">Vidéos YouTube</h2>
 
         <div
-          className={`grid grid-cols-1 md:grid-cols-2 gap-6 relative transition-all duration-700 ${
-            !showAllYoutubeVideos ? "max-h-[50vh] overflow-hidden" : ""
-          }`}
+          className={`grid grid-cols-1 md:grid-cols-2 gap-6 relative transition-all duration-700 ${!showAllYoutubeVideos ? "max-h-[50vh] overflow-hidden" : ""
+            }`}
         >
           {session.user.videos.map((video, i) => (
             <div

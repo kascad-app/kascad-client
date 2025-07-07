@@ -88,11 +88,11 @@ export default function EditProfile() {
           typeof img === "string"
             ? { url: img, uploadDate: new Date() }
             : {
-                url: img.url,
-                uploadDate: img.uploadDate ?? new Date(),
-                alt: img.alt,
-                isToDelete: false,
-              },
+              url: img.url,
+              uploadDate: img.uploadDate ?? new Date(),
+              alt: img.alt,
+              isToDelete: false,
+            },
         ),
         preferences: {
           networks: session.user.preferences?.networks || [],
@@ -178,17 +178,16 @@ export default function EditProfile() {
   ];
 
   return (
-    <div className="relative max-w-7xl mx-auto p-6 space-y-6 w-[100vw] flex flex-col">
+    <div className="relative max-w-7xl mx-auto p-6 space-y-6 flex flex-col">
       <h2 className="text-2xl font-semibold">Modifier le profil</h2>
       <div className="flex justify-between border-b mb-6">
         {slideLabels.map((label, index) => (
           <button
             key={label}
-            className={`pb-3 px-4 text-base font-medium border-b-2 transition-all duration-200 hover:text-blue-500 ${
-              slide === index
-                ? "border-blue-500 text-blue-600"
-                : "border-transparent text-gray-600 hover:border-gray-300"
-            }`}
+            className={`pb-3 px-4 text-base font-medium border-b-2 transition-all duration-200 hover:text-accent ${slide === index
+              ? "border-accent text-accent"
+              : "border-transparent text-gray-600 hover:border-gray-300"
+              }`}
             onClick={() => setSlide(index)}
           >
             {label}

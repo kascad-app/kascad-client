@@ -9,7 +9,7 @@ export default function RiderPage() {
     const { slug } = useParams();
     const { data: rider, isLoading, error } = useGetRider(slug as string);
 
-    if (isLoading) return <p className="p-8 text-white">Chargement du profil...</p>;
+    if (isLoading) return <p className="p-8 text-[#101B08]">Chargement du profil...</p>;
     if (error || !rider) return <p className="p-8 text-red-500">Rider introuvable.</p>;
 
     const fullName = rider.identity.fullName || `${rider.identity.firstName} ${rider.identity.lastName}`;
@@ -27,15 +27,10 @@ export default function RiderPage() {
     const hasNetwork = (type: SocialNetwork) => networks.includes(type);
 
     return (
-        <div className="bg-white text-black min-h-screen py-16 px-4">
-            <div className="relative bg-white text-black py-20 mb-16 text-center h-[80dvh] flex items-center justify-center">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-blue-500 blur-[120px] rounded-full opacity-50 z-0"></div>
-                <div className="relative z-10">
-                    <p className="text-blue-600 text-sm font-mono tracking-widest uppercase">{sports.join(", ")}</p>
-                    <h1 className="text-5xl md:text-6xl font-extrabold mt-2 text-black font-michroma">
-                        {fullName}
-                    </h1>
-                </div>
+        <div className="bg-[#F4F3EF] text-[#101B08] min-h-screen py-16 px-4">
+            <div className="text-center mb-16">
+                <h1 className="text-4xl md:text-5xl font-michroma font-bold mb-2">{fullName}</h1>
+                <p className="uppercase text-sm tracking-widest text-[#B1BD93]">{sports.join(", ")}</p>
             </div>
 
             <div className="flex flex-col md:flex-row gap-10 max-w-6xl mx-auto items-start">
@@ -46,26 +41,21 @@ export default function RiderPage() {
                             alt={fullName}
                             width={600}
                             height={800}
-                            className="rounded-2xl object-cover w-full h-full border-4 border-blue-500"
-                            onError={(e) => {
-                                const target = e.currentTarget as HTMLImageElement;
-                                target.src = "";
-                                target.style.background = "#0ea5e9";
-                            }}
+                            className="rounded-xl object-cover w-full border-4 border-[#D2FA52]"
                         />
                     ) : (
-                        <div className="w-full aspect-[3/4] bg-blue-500 rounded-2xl"></div>
+                        <div className="w-full aspect-[3/4] bg-[#D2FA52] rounded-xl"></div>
                     )}
                 </div>
 
-                <div className="w-full md:w-1/2 flex flex-col gap-4 justify-between text-gray-300">
-                    <p className="whitespace-pre-line">
+                <div className="w-full md:w-1/2 flex flex-col gap-4">
+                    <p className="whitespace-pre-line text-sm leading-relaxed">
                         {rider.identity.bio || "Pas de bio disponible."}
                     </p>
 
                     <div className="grid grid-cols-2 gap-6 text-center">
                         <div>
-                            <div className="text-4xl font-bold text-blue-500">{age}</div>
+                            <div className="text-3xl font-bold text-[#D2FA52]">{age}</div>
                             <div className="text-sm">ans</div>
                         </div>
                         <div className="text-sm flex items-center justify-center">
@@ -77,7 +67,7 @@ export default function RiderPage() {
                         {sports.map((s, i) => (
                             <span
                                 key={i}
-                                className="px-4 py-1 text-xs uppercase tracking-wide rounded-full bg-white text-black font-semibold"
+                                className="px-4 py-1 text-xs uppercase tracking-wide rounded-full bg-[#3F4139] text-[#F4F3EF] font-semibold"
                             >
                                 {s}
                             </span>
@@ -89,7 +79,7 @@ export default function RiderPage() {
                         <div className="flex flex-wrap gap-2">
                             {Object.values(SocialNetwork).map((network) => (
                                 hasNetwork(network as SocialNetwork) && (
-                                    <span key={network} className="px-3 py-1 rounded-full text-sm bg-blue-600 text-white uppercase">
+                                    <span key={network} className="px-3 py-1 rounded-full text-sm bg-[#B1BD93] text-[#101B08] uppercase">
                                         {network}
                                     </span>
                                 )
@@ -101,7 +91,7 @@ export default function RiderPage() {
                         <p className="uppercase text-sm mb-2">Langues</p>
                         <div className="flex flex-wrap gap-2">
                             {languages.map((lang, i) => (
-                                <span key={i} className="px-3 py-1 rounded-full text-sm bg-white text-black uppercase">
+                                <span key={i} className="px-3 py-1 rounded-full text-sm bg-[#3F4139] text-[#F4F3EF] uppercase">
                                     {lang === Language.FR ? "Français" : "Anglais"}
                                 </span>
                             ))}
@@ -111,7 +101,7 @@ export default function RiderPage() {
             </div>
 
             <div className="mt-20 max-w-6xl mx-auto px-4">
-                <h3 className="text-3xl font-bold mb-8 border-b border-blue-500 pb-2 uppercase">Galerie</h3>
+                <h3 className="text-2xl font-bold mb-8 border-b border-[#B1BD93] pb-2 uppercase">Galerie</h3>
                 <div className="flex flex-wrap gap-4 justify-center">
                     {images.length > 1 ? (
                         images.slice(1).map((img, index) => (
@@ -121,16 +111,11 @@ export default function RiderPage() {
                                 alt={`Image ${index + 1}`}
                                 width={300}
                                 height={400}
-                                className="rounded-xl object-cover aspect-[3/4] w-[calc(25%-8px)] border border-white"
-                                onError={(e) => {
-                                    const target = e.currentTarget as HTMLImageElement;
-                                    target.src = "";
-                                    target.style.background = "#0ea5e9";
-                                }}
+                                className="rounded-xl object-cover aspect-[3/4] w-[calc(25%-8px)] border border-[#101B08]"
                             />
                         ))
                     ) : (
-                        <div className="w-[300px] h-[400px] bg-blue-500 rounded-xl"></div>
+                        <div className="w-[300px] h-[400px] bg-[#D2FA52] rounded-xl"></div>
                     )}
                 </div>
             </div>

@@ -6,12 +6,12 @@ import { usePathname } from "next/navigation";
 import { ROUTES } from "@/shared/constants/ROUTES";
 import BottomNav from "../../../app/components/BottomNav";
 
-export default function LayoutApp({ children }: { children: React.ReactNode }) {
+export default function LayoutApp({ children }: { children: React.ReactNode; }) {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       {children}
-      <BottomNav />
+      {/* <BottomNav /> */}
       <Toaster position="top-right" richColors />
     </div>
   );

@@ -42,7 +42,7 @@ export default function EditProfileSlideAbout({
           <div className="flex flex-col gap-2">
             <label
               htmlFor="avatar"
-              className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition text-center"
+              className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-accent transition text-center"
             >
               Changer
               <input
@@ -54,7 +54,7 @@ export default function EditProfileSlideAbout({
               />
             </label>
             {avatarPreview && (
-              <label className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition text-center">
+              <label className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-accent transition text-center">
                 Réinitialiser
                 <Button
                   id="avatar"
@@ -182,8 +182,8 @@ export default function EditProfileSlideAbout({
                     if (!prev) return prev;
                     const updated = isSelected
                       ? prev.identity.languageSpoken.filter(
-                          (lang) => lang !== language,
-                        )
+                        (lang) => lang !== language,
+                      )
                       : [...prev.identity.languageSpoken, language];
                     return {
                       ...prev,
@@ -215,9 +215,9 @@ export default function EditProfileSlideAbout({
             setProfile((prev) =>
               prev
                 ? {
-                    ...prev,
-                    identity: { ...prev.identity, birthDate: e.target.value },
-                  }
+                  ...prev,
+                  identity: { ...prev.identity, birthDate: e.target.value },
+                }
                 : prev,
             )
           }

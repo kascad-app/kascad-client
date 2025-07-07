@@ -59,7 +59,7 @@ export default function ProfileComponent() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-[5rem] pt-40">
-      <p className="text-[8rem] text-gray-200 absolute top-[20%] left-1/2 -translate-x-1/2 -z-1 text-nowrap uppercase font-medium font-figtree">
+      <p className="text-[16rem] text-gray-100 absolute top-[20%] left-3/5 -translate-x-1/2 -z-1 text-nowrap uppercase font-black">
         {fullName}
       </p>
       <div className="flex justify-between items-start flex-wrap gap-6 mb-12">
@@ -96,7 +96,7 @@ export default function ProfileComponent() {
         </div>
       </div>
 
-      <Card className="mb-10">
+      <Card className="mb-10 bg-[#101B08] text-white border-none">
         <CardHeader>
           <CardTitle>Biographie</CardTitle>
         </CardHeader>

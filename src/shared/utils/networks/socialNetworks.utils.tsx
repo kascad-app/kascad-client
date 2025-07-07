@@ -105,13 +105,13 @@ export const networkData: Record<SocialNetwork, NetworkInfo> = {
   [SocialNetwork.FACEBOOK]: {
     name: "Facebook",
     icon: SocialIcons.facebook,
-    bgColor: "bg-gradient-to-br from-blue-600 to-blue-700",
+    bgColor: "bg-gradient-to-br from-blue-600 to-accent",
     textColor: "text-white",
   },
   [SocialNetwork.LINKEDIN]: {
     name: "LinkedIn",
     icon: SocialIcons.linkedin,
-    bgColor: "bg-gradient-to-br from-blue-700 to-blue-800",
+    bgColor: "bg-gradient-to-br from-accent to-blue-800",
     textColor: "text-white",
   },
   [SocialNetwork.SNAPCHAT]: {
@@ -180,7 +180,7 @@ export const hasNetwork = (
  */
 export const getUserNetworksWithInfo = (
   userNetworks: SocialNetwork[],
-): Array<{ network: SocialNetwork; info: NetworkInfo }> => {
+): Array<{ network: SocialNetwork; info: NetworkInfo; }> => {
   return userNetworks.map((network) => ({
     network,
     info: getNetworkInfo(network),

@@ -28,6 +28,7 @@ import {
     AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { ROUTES } from "@/shared/constants/ROUTES";
+import { SidebarPopup } from "./SidebarPopup";
 
 interface SidebarProps {
     children: ReactNode;
@@ -88,12 +89,6 @@ export default function Sidebar({ children }: SidebarProps) {
                             active={pathname === ROUTES.RIDER.PROFILE}
                         />
                         <SidebarLink
-                            href={ROUTES.RIDER.EDIT_PROFILE}
-                            icon={<Settings className="w-4 h-4" />}
-                            label="Paramètres"
-                            active={pathname === ROUTES.RIDER.EDIT_PROFILE}
-                        />
-                        <SidebarLink
                             href="/riders"
                             icon={<Users className="w-4 h-4" />}
                             label="Liste des riders"
@@ -109,43 +104,48 @@ export default function Sidebar({ children }: SidebarProps) {
                 </div>
 
 
-
-                <div className={cn("pt-4 border-t border-[#101B08]", !isOpen && "hidden md:block")}>
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                className="text-sm text-[#D2FA52] hover:text-[#D2FA52] flex items-center gap-2 w-full justify-start"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-4 w-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
+                <div className="w-full">
+                    <SidebarPopup
+                        icon={<Settings className="w-4 h-4" />}
+                        label="Préferences"
+                    />
+                    <div className={cn("pt-4 mt-4 border-t border-[#101B08]", !isOpen && "hidden md:block")}>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    className="text-sm text-[#D2FA52] hover:text-[#D2FA52] flex items-center gap-2 w-full justify-start"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"
-                                    />
-                                </svg>
-                                Déconnexion
-                            </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Vous nous quittez déjà ?</AlertDialogTitle>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => logoutMutation.trigger()}>
-                                    Se déconnecter
-                                </AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"
+                                        />
+                                    </svg>
+                                    Déconnexion
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Vous nous quittez déjà ?</AlertDialogTitle>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                    <AlertDialogAction onClick={() => logoutMutation.trigger()}>
+                                        Se déconnecter
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    </div>
                 </div>
             </aside>
 

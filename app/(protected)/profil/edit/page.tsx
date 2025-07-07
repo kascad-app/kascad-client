@@ -184,9 +184,9 @@ export default function EditProfile() {
         {slideLabels.map((label, index) => (
           <button
             key={label}
-            className={`pb-3 px-4 text-base font-medium border-b-2 transition-all duration-200 hover:text-blue-500 ${slide === index
-                ? "border-blue-500 text-blue-600"
-                : "border-transparent text-gray-600 hover:border-gray-300"
+            className={`pb-3 px-4 text-base font-medium border-b-2 transition-all duration-200 hover:text-accent ${slide === index
+              ? "border-accent text-accent"
+              : "border-transparent text-gray-600 hover:border-gray-300"
               }`}
             onClick={() => setSlide(index)}
           >

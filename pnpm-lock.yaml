@@ -69,7 +69,7 @@ importers:
         specifier: ^3.12.5
         version: 3.12.5
       jose:
-        specifier: ^5.6.3
+        specifier: ^5.8.0
         version: 5.8.0
       js-cookie:
         specifier: ^3.0.5
@@ -87,10 +87,10 @@ importers:
         specifier: ^8.5.3
         version: 8.5.3
       react:
-        specifier: ^19
+        specifier: ^19.1.0
         version: 19.1.0
       react-dom:
-        specifier: ^19
+        specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
       react-dropzone:
         specifier: ^14.3.8
@@ -136,19 +136,19 @@ importers:
         specifier: ^3.0.6
         version: 3.0.6
       '@types/node':
-        specifier: ^20
+        specifier: ^20.14.10
         version: 20.14.10
       '@types/react':
-        specifier: ^18
+        specifier: ^18.3.3
         version: 18.3.3
       '@types/react-dom':
-        specifier: ^18
+        specifier: ^18.3.0
         version: 18.3.0
       autoprefixer:
         specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.3)
       typescript:
-        specifier: ^5
+        specifier: ^5.5.3
         version: 5.5.3
 
 packages:

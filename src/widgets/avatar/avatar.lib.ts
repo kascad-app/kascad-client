@@ -1,4 +1,4 @@
-type AvatarSize = "S" | "M" | "L";
+type AvatarSize = "XS" | "S" | "M" | "L";
 
 export interface AvatarProps {
   src?: string | null;
@@ -8,6 +8,11 @@ export interface AvatarProps {
 }
 
 export const sizeConfig = {
+  XS: {
+    width: 50,
+    height: 50,
+    className: "h-[50px] w-[50px]",
+  },
   S: {
     width: 100,
     height: 100,

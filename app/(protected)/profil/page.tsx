@@ -135,6 +135,16 @@ export default function ProfileComponent() {
             </p>
 
             <p className="text-sm font-figtree">
+              {session.user.identifier.phoneNumber ? (
+                session.user.identifier.phoneNumber
+              ) : (
+                <span className="italic font-figtree text-gray-400">
+                  Numéro de tel non renseigné
+                </span>
+              )}
+            </p>
+
+            <p className="text-sm font-figtree">
               {session.user.identifier.email ? (
                 session.user.identifier.email
               ) : (

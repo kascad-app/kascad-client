@@ -7,6 +7,7 @@ import * as React from "react";
 import { useMemo, useState } from "react";
 import { useGetRiders } from "@/entities/riders/riders.hooks";
 import { Rider } from "@kascad-app/shared-types";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 export default function RidersPage() {
   const [search, setSearch] = useState("");
@@ -47,7 +48,9 @@ export default function RidersPage() {
   }
 
   if (error) {
-    return <p className="p-8 text-red-500">Erreur lors du chargement des riders.</p>;
+    return (
+      <p className="p-8 text-red-500">Erreur lors du chargement des riders.</p>
+    );
   }
 
   return (
@@ -77,7 +80,8 @@ export default function RidersPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filteredRiders.map((rider: Rider, index) => {
           const fullName =
-            rider.identity.fullName || `${rider.identity.firstName} ${rider.identity.lastName}`;
+            rider.identity.fullName ||
+            `${rider.identity.firstName} ${rider.identity.lastName}`;
           const sports = rider.preferences?.sports?.map((s) => s.name) || [];
           const bio = rider.identity.bio || "Pas de bio disponible.";
           const image = rider.avatarUrl || "/assets/img/blog-6.jpg";
@@ -85,7 +89,7 @@ export default function RidersPage() {
           return (
             <Link
               key={index}
-              href={`/riders/${rider.identifier.slug}`}
+              href={ROUTES.RIDERS.DETAIL(rider.identifier.slug)}
               className="block"
             >
               <div className="flex flex-col sm:flex-row items-center bg-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all">
@@ -98,9 +102,15 @@ export default function RidersPage() {
                   />
                 </div>
                 <div className="p-4 w-full sm:w-1/2">
-                  <h2 className="text-lg font-semibold font-michroma mb-1">{fullName}</h2>
-                  <p className="text-xs uppercase tracking-wide text-blue-600 mb-2">{sports.join(", ")}</p>
-                  <p className="text-sm text-gray-700 line-clamp-4 whitespace-pre-line">{bio}</p>
+                  <h2 className="text-lg font-semibold font-michroma mb-1">
+                    {fullName}
+                  </h2>
+                  <p className="text-xs uppercase tracking-wide text-blue-600 mb-2">
+                    {sports.join(", ")}
+                  </p>
+                  <p className="text-sm text-gray-700 line-clamp-4 whitespace-pre-line">
+                    {bio}
+                  </p>
                 </div>
               </div>
             </Link>

@@ -58,8 +58,8 @@ export default function ProfileComponent() {
   const images: RiderImage[] = session.user.images || [];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-[5rem] pt-40">
-      <p className="text-[16rem] text-gray-100 absolute top-[20%] left-3/5 -translate-x-1/2 -z-1 text-nowrap uppercase font-black">
+    <div className=" mx-auto px-21 py-[5rem] pt-40 overflow-x-hidden">
+      <p className="text-[16rem] text-gray-100 fixed top-[20%] left-3/5 -translate-x-1/2 -z-1 text-nowrap uppercase font-black">
         {fullName}
       </p>
       <div className="flex justify-between items-start flex-wrap gap-6 mb-12">
@@ -96,7 +96,7 @@ export default function ProfileComponent() {
         </div>
       </div>
 
-      <Card className="mb-10 bg-[#101B08] text-white border-none">
+      <Card className="mb-10 bg-[#3F4139] text-white border-none">
         <CardHeader>
           <CardTitle>Biographie</CardTitle>
         </CardHeader>
@@ -143,7 +143,7 @@ export default function ProfileComponent() {
               ({ network, info }) => (
                 <div
                   key={network}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 ${info.bgColor} ${info.textColor} cursor-pointer`}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-[#101B08] text-white cursor-pointer`}
                 >
                   {info.icon}
                   <span className="text-sm font-medium">{info.name}</span>
@@ -160,10 +160,10 @@ export default function ProfileComponent() {
           {session.user.identity?.languageSpoken.map((lang, i) => (
             <span
               key={i}
-              className="inline-flex items-center gap-1 text-sm font-medium border border-blue-200 px-3 py-1 rounded-full bg-blue-50 text-blue-700 shadow-sm hover:bg-blue-100 transition-colors"
+              className="inline-flex items-center gap-1 text-sm font-medium border border-[#3F4139] px-3 py-1 rounded-full bg-gray-50 text-[#3F4139] shadow-sm hover:bg-blue-100 transition-colors"
             >
               <svg
-                className="w-4 h-4 text-blue-400"
+                className="w-4 h-4 text-[#3F4139]"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 aria-hidden="true"

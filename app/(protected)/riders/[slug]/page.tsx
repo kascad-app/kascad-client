@@ -4,6 +4,8 @@ import { useGetRider } from "@/entities/riders/riders.hooks";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { SocialNetwork, Language } from "@kascad-app/shared-types";
+import Masonry from "react-masonry-css";
+import MasonryGallery from "../../../components/MasonryGallery";
 
 export default function RiderPage() {
     const { slug } = useParams();
@@ -28,13 +30,21 @@ export default function RiderPage() {
 
     return (
         <div className="bg-[#F4F3EF] text-[#101B08] min-h-screen py-16 px-4">
-            <div className="text-center mb-16">
-                <h1 className="text-4xl md:text-5xl font-michroma font-bold mb-2">{fullName}</h1>
-                <p className="uppercase text-sm tracking-widest text-[#B1BD93]">{sports.join(", ")}</p>
+            <div className="relative text-center mb-16 h-[50dvh] flex items-center justify-center">
+                {/* BLOB EN FOND */}
+                <div className="absolute inset-0 flex items-center justify-center z-5">
+                    <div className="w-72 h-72 md:w-96 md:h-96 bg-[#D2FA52] rounded-full blur-3xl opacity-30 animate-pulse" />
+                </div>
+
+                {/* TEXTE */}
+                <div className="relative z-10">
+                    <h1 className="text-4xl md:text-5xl font-michroma font-bold mb-2">{fullName}</h1>
+                    <p className="uppercase text-sm tracking-widest text-[#B1BD93]">{sports.join(", ")}</p>
+                </div>
             </div>
 
             <div className="flex flex-col md:flex-row gap-10 max-w-6xl mx-auto items-start">
-                <div className="w-full md:w-1/2">
+                <div className="w-full md:w-1/2 ">
                     {images[0] ? (
                         <Image
                             src={images[0]}
@@ -53,12 +63,12 @@ export default function RiderPage() {
                         {rider.identity.bio || "Pas de bio disponible."}
                     </p>
 
-                    <div className="grid grid-cols-2 gap-6 text-center">
+                    <div className="flex flex-col gap-6 ">
                         <div>
-                            <div className="text-3xl font-bold text-[#D2FA52]">{age}</div>
+                            <div className="text-3xl font-bold">{age}</div>
                             <div className="text-sm">ans</div>
                         </div>
-                        <div className="text-sm flex items-center justify-center">
+                        <div className="text-sm ">
                             {location}
                         </div>
                     </div>
@@ -102,22 +112,11 @@ export default function RiderPage() {
 
             <div className="mt-20 max-w-6xl mx-auto px-4">
                 <h3 className="text-2xl font-bold mb-8 border-b border-[#B1BD93] pb-2 uppercase">Galerie</h3>
-                <div className="flex flex-wrap gap-4 justify-center">
-                    {images.length > 1 ? (
-                        images.slice(1).map((img, index) => (
-                            <Image
-                                key={index}
-                                src={img}
-                                alt={`Image ${index + 1}`}
-                                width={300}
-                                height={400}
-                                className="rounded-xl object-cover aspect-[3/4] w-[calc(25%-8px)] border border-[#101B08]"
-                            />
-                        ))
-                    ) : (
-                        <div className="w-[300px] h-[400px] bg-[#D2FA52] rounded-xl"></div>
-                    )}
-                </div>
+                {images.length > 1 ? (
+                    <MasonryGallery images={images} />
+                ) : (
+                    <div className="w-[300px] h-[400px] bg-[#D2FA52] rounded-xl"></div>
+                )}
             </div>
         </div>
     );

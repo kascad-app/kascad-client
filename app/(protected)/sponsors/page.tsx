@@ -1,19 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import * as React from "react";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Sport, Sponsor } from "@kascad-app/shared-types";
 import { useGetSponsors } from "@/entities/sponsors/sponsors.hooks";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 
 export default function SponsorsPage() {
@@ -23,34 +14,34 @@ export default function SponsorsPage() {
   const [likedSponsors, setLikedSponsors] = useState<string[]>([]);
 
   const { data: sponsors = [], isLoading, error } = useGetSponsors();
+
   const toggleLike = (slug: string) => {
     setLikedSponsors((prev) =>
-      prev.includes(slug) ? prev.filter((id) => id !== slug) : [...prev, slug],
+      prev.includes(slug) ? prev.filter((id) => id !== slug) : [...prev, slug]
     );
   };
+
   const allSports = useMemo(() => {
     return [
       "Tous",
       ...new Set(
         sponsors.flatMap(
           (s: Sponsor) =>
-            s.preferences?.sports?.map((sport) => sport.name) || [],
-        ),
+            s.preferences?.sports?.map((sport) => sport.name) || []
+        )
       ),
     ];
   }, [sponsors]);
 
   const filteredSponsors = useMemo(() => {
     return sponsors.filter((sponsor: Sponsor) => {
-      const matchSearch = sponsor.identity.companyName
-        .toLowerCase()
-        .includes(search.toLowerCase());
-
+      const name = sponsor.identity.companyName.toLowerCase();
       const sportNames = sponsor.preferences?.sports?.map((s) => s.name) || [];
+
+      const matchSearch = name.includes(search.toLowerCase());
       const matchSport =
         selectedSport === "Tous" ||
         sportNames.includes(selectedSport as Sport["name"]);
-
       const matchLiked =
         !showLikedOnly || likedSponsors.includes(sponsor.identity.companyName);
 
@@ -59,93 +50,98 @@ export default function SponsorsPage() {
   }, [sponsors, search, selectedSport, showLikedOnly]);
 
   if (isLoading) {
-    return <p className="p-8">Chargement des sponsors...</p>;
+    return <p className="p-8 text-black">Chargement des sponsors...</p>;
   }
 
   if (error) {
     return (
-      <p className="p-8 text-red-500">
-        Erreur lors du chargement des sponsors.
-      </p>
+      <p className="p-8 text-red-500">Erreur lors du chargement des sponsors.</p>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-6">Sponsors</h1>
-
-      <div className="mb-8 flex flex-wrap gap-4 items-center">
+    <div className="w-full min-h-screen bg-white text-black px-4 sm:px-6 py-10">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-4 items-center justify-center mb-10">
         <input
           type="text"
           placeholder="Rechercher un sponsor..."
-          className="border px-4 py-2 rounded-md text-sm"
+          className="border px-4 py-2 rounded-md text-sm w-full sm:w-auto"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <Select value={selectedSport} onValueChange={setSelectedSport}>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Choisir un sport" />
-          </SelectTrigger>
-          <SelectContent>
-            {allSports.map((sport) => (
-              <SelectItem key={sport} value={sport}>
-                {sport}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <select
+          className="border px-4 py-2 rounded-md text-sm w-full sm:w-auto"
+          value={selectedSport}
+          onChange={(e) => setSelectedSport(e.target.value)}
+        >
+          {allSports.map((sport) => (
+            <option key={sport} value={sport}>
+              {sport}
+            </option>
+          ))}
+        </select>
 
-        <Button
-          variant={showLikedOnly ? "default" : "outline"}
+        <button
+          className={`px-4 py-2 rounded-md text-sm border flex items-center gap-2 ${showLikedOnly
+            ? "bg-black text-white"
+            : "bg-white text-black border-gray-300"
+            }`}
           onClick={() => setShowLikedOnly(!showLikedOnly)}
         >
-          <Heart className="w-4 h-4 mr-2" /> {showLikedOnly ? "Tous" : "Likés"}
-        </Button>
+          <Heart className="w-4 h-4" />
+          {showLikedOnly ? "Tous" : "Likés"}
+        </button>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-        {filteredSponsors.map((sponsor: Sponsor) => (
-          <Link
-            key={sponsor.identity.companyName}
-            href={`/sponsors/${sponsor._id}`}
-            className="group relative rounded-xl overflow-hidden shadow-md border hover:shadow-xl transition-all"
-          >
-            <div className="relative w-full h-64">
-              <button
-                onClick={(e) => {
-                  e.preventDefault(); // pour ne pas activer le <Link>
-                  toggleLike(sponsor.identity.companyName);
-                }}
-                className="absolute top-3 right-3 z-10"
-              >
-                <Heart
-                  className={`w-6 h-6 ${
-                    likedSponsors.includes(sponsor.identity.companyName)
-                      ? "text-red-500 fill-red-500"
-                      : "text-gray-400"
-                  }`}
-                />
-              </button>
-              <Image
-                src={sponsor.identity.logo || "/assets/img/blog-6.jpg"}
-                alt={sponsor.identity.companyName}
-                fill
-                className="object-cover"
-              />
-              <div className="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-white via-white/60 to-transparent" />
-              <div className="absolute bottom-4 left-4">
-                <h3 className="text-sm font-semibold text-gray-900">
-                  {sponsor.identity.companyName}
-                </h3>
-                <p className="text-xs text-gray-600">
-                  {sponsor.preferences?.sports?.map((s) => s.name).join(", ") ||
-                    "Sport inconnu"}
-                </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {filteredSponsors.map((sponsor: Sponsor) => {
+          const name = sponsor.identity.companyName;
+          const sports = sponsor.preferences?.sports?.map((s) => s.name) || [];
+          const logo = sponsor.identity.logo || "/assets/img/blog-6.jpg";
+
+          return (
+            <Link
+              key={sponsor._id}
+              href={`/sponsors/${sponsor._id}`}
+              className="block"
+            >
+              <div className="flex flex-col sm:flex-row items-center bg-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all">
+                <div className="relative w-full sm:w-1/2 h-[250px]">
+                  <Image
+                    src={logo}
+                    alt={name}
+                    fill
+                    className="object-cover"
+                  />
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleLike(name);
+                    }}
+                    className="absolute top-3 right-3 z-10"
+                  >
+                    <Heart
+                      className={`w-6 h-6 ${likedSponsors.includes(name)
+                        ? "text-red-500 fill-red-500"
+                        : "text-gray-400"
+                        }`}
+                    />
+                  </button>
+                </div>
+                <div className="p-4 w-full sm:w-1/2">
+                  <h2 className="text-lg font-semibold font-michroma mb-1">
+                    {name}
+                  </h2>
+                  <p className="text-xs uppercase tracking-wide text-blue-600 mb-2">
+                    {sports.join(", ") || "Sport inconnu"}
+                  </p>
+
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

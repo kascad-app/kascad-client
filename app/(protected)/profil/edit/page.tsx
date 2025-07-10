@@ -79,7 +79,10 @@ export default function EditProfile() {
         address: "",
         phoneNumber: identifier.phoneNumber || "",
         bio: identity.bio || "",
-        trainingFrequency: session.user.trainingFrequency,
+        trainingFrequency: {
+          sessionsPerWeek: session.user.trainingFrequency?.sessionsPerWeek || 1,
+          hoursPerSession: session.user.trainingFrequency?.hoursPerSession || 1,
+        },
         sponsors: session.user.sponsorSummary?.currentSponsors || [],
         events: [],
         videos: session.user.videos || [],
@@ -130,13 +133,14 @@ export default function EditProfile() {
     if (!profile) return;
 
     try {
-      console.log("Enregistrement du profil:", profile);
       const parsed = profileSchema.safeParse(profile);
       if (!parsed.success) {
-        throw new Error(`Infos incomplètes ou incorrectes`);
+        const details = parsed.error.errors
+          .map((e) => `${e.path.join(".")} : ${e.message}`)
+          .join(" | ");
+        throw new Error(`Infos incomplètes ou incorrectes : ${details}`);
       }
       const riderPayload = mapProfileToRawRider(parsed.data);
-      console.log("Enregistrement du riderPayload:", riderPayload);
       if (avatarFile) {
         const formData = new FormData();
         formData.append("file", avatarFile);

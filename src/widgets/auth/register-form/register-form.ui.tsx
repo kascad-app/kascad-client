@@ -19,13 +19,15 @@ import {
 
 const registerFormSchema = z
   .object({
-    email: z.string().email(),
-    firstName: z.string().min(2, "First name must be at least 2 characters"),
-    lastName: z.string().min(2, "Last name must be at least 2 characters"),
+    email: z.string().email("Adresse email invalide"),
+    firstName: z
+      .string()
+      .min(2, "Le prénom doit contenir au moins 2 caractères"),
+    lastName: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
     gender: z.enum(["homme", "femme", "autre"]),
     password: z
       .string()
-      .min(6, "Password must be at least 6 characters")
+      .min(6, "Le mot de passe doit contenir au moins 6 caractères")
       .refine(
         (val) =>
           /[A-Z]/.test(val) &&
@@ -34,13 +36,13 @@ const registerFormSchema = z
           /[^A-Za-z0-9]/.test(val),
         {
           message:
-            "Password must include uppercase, lowercase, number, and symbol",
+            "Le mot de passe doit contenir une majuscule, une minuscule, un chiffre et un symbole",
         },
       ),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "Les mots de passe ne correspondent pas",
     path: ["confirmPassword"],
   });
 
@@ -72,12 +74,12 @@ export const RegisterFormWidget: React.FC = () => {
         gender: values.gender as GenderIdentity,
       })
       .then(() => {
-        toast.success("Registration successful");
+        toast.success("Inscription réussie");
         router.push(ROUTES.HOMEPAGE);
       })
       .catch((err) => {
         console.error(err);
-        toast.error("Registration failed");
+        toast.error("Échec de l'inscription");
       });
   }
 
@@ -98,7 +100,7 @@ export const RegisterFormWidget: React.FC = () => {
               htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
-              Email
+              Adresse email
             </label>
             <input
               type="email"
@@ -178,7 +180,7 @@ export const RegisterFormWidget: React.FC = () => {
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
             >
-              Mot de Passe
+              Mot de passe
             </label>
             <input
               type="password"
@@ -198,7 +200,7 @@ export const RegisterFormWidget: React.FC = () => {
               htmlFor="confirmPassword"
               className="block text-sm font-medium text-gray-700"
             >
-              Vérifier Mot de Passe
+              Vérifier le mot de passe
             </label>
             <input
               type="password"
@@ -227,7 +229,7 @@ export const RegisterFormWidget: React.FC = () => {
           </button>
           <div className="flex flex-row items-center justify-center">
             <span className="h-0.5 w-full bg-dark-gradient"></span>
-            <p className="px-2 font-bold">or</p>
+            <p className="px-2 font-bold">ou</p>
             <span className="h-0.5 w-full bg-dark-gradient"></span>
           </div>
         </form>
@@ -235,7 +237,7 @@ export const RegisterFormWidget: React.FC = () => {
           onClick={handleChangeAuth}
           className="w-full py-2 bg-white text-medium px-4 border-2 font-semibold rounded-md hover:border-[#3f4139] hover:bg-[#3f4139] hover:text-white  transition duration-200"
         >
-          Connection
+          Connexion
         </button>
       </div>
     </Form>

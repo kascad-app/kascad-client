@@ -76,7 +76,7 @@ export const LoginFormWidget: React.FC = () => {
               id="email"
               {...form.register("email")}
               required
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              className="mt-1 p-2 w-full border border-gray-300 bg-[#F4F3EF] rounded-md"
             />
           </div>
           <div key="password">
@@ -99,9 +99,8 @@ export const LoginFormWidget: React.FC = () => {
           )}
           <button
             type="submit"
-            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-accent ${
-              loginMutation.isMutating ? " sending" : ""
-            }`}
+            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-accent ${loginMutation.isMutating ? " sending" : ""
+              }`}
             disabled={loginMutation.isMutating}
           >
             Se connecter

@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
       gridAutoRows: {
-        150: "150px",
+        '150': '150px',
       },
       content: {
         check: 'url("/views/shared/check.svg")',

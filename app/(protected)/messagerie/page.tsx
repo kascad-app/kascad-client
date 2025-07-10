@@ -109,22 +109,13 @@ export default function Messagerie() {
 
   return (
     <div className="p-6 text-black bg-white min-h-screen">
-      <Button
-        variant="ghost"
-        className="fixed right-6 top-6 bg-black border border-transparent text-white hover:bg-white hover:text-black hover:border-black"
-      >
-        Nouveau message
-      </Button>
-
-      {newContracts.length > 0 && (
-        <h2 className="text-2xl font-bold mb-6">Propositions de sponsors</h2>
-      )}
+      <h2 className="text-2xl font-bold mb-6">Propositions de sponsors</h2>
       {newContracts.length === 0 && (
-        <div className="mt-24 flex flex-col justify-center items-center">
-          <p className="my-6">
+        <div className="flex flex-col items-center">
+          <p className="mt-6">
             Vous n'avez pas de propositions de contracts de la part de sponsors.
           </p>
-          <div className="mt-4">
+          <div className="mt-2">
             <Link href="/sponsors" className="text-blue-500 hover:underline">
               Cherchez des sponsors ici
             </Link>

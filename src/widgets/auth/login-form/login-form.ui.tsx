@@ -63,7 +63,7 @@ export const LoginFormWidget: React.FC = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full max-w-md space-y-4"
         >
-          <h2 className="font-michroma text-title ">Login</h2>
+          <h2 className="font-michroma text-title ">Connection</h2>
           <div key="email">
             <label
               htmlFor="email"
@@ -84,7 +84,7 @@ export const LoginFormWidget: React.FC = () => {
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
             >
-              Password
+              Mot de Passe
             </label>
             <input
               type="password"
@@ -104,11 +104,11 @@ export const LoginFormWidget: React.FC = () => {
             }`}
             disabled={loginMutation.isMutating}
           >
-            Login
+            Se Connecter
           </button>
           <div className="flex flex-row items-center justify-center">
             <span className="h-0.5 w-full bg-dark-gradient"></span>
-            <p className="px-2 font-bold">or</p>
+            <p className="px-2 font-bold">ou</p>
             <span className="h-0.5 w-full bg-dark-gradient"></span>
           </div>
         </form>
@@ -116,7 +116,7 @@ export const LoginFormWidget: React.FC = () => {
           onClick={handleChangeAuth}
           className="w-full py-2 bg-white text-medium px-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-md hover:bg-blue-300 hover:border-blue-300 hover:text-white  transition duration-200"
         >
-          Register
+          Inscription
         </button>
       </div>
     </Form>

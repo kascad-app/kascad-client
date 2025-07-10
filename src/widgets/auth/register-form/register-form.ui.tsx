@@ -85,7 +85,7 @@ export const RegisterFormWidget: React.FC = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full max-w-md space-y-4"
         >
-          <h2 className="font-michroma text-title ">Register</h2>
+          <h2 className="font-michroma text-title ">Inscription</h2>
           <div key="email">
             <label
               htmlFor="email"
@@ -107,7 +107,7 @@ export const RegisterFormWidget: React.FC = () => {
                 htmlFor="firstName"
                 className="block text-sm font-medium text-gray-700"
               >
-                Firstname
+                Prénom
               </label>
               <input
                 type="firstName"
@@ -127,7 +127,7 @@ export const RegisterFormWidget: React.FC = () => {
                 htmlFor="lastName"
                 className="block text-sm font-medium text-gray-700"
               >
-                Lastname
+                Nom
               </label>
               <input
                 type="lastName"
@@ -148,7 +148,7 @@ export const RegisterFormWidget: React.FC = () => {
               htmlFor="gender"
               className="block text-sm font-medium text-gray-700"
             >
-              Gender
+              Genre
             </label>
             <select
               id="gender"
@@ -165,7 +165,7 @@ export const RegisterFormWidget: React.FC = () => {
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
             >
-              Password
+              Mot de Passe
             </label>
             <input
               type="password"
@@ -185,7 +185,7 @@ export const RegisterFormWidget: React.FC = () => {
               htmlFor="confirmPassword"
               className="block text-sm font-medium text-gray-700"
             >
-              Confirm Password
+              Vérifier Mot de Passe
             </label>
             <input
               type="password"
@@ -210,7 +210,7 @@ export const RegisterFormWidget: React.FC = () => {
             }`}
             disabled={registerMutation.isMutating}
           >
-            Register
+            Inscription
           </button>
           <div className="flex flex-row items-center justify-center">
             <span className="h-0.5 w-full bg-dark-gradient"></span>
@@ -222,7 +222,7 @@ export const RegisterFormWidget: React.FC = () => {
           onClick={handleChangeAuth}
           className="w-full py-2 bg-white text-medium px-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-md hover:bg-blue-300 hover:border-blue-300 hover:text-white  transition duration-200"
         >
-          Login
+          Connection
         </button>
       </div>
     </Form>

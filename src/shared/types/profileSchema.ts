@@ -4,7 +4,6 @@ import {
   GenderIdentity,
   Language,
   SocialNetwork,
-  Sport,
   SportName,
   updateRiderDto,
   WeatherCondition,
@@ -44,8 +43,6 @@ export const profileSchema = z.object({
   email: z.string().email(),
   phoneNumber: z.string(),
   bio: z.string(),
-  trainingFrequency: z.number().min(1),
-  trainingUnit: z.enum(["week", "month"]),
   sponsors: z.array(z.string()),
   events: z.array(
     z.object({
@@ -82,7 +79,19 @@ export const profileSchema = z.object({
       }),
     ),
   }),
-  isAvailable: z.boolean(),
+  trainingFrequency: z.object({
+    sessionsPerWeek: z.number().min(1),
+    hoursPerSession: z.number().min(1).max(24),
+  }),
+  sponsorsSummary: z.object({
+    totalSponsors: z.number(),
+    currentSponsors: z.array(z.string()),
+    wishListSponsors: z.array(z.string()),
+  }),
+  availibility: z.object({
+    isAvailable: z.boolean(),
+    contractType: z.nativeEnum(ContractType).optional(),
+  }),
 });
 
 export type ProfileState = z.infer<typeof profileSchema>;
@@ -153,12 +162,17 @@ export const mapProfileToRawRider = (
       description: video.description,
     })),
     availibility: {
-      isAvailable: profile.isAvailable,
-      contractType: ContractType.UGC, // valeur par défaut ou à configurer plus tard
+      isAvailable: profile.availibility.isAvailable,
+      contractType: profile.availibility.contractType as ContractType,
     },
     trainingFrequency: {
-      sessionsPerWeek: profile.trainingFrequency,
-      hoursPerSession: 1, // valeur par défaut à ajuster
+      sessionsPerWeek: profile.trainingFrequency.sessionsPerWeek,
+      hoursPerSession: profile.trainingFrequency.hoursPerSession, // valeur par défaut à ajuster
+    },
+    sponsorSummary: {
+      totalSponsors: profile.sponsorsSummary.totalSponsors,
+      currentSponsors: profile.sponsorsSummary.currentSponsors,
+      wishListSponsors: profile.sponsorsSummary.wishListSponsors,
     },
     description: profile.bio,
   };

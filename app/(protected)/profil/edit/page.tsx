@@ -79,8 +79,7 @@ export default function EditProfile() {
         address: "",
         phoneNumber: identifier.phoneNumber || "",
         bio: identity.bio || "",
-        trainingFrequency: session.user.trainingFrequency?.sessionsPerWeek || 3,
-        trainingUnit: "week",
+        trainingFrequency: session.user.trainingFrequency,
         sponsors: session.user.sponsorSummary?.currentSponsors || [],
         events: [],
         videos: session.user.videos || [],
@@ -88,11 +87,11 @@ export default function EditProfile() {
           typeof img === "string"
             ? { url: img, uploadDate: new Date() }
             : {
-              url: img.url,
-              uploadDate: img.uploadDate ?? new Date(),
-              alt: img.alt,
-              isToDelete: false,
-            },
+                url: img.url,
+                uploadDate: img.uploadDate ?? new Date(),
+                alt: img.alt,
+                isToDelete: false,
+              },
         ),
         preferences: {
           networks: session.user.preferences?.networks || [],
@@ -101,7 +100,15 @@ export default function EditProfile() {
             Number(session.user.preferences?.appLanguage) || Language.FR,
         },
         performanceSummary: session.user.performanceSummary || null,
-        isAvailable: session.user.availibility?.isAvailable ?? true,
+        availibility: {
+          isAvailable: session.user.availibility?.isAvailable ?? true,
+          contractType: session.user.availibility?.contractType,
+        },
+        sponsorsSummary: {
+          totalSponsors: session.user.sponsorSummary?.totalSponsors || 0,
+          currentSponsors: session.user.sponsorSummary?.currentSponsors || [],
+          wishListSponsors: session.user.sponsorSummary?.wishListSponsors || [],
+        },
       });
     }
 
@@ -123,11 +130,13 @@ export default function EditProfile() {
     if (!profile) return;
 
     try {
+      console.log("Enregistrement du profil:", profile);
       const parsed = profileSchema.safeParse(profile);
       if (!parsed.success) {
         throw new Error(`Infos incomplètes ou incorrectes`);
       }
       const riderPayload = mapProfileToRawRider(parsed.data);
+      console.log("Enregistrement du riderPayload:", riderPayload);
       if (avatarFile) {
         const formData = new FormData();
         formData.append("file", avatarFile);
@@ -184,10 +193,11 @@ export default function EditProfile() {
         {slideLabels.map((label, index) => (
           <button
             key={label}
-            className={`pb-3 px-4 text-base font-medium border-b-2 transition-all duration-200 hover:text-accent ${slide === index
-              ? "border-accent text-accent"
-              : "border-transparent text-gray-600 hover:border-gray-300"
-              }`}
+            className={`pb-3 px-4 text-base font-medium border-b-2 transition-all duration-200 hover:text-accent ${
+              slide === index
+                ? "border-accent text-accent"
+                : "border-transparent text-gray-600 hover:border-gray-300"
+            }`}
             onClick={() => setSlide(index)}
           >
             {label}

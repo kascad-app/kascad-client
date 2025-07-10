@@ -302,7 +302,7 @@ export default function EditProfileSlideAbout({
             <Input
               type="number"
               min={1}
-              value={profile.trainingFrequency.sessionsPerWeek}
+              value={profile.trainingFrequency?.sessionsPerWeek ?? ""}
               onChange={(e) =>
                 setProfile((prev) => {
                   if (!prev) return prev;
@@ -323,7 +323,7 @@ export default function EditProfileSlideAbout({
               type="number"
               min={1}
               max={24}
-              value={profile.trainingFrequency.hoursPerSession}
+              value={profile.trainingFrequency?.hoursPerSession ?? ""}
               onChange={(e) =>
                 setProfile((prev) => {
                   if (!prev) return prev;

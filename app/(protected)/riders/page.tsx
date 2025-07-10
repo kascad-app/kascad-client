@@ -67,7 +67,7 @@ export default function RidersPage() {
           onChange={(e) => setSelectedSport(e.target.value)}
         >
           {allSports.map((sport) => (
-            <option key={sport} value={sport}>
+            <option value={sport}>
               {sport}
             </option>
           ))}

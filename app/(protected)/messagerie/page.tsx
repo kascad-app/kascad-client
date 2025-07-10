@@ -18,8 +18,7 @@ import {
   CalendarX2,
   CalendarCheck2,
 } from "lucide-react";
-import { contractOfferDto, registerMessageDto } from "@kascad-app/shared-types";
-import { set } from "zod";
+import { contractOfferDto } from "@kascad-app/shared-types";
 import {
   useGetContract,
   useGetContracts,
@@ -29,6 +28,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { Skeleton } from "@components/ui/skeleton";
 import Avatar from "@/widgets/avatar/avatar.ui";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 export default function Messagerie() {
   const [selectedSponsor, setSelectedSponsor] =
@@ -125,7 +125,10 @@ export default function Messagerie() {
             Vous n'avez pas de propositions de contracts de la part de sponsors.
           </p>
           <div className="mt-4">
-            <Link href="/sponsors" className="text-blue-500 hover:underline">
+            <Link
+              href={ROUTES.SPONSORS.LIST}
+              className="text-blue-500 hover:underline"
+            >
               Cherchez des sponsors ici
             </Link>
             .

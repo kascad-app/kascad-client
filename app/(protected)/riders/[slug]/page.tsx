@@ -56,7 +56,7 @@ export default function RiderPage() {
     console.log(youtube);
 
     return (
-        <div className="bg-[#F4F3EF] text-[#101B08] min-h-screen py-16 px-4">
+        <div className="bg-[#F4F3EF] text-[#000000] min-h-screen py-16">
             <div className="relative text-center mb-16 h-[50dvh] flex items-center justify-center">
                 {/* BLOB EN FOND */}
                 <div className="absolute inset-0 flex items-center justify-center z-5">

@@ -57,12 +57,12 @@ export default function Sidebar({ children }: SidebarProps) {
             icon: <Settings className="w-4 h-4" />,
         },
         {
-            href: "/riders",
+            href: ROUTES.RIDERS.LIST,
             label: "Liste des riders",
             icon: <Users className="w-4 h-4" />,
         },
         {
-            href: "/sponsors",
+            href: ROUTES.SPONSORS.LIST,
             label: "Liste des sponsors",
             icon: <Briefcase className="w-4 h-4" />,
         },
@@ -101,7 +101,7 @@ export default function Sidebar({ children }: SidebarProps) {
                             {links.map((link) => {
                                 const active = pathname === link.href;
                                 return (
-                                    <Link key={link.href} href={link.href}>
+                                    <Link key={link.href as string} href={link.href}>
                                         <Button
                                             variant="ghost"
                                             className={cn(
@@ -111,9 +111,7 @@ export default function Sidebar({ children }: SidebarProps) {
                                                     : "text-white hover:bg-[#101b08]"
                                             )}
                                         >
-                                            <span className={cn("mr-2", active ? "text-[#d2fa52]" : "text-white")}>
-                                                {link.icon}
-                                            </span>
+                                            <span className={cn("mr-2", active ? "text-[#d2fa52]" : "text-white")}> {link.icon} </span>
                                             {isOpen && link.label}
                                         </Button>
                                     </Link>
@@ -122,16 +120,15 @@ export default function Sidebar({ children }: SidebarProps) {
                         </nav>
                     </div>
 
-                    <div className="w-full mt-auto">
+                    <div className="w-full mt-auto space-y-2">
                         <SidebarPopup
                             icon={<Settings className="w-4 h-4" />}
-                            label="Préférences"
+                            label={isOpen ? "Préférences" : ""}
                         />
-                        {isOpen && (
-                            <div className="pt-4 mt-4 border-t border-[#101B08]">
-                                <LogoutButton logout={() => logoutMutation.trigger()} />
-                            </div>
-                        )}
+                        <div className={cn("border-t border-[#101B08] pt-4", !isOpen && "border-none pt-0")}>
+                            <LogoutButton logout={() => logoutMutation.trigger()} />
+
+                        </div>
                     </div>
                 </aside>
 
@@ -179,7 +176,6 @@ export default function Sidebar({ children }: SidebarProps) {
                             })}
                         </nav>
 
-                        {/* Optionnel : afficher SidebarPopup en mobile ? */}
                         <div className="mt-6">
                             <SidebarPopup
                                 icon={<Settings className="w-4 h-4" />}
@@ -224,7 +220,11 @@ function LogoutButton({ logout }: { logout: () => void; }) {
                             d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"
                         />
                     </svg>
-                    Déconnexion
+                    {
+                        // Texte pour la version desktop
+                        "Déconnexion"
+                    }
+
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>

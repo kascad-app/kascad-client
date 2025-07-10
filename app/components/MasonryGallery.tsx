@@ -5,9 +5,10 @@ import Masonry from "react-masonry-css";
 
 interface MasonryGalleryProps {
     images: string[];
+    onImageClick?: (index: number) => void;
 }
 
-export default function MasonryGallery({ images }: MasonryGalleryProps) {
+export default function MasonryGallery({ images, onImageClick }: MasonryGalleryProps) {
     const galleryImages = images.slice(1); // On saute la première image (déjà utilisée en haut)
 
     const breakpoints = {
@@ -24,14 +25,19 @@ export default function MasonryGallery({ images }: MasonryGalleryProps) {
             columnClassName="masonry-column"
         >
             {galleryImages.map((img, index) => (
-                <Image
+                <div
                     key={index}
-                    src={img}
-                    alt={`Image ${index + 1}`}
-                    width={300}
-                    height={400}
-                    className="mb-4 object-cover  w-full h-auto"
-                />
+                    className="mb-4 cursor-pointer"
+                    onClick={() => onImageClick?.(index + 1)} // +1 car on a sauté la première image
+                >
+                    <Image
+                        src={img}
+                        alt={`Image ${index + 1}`}
+                        width={300}
+                        height={400}
+                        className="object-cover w-full h-auto rounded-lg shadow-md hover:shadow-xl transition-shadow"
+                    />
+                </div>
             ))}
         </Masonry>
     );

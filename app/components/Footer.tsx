@@ -6,16 +6,16 @@ import { ROUTES } from "@/shared/constants/ROUTES";
 
 export default function Footer() {
     return (
-        <footer className="bg-[#0A0B1E] text-white px-6 py-12 md:px-16">
+        <footer className="bg-[#F4F3EF] text-white px-6 py-12 md:px-16">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 md:gap-16">
                 {/* Bloc gauche : logo + slogan */}
                 <div className="text-center md:text-left flex flex-col items-center md:items-start gap-2">
                     <img
-                        src="/assets/logo/logo-light.svg"
+                        src="/views/logos/logoSquare.svg"
                         alt="Kascad Logo"
                         className="h-10 mb-2"
                     />
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-black font-michroma">
                         La plateforme qui connecte les athlètes aux sponsors.
                     </p>
                 </div>

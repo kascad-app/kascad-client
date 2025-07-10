@@ -40,7 +40,7 @@ export default function RiderPage() {
     const hasNetwork = (type: SocialNetwork) => networks.includes(type);
     const rawLanguages = rider.identity?.languageSpoken?.filter(Boolean) || [];
     const youtube = rider.videos?.filter(v => !!v.url) || [];
-
+    const availability = rider.availibility?.isAvailable;
     const formatDate = (date?: Date | string) => {
         if (!date) return "Date inconnue";
         const dateObj = typeof date === "string" ? new Date(date) : date;
@@ -57,7 +57,6 @@ export default function RiderPage() {
         if (ranking === 3) return <span className="text-orange-400 font-bold">🥉</span>;
         return <span className="text-white font-semibold">{ranking}ᵉ</span>;
     };
-    console.log(stats);
 
     return (
         <div className="bg-[#F4F3EF] text-[#000000] min-h-screen py-16">
@@ -127,6 +126,17 @@ export default function RiderPage() {
                             ))}
                         </div>
                     </div>
+
+                    <div className="mt-4">
+                        {availability === true ? (
+                            <p className="text-sm text-[#101B08] border-2 rounded-4xl px-3 py-1 w-fit">disponible</p>
+                        ) : availability === false ? (
+                            <p className="text-sm text-gray-500 border-2 rounded-4xl px-3 py-1 w-fit">non disponible</p>
+                        ) : (
+                            <p className="text-sm text-gray-400 italic">Disponibilité inconnue</p>
+                        )}
+                    </div>
+
 
                     <div className="mt-4">
                         <p className="uppercase text-sm mb-2 font-michroma">Langues</p>

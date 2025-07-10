@@ -45,31 +45,26 @@ export default function Sidebar({ children }: SidebarProps) {
             href: ROUTES.HOMEPAGE,
             label: "Accueil",
             icon: <Home className="w-4 h-4" />,
-            active: pathname === ROUTES.HOMEPAGE,
         },
         {
             href: ROUTES.RIDER.PROFILE,
             label: "Profil",
             icon: <User className="w-4 h-4" />,
-            active: pathname === ROUTES.RIDER.PROFILE,
         },
         {
             href: ROUTES.RIDER.EDIT_PROFILE,
             label: "Paramètres",
             icon: <Settings className="w-4 h-4" />,
-            active: pathname === ROUTES.RIDER.EDIT_PROFILE,
         },
         {
             href: "/riders",
             label: "Liste des riders",
             icon: <Users className="w-4 h-4" />,
-            active: pathname === "/riders",
         },
         {
             href: "/sponsors",
             label: "Liste des sponsors",
             icon: <Briefcase className="w-4 h-4" />,
-            active: pathname === "/sponsors",
         },
     ];
 
@@ -83,7 +78,7 @@ export default function Sidebar({ children }: SidebarProps) {
                         isOpen ? "w-64 p-6" : "w-16 p-2"
                     )}
                 >
-                    <div className={cn("flex flex-col items-start justify-between gap-12 mb-8", !isOpen && "items-center")}>
+                    <div className={cn("flex flex-col items-start gap-12 mb-8", !isOpen && "items-center")}>
                         <div>
                             <Button
                                 variant="ghost"
@@ -103,17 +98,41 @@ export default function Sidebar({ children }: SidebarProps) {
                         </div>
 
                         <nav className="space-y-2 w-full">
-                            {links.map((link) => (
-                                <SidebarLink key={link.href} {...link} isOpen={isOpen} />
-                            ))}
+                            {links.map((link) => {
+                                const active = pathname === link.href;
+                                return (
+                                    <Link key={link.href} href={link.href}>
+                                        <Button
+                                            variant="ghost"
+                                            className={cn(
+                                                "w-full justify-start text-sm flex items-center transition-colors",
+                                                active
+                                                    ? "bg-[#101b08] text-[#d2fa52] font-semibold"
+                                                    : "text-white hover:bg-[#101b08]"
+                                            )}
+                                        >
+                                            <span className={cn("mr-2", active ? "text-[#d2fa52]" : "text-white")}>
+                                                {link.icon}
+                                            </span>
+                                            {isOpen && link.label}
+                                        </Button>
+                                    </Link>
+                                );
+                            })}
                         </nav>
                     </div>
 
-                    {isOpen && (
-                        <div className="pt-4 border-t border-[#101B08]">
-                            <LogoutButton logout={() => logoutMutation.trigger()} />
-                        </div>
-                    )}
+                    <div className="w-full mt-auto">
+                        <SidebarPopup
+                            icon={<Settings className="w-4 h-4" />}
+                            label="Préférences"
+                        />
+                        {isOpen && (
+                            <div className="pt-4 mt-4 border-t border-[#101B08]">
+                                <LogoutButton logout={() => logoutMutation.trigger()} />
+                            </div>
+                        )}
+                    </div>
                 </aside>
 
                 <main className={cn("flex-1 transition-all duration-300 overflow-x-hidden w-full", isOpen ? "ml-64" : "ml-16")}>
@@ -123,7 +142,6 @@ export default function Sidebar({ children }: SidebarProps) {
 
             {/* Mobile Sidebar */}
             <div className="md:hidden">
-                {/* Burger Button */}
                 <Button
                     variant="ghost"
                     size="icon"
@@ -133,7 +151,6 @@ export default function Sidebar({ children }: SidebarProps) {
                     <Menu className="w-6 h-6" />
                 </Button>
 
-                {/* Fullscreen Menu */}
                 {mobileMenuOpen && (
                     <div className="fixed inset-0 z-50 bg-[#3F4139] text-white flex flex-col items-center justify-center p-8">
                         <Button
@@ -146,18 +163,29 @@ export default function Sidebar({ children }: SidebarProps) {
                         </Button>
 
                         <nav className="flex flex-col gap-6 items-center">
-                            {links.map((link) => (
-                                <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)}>
-                                    <span className={cn(
-                                        "flex items-center gap-2 text-lg",
-                                        link.active ? "text-[#D2FA52]" : "text-white"
-                                    )}>
-                                        {link.icon}
-                                        {link.label}
-                                    </span>
-                                </Link>
-                            ))}
+                            {links.map((link) => {
+                                const active = pathname === link.href;
+                                return (
+                                    <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)}>
+                                        <span className={cn(
+                                            "flex items-center gap-2 text-lg",
+                                            active ? "text-[#D2FA52]" : "text-white"
+                                        )}>
+                                            {link.icon}
+                                            {link.label}
+                                        </span>
+                                    </Link>
+                                );
+                            })}
                         </nav>
+
+                        {/* Optionnel : afficher SidebarPopup en mobile ? */}
+                        <div className="mt-6">
+                            <SidebarPopup
+                                icon={<Settings className="w-4 h-4" />}
+                                label="Préférences"
+                            />
+                        </div>
 
                         <div className="mt-12">
                             <LogoutButton logout={() => {
@@ -168,41 +196,9 @@ export default function Sidebar({ children }: SidebarProps) {
                     </div>
                 )}
 
-                {/* Main content */}
                 <main>{children}</main>
             </div>
         </>
-    );
-}
-
-function SidebarLink({
-    href,
-    icon,
-    label,
-    active,
-    isOpen,
-}: {
-    href: string;
-    icon: React.ReactNode;
-    label: string;
-    active?: boolean;
-    isOpen: boolean;
-}) {
-    return (
-        <Link href={href} className="block">
-            <Button
-                variant="ghost"
-                className={cn(
-                    "w-full justify-start text-sm flex items-center transition-colors",
-                    active
-                        ? "bg-[#101b08] text-[#d2fa52] font-semibold"
-                        : "text-white hover:bg-[#101b08]"
-                )}
-            >
-                <span className={cn("mr-2", active ? "text-[#d2fa52]" : "text-white")}>{icon}</span>
-                {isOpen && label}
-            </Button>
-        </Link>
     );
 }
 

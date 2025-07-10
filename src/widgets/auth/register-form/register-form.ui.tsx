@@ -218,7 +218,7 @@ export const RegisterFormWidget: React.FC = () => {
           )}
           <button
             type="submit"
-            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-blue-300${
+            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-accent${
               registerMutation.isMutating ? " sending" : ""
             }`}
             disabled={registerMutation.isMutating}
@@ -233,7 +233,7 @@ export const RegisterFormWidget: React.FC = () => {
         </form>
         <button
           onClick={handleChangeAuth}
-          className="w-full py-2 bg-white text-medium px-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-md hover:bg-blue-300 hover:border-blue-300 hover:text-white  transition duration-200"
+          className="w-full py-2 bg-white text-medium px-4 border-2 font-semibold rounded-md hover:border-[#3f4139] hover:bg-[#3f4139] hover:text-white  transition duration-200"
         >
           Connection
         </button>

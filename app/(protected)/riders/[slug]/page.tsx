@@ -1,19 +1,30 @@
 "use client";
-
 import { useGetRider } from "@/entities/riders/riders.hooks";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { SocialNetwork, Language } from "@kascad-app/shared-types";
-import Masonry from "react-masonry-css";
 import MasonryGallery from "../../../components/MasonryGallery";
+import { Trophy } from "lucide-react";
+import { getWeatherIcon, getWeatherLabel } from "@/shared/utils/weather/weather.utils";
+import { useState } from "react";
 
 export default function RiderPage() {
     const { slug } = useParams();
     const { data: rider, isLoading, error } = useGetRider(slug as string);
+    const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
     if (isLoading) return <p className="p-8 text-[#101B08]">Chargement du profil...</p>;
     if (error || !rider) return <p className="p-8 text-red-500">Rider introuvable.</p>;
 
+    const closeLightbox = () => setSelectedImageIndex(null);
+    const showPrevImage = () => {
+        if (selectedImageIndex === null) return;
+        setSelectedImageIndex((prev) => (prev! > 0 ? prev! - 1 : images.length - 1));
+    };
+    const showNextImage = () => {
+        if (selectedImageIndex === null) return;
+        setSelectedImageIndex((prev) => (prev! + 1) % images.length);
+    };
     const fullName = rider.identity.fullName || `${rider.identity.firstName} ${rider.identity.lastName}`;
     const sports = rider.preferences?.sports?.map((s) => s.name) || [];
     const birthDate = new Date(rider.identity.birthDate);
@@ -23,13 +34,28 @@ export default function RiderPage() {
             (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate()) ? 1 : 0);
     const location = `${rider.identity.city}, ${rider.identity.country}`;
     const images = rider.images?.map((img) => img.url) || [];
-    const rawLanguages = rider.identity.languageSpoken || [];
-    const languages: Language[] = rawLanguages.map((lang) => typeof lang === "string" ? Language[lang as keyof typeof Language] : lang);
+    const stats = rider.performanceSummary.performances || [];
+    const podiums = rider.performanceSummary.totalPodiums || [];
     const networks: SocialNetwork[] = rider.preferences?.networks?.map(n => n as SocialNetwork) || [];
     const hasNetwork = (type: SocialNetwork) => networks.includes(type);
+    const rawLanguages = (rider.identity.languageSpoken) || [];
+    const formatDate = (date: Date | string) => {
+        const dateObj = typeof date === "string" ? new Date(date) : date;
+        return dateObj.toLocaleDateString("fr-FR");
+    };
+    const youtube = rider.videos || [];
+    const getRankingBadge = (ranking?: number) => {
+        if (!ranking) return null;
+        if (ranking === 1) return <span className="text-yellow-400 font-bold">🥇</span>;
+        if (ranking === 2) return <span className="text-gray-300 font-bold">🥈</span>;
+        if (ranking === 3) return <span className="text-orange-400 font-bold">🥉</span>;
+        return <span className="text-white font-semibold">{ranking}ᵉ</span>;
+    };
+
+    console.log(youtube);
 
     return (
-        <div className="bg-[#F4F3EF] text-[#101B08] min-h-screen py-16 px-4">
+        <div className="bg-[#F4F3EF] text-[#000000] min-h-screen py-16">
             <div className="relative text-center mb-16 h-[50dvh] flex items-center justify-center">
                 {/* BLOB EN FOND */}
                 <div className="absolute inset-0 flex items-center justify-center z-5">
@@ -39,7 +65,7 @@ export default function RiderPage() {
                 {/* TEXTE */}
                 <div className="relative z-10">
                     <h1 className="text-4xl md:text-5xl font-michroma font-bold mb-2">{fullName}</h1>
-                    <p className="uppercase text-sm tracking-widest text-[#B1BD93]">{sports.join(", ")}</p>
+                    <p className="uppercase py-8 text-[1.6rem] font-michroma tracking-widest text-[#B1BD93]">{sports.join(", ")}</p>
                 </div>
             </div>
 
@@ -66,7 +92,7 @@ export default function RiderPage() {
                     <div className="flex flex-col gap-6 ">
                         <div>
                             <div className="text-3xl font-bold">{age}</div>
-                            <div className="text-sm">ans</div>
+                            <div className="text-sm ">ans</div>
                         </div>
                         <div className="text-sm ">
                             {location}
@@ -85,7 +111,7 @@ export default function RiderPage() {
                     </div>
 
                     <div className="mt-6">
-                        <p className="uppercase text-sm mb-2">Réseaux</p>
+                        <p className="uppercase text-sm mb-2 font-michroma">Réseaux</p>
                         <div className="flex flex-wrap gap-2">
                             {Object.values(SocialNetwork).map((network) => (
                                 hasNetwork(network as SocialNetwork) && (
@@ -98,26 +124,179 @@ export default function RiderPage() {
                     </div>
 
                     <div className="mt-4">
-                        <p className="uppercase text-sm mb-2">Langues</p>
+                        <p className="uppercase text-sm mb-2 font-michroma">Langues</p>
                         <div className="flex flex-wrap gap-2">
-                            {languages.map((lang, i) => (
-                                <span key={i} className="px-3 py-1 rounded-full text-sm bg-[#3F4139] text-[#F4F3EF] uppercase">
-                                    {lang === Language.FR ? "Français" : "Anglais"}
+                            {rawLanguages.map((lang, i) => (
+                                <span
+                                    key={i}
+                                    className="px-3 py-1 rounded-full text-sm bg-[#1a1a19] text-[#D2FA52] uppercase"
+                                >
+                                    {typeof lang === "string" ? lang : Language[lang]}
                                 </span>
                             ))}
+
                         </div>
                     </div>
                 </div>
             </div>
+            <div className="mt-20 max-w-6xl mx-auto px-4">
+                <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
+                    PERFORMANCES
+                </h3>
+
+                <div className="mb-10 flex items-center gap-4 text-[#B1BD93] text-sm">
+                    <Trophy className="w-5 h-5" />
+                    <p className="uppercase tracking-wide">Total podiums : <span className="text-[#101B08] font-bold">{podiums}</span></p>
+                </div>
+
+                {stats.length === 0 ? (
+                    <div className="text-center py-12 bg-[#1a1a19] text-white rounded-xl">
+                        <Trophy className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+                        <p className="text-lg">Aucune performance enregistrée</p>
+                        <p className="text-sm text-gray-400">Ce rider n'a pas encore partagé ses résultats.</p>
+                    </div>
+                ) : (
+                    <div className="relative border-l-4 border-[#D2FA52] pl-6 space-y-12">
+                        {stats.map((performance, index) => (
+                            <div key={index} className="relative group">
+                                <div className="absolute -left-[2.25rem] top-1 w-5 h-5 bg-[#101B08] rounded-full group-hover:scale-125 transition-transform" />
+
+                                <div className="bg-[#101B08] text-white p-6 rounded-lg shadow-md group-hover:shadow-lg transition-all">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <h4 className="text-xl font-bold flex items-center gap-2">
+                                            {getRankingBadge(performance.ranking)}
+                                            {performance.eventName}
+
+                                        </h4>
+                                        <span className="text-xs opacity-60 font-mono">
+                                            {formatDate(performance.startDate)}
+                                        </span>
+                                    </div>
+                                    <p className="text-[#B1BD93] text-sm mb-1">
+                                        {performance.category} — {performance.sport.name}
+                                    </p>
+                                    <p className="text-sm text-gray-300">
+                                        {performance.location.city}, {performance.location.country}
+                                    </p>
+
+                                    {performance.weather && (
+                                        <p className="text-xs text-gray-400 mt-2">
+                                            {getWeatherIcon(performance.weather)} {getWeatherLabel(performance.weather)}
+                                        </p>
+                                    )}
+
+                                    {performance.notes && (
+                                        <div className="mt-3 text-sm text-gray-300">
+                                            <p className="font-semibold text-[#D2FA52] mb-1">Notes :</p>
+                                            <p>{performance.notes}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+
+
 
             <div className="mt-20 max-w-6xl mx-auto px-4">
-                <h3 className="text-2xl font-bold mb-8 border-b border-[#B1BD93] pb-2 uppercase">Galerie</h3>
+                <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">Galerie</h3>
                 {images.length > 1 ? (
-                    <MasonryGallery images={images} />
+                    <MasonryGallery
+                        images={images}
+                        onImageClick={(index) => setSelectedImageIndex(index)}
+                    />
                 ) : (
                     <div className="w-[300px] h-[400px] bg-[#D2FA52] rounded-xl"></div>
                 )}
             </div>
+
+            {youtube.length > 0 && (
+                <div className="mt-20 max-w-6xl mx-auto px-4">
+                    <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
+                        Vidéos
+                    </h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {youtube.map(({ url, title }, index) => {
+                            const videoId = url.includes("youtube.com")
+                                ? new URL(url).searchParams.get("v")
+                                : url.includes("youtu.be")
+                                    ? url.split("/").pop()
+                                    : null;
+
+                            return videoId ? (
+                                <div
+                                    key={index}
+                                    className="relative group w-full aspect-video rounded-xl overflow-hidden border-2 border-[#D2FA52] shadow-lg hover:shadow-2xl transition-all duration-300"
+                                >
+                                    <iframe
+                                        className="absolute top-0 left-0 w-full h-full"
+                                        src={`https://www.youtube.com/embed/${videoId}`}
+                                        title={title || `YouTube video ${index + 1}`}
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    />
+                                </div>
+                            ) : (
+                                <p key={index} className="text-sm text-red-500">
+                                    Lien vidéo invalide : {url}
+                                </p>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+
+            {selectedImageIndex !== null && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-90 z-[1000] flex items-center justify-center"
+                    onClick={closeLightbox}
+                >
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            showPrevImage();
+                        }}
+                        className="absolute left-8 text-white text-4xl"
+                    >
+                        ‹
+                    </button>
+
+                    <img
+                        src={images[selectedImageIndex]}
+                        alt={`Image ${selectedImageIndex + 1}`}
+                        className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                        onClick={(e) => e.stopPropagation()}
+                    />
+
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            showNextImage();
+                        }}
+                        className="absolute right-8 text-white text-4xl"
+                    >
+                        ›
+                    </button>
+
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            closeLightbox();
+                        }}
+                        className="absolute top-8 right-8 text-white text-3xl"
+                    >
+                        ✕
+                    </button>
+                </div>
+            )}
+
+
+            <div className="fixed bottom-0 w-full h-[5dvh] bg-gradient-to-b from-transparent to-[#d3fa5265]"></div>
         </div>
     );
 }

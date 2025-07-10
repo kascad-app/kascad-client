@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SessionProvider } from "@/shared/context/SessionProvider";
-import InnerLayout from "./components/InnerLayout";
 
 export const metadata: Metadata = {
   title: "Kascad",
@@ -17,9 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SessionProvider>
-          <InnerLayout>{children}</InnerLayout>
-        </SessionProvider>
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );

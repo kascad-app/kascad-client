@@ -2,12 +2,7 @@
 
 import { useSession } from "@/shared/context/SessionContext";
 import { useState } from "react";
-import {
-  RiderIdentity,
-  Image as RiderImage,
-  SocialNetwork,
-  Language,
-} from "@kascad-app/shared-types";
+import { RiderIdentity, Image as RiderImage } from "@kascad-app/shared-types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
@@ -15,6 +10,7 @@ import Link from "next/link";
 import { Skeleton } from "@components/ui/skeleton";
 import Avatar from "@/widgets/avatar/avatar.ui";
 import { getUserNetworksWithInfo } from "../../../src/shared/utils/networks/socialNetworks.utils";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 export default function ProfileComponent() {
   const session = useSession();
@@ -44,12 +40,12 @@ export default function ProfileComponent() {
 
   const age = birthDate
     ? new Date().getFullYear() -
-    birthDate.getFullYear() -
-    (new Date().getMonth() < birthDate.getMonth() ||
+      birthDate.getFullYear() -
+      (new Date().getMonth() < birthDate.getMonth() ||
       (new Date().getMonth() === birthDate.getMonth() &&
         new Date().getDate() < birthDate.getDate())
-      ? 1
-      : 0)
+        ? 1
+        : 0)
     : "N/A";
   const bio =
     session.user.identity.bio ||
@@ -90,7 +86,7 @@ export default function ProfileComponent() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Link href="/profil/edit">
+          <Link href={ROUTES.RIDER.EDIT_PROFILE}>
             <Button variant="outline">Modifier le profil</Button>
           </Link>
         </div>
@@ -212,8 +208,9 @@ export default function ProfileComponent() {
         <h2 className="text-2xl font-semibold mb-4">Vidéos YouTube</h2>
 
         <div
-          className={`grid grid-cols-1 md:grid-cols-2 gap-6 relative transition-all duration-700 ${!showAllYoutubeVideos ? "max-h-[50vh] overflow-hidden" : ""
-            }`}
+          className={`grid grid-cols-1 md:grid-cols-2 gap-6 relative transition-all duration-700 ${
+            !showAllYoutubeVideos ? "max-h-[50vh] overflow-hidden" : ""
+          }`}
         >
           {session.user.videos.map((video, i) => (
             <div

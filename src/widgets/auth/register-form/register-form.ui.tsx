@@ -9,6 +9,13 @@ import { z } from "zod";
 import { useRegister } from "@/entities/authentication/authentication.hooks";
 import type { GenderIdentity } from "@kascad-app/shared-types";
 import { Form } from "@components/ui/form";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 
 const registerFormSchema = z
   .object({
@@ -150,15 +157,21 @@ export const RegisterFormWidget: React.FC = () => {
             >
               Genre
             </label>
-            <select
-              id="gender"
-              {...form.register("gender")}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            <Select
+              value={form.watch("gender") as "homme" | "femme" | "autre"}
+              onValueChange={(value) =>
+                form.setValue("gender", value as "homme" | "femme" | "autre")
+              }
             >
-              <option value="homme">Homme</option>
-              <option value="femme">Femme</option>
-              <option value="autre">Autre</option>
-            </select>
+              <SelectTrigger className="mt-1 w-full border border-gray-300 rounded-md">
+                <SelectValue placeholder="Sélectionner le genre" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="homme">Homme</SelectItem>
+                <SelectItem value="femme">Femme</SelectItem>
+                <SelectItem value="autre">Autre</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div key="password">
             <label
@@ -205,7 +218,7 @@ export const RegisterFormWidget: React.FC = () => {
           )}
           <button
             type="submit"
-            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-blue-300${
+            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-accent${
               registerMutation.isMutating ? " sending" : ""
             }`}
             disabled={registerMutation.isMutating}
@@ -220,7 +233,7 @@ export const RegisterFormWidget: React.FC = () => {
         </form>
         <button
           onClick={handleChangeAuth}
-          className="w-full py-2 bg-white text-medium px-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-md hover:bg-blue-300 hover:border-blue-300 hover:text-white  transition duration-200"
+          className="w-full py-2 bg-white text-medium px-4 border-2 font-semibold rounded-md hover:border-[#3f4139] hover:bg-[#3f4139] hover:text-white  transition duration-200"
         >
           Connection
         </button>

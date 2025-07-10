@@ -67,7 +67,7 @@ export const LoginFormWidget: React.FC = () => {
           <div key="email">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-700 "
             >
               Email
             </label>
@@ -76,7 +76,7 @@ export const LoginFormWidget: React.FC = () => {
               id="email"
               {...form.register("email")}
               required
-              className="mt-1 p-2 w-full border border-gray-300 bg-[#F4F3EF] rounded-md"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
             />
           </div>
           <div key="password">
@@ -99,11 +99,12 @@ export const LoginFormWidget: React.FC = () => {
           )}
           <button
             type="submit"
-            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-blue-300${loginMutation.isMutating ? " sending" : ""
-              }`}
+            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-accent ${
+              loginMutation.isMutating ? " sending" : ""
+            }`}
             disabled={loginMutation.isMutating}
           >
-            Se Connecter
+            Se connecter
           </button>
           <div className="flex flex-row items-center justify-center">
             <span className="h-0.5 w-full bg-dark-gradient"></span>
@@ -113,7 +114,7 @@ export const LoginFormWidget: React.FC = () => {
         </form>
         <button
           onClick={handleChangeAuth}
-          className="w-full py-2 bg-white text-medium px-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-md hover:bg-blue-300 hover:border-blue-300 hover:text-white  transition duration-200"
+          className="w-full py-2 bg-white text-medium px-4 border-2 font-semibold rounded-md hover:border-[#3f4139] hover:bg-[#3f4139] hover:text-white  transition duration-200"
         >
           Inscription
         </button>

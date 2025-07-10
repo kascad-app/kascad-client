@@ -1,6 +1,6 @@
 import { SessionProvider } from "@/shared/context/SessionProvider";
 import AuthGuard from "@/shared/guards/AuthGuard";
-import { LayoutApp } from "@/widgets/layout-app";
+import InnerLayout from "../components/InnerLayout";
 
 export default function ProtectedLayout({
   children,
@@ -10,7 +10,7 @@ export default function ProtectedLayout({
   return (
     <SessionProvider>
       <AuthGuard>
-        <LayoutApp>{children}</LayoutApp>
+        <InnerLayout>{children}</InnerLayout>
       </AuthGuard>
     </SessionProvider>
   );

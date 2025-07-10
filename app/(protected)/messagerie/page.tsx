@@ -18,8 +18,7 @@ import {
   CalendarX2,
   CalendarCheck2,
 } from "lucide-react";
-import { contractOfferDto, registerMessageDto } from "@kascad-app/shared-types";
-import { set } from "zod";
+import { contractOfferDto } from "@kascad-app/shared-types";
 import {
   useGetContract,
   useGetContracts,
@@ -29,6 +28,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { Skeleton } from "@components/ui/skeleton";
 import Avatar from "@/widgets/avatar/avatar.ui";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 export default function Messagerie() {
   const [selectedSponsor, setSelectedSponsor] =
@@ -85,6 +85,14 @@ export default function Messagerie() {
     }
   }, [selectedSponsorId, refreshTrigger]);
 
+  // Utilitaire pour tronquer à 7 mots max
+  function truncateWords(text: string, maxWords: number = 7) {
+    if (!text) return "";
+    const words = text.split(" ");
+    if (words.length <= maxWords) return text;
+    return words.slice(0, maxWords).join(" ") + "...";
+  }
+
   if (isLoading) {
     return (
       <div className="space-y-6">
@@ -125,7 +133,10 @@ export default function Messagerie() {
             Vous n'avez pas de propositions de contracts de la part de sponsors.
           </p>
           <div className="mt-4">
-            <Link href="/sponsors" className="text-blue-500 hover:underline">
+            <Link
+              href={ROUTES.SPONSORS.LIST}
+              className="text-blue-500 hover:underline"
+            >
               Cherchez des sponsors ici
             </Link>
             .
@@ -151,19 +162,7 @@ export default function Messagerie() {
 
               <div className="flex items-center gap-3">
                 <div>
-                  {/* <Avatar
-                    src={contract.sponsorAvatar}
-                    alt={contract.sponsorName}
-                    size="L"
-                  /> */}
                   <div className="flex flex-row">
-                    {/* {contract.sponsorAvatar && (
-                      <Avatar
-                        src={contract.sponsorAvatar}
-                        alt={contract.sponsorName}
-                        size="L"
-                      />
-                    )} */}
                     <h3 className="text-lg font-semibold text-gray-900 whitespace-nowrap">
                       {contract.sponsorName}
                     </h3>
@@ -185,7 +184,7 @@ export default function Messagerie() {
                 </div>
                 {contract.description && (
                   <p className="text-sm text-gray-600 line-clamp-2 mt-2">
-                    {contract.description}
+                    {truncateWords(contract.description, 7)}
                   </p>
                 )}
               </div>
@@ -224,13 +223,6 @@ export default function Messagerie() {
                         size="XS"
                         className="mr-4"
                       />
-                      // <img
-                      //   src={contract.sponsorAvatar}
-                      //   alt={contract.sponsorName}
-                      //   width={36}
-                      //   height={36}
-                      //   className="rounded-full mr-4"
-                      // />
                     )}
                     <h3 className="text-lg font-semibold text-gray-900 whitespace-nowrap">
                       {contract.sponsorName}
@@ -253,7 +245,7 @@ export default function Messagerie() {
                 )}
                 {contract.description && (
                   <p className="text-sm text-gray-600 line-clamp-2 mt-2">
-                    {contract.description}
+                    {truncateWords(contract.description, 7)}
                   </p>
                 )}
               </div>

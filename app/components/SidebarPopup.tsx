@@ -62,9 +62,6 @@ export function SidebarPopup({
                 {userLanguage === Language.EN ? "English" : "Français"}
               </Button>
             </div>
-            <div className="mt-4">
-              <Link href={ROUTES.RIDER.PROFILE}>Édition Profile</Link>
-            </div>
           </div>
           <DialogFooter>
             <Button variant="ghost" onClick={() => setIsDialogOpen(false)}>

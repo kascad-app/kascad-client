@@ -33,6 +33,7 @@ export default function RiderPage() {
         (today.getMonth() < birthDate.getMonth() ||
             (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate()) ? 1 : 0);
     const location = `${rider.identity.city}, ${rider.identity.country}`;
+    const profilePicture = rider.avatarUrl as string || "/default-avatar.png"; // Fallback avatar
     const images = rider.images?.map((img) => img.url) || [];
     const stats = rider.performanceSummary.performances || [];
     const podiums = rider.performanceSummary.totalPodiums || [];
@@ -73,7 +74,7 @@ export default function RiderPage() {
                 <div className="w-full md:w-1/2 ">
                     {images[0] ? (
                         <Image
-                            src={images[0]}
+                            src={profilePicture}
                             alt={fullName}
                             width={600}
                             height={800}

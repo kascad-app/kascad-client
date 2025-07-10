@@ -38,7 +38,6 @@ export default function Sidebar({ children }: SidebarProps) {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(true);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
     const logoutMutation = useLogout();
 
     const links = [
@@ -148,7 +147,6 @@ export default function Sidebar({ children }: SidebarProps) {
                     size="icon"
                     onClick={() => setMobileMenuOpen(true)}
                     className="fixed top-4 left-4 z-50 bg-[#3F4139] text-[#D2FA52]"
-
                 >
                     <Menu className="w-6 h-6" />
                 </Button>

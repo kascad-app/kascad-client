@@ -6,7 +6,7 @@ import Link from "next/link";
 import * as React from "react";
 import { useMemo, useState } from "react";
 import { useGetRiders } from "@/entities/riders/riders.hooks";
-import { Rider } from "@kascad-app/shared-types";
+import { Rider, SportName } from "@kascad-app/shared-types";
 import { ROUTES } from "@/shared/constants/ROUTES";
 
 export default function RidersPage() {
@@ -16,15 +16,8 @@ export default function RidersPage() {
   const { data: riders = [], isLoading, error } = useGetRiders();
 
   const allSports = useMemo(() => {
-    return [
-      "Tous",
-      ...new Set(
-        riders
-          .flatMap((r: Rider) => r.preferences?.sports || [])
-          .map((sport) => sport.name),
-      ),
-    ];
-  }, [riders]);
+    return ["Tous", ...Object.values(SportName)];
+  }, []);
 
   const filteredRiders = useMemo(() => {
     return riders.filter((r: Rider) => {
@@ -84,7 +77,7 @@ export default function RidersPage() {
             `${rider.identity.firstName} ${rider.identity.lastName}`;
           const sports = rider.preferences?.sports?.map((s) => s.name) || [];
           const bio = rider.identity.bio || "Pas de bio disponible.";
-          const image = rider.avatarUrl || "/assets/img/blog-6.jpg";
+          const image = rider.avatarUrl || "/assets/img/blog-4.jpg";
 
           return (
             <Link

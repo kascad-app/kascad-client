@@ -299,9 +299,9 @@ export default function ProfileComponent() {
 
       <section className="mb-12 relative">
         <h2 className="text-2xl font-semibold mb-4">Résumé des Performances</h2>
-        <div className="mt-4 max-w-6xl mx-auto">
+        <div className="mt-8 max-w-6xl mx-auto">
           {performances && performances.performances.length > 0 ? (
-            <div className="mb-10 flex items-center gap-4 text-[#B1BD93] text-sm">
+            <div className="mb-10 flex flex-col gap-4 text-[#B1BD93] text-sm">
               <Trophy className="w-5 h-5" />
               <p className="uppercase tracking-wide">
                 Total podiums :{" "}
@@ -309,12 +309,12 @@ export default function ProfileComponent() {
                   {performances.totalPodiums}
                 </span>
               </p>
-              <div className="relative border-l-4 border-[#D2FA52] pl-6 space-y-12">
+              <div className="relative w-full border-l-4 border-[#D2FA52] pl-6 space-y-12">
                 {stats.map((performance, index) => (
                   <div key={index} className="relative group">
                     <div className="absolute -left-[2.25rem] top-1 w-5 h-5 bg-[#101B08] rounded-full group-hover:scale-125 transition-transform" />
 
-                    <div className="bg-[#101B08] text-white p-6 rounded-lg shadow-md group-hover:shadow-lg transition-all">
+                    <div className="bg-[#101B08] w-full text-white p-6 rounded-lg shadow-md group-hover:shadow-lg transition-all">
                       <div className="flex items-center justify-between mb-2">
                         <h4 className="text-xl font-bold flex items-center gap-2">
                           {getRankingBadge(performance.ranking)}

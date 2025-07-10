@@ -2,7 +2,12 @@
 
 import { useSession } from "@/shared/context/SessionContext";
 import { useState } from "react";
-import { RiderIdentity, Image as RiderImage } from "@kascad-app/shared-types";
+import {
+  RiderIdentity,
+  Image as RiderImage,
+  PerformanceSummary,
+} from "@kascad-app/shared-types";
+import { Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
@@ -22,6 +27,9 @@ export default function ProfileComponent() {
   }
 
   const identity = session.user.identity as RiderIdentity;
+  const performances = session.user.performanceSummary as PerformanceSummary;
+  const stats = performances || [];
+  const podiums = performances.totalPodiums || [];
   const fullName =
     identity.fullName || `${identity.firstName} ${identity.lastName}`;
   const birthDate = identity.birthDate ? new Date(identity.birthDate) : null;
@@ -38,7 +46,7 @@ export default function ProfileComponent() {
     return url; // Retourne l'URL originale si pas de match
   };
 
-  const age = birthDate
+  const age: number = birthDate
     ? new Date().getFullYear() -
       birthDate.getFullYear() -
       (new Date().getMonth() < birthDate.getMonth() ||
@@ -46,7 +54,8 @@ export default function ProfileComponent() {
         new Date().getDate() < birthDate.getDate())
         ? 1
         : 0)
-    : "N/A";
+    : 0;
+
   const bio =
     session.user.identity.bio ||
     "Ce rider n'a pas encore renseigné sa biographie.";
@@ -65,24 +74,57 @@ export default function ProfileComponent() {
             <h1 className="text-3xl font-bold tracking-tight font-michroma">
               {fullName}
             </h1>
-            <p className="text-lg font-figtree">
-              <span className="text-gray-400">
-                {session.user.identity.city}
-              </span>{" "}
-              {session.user.identity.country}
-            </p>
-            <p className="text-sm font-figtree">{age} ans</p>
             <p className="text-sm font-figtree">
-              {session.user.identifier.phoneNumber || "Non renseigné"}
+              {session.user.identity.city ? (
+                <span className="text-gray-400">
+                  {session.user.identity.city}
+                </span>
+              ) : (
+                <span className="italic font-figtree text-gray-400">
+                  Ville non renseignée
+                </span>
+              )}
+              {" · "}
+              {session.user.identity.country ? (
+                <span className="text-gray-400">
+                  {session.user.identity.country}
+                </span>
+              ) : (
+                <span className="italic font-figtree text-gray-400">
+                  Pays non renseigné
+                </span>
+              )}
             </p>
+
             <p className="text-sm font-figtree">
-              {session.user.identifier.email || "Non renseigné"}
+              {age > 0 ? (
+                `${age} ans`
+              ) : (
+                <span className="italic font-figtree text-gray-400">
+                  Date de naissance non renseignée
+                </span>
+              )}
             </p>
-            {birthDate && (
-              <p className="text-sm font-figtree">
-                {birthDate.toLocaleDateString("fr-FR")}
-              </p>
-            )}
+
+            <p className="text-sm font-figtree">
+              {session.user.identifier.phoneNumber ? (
+                session.user.identifier.phoneNumber
+              ) : (
+                <span className="italic font-figtree text-gray-400">
+                  Numéro de tel non renseigné
+                </span>
+              )}
+            </p>
+
+            <p className="text-sm font-figtree">
+              {session.user.identifier.email ? (
+                session.user.identifier.email
+              ) : (
+                <span className="italic font-figtree text-gray-400">
+                  Email non renseigné
+                </span>
+              )}
+            </p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -153,90 +195,96 @@ export default function ProfileComponent() {
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Langues parlées</h2>
         <div className="flex gap-4 flex-wrap">
-          {session.user.identity?.languageSpoken.map((lang, i) => (
-            <span
-              key={i}
-              className="inline-flex items-center gap-1 text-sm font-medium border border-[#3F4139] px-3 py-1 rounded-full bg-gray-50 text-[#3F4139] shadow-sm hover:bg-blue-100 transition-colors"
-            >
-              <svg
-                className="w-4 h-4 text-[#3F4139]"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                aria-hidden="true"
+          {session.user.identity?.languageSpoken &&
+          session.user.identity.languageSpoken.length > 0 ? (
+            session.user.identity.languageSpoken.map((lang, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center gap-1 text-sm font-medium border border-[#3F4139] px-3 py-1 rounded-full bg-gray-50 text-[#3F4139] shadow-sm hover:bg-blue-100 transition-colors"
               >
-                <circle cx="10" cy="10" r="8" />
-              </svg>
-              {lang}
+                <svg
+                  className="w-4 h-4 text-[#3F4139]"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  aria-hidden="true"
+                >
+                  <circle cx="10" cy="10" r="8" />
+                </svg>
+                {lang}
+              </span>
+            ))
+          ) : (
+            <span className="italic text-sm font-figtree text-gray-400">
+              Aucune langue
             </span>
-          ))}
-        </div>
-      </section>
-      {/* <section className="mb-12 relative">
-        <h2 className="text-2xl font-semibold mb-4">Galerie d'images</h2>
-
-        <div
-          className={`grid grid-cols-1 md:grid-cols-3 gap-6 relative transition-all duration-700 ${
-            !showAllGalleryImages ? "max-h-[50vh] overflow-hidden" : ""
-          }`}
-        >
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div
-              key={i}
-              className="relative w-full aspect-[3/4] overflow-hidden rounded-2xl shadow-lg"
-            >
-              <Image
-                src={`/assets/img/blog-${i}.jpg`}
-                alt={`Galerie ${i}`}
-                fill
-                className="object-cover"
-              />
-            </div>
-          ))}
-
-          {!showAllGalleryImages && (
-            <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent pointer-events-none z-10" />
           )}
         </div>
+      </section>
 
-        <div className="mt-6 text-center z-20 relative">
-          <Button onClick={() => setShowAllGalleryImages((prev) => !prev)}>
-            {showAllGalleryImages ? "Voir moins" : "Voir plus"}
-          </Button>
-        </div>
-      </section> */}
       <section className="mb-12 relative">
         <h2 className="text-2xl font-semibold mb-4">Vidéos YouTube</h2>
 
-        <div
-          className={`grid grid-cols-1 md:grid-cols-2 gap-6 relative transition-all duration-700 ${
-            !showAllYoutubeVideos ? "max-h-[50vh] overflow-hidden" : ""
-          }`}
-        >
-          {session.user.videos.map((video, i) => (
-            <div
-              key={i}
-              className="rounded-xl overflow-hidden aspect-video shadow-lg"
-            >
-              <iframe
-                src={getYouTubeEmbedUrl(video.url)}
-                className="w-full h-full"
-                title={video.title || `Vidéo YouTube ${i + 1}`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          ))}
+        {session.user.videos && session.user.videos.length > 0 ? (
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 gap-6 relative transition-all duration-700 ${
+              !showAllYoutubeVideos ? "max-h-[50vh] overflow-hidden" : ""
+            }`}
+          >
+            {session.user.videos.map((video, i) => (
+              <div
+                key={i}
+                className="rounded-xl overflow-hidden aspect-video shadow-lg"
+              >
+                <iframe
+                  src={getYouTubeEmbedUrl(video.url)}
+                  className="w-full h-full"
+                  title={video.title || `Vidéo YouTube ${i + 1}`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            ))}
 
-          {!showAllYoutubeVideos && session.user.videos.length > 4 && (
-            <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent pointer-events-none z-10" />
-          )}
-        </div>
+            {!showAllYoutubeVideos && session.user.videos.length > 4 && (
+              <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent pointer-events-none z-10" />
+            )}
+          </div>
+        ) : (
+          <p className="italic text-sm font-figtree text-gray-400">
+            Aucune vidéo
+          </p>
+        )}
 
-        <div className="mt-6 text-center z-20 relative">
-          {session.user.videos.length > 4 && (
+        {session.user.videos && session.user.videos.length > 4 && (
+          <div className="mt-6 text-center z-20 relative">
             <Button onClick={() => setShowAllYoutubeVideos((prev) => !prev)}>
               {showAllYoutubeVideos ? "Voir moins" : "Voir plus"}
             </Button>
+          </div>
+        )}
+      </section>
+
+      <section className="mb-12 relative">
+        <h2 className="text-2xl font-semibold mb-4">Résumé des Performances</h2>
+        <div className="mt-20 max-w-6xl mx-auto">
+          {performances && performances.performances.length > 0 ? (
+            <div className="mb-10 flex items-center gap-4 text-[#B1BD93] text-sm">
+              <Trophy className="w-5 h-5" />
+              <p className="uppercase tracking-wide">
+                Total podiums :{" "}
+                <span className="text-[#101B08] font-bold">
+                  {performances.totalPodiums}
+                </span>
+              </p>
+            </div>
+          ) : (
+            <div className="text-center py-12 bg-[#1a1a19] text-white rounded-xl">
+              <Trophy className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+              <p className="text-lg">Aucune performance enregistrée</p>
+              <p className="text-sm text-gray-400">
+                Ce rider n'a pas encore partagé ses résultats.
+              </p>
+            </div>
           )}
         </div>
       </section>

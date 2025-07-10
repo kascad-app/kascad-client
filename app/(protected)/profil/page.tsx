@@ -9,7 +9,7 @@ import {
   Language,
   PerformanceSummary,
 } from "@kascad-app/shared-types";
-import { Trophy } from "lucide-react";
+import { Trophy, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
@@ -17,6 +17,10 @@ import Link from "next/link";
 import { Skeleton } from "@components/ui/skeleton";
 import Avatar from "@/widgets/avatar/avatar.ui";
 import { getUserNetworksWithInfo } from "../../../src/shared/utils/networks/socialNetworks.utils";
+import {
+  getWeatherIcon,
+  getWeatherLabel,
+} from "@/shared/utils/weather/weather.utils";
 
 export default function ProfileComponent() {
   const session = useSession();
@@ -29,8 +33,22 @@ export default function ProfileComponent() {
 
   const identity = session.user.identity as RiderIdentity;
   const performances = session.user.performanceSummary as PerformanceSummary;
-  const stats = performances || [];
+  const stats = performances.performances || [];
   const podiums = performances.totalPodiums || [];
+  const getRankingBadge = (ranking?: number) => {
+    if (!ranking) return null;
+    if (ranking === 1)
+      return <span className="text-yellow-400 font-bold">🥇</span>;
+    if (ranking === 2)
+      return <span className="text-gray-300 font-bold">🥈</span>;
+    if (ranking === 3)
+      return <span className="text-orange-400 font-bold">🥉</span>;
+    return <span className="text-white font-semibold">{ranking}ᵉ</span>;
+  };
+  const formatDate = (date: Date | string) => {
+    const dateObj = typeof date === "string" ? new Date(date) : date;
+    return dateObj.toLocaleDateString("fr-FR");
+  };
   const fullName =
     identity.fullName || `${identity.firstName} ${identity.lastName}`;
   const birthDate = identity.birthDate ? new Date(identity.birthDate) : null;
@@ -135,7 +153,7 @@ export default function ProfileComponent() {
         </div>
       </div>
 
-      <Card className="mb-10 bg-[#3F4139] text-white border-none">
+      <Card className="mb-10 bg-[#1a1a19] text-white border-none">
         <CardHeader>
           <CardTitle>Biographie</CardTitle>
         </CardHeader>
@@ -223,6 +241,21 @@ export default function ProfileComponent() {
       </section>
 
       <section className="mb-12 relative">
+        <h2 className="text-2xl font-semibold mb-4">Images</h2>
+        {session.user.images && session.user.images.length > 0 ? (
+          <div></div>
+        ) : (
+          <div className="text-center py-12 bg-[#1a1a19] text-white rounded-xl">
+            <ImageIcon className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+            <p className="text-lg">Aucune image enregistrée</p>
+            <p className="text-sm text-gray-400">
+              Ce rider n'a pas encore partagé ses images.
+            </p>
+          </div>
+        )}
+      </section>
+
+      <section className="mb-12 relative">
         <h2 className="text-2xl font-semibold mb-4">Vidéos YouTube</h2>
 
         {session.user.videos && session.user.videos.length > 0 ? (
@@ -267,7 +300,7 @@ export default function ProfileComponent() {
 
       <section className="mb-12 relative">
         <h2 className="text-2xl font-semibold mb-4">Résumé des Performances</h2>
-        <div className="mt-20 max-w-6xl mx-auto">
+        <div className="mt-4 max-w-6xl mx-auto">
           {performances && performances.performances.length > 0 ? (
             <div className="mb-10 flex items-center gap-4 text-[#B1BD93] text-sm">
               <Trophy className="w-5 h-5" />
@@ -277,6 +310,48 @@ export default function ProfileComponent() {
                   {performances.totalPodiums}
                 </span>
               </p>
+              <div className="relative border-l-4 border-[#D2FA52] pl-6 space-y-12">
+                {stats.map((performance, index) => (
+                  <div key={index} className="relative group">
+                    <div className="absolute -left-[2.25rem] top-1 w-5 h-5 bg-[#101B08] rounded-full group-hover:scale-125 transition-transform" />
+
+                    <div className="bg-[#101B08] text-white p-6 rounded-lg shadow-md group-hover:shadow-lg transition-all">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="text-xl font-bold flex items-center gap-2">
+                          {getRankingBadge(performance.ranking)}
+                          {performance.eventName}
+                        </h4>
+                        <span className="text-xs opacity-60 font-mono">
+                          {formatDate(performance.startDate)}
+                        </span>
+                      </div>
+                      <p className="text-[#B1BD93] text-sm mb-1">
+                        {performance.category} — {performance.sport.name}
+                      </p>
+                      <p className="text-sm text-gray-300">
+                        {performance.location.city},{" "}
+                        {performance.location.country}
+                      </p>
+
+                      {performance.weather && (
+                        <p className="text-xs text-gray-400 mt-2">
+                          {getWeatherIcon(performance.weather)}{" "}
+                          {getWeatherLabel(performance.weather)}
+                        </p>
+                      )}
+
+                      {performance.notes && (
+                        <div className="mt-3 text-sm text-gray-300">
+                          <p className="font-semibold text-[#D2FA52] mb-1">
+                            Notes :
+                          </p>
+                          <p>{performance.notes}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : (
             <div className="text-center py-12 bg-[#1a1a19] text-white rounded-xl">

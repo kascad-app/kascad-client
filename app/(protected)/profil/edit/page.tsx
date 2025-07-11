@@ -53,67 +53,63 @@ export default function EditProfile() {
     if (!session.user || profile) return;
     const draft = localStorage.getItem("profile-edit-draft");
 
-    if (draft) {
-      setProfile(JSON.parse(draft));
-    } else {
-      const identity = session.user.identity as RiderIdentity;
-      const identifier = session.user.identifier as RiderIdentifier;
+    const identity = session.user.identity as RiderIdentity;
+    const identifier = session.user.identifier as RiderIdentifier;
 
-      const birthDate =
-        identity.birthDate instanceof Date
-          ? identity.birthDate.toISOString()
-          : new Date(identity.birthDate).toISOString();
+    const birthDate =
+      identity.birthDate instanceof Date
+        ? identity.birthDate.toISOString()
+        : new Date(identity.birthDate).toISOString();
 
-      setProfile({
-        identity: {
-          firstName: identity.firstName,
-          lastName: identity.lastName,
-          gender: identity.gender,
-          birthDate,
-          country: identity.country,
-          city: identity.city,
-          practiceLocation: identity.practiceLocation,
-          languageSpoken: identity.languageSpoken,
-        },
-        email: session.user.identifier.email || "",
-        address: "",
-        phoneNumber: identifier.phoneNumber || "",
-        bio: identity.bio || "",
-        trainingFrequency: {
-          sessionsPerWeek: session.user.trainingFrequency?.sessionsPerWeek || 1,
-          hoursPerSession: session.user.trainingFrequency?.hoursPerSession || 1,
-        },
-        sponsors: session.user.sponsorSummary?.currentSponsors || [],
-        events: [],
-        videos: session.user.videos || [],
-        images: (session.user.images || []).map((img) =>
-          typeof img === "string"
-            ? { url: img, uploadDate: new Date() }
-            : {
-                url: img.url,
-                uploadDate: img.uploadDate ?? new Date(),
-                alt: img.alt,
-                isToDelete: false,
-              },
-        ),
-        preferences: {
-          networks: session.user.preferences?.networks || [],
-          sports: session.user.preferences?.sports || [],
-          appLanguage:
-            Number(session.user.preferences?.appLanguage) || Language.FR,
-        },
-        performanceSummary: session.user.performanceSummary || null,
-        availibility: {
-          isAvailable: session.user.availibility?.isAvailable ?? true,
-          contractType: session.user.availibility?.contractType,
-        },
-        sponsorsSummary: {
-          totalSponsors: session.user.sponsorSummary?.totalSponsors || 0,
-          currentSponsors: session.user.sponsorSummary?.currentSponsors || [],
-          wishListSponsors: session.user.sponsorSummary?.wishListSponsors || [],
-        },
-      });
-    }
+    setProfile({
+      identity: {
+        firstName: identity.firstName,
+        lastName: identity.lastName,
+        gender: identity.gender,
+        birthDate,
+        country: identity.country,
+        city: identity.city,
+        practiceLocation: identity.practiceLocation,
+        languageSpoken: identity.languageSpoken,
+      },
+      email: session.user.identifier.email || "",
+      address: "",
+      phoneNumber: identifier.phoneNumber || "",
+      bio: identity.bio || "",
+      trainingFrequency: {
+        sessionsPerWeek: session.user.trainingFrequency?.sessionsPerWeek || 1,
+        hoursPerSession: session.user.trainingFrequency?.hoursPerSession || 1,
+      },
+      sponsors: session.user.sponsorSummary?.currentSponsors || [],
+      events: [],
+      videos: session.user.videos || [],
+      images: (session.user.images || []).map((img) =>
+        typeof img === "string"
+          ? { url: img, uploadDate: new Date() }
+          : {
+              url: img.url,
+              uploadDate: img.uploadDate ?? new Date(),
+              alt: img.alt,
+              isToDelete: false,
+            },
+      ),
+      preferences: {
+        networks: session.user.preferences?.networks || [],
+        sports: session.user.preferences?.sports || [],
+        appLanguage:
+          Number(session.user.preferences?.appLanguage) || Language.FR,
+      },
+      performanceSummary: session.user.performanceSummary || null,
+      availibility: {
+        isAvailable: session.user.availibility?.isAvailable ?? true,
+        contractType: session.user.availibility?.contractType,
+      },
+      sponsorsSummary: {
+        totalSponsors: session.user.sponsorSummary?.totalSponsors || 0,
+        currentSponsors: session.user.sponsorSummary?.currentSponsors || [],
+        wishListSponsors: session.user.sponsorSummary?.wishListSponsors || [],
+      },
+    });
 
     if (!profile) return;
     const parse = profileSchema.safeParse(profile);

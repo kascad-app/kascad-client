@@ -52,6 +52,7 @@ export default function EditProfile() {
   useEffect(() => {
     if (!session.user || profile) return;
     const draft = localStorage.getItem("profile-edit-draft");
+    console.log(session.user);
 
     const identity = session.user.identity as RiderIdentity;
     const identifier = session.user.identifier as RiderIdentifier;
@@ -101,8 +102,16 @@ export default function EditProfile() {
       },
       performanceSummary: session.user.performanceSummary || null,
       availibility: {
-        isAvailable: session.user.availibility?.isAvailable ?? true,
-        contractType: session.user.availibility?.contractType,
+        isAvailable:
+          session.user.availibility &&
+          typeof session.user.availibility.isAvailable !== "undefined"
+            ? session.user.availibility.isAvailable
+            : true,
+        contractType:
+          session.user.availibility &&
+          typeof session.user.availibility.contractType !== "undefined"
+            ? session.user.availibility.contractType
+            : undefined,
       },
       sponsorsSummary: {
         totalSponsors: session.user.sponsorSummary?.totalSponsors || 0,

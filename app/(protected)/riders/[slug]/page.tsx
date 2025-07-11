@@ -25,25 +25,31 @@ export default function RiderPage() {
         if (selectedImageIndex === null) return;
         setSelectedImageIndex((prev) => (prev! + 1) % images.length);
     };
-    const fullName = rider.identity.fullName || `${rider.identity.firstName} ${rider.identity.lastName}`;
-    const sports = rider.preferences?.sports?.map((s) => s.name) || [];
-    const birthDate = new Date(rider.identity.birthDate);
+
+    const fullName = rider.identity?.fullName || `${rider.identity?.firstName || ""} ${rider.identity?.lastName || ""}`.trim() || "Nom non renseigné";
+    const sports = rider.preferences?.sports?.map((s) => s.name).filter(Boolean) || [];
+    const birthDate = rider.identity?.birthDate ? new Date(rider.identity.birthDate) : null;
     const today = new Date();
-    const age = today.getFullYear() - birthDate.getFullYear() -
-        (today.getMonth() < birthDate.getMonth() ||
-            (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate()) ? 1 : 0);
-    const location = `${rider.identity.city}, ${rider.identity.country}`;
-    const images = rider.images?.map((img) => img.url) || [];
-    const stats = rider.performanceSummary.performances || [];
-    const podiums = rider.performanceSummary.totalPodiums || [];
-    const networks: SocialNetwork[] = rider.preferences?.networks?.map(n => n as SocialNetwork) || [];
+    const age = birthDate ? today.getFullYear() - birthDate.getFullYear() - (today.getMonth() < birthDate.getMonth() || (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate()) ? 1 : 0) : null;
+    const location = rider.identity?.city || rider.identity?.country ? `${rider.identity?.city || ""}${rider.identity?.city && rider.identity?.country ? ", " : ""}${rider.identity?.country || ""}` : "Localisation inconnue";
+    const profilePicture = rider.avatarUrl || "/default-avatar.png";
+    const images = rider.images?.map((img) => img.url).filter(Boolean) || [];
+    const stats = rider.performanceSummary?.performances || [];
+    const podiums = rider.performanceSummary?.totalPodiums ?? 0;
+    const networks: SocialNetwork[] = rider.preferences?.networks?.map((n) => n as SocialNetwork).filter(Boolean) || [];
     const hasNetwork = (type: SocialNetwork) => networks.includes(type);
-    const rawLanguages = (rider.identity.languageSpoken) || [];
-    const formatDate = (date: Date | string) => {
+    const rawLanguages = rider.identity?.languageSpoken?.filter(Boolean) || [];
+    const youtube = rider.videos?.filter(v => !!v.url) || [];
+    const availability = rider.availibility?.isAvailable;
+    const formatDate = (date?: Date | string) => {
+        if (!date) return "Date inconnue";
         const dateObj = typeof date === "string" ? new Date(date) : date;
+        if (!(dateObj instanceof Date) || isNaN(dateObj.getTime())) {
+            return "Date inconnue";
+        }
         return dateObj.toLocaleDateString("fr-FR");
     };
-    const youtube = rider.videos || [];
+
     const getRankingBadge = (ranking?: number) => {
         if (!ranking) return null;
         if (ranking === 1) return <span className="text-yellow-400 font-bold">🥇</span>;
@@ -51,8 +57,6 @@ export default function RiderPage() {
         if (ranking === 3) return <span className="text-orange-400 font-bold">🥉</span>;
         return <span className="text-white font-semibold">{ranking}ᵉ</span>;
     };
-
-    console.log(youtube);
 
     return (
         <div className="bg-[#F4F3EF] text-[#000000] min-h-screen py-16">
@@ -73,7 +77,7 @@ export default function RiderPage() {
                 <div className="w-full md:w-1/2 ">
                     {images[0] ? (
                         <Image
-                            src={images[0]}
+                            src={profilePicture}
                             alt={fullName}
                             width={600}
                             height={800}
@@ -124,6 +128,17 @@ export default function RiderPage() {
                     </div>
 
                     <div className="mt-4">
+                        {availability === true ? (
+                            <p className="text-sm text-[#101B08] border-2 rounded-4xl px-3 py-1 w-fit">disponible</p>
+                        ) : availability === false ? (
+                            <p className="text-sm text-gray-500 border-2 rounded-4xl px-3 py-1 w-fit">non disponible</p>
+                        ) : (
+                            <p className="text-sm text-gray-400 italic">Disponibilité inconnue</p>
+                        )}
+                    </div>
+
+
+                    <div className="mt-4">
                         <p className="uppercase text-sm mb-2 font-michroma">Langues</p>
                         <div className="flex flex-wrap gap-2">
                             {rawLanguages.map((lang, i) => (
@@ -139,14 +154,15 @@ export default function RiderPage() {
                     </div>
                 </div>
             </div>
+            {/* Performances */}
             <div className="mt-20 max-w-6xl mx-auto px-4">
-                <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
-                    PERFORMANCES
-                </h3>
+                <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">PERFORMANCES</h3>
 
                 <div className="mb-10 flex items-center gap-4 text-[#B1BD93] text-sm">
                     <Trophy className="w-5 h-5" />
-                    <p className="uppercase tracking-wide">Total podiums : <span className="text-[#101B08] font-bold">{podiums}</span></p>
+                    <p className="uppercase tracking-wide">
+                        Total podiums : <span className="text-[#101B08] font-bold">{podiums}</span>
+                    </p>
                 </div>
 
                 {stats.length === 0 ? (
@@ -164,28 +180,27 @@ export default function RiderPage() {
                                 <div className="bg-[#101B08] text-white p-6 rounded-lg shadow-md group-hover:shadow-lg transition-all">
                                     <div className="flex items-center justify-between mb-2">
                                         <h4 className="text-xl font-bold flex items-center gap-2">
-                                            {getRankingBadge(performance.ranking)}
-                                            {performance.eventName}
-
+                                            {getRankingBadge(performance?.ranking)}
+                                            {performance?.eventName || "Événement inconnu"}
                                         </h4>
                                         <span className="text-xs opacity-60 font-mono">
-                                            {formatDate(performance.startDate)}
+                                            {formatDate(performance?.startDate)}
                                         </span>
                                     </div>
                                     <p className="text-[#B1BD93] text-sm mb-1">
-                                        {performance.category} — {performance.sport.name}
+                                        {performance?.category || "Catégorie inconnue"} — {performance?.sport?.name || "Sport inconnu"}
                                     </p>
                                     <p className="text-sm text-gray-300">
-                                        {performance.location.city}, {performance.location.country}
+                                        {`${performance?.location?.city || "Ville inconnue"}, ${performance?.location?.country || "Pays inconnu"}`}
                                     </p>
 
-                                    {performance.weather && (
+                                    {performance?.weather && (
                                         <p className="text-xs text-gray-400 mt-2">
                                             {getWeatherIcon(performance.weather)} {getWeatherLabel(performance.weather)}
                                         </p>
                                     )}
 
-                                    {performance.notes && (
+                                    {performance?.notes && (
                                         <div className="mt-3 text-sm text-gray-300">
                                             <p className="font-semibold text-[#D2FA52] mb-1">Notes :</p>
                                             <p>{performance.notes}</p>

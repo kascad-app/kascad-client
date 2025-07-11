@@ -35,16 +35,6 @@ export default function Footer() {
             Contact
           </Link>
         </div>
-
-        {/* Bloc droit : CTA */}
-        <div className="flex flex-col items-center md:items-end gap-2">
-          <p className="text-sm text-black mb-2">Envie de rejoindre Kascad ?</p>
-          <Link href={ROUTES.AUTH.REGISTER}>
-            <Button className="bg-[#d2fa52] text-black font-semibold hover:bg-[#d9ff65]">
-              Créer un compte
-            </Button>
-          </Link>
-        </div>
       </div>
 
       {/* Copyright */}

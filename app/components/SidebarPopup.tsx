@@ -23,7 +23,7 @@ export function SidebarPopup({
   const session = useSession();
 
   const userLanguage: Language =
-    session.user?.preferences.appLanguage ?? Language.FR;
+    (session.user && session.user?.preferences.appLanguage) ?? Language.FR;
 
   const toggleLanguage = () => {
     const newLang = userLanguage === Language.EN ? Language.FR : Language.EN;

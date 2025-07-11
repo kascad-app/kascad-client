@@ -8,6 +8,13 @@ import { useMemo, useState } from "react";
 import { useGetRiders } from "@/entities/riders/riders.hooks";
 import { Rider, SportName } from "@kascad-app/shared-types";
 import { ROUTES } from "@/shared/constants/ROUTES";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function RidersPage() {
   const [search, setSearch] = useState("");
@@ -52,22 +59,23 @@ export default function RidersPage() {
         <input
           type="text"
           placeholder="Rechercher un rider..."
-          className="border px-4 py-2 rounded-md text-sm w-full sm:w-auto"
+          className="border px-4 py-2 rounded-md sm:w-[260px] text-sm w-full sm:w-auto"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <select
-          className="border px-4 py-2 rounded-md text-sm w-full sm:w-auto"
-          value={selectedSport}
-          onChange={(e) => setSelectedSport(e.target.value)}
-        >
-          {allSports.map((sport) => (
-            <option value={sport}>
-              {sport}
-            </option>
-          ))}
-        </select>
+        <Select value={selectedSport} onValueChange={setSelectedSport}>
+          <SelectTrigger className="mt-0 w-full sm:w-[260px] border border-gray-300 rounded-md">
+            <SelectValue placeholder="Filtrer par sport" />
+          </SelectTrigger>
+          <SelectContent>
+            {allSports.map((sport) => (
+              <SelectItem key={sport} value={sport}>
+                {sport}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

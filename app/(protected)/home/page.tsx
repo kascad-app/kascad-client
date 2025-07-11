@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { MessageSquare, ThumbsUp } from "lucide-react";
+import { Eye, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import ArticleSlider from "@components/ui/articleSlider";
 import { useSession } from "@/shared/context/SessionContext";
@@ -35,13 +35,12 @@ export default function Home() {
 
         {/* Contenu principal */}
         <div className="relative z-10 h-full w-full flex flex-col  items-center justify-center px-6 md:px-16 gap-10 text-white">
-
           {/* Partie gauche */}
           <div className=" flex flex-col items-center md:items-center text-center md:text-left gap-12">
             <h1 className="text-[8vw] md:text-5xl font-bold font-michroma text-center">
-              Bonjour {session.user?.identity.firstName}, bienvenue sur Kascad 👋
+              Bonjour {session.user?.identity.firstName}, bienvenue sur Kascad
+              👋
             </h1>
-
           </div>
           {/* 
           {/* Séparateur */}
@@ -51,7 +50,10 @@ export default function Home() {
           <div className=" flex flex-col items-center md:items-center text-left md:text-left gap-4">
             <h2 className="text-2xl md:text-3xl font-bold"></h2>
             <p className="text-center md:text-lg max-w-[500px]">
-              Kascad est la plateforme qui connecte les athlètes aux sponsors. Mettez à jour votre profil, indiquez vos disponibilités, et laissez les marques venir à vous. Plus vous êtes actif, plus vous êtes visible.
+              Kascad est la plateforme qui connecte les athlètes aux sponsors.
+              Mettez à jour votre profil, indiquez vos disponibilités, et
+              laissez les marques venir à vous. Plus vous êtes actif, plus vous
+              êtes visible.
             </p>
           </div>
           <Link href={ROUTES.RIDER.PROFILE}>
@@ -61,7 +63,6 @@ export default function Home() {
           </Link>
         </div>
       </section>
-
 
       {/* Statistiques */}
       <section className="p-8 md:px-[12%] md:py-[7%] bg-white text-black flex flex-col gap-8 text-center md:text-start items-center justify-center">
@@ -82,8 +83,8 @@ export default function Home() {
               <p className="text-center md:text-start">
                 Accédez à votre profil et remplissez vos informations !
               </p>
-              <Link href={ROUTES.RIDER.PROFILE}>
-                <Button className="bg-[#d2fa52] text-black font-semibold hover:bg-[#d9ff65] w-full">
+              <Link href={ROUTES.RIDER.PROFILE} className="w-auto">
+                <Button className="bg-[#d2fa52] text-black font-semibold hover:bg-[#d9ff65] px-6 min-w-fit">
                   Accéder à mon profil
                 </Button>
               </Link>
@@ -99,17 +100,19 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
             {/* Messages reçus */}
             <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl w-full border border-[#d2fa52]">
-              <p className="text-md text-[#3f4139] font-semibold mb-4">Messages reçus</p>
+              <p className="text-md text-[#3f4139] font-semibold mb-4">
+                Messages reçus
+              </p>
               <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
                 <MessageSquare className="w-10 h-10 text-white bg-[#3f4139] rounded-md p-2" />
                 <p className="text-4xl text-[#3f4139] font-bold">
                   {NewMessages?.count ?? 0}
                 </p>
               </div>
-              <Link href={ROUTES.RIDER.PROFILE} className="w-1/2">
+              <Link href={ROUTES.MESSAGERIE} className="w-auto">
                 <Button
                   variant="outline"
-                  className="border-[#3f4139] text-[#3f4139] hover:bg-[#3f4139] hover:text-white w-full"
+                  className="border-[#3f4139] text-[#3f4139] hover:bg-[#3f4139] hover:text-white px-6 min-w-fit"
                 >
                   Ma messagerie
                 </Button>
@@ -118,21 +121,15 @@ export default function Home() {
 
             {/* Vues profil */}
             <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl w-full border border-[#d2fa52]">
-              <p className="text-md text-[#3f4139] font-semibold mb-4">Vues sur mon profil</p>
+              <p className="text-md text-[#3f4139] font-semibold mb-4">
+                Vues sur mon profil
+              </p>
               <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
-                <ThumbsUp className="w-10 h-10 text-white bg-[#3f4139] rounded-md p-2" />
+                <Eye className="w-10 h-10 text-white bg-[#3f4139] rounded-md p-2" />
                 <p className="text-4xl text-[#3f4139] font-bold">
                   {session.user?.tempViewsStats.monthlyViews || 0}
                 </p>
               </div>
-              <Link href={ROUTES.RIDER.PROFILE} className="w-1/2">
-                <Button
-                  variant="outline"
-                  className="border-[#3f4139] text-[#3f4139] hover:bg-[#3f4139] hover:text-white w-full"
-                >
-                  Voir les vues
-                </Button>
-              </Link>
             </div>
           </div>
         </div>
@@ -157,10 +154,13 @@ export default function Home() {
       </section>
 
       <section className="bg-white text-[#0A0B1E] py-12 px-6 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">Explorez nos derniers articles</h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          Explorez nos derniers articles
+        </h2>
         <p className="text-base md:text-lg max-w-2xl mx-auto mb-10">
-          Découvrez des conseils, témoignages, et actualités pour progresser dans votre discipline
-          et mieux comprendre comment attirer des sponsors. Bonne lecture !
+          Découvrez des conseils, témoignages, et actualités pour progresser
+          dans votre discipline et mieux comprendre comment attirer des
+          sponsors. Bonne lecture !
         </p>
 
         <ArticleSlider />
@@ -168,8 +168,6 @@ export default function Home() {
 
       <TestimonialsSection />
       <Footer />
-
-
     </main>
   );
 }

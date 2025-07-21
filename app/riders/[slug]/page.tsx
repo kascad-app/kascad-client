@@ -338,7 +338,7 @@ export default function RiderPage() {
             </p>
           </div>
         ) : (
-          <div className="relative border-l-4 border-[#D2FA52] pl-6 space-y-12">
+          <div className="relative border-l-4 border-primary-green pl-6 space-y-12">
             {stats.map((performance, index) => (
               <div key={index} className="relative group">
                 <div className="absolute -left-[2.25rem] top-1 w-5 h-5 bg-[#101B08] rounded-full group-hover:scale-125 transition-transform" />
@@ -372,7 +372,7 @@ export default function RiderPage() {
 
                   {performance?.notes && (
                     <div className="mt-3 text-sm text-gray-300">
-                      <p className="font-semibold text-[#D2FA52] mb-1">
+                      <p className="font-semibold text-primary-green mb-1">
                         Notes :
                       </p>
                       <p>{performance.notes}</p>

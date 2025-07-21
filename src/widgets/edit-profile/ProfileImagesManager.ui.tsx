@@ -102,7 +102,7 @@ export default function ProfileImagesManager({
           </div>
         ))}
         {/* Zone d'ajout */}
-        <label className="flex flex-col items-center justify-center w-60 h-40 border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-blue-400 transition">
+        <label className="flex flex-col items-center justify-center w-60 h-40 border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-primary-green transition">
           <span className="text-gray-400 text-3xl">+</span>
           <span className="text-xs text-gray-500 mt-1">Ajouter</span>
           <input

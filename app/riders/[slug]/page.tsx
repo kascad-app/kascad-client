@@ -99,7 +99,7 @@ export default function RiderPage() {
       <div className="relative text-center mb-16 h-[50dvh] flex items-center justify-center">
         {/* BLOB EN FOND */}
         <div className="absolute inset-0 flex items-center justify-center z-5">
-          <div className="w-72 h-72 md:w-96 md:h-96 bg-[#D2FA52] rounded-full blur-3xl opacity-30 animate-pulse" />
+          <div className="w-72 h-72 md:w-96 md:h-96 bg-primary-green rounded-full blur-3xl opacity-30 animate-pulse" />
         </div>
 
         {/* TEXTE */}
@@ -121,10 +121,10 @@ export default function RiderPage() {
               alt={fullName}
               width={600}
               height={800}
-              className="rounded-xl object-cover w-full border-4 border-[#D2FA52]"
+              className="rounded-xl object-cover w-full border-4 border-primary-green"
             />
           ) : (
-            <div className="w-full aspect-[3/4] bg-[#D2FA52] rounded-xl"></div>
+            <div className="w-full aspect-[3/4] bg-primary-green rounded-xl"></div>
           )}
         </div>
 
@@ -191,7 +191,7 @@ export default function RiderPage() {
               {rawLanguages.map((lang, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 rounded-full text-sm bg-[#1a1a19] text-[#D2FA52] uppercase"
+                  className="px-3 py-1 rounded-full text-sm bg-[#1a1a19] text-primary-green uppercase"
                 >
                   {typeof lang === "string" ? lang : Language[lang]}
                 </span>
@@ -223,7 +223,7 @@ export default function RiderPage() {
             </p>
           </div>
         ) : (
-          <div className="relative border-l-4 border-[#D2FA52] pl-6 space-y-12">
+          <div className="relative border-l-4 border-primary-green pl-6 space-y-12">
             {stats.map((performance, index) => (
               <div key={index} className="relative group">
                 <div className="absolute -left-[2.25rem] top-1 w-5 h-5 bg-[#101B08] rounded-full group-hover:scale-125 transition-transform" />
@@ -257,7 +257,7 @@ export default function RiderPage() {
 
                   {performance?.notes && (
                     <div className="mt-3 text-sm text-gray-300">
-                      <p className="font-semibold text-[#D2FA52] mb-1">
+                      <p className="font-semibold text-primary-green mb-1">
                         Notes :
                       </p>
                       <p>{performance.notes}</p>
@@ -280,7 +280,7 @@ export default function RiderPage() {
             onImageClick={(index) => setSelectedImageIndex(index)}
           />
         ) : (
-          <div className="w-[300px] h-[400px] bg-[#D2FA52] rounded-xl"></div>
+          <div className="w-[300px] h-[400px] bg-primary-green rounded-xl"></div>
         )}
       </div>
 
@@ -301,7 +301,7 @@ export default function RiderPage() {
               return videoId ? (
                 <div
                   key={index}
-                  className="relative group w-full aspect-video rounded-xl overflow-hidden border-2 border-[#D2FA52] shadow-lg hover:shadow-2xl transition-all duration-300"
+                  className="relative group w-full aspect-video rounded-xl overflow-hidden border-2 border-primary-green shadow-lg hover:shadow-2xl transition-all duration-300"
                 >
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"

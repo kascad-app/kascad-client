@@ -23,12 +23,25 @@ import {
 
 export default function ProfileComponent() {
   const session = useSession();
+  const images: RiderImage[] = session.user?.images || [];
   const [visibleImages, setVisibleImages] = useState(4);
   const [showAllYoutubeVideos, setShowAllYoutubeVideos] = useState(false);
+
+  const [loadedImages, setLoadedImages] = useState<boolean[]>(
+    Array(images.length).fill(false),
+  );
 
   if (session.loading || !session.user) {
     return <Skeleton className="w-full h-[500px] rounded-xl" />;
   }
+
+  const handleImageLoad = (idx: number) => {
+    setLoadedImages((prev) => {
+      const next = [...prev];
+      next[idx] = true;
+      return next;
+    });
+  };
 
   const identity = session.user.identity as RiderIdentity;
   const performances = session.user.performanceSummary as PerformanceSummary;
@@ -76,8 +89,6 @@ export default function ProfileComponent() {
   const bio =
     session.user.identity.bio ||
     "Ce rider n'a pas encore renseigné sa biographie.";
-
-  const images: RiderImage[] = session.user.images || [];
 
   return (
     <div className=" mx-auto px-21 py-[5rem] pt-40 overflow-x-hidden">
@@ -173,14 +184,20 @@ export default function ProfileComponent() {
               {images.slice(0, visibleImages).map((img, i) => (
                 <div
                   key={i}
-                  className="overflow-hidden rounded-lg shadow-lg bg-gray-50 flex items-center justify-center"
+                  className="overflow-hidden rounded-lg shadow-lg bg-gray-50 flex items-center justify-center relative"
                 >
+                  {!loadedImages[i] && (
+                    <Skeleton className="absolute inset-0 w-full h-full" />
+                  )}
                   <Image
                     src={img.url}
                     alt={img.alt || `Image ${i + 1}`}
                     width={600}
                     height={400}
-                    className="object-cover aspect-video w-full h-full"
+                    className={`object-cover aspect-video w-full h-full transition-opacity duration-500 ${
+                      loadedImages[i] ? "opacity-100" : "opacity-0"
+                    }`}
+                    onLoadingComplete={() => handleImageLoad(i)}
                   />
                 </div>
               ))}

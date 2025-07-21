@@ -6,9 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogClose,
 } from "@/components/ui/dialog";
-import Link from "next/link";
-import { ROUTES } from "@/shared/constants/ROUTES";
 import { useSession } from "@/shared/context/SessionContext";
 import { Language } from "@kascad-app/shared-types";
 

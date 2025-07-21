@@ -91,7 +91,7 @@ export default function ProfileComponent() {
     "Ce rider n'a pas encore renseigné sa biographie.";
 
   return (
-    <div className=" mx-auto px-21 py-[5rem] pt-40 overflow-x-hidden">
+    <div className="mx-auto px-21 py-[5rem] pt-40 overflow-x-hidden">
       <p className="text-[16rem] text-gray-100 fixed top-[20%] left-3/5 -translate-x-1/2 -z-1 text-nowrap uppercase font-black">
         {fullName}
       </p>
@@ -156,6 +156,17 @@ export default function ProfileComponent() {
           </div>
         </div>
         <div className="flex gap-2">
+          <div className="flex justify-end items-center mb-8">
+            <Link
+              href={ROUTES.RIDERS.DETAIL(session.user.identifier.slug)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button className="bg-primary-green text-black font-semibold hover:bg-[#d9ff65] px-6 min-w-fit">
+                Visiter mon portfolio
+              </Button>
+            </Link>
+          </div>
           <Link href={ROUTES.RIDER.EDIT_PROFILE}>
             <Button variant="outline">Modifier le profil</Button>
           </Link>

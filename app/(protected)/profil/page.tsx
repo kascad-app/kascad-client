@@ -33,7 +33,6 @@ export default function ProfileComponent() {
   const identity = session.user.identity as RiderIdentity;
   const performances = session.user.performanceSummary as PerformanceSummary;
   const stats = performances.performances || [];
-  const podiums = performances.totalPodiums || [];
   const getRankingBadge = (ranking?: number) => {
     if (!ranking) return null;
     if (ranking === 1)
@@ -66,12 +65,12 @@ export default function ProfileComponent() {
 
   const age: number = birthDate
     ? new Date().getFullYear() -
-    birthDate.getFullYear() -
-    (new Date().getMonth() < birthDate.getMonth() ||
+      birthDate.getFullYear() -
+      (new Date().getMonth() < birthDate.getMonth() ||
       (new Date().getMonth() === birthDate.getMonth() &&
         new Date().getDate() < birthDate.getDate())
-      ? 1
-      : 0)
+        ? 1
+        : 0)
     : 0;
 
   const bio =
@@ -161,35 +160,64 @@ export default function ProfileComponent() {
         </CardContent>
       </Card>
 
-      {images.length > 0 && (
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-4">Ma galerie d'images</h2>
-          <div className="grid sm:grid-cols-2 gap-4">
-            {images.slice(0, visibleImages).map((img, i) => (
-              <Image
-                key={i}
-                src={img.url}
-                alt={img.alt || `Image ${i + 1}`}
-                width={600}
-                height={400}
-                className="rounded-lg object-cover aspect-video"
-              />
-            ))}
+      <section className="mb-16">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-semibold">Ma galerie d'images</h2>
+          <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full font-medium">
+            {images.length} image{images.length > 1 ? "s" : ""}
+          </span>
+        </div>
+        {images.length > 0 ? (
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {images.slice(0, visibleImages).map((img, i) => (
+                <div
+                  key={i}
+                  className="overflow-hidden rounded-lg shadow-lg bg-gray-50 flex items-center justify-center"
+                >
+                  <Image
+                    src={img.url}
+                    alt={img.alt || `Image ${i + 1}`}
+                    width={600}
+                    height={400}
+                    className="object-cover aspect-video w-full h-full"
+                  />
+                </div>
+              ))}
+              {visibleImages < images.length && (
+                <div
+                  className="flex items-center justify-center rounded-lg bg-gray-100 cursor-pointer"
+                  onClick={() => setVisibleImages(images.length)}
+                >
+                  <span className="text-lg font-bold text-gray-700">
+                    +{images.length - visibleImages}
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="mt-6 flex justify-center gap-4">
+              {images.length > 4 && visibleImages < images.length && (
+                <Button onClick={() => setVisibleImages(images.length)}>
+                  Tout afficher
+                </Button>
+              )}
+              {images.length > 4 && visibleImages >= images.length && (
+                <Button variant="outline" onClick={() => setVisibleImages(4)}>
+                  Réinitialiser
+                </Button>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-12 bg-[#1a1a19] text-white rounded-xl">
+            <ImageIcon className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+            <p className="text-lg">Aucune image enregistrée</p>
+            <p className="text-sm text-gray-400">
+              Ce rider n'a pas encore partagé ses images.
+            </p>
           </div>
-          <div className="mt-6 text-center">
-            {visibleImages < images.length && (
-              <Button onClick={() => setVisibleImages((v) => v + 4)}>
-                Voir plus d'images
-              </Button>
-            )}
-            {visibleImages >= images.length && (
-              <Button variant="outline" onClick={() => setVisibleImages(4)}>
-                Réinitialiser
-              </Button>
-            )}
-          </div>
-        </section>
-      )}
+        )}
+      </section>
 
       {session.user.preferences.networks.length > 0 && (
         <section className="mb-12">
@@ -214,7 +242,7 @@ export default function ProfileComponent() {
         <h2 className="text-2xl font-semibold mb-4">Langues parlées</h2>
         <div className="flex gap-4 flex-wrap">
           {session.user.identity?.languageSpoken &&
-            session.user.identity.languageSpoken.length > 0 ? (
+          session.user.identity.languageSpoken.length > 0 ? (
             session.user.identity.languageSpoken.map((lang, i) => (
               <span
                 key={i}
@@ -239,76 +267,87 @@ export default function ProfileComponent() {
         </div>
       </section>
 
-      <section className="mb-12 relative">
-        <h2 className="text-2xl font-semibold mb-4">Images</h2>
-        {session.user.images && session.user.images.length > 0 ? (
-          <div></div>
+      <section className="mb-12">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-semibold">Vidéos YouTube</h2>
+          <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full font-medium">
+            {session.user.videos?.length || 0} vidéo
+            {session.user.videos && session.user.videos.length > 1 ? "s" : ""}
+          </span>
+        </div>
+        {session.user.videos && session.user.videos.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {(showAllYoutubeVideos
+                ? session.user.videos
+                : session.user.videos.slice(0, 4)
+              ).map((video, i) => (
+                <div
+                  key={i}
+                  className="rounded-xl overflow-hidden aspect-video shadow-lg bg-gray-50 flex items-center justify-center"
+                >
+                  <iframe
+                    src={getYouTubeEmbedUrl(video.url)}
+                    className="w-full h-full min-h-[220px]"
+                    title={video.title || `Vidéo YouTube ${i + 1}`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              ))}
+              {!showAllYoutubeVideos && session.user.videos.length > 4 && (
+                <div
+                  className="flex items-center justify-center rounded-lg bg-gray-100 cursor-pointer min-h-[220px]"
+                  onClick={() => setShowAllYoutubeVideos(true)}
+                >
+                  <span className="text-lg font-bold text-gray-700">
+                    +{session.user.videos.length - 4}
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="mt-6 flex justify-center gap-4">
+              {session.user.videos.length > 4 && !showAllYoutubeVideos && (
+                <Button onClick={() => setShowAllYoutubeVideos(true)}>
+                  Tout afficher
+                </Button>
+              )}
+              {session.user.videos.length > 4 && showAllYoutubeVideos && (
+                <Button
+                  variant="outline"
+                  onClick={() => setShowAllYoutubeVideos(false)}
+                >
+                  Réinitialiser
+                </Button>
+              )}
+            </div>
+          </>
         ) : (
           <div className="text-center py-12 bg-[#1a1a19] text-white rounded-xl">
             <ImageIcon className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-            <p className="text-lg">Aucune image enregistrée</p>
+            <p className="text-lg">Aucune vidéo enregistrée</p>
             <p className="text-sm text-gray-400">
-              Ce rider n'a pas encore partagé ses images.
+              Ce rider n'a pas encore partagé ses vidéos.
             </p>
           </div>
         )}
       </section>
 
       <section className="mb-12 relative">
-        <h2 className="text-2xl font-semibold mb-4">Vidéos YouTube</h2>
-
-        {session.user.videos && session.user.videos.length > 0 ? (
-          <div
-            className={`grid grid-cols-1 md:grid-cols-2 gap-6 relative transition-all duration-700 ${!showAllYoutubeVideos ? "max-h-[50vh] overflow-hidden" : ""
-              }`}
-          >
-            {session.user.videos.map((video, i) => (
-              <div
-                key={i}
-                className="rounded-xl overflow-hidden aspect-video shadow-lg"
-              >
-                <iframe
-                  src={getYouTubeEmbedUrl(video.url)}
-                  className="w-full h-full"
-                  title={video.title || `Vidéo YouTube ${i + 1}`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-            ))}
-
-            {!showAllYoutubeVideos && session.user.videos.length > 4 && (
-              <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent pointer-events-none z-10" />
-            )}
-          </div>
-        ) : (
-          <p className="italic text-sm font-figtree text-gray-400">
-            Aucune vidéo
-          </p>
-        )}
-
-        {session.user.videos && session.user.videos.length > 4 && (
-          <div className="mt-6 text-center z-20 relative">
-            <Button onClick={() => setShowAllYoutubeVideos((prev) => !prev)}>
-              {showAllYoutubeVideos ? "Voir moins" : "Voir plus"}
-            </Button>
-          </div>
-        )}
-      </section>
-
-      <section className="mb-12 relative">
         <h2 className="text-2xl font-semibold mb-4">Résumé des Performances</h2>
-        <div className="mt-8 max-w-6xl mx-auto">
+        <div className="mt-8 max-w-6xl mx-auto contents">
           {performances && performances.performances.length > 0 ? (
             <div className="mb-10 flex flex-col gap-4 text-[#B1BD93] text-sm">
-              <Trophy className="w-5 h-5" />
-              <p className="uppercase tracking-wide">
-                Total podiums :{" "}
-                <span className="text-[#101B08] font-bold">
-                  {performances.totalPodiums}
-                </span>
-              </p>
-              <div className="relative w-full border-l-4 border-[#D2FA52] pl-6 space-y-12">
+              <div className="flex gap-4">
+                <Trophy className="w-5 h-5" />
+                <p className="uppercase tracking-wide">
+                  Total podiums :{" "}
+                  <span className="text-[#101B08] font-bold">
+                    {performances.totalPodiums}
+                  </span>
+                </p>
+              </div>
+              <div className="relative w-full border-l-4 border-primary-green pl-6 space-y-12">
                 {stats.map((performance, index) => (
                   <div key={index} className="relative group">
                     <div className="absolute -left-[2.25rem] top-1 w-5 h-5 bg-[#101B08] rounded-full group-hover:scale-125 transition-transform" />
@@ -340,7 +379,7 @@ export default function ProfileComponent() {
 
                       {performance.notes && (
                         <div className="mt-3 text-sm text-gray-300">
-                          <p className="font-semibold text-[#D2FA52] mb-1">
+                          <p className="font-semibold text-primary-green mb-1">
                             Notes :
                           </p>
                           <p>{performance.notes}</p>

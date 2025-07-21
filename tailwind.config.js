@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
       gridAutoRows: {
-        '150': '150px',
+        150: "150px",
       },
       content: {
         check: 'url("/views/shared/check.svg")',
@@ -23,6 +23,7 @@ module.exports = {
         "dark-gradient": "linear-gradient(180deg, #212121 0%, #0B0B0B 100%)",
       },
       colors: {
+        "primary-green": "#d2fa52",
         "black-gradient": "linear-gradient(180deg, #212121, #0B0B0B)",
         "blue-950": "#141D52",
         "blue-900": "#22348D",

@@ -44,7 +44,6 @@ export default function Home() {
           </div>
           {/* 
           {/* Séparateur */}
-          {/* <div className="hidden md:block w-[2px] h-3/4 bg-[#d2fa52] rounded-full" />  */}
 
           {/* Partie droite */}
           <div className=" flex flex-col items-center md:items-center text-left md:text-left gap-4">
@@ -57,7 +56,7 @@ export default function Home() {
             </p>
           </div>
           <Link href={ROUTES.RIDER.PROFILE}>
-            <Button className="bg-transparent border-2 border-[#d2fa52] text-[#d2fa52] font-semibold hover:bg-[#d2fa52] hover:text-black p-4">
+            <Button className="bg-transparent border-2 border-primary-green text-primary-green font-semibold hover:bg-primary-green hover:text-black p-4">
               Accéder à mon profil
             </Button>
           </Link>
@@ -84,7 +83,7 @@ export default function Home() {
                 Accédez à votre profil et remplissez vos informations !
               </p>
               <Link href={ROUTES.RIDER.PROFILE} className="w-auto">
-                <Button className="bg-[#d2fa52] text-black font-semibold hover:bg-[#d9ff65] px-6 min-w-fit">
+                <Button className="bg-primary-green text-black font-semibold hover:bg-[#d9ff65] px-6 min-w-fit">
                   Accéder à mon profil
                 </Button>
               </Link>
@@ -99,7 +98,7 @@ export default function Home() {
           {/* Bloc stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
             {/* Messages reçus */}
-            <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl w-full border border-[#d2fa52]">
+            <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl w-full border border-primary-green">
               <p className="text-md text-[#3f4139] font-semibold mb-4">
                 Messages reçus
               </p>
@@ -120,7 +119,7 @@ export default function Home() {
             </div>
 
             {/* Vues profil */}
-            <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl w-full border border-[#d2fa52]">
+            <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl w-full border border-primary-green">
               <p className="text-md text-[#3f4139] font-semibold mb-4">
                 Vues sur mon profil
               </p>
@@ -146,7 +145,7 @@ export default function Home() {
             Trouve ton prochain sponsor dès aujourd’hui.
           </h2>
           <Link href={ROUTES.SPONSORS.LIST}>
-            <Button className="bg-transparent border-2 border-[#d2fa52] text-[#d2fa52] font-semibold hover:bg-[#d2fa52] hover:text-black p-[1.5rem]">
+            <Button className="bg-transparent border-2 border-primary-green text-primary-green font-semibold hover:bg-primary-green hover:text-black p-[1.5rem]">
               Rechercher des sponsors
             </Button>
           </Link>

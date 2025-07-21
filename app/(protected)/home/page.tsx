@@ -10,6 +10,7 @@ import { useGetCountNewMessages } from "@/entities/contracts/contracts.hook";
 import { GenderIdentity } from "@kascad-app/shared-types";
 import { TestimonialsSection } from "../../components/TestimonialsSection";
 import Footer from "../../components/Footer";
+import { ViewDashboard } from "@/widgets/view-dashboard";
 
 export default function Home() {
   const session = useSession();
@@ -97,37 +98,43 @@ export default function Home() {
 
           {/* Bloc stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-            {/* Messages reçus */}
-            <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl w-full border border-primary-green">
-              <p className="text-md text-[#3f4139] font-semibold mb-4">
-                Messages reçus
-              </p>
-              <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
-                <MessageSquare className="w-10 h-10 text-white bg-[#3f4139] rounded-md p-2" />
-                <p className="text-4xl text-[#3f4139] font-bold">
-                  {NewMessages?.count ?? 0}
-                </p>
-              </div>
-              <Link href={ROUTES.MESSAGERIE} className="w-auto">
-                <Button
-                  variant="outline"
-                  className="border-[#3f4139] text-[#3f4139] hover:bg-[#3f4139] hover:text-white px-6 min-w-fit"
-                >
-                  Ma messagerie
-                </Button>
-              </Link>
+            {/* Colonne droite : dashboard */}
+            <div className="w-full">
+              <ViewDashboard views={session.user?.views.viewEntries} />
             </div>
-
-            {/* Vues profil */}
-            <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl w-full border border-primary-green">
-              <p className="text-md text-[#3f4139] font-semibold mb-4">
-                Vues sur mon profil
-              </p>
-              <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
-                <Eye className="w-10 h-10 text-white bg-[#3f4139] rounded-md p-2" />
-                <p className="text-4xl text-[#3f4139] font-bold">
-                  {session.user?.tempViewsStats.monthlyViews || 0}
+            {/* Colonne gauche : messages reçus + vues du mois précédent */}
+            <div className="flex flex-col justify-between gap-4 w-full">
+              {/* Vues profil */}
+              <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl border w-full">
+                <p className="text-md text-[#3f4139] font-semibold mb-4">
+                  Vues du mois précédent
                 </p>
+                <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
+                  <Eye className="w-10 h-10 text-white bg-[#3f4139] rounded-md p-2" />
+                  <p className="text-4xl text-[#3f4139] font-bold">
+                    {session.user?.views.lastMonthViews || 0}
+                  </p>
+                </div>
+              </div>
+              {/* Messages reçus */}
+              <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl border w-full">
+                <p className="text-md text-[#3f4139] font-semibold mb-4">
+                  Messages reçus
+                </p>
+                <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
+                  <MessageSquare className="w-10 h-10 text-white bg-[#3f4139] rounded-md p-2" />
+                  <p className="text-4xl text-[#3f4139] font-bold">
+                    {NewMessages?.count ?? 0}
+                  </p>
+                </div>
+                <Link href={ROUTES.MESSAGERIE} className="w-auto">
+                  <Button
+                    variant="outline"
+                    className="border-[#3f4139] text-[#3f4139] hover:bg-[#3f4139] hover:text-white px-6 min-w-fit"
+                  >
+                    Ma messagerie
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

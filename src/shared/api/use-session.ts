@@ -21,7 +21,11 @@ const useCreateSession = (mustAuth = true): AuthenticationTypes.Session => {
     if (!mustAuth) return;
 
     const onUnauthenticated = () => {
-      if (pathname !== ROUTES.AUTH.LOGIN && pathname !== ROUTES.AUTH.REGISTER) {
+      if (
+        pathname !== ROUTES.AUTH.LOGIN &&
+        pathname !== ROUTES.AUTH.REGISTER &&
+        !pathname.startsWith(ROUTES.RIDERS.DETAIL(""))
+      ) {
         router.push(ROUTES.AUTH.LOGIN);
       }
     };

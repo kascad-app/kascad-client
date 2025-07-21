@@ -28,10 +28,10 @@ export default function Footer() {
           <Link href={ROUTES.SPONSORS.LIST} className="hover:text-accent">
             Trouver un sponsor
           </Link>
-          <Link href="/legal" className="hover:text-accent">
+          <Link href="#" className="hover:text-accent">
             Mentions légales
           </Link>
-          <Link href="/contact" className="hover:text-accent">
+          <Link href="#" className="hover:text-accent">
             Contact
           </Link>
         </div>

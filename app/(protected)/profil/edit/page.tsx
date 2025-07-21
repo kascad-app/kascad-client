@@ -51,7 +51,6 @@ export default function EditProfile() {
 
   useEffect(() => {
     if (!session.user || profile) return;
-    const draft = localStorage.getItem("profile-edit-draft");
     console.log(session.user);
 
     const identity = session.user.identity as RiderIdentity;
@@ -128,15 +127,8 @@ export default function EditProfile() {
     }
   }, [session.user]);
 
-  useEffect(() => {
-    if (profile) {
-      localStorage.setItem("profile-edit-draft", JSON.stringify(profile));
-    }
-  }, [profile]);
-
   async function handleSave() {
     if (!profile) return;
-
     try {
       const parsed = profileSchema.safeParse(profile);
       if (!parsed.success) {
@@ -151,7 +143,6 @@ export default function EditProfile() {
         formData.append("file", avatarFile);
         await uploadAvatarMutation.trigger(formData);
       }
-
       if (avatarPreview == null) {
         // si l'image a été reset
         const formData = new FormData();
@@ -165,10 +156,7 @@ export default function EditProfile() {
         });
         await uploadImagesMutation.trigger(formData);
       }
-
-      // TODO : BUG A FIX
       await updateRiderMutation.trigger(riderPayload);
-      localStorage.removeItem("profile-edit-draft");
       toast.success("Profil mis à jour avec succès");
       router.push(ROUTES.RIDER.PROFILE);
     } catch (error: any) {
@@ -182,7 +170,6 @@ export default function EditProfile() {
         "Êtes-vous sûr de vouloir annuler ? Toutes les modifications seront perdues.",
       )
     ) {
-      localStorage.removeItem("profile-edit-draft");
       router.push(ROUTES.RIDER.PROFILE);
     }
   }

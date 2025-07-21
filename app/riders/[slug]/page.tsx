@@ -1,15 +1,19 @@
 "use client";
 import { useGetRider } from "@/entities/riders/riders.hooks";
-import Image from "next/image";
-import { useParams } from "next/navigation";
-import { SocialNetwork, Language } from "@kascad-app/shared-types";
-import MasonryGallery from "../../components/MasonryGallery";
-import { Trophy } from "lucide-react";
 import {
   getWeatherIcon,
   getWeatherLabel,
 } from "@/shared/utils/weather/weather.utils";
+import { Language, SocialNetwork } from "@kascad-app/shared-types";
+import { Trophy } from "lucide-react";
+import Image from "next/image";
+import { useParams } from "next/navigation";
 import { useState } from "react";
+import MasonryGallery from "../../components/MasonryGallery";
+import RiderKPISection from "../../components/RiderKPISection";
+import RiderTrainingKPI from "../../components/RiderKPITrainingCard";
+import RiderSponsorsSection from "../../components/RiderSponsorsSection";
+import ScrollSpyNav from "../../components/ScrollSpyNav";
 
 export default function RiderPage() {
   const { slug } = useParams();
@@ -17,6 +21,8 @@ export default function RiderPage() {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
   );
+
+
 
   if (isLoading)
     return <p className="p-8 text-[#101B08]">Chargement du profil...</p>;
@@ -37,9 +43,8 @@ export default function RiderPage() {
 
   const fullName =
     rider.identity?.fullName ||
-    `${rider.identity?.firstName || ""} ${
-      rider.identity?.lastName || ""
-    }`.trim() ||
+    `${rider.identity?.firstName || ""} ${rider.identity?.lastName || ""
+      }`.trim() ||
     "Nom non renseigné";
   const sports =
     rider.preferences?.sports?.map((s) => s.name).filter(Boolean) || [];
@@ -49,18 +54,17 @@ export default function RiderPage() {
   const today = new Date();
   const age = birthDate
     ? today.getFullYear() -
-      birthDate.getFullYear() -
-      (today.getMonth() < birthDate.getMonth() ||
+    birthDate.getFullYear() -
+    (today.getMonth() < birthDate.getMonth() ||
       (today.getMonth() === birthDate.getMonth() &&
         today.getDate() < birthDate.getDate())
-        ? 1
-        : 0)
+      ? 1
+      : 0)
     : null;
   const location =
     rider.identity?.city || rider.identity?.country
-      ? `${rider.identity?.city || ""}${
-          rider.identity?.city && rider.identity?.country ? ", " : ""
-        }${rider.identity?.country || ""}`
+      ? `${rider.identity?.city || ""}${rider.identity?.city && rider.identity?.country ? ", " : ""
+      }${rider.identity?.country || ""}`
       : "Localisation inconnue";
   const profilePicture = rider.avatarUrl || "/default-avatar.png";
   const images = rider.images?.map((img) => img.url).filter(Boolean) || [];
@@ -74,6 +78,9 @@ export default function RiderPage() {
   const rawLanguages = rider.identity?.languageSpoken?.filter(Boolean) || [];
   const youtube = rider.videos?.filter((v) => !!v.url) || [];
   const availability = rider.availibility?.isAvailable;
+  const sessionsPerWeek = rider.trainingFrequency?.sessionsPerWeek ?? 0;
+  const hoursPerSession = rider.trainingFrequency?.hoursPerSession ?? 0;
+
   const formatDate = (date?: Date | string) => {
     if (!date) return "Date inconnue";
     const dateObj = typeof date === "string" ? new Date(date) : date;
@@ -82,6 +89,8 @@ export default function RiderPage() {
     }
     return dateObj.toLocaleDateString("fr-FR");
   };
+
+
 
   const getRankingBadge = (ranking?: number) => {
     if (!ranking) return null;
@@ -128,7 +137,7 @@ export default function RiderPage() {
           )}
         </div>
 
-        <div className="w-full md:w-1/2 flex flex-col gap-4">
+        <div className="w-full md:w-1/2 flex flex-col gap-4" id="profile">
           <p className="whitespace-pre-line text-sm leading-relaxed">
             {rider.identity.bio || "Pas de bio disponible."}
           </p>
@@ -170,6 +179,8 @@ export default function RiderPage() {
           </div>
 
           <div className="mt-4">
+            <p className="uppercase text-sm mb-2 font-michroma">Disponibilité</p>
+
             {availability === true ? (
               <p className="text-sm text-[#101B08] border-2 rounded-4xl px-3 py-1 w-fit">
                 disponible
@@ -200,77 +211,10 @@ export default function RiderPage() {
           </div>
         </div>
       </div>
-      {/* Performances */}
-      <div className="mt-20 max-w-6xl mx-auto px-4">
-        <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
-          PERFORMANCES
-        </h3>
 
-        <div className="mb-10 flex items-center gap-4 text-[#B1BD93] text-sm">
-          <Trophy className="w-5 h-5" />
-          <p className="uppercase tracking-wide">
-            Total podiums :{" "}
-            <span className="text-[#101B08] font-bold">{podiums}</span>
-          </p>
-        </div>
 
-        {stats.length === 0 ? (
-          <div className="text-center py-12 bg-[#1a1a19] text-white rounded-xl">
-            <Trophy className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-            <p className="text-lg">Aucune performance enregistrée</p>
-            <p className="text-sm text-gray-400">
-              Ce rider n'a pas encore partagé ses résultats.
-            </p>
-          </div>
-        ) : (
-          <div className="relative border-l-4 border-[#D2FA52] pl-6 space-y-12">
-            {stats.map((performance, index) => (
-              <div key={index} className="relative group">
-                <div className="absolute -left-[2.25rem] top-1 w-5 h-5 bg-[#101B08] rounded-full group-hover:scale-125 transition-transform" />
 
-                <div className="bg-[#101B08] text-white p-6 rounded-lg shadow-md group-hover:shadow-lg transition-all">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-xl font-bold flex items-center gap-2">
-                      {getRankingBadge(performance?.ranking)}
-                      {performance?.eventName || "Événement inconnu"}
-                    </h4>
-                    <span className="text-xs opacity-60 font-mono">
-                      {formatDate(performance?.startDate)}
-                    </span>
-                  </div>
-                  <p className="text-[#B1BD93] text-sm mb-1">
-                    {performance?.category || "Catégorie inconnue"} —{" "}
-                    {performance?.sport?.name || "Sport inconnu"}
-                  </p>
-                  <p className="text-sm text-gray-300">
-                    {`${performance?.location?.city || "Ville inconnue"}, ${
-                      performance?.location?.country || "Pays inconnu"
-                    }`}
-                  </p>
-
-                  {performance?.weather && (
-                    <p className="text-xs text-gray-400 mt-2">
-                      {getWeatherIcon(performance.weather)}{" "}
-                      {getWeatherLabel(performance.weather)}
-                    </p>
-                  )}
-
-                  {performance?.notes && (
-                    <div className="mt-3 text-sm text-gray-300">
-                      <p className="font-semibold text-[#D2FA52] mb-1">
-                        Notes :
-                      </p>
-                      <p>{performance.notes}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="mt-20 max-w-6xl mx-auto px-4">
+      <div className="mt-20 max-w-6xl mx-auto px-4" id="gallery">
         <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
           Galerie
         </h3>
@@ -280,12 +224,12 @@ export default function RiderPage() {
             onImageClick={(index) => setSelectedImageIndex(index)}
           />
         ) : (
-          <div className="w-[300px] h-[400px] bg-[#D2FA52] rounded-xl"></div>
+          <div className="w-[500px] h-[600px] bg-[#D2FA52] rounded-xl"></div>
         )}
       </div>
 
       {youtube.length > 0 && (
-        <div className="mt-20 max-w-6xl mx-auto px-4">
+        <div className="mt-20 max-w-6xl mx-auto px-4" id="videos">
           <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
             Vidéos
           </h3>
@@ -295,8 +239,8 @@ export default function RiderPage() {
               const videoId = url.includes("youtube.com")
                 ? new URL(url).searchParams.get("v")
                 : url.includes("youtu.be")
-                ? url.split("/").pop()
-                : null;
+                  ? url.split("/").pop()
+                  : null;
 
               return videoId ? (
                 <div
@@ -365,6 +309,100 @@ export default function RiderPage() {
           </button>
         </div>
       )}
+
+      <div id="sponsors">
+        <RiderSponsorsSection
+
+          currentSponsors={rider.sponsorSummary?.currentSponsors || []}
+          desiredSponsors={rider.sponsorSummary?.wishListSponsors || []}
+        />
+      </div>
+
+
+
+
+      {/* Performances */}
+      <div className="mt-20 max-w-6xl mx-auto px-4" id="performances">
+        <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
+          PERFORMANCES
+        </h3>
+
+        <div className="mb-10 flex items-center gap-4 text-[#B1BD93] text-sm">
+          <Trophy className="w-5 h-5" />
+          <p className="uppercase tracking-wide">
+            Total podiums :{" "}
+            <span className="text-[#101B08] font-bold">{podiums}</span>
+          </p>
+        </div>
+
+        {stats.length === 0 ? (
+          <div className="text-center py-12 bg-[#1a1a19] text-white rounded-xl">
+            <Trophy className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+            <p className="text-lg">Aucune performance enregistrée</p>
+            <p className="text-sm text-gray-400">
+              Ce rider n'a pas encore partagé ses résultats.
+            </p>
+          </div>
+        ) : (
+          <div className="relative border-l-4 border-[#D2FA52] pl-6 space-y-12">
+            {stats.map((performance, index) => (
+              <div key={index} className="relative group">
+                <div className="absolute -left-[2.25rem] top-1 w-5 h-5 bg-[#101B08] rounded-full group-hover:scale-125 transition-transform" />
+
+                <div className="bg-[#101B08] text-white p-6 rounded-lg shadow-md group-hover:shadow-lg transition-all">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-xl font-bold flex items-center gap-2">
+                      {getRankingBadge(performance?.ranking)}
+                      {performance?.eventName || "Événement inconnu"}
+                    </h4>
+                    <span className="text-xs opacity-60 font-mono">
+                      {formatDate(performance?.startDate)}
+                    </span>
+                  </div>
+                  <p className="text-[#B1BD93] text-sm mb-1">
+                    {performance?.category || "Catégorie inconnue"} —{" "}
+                    {performance?.sport?.name || "Sport inconnu"}
+                  </p>
+                  <p className="text-sm text-gray-300">
+                    {`${performance?.location?.city || "Ville inconnue"}, ${performance?.location?.country || "Pays inconnu"
+                      }`}
+                  </p>
+
+                  {performance?.weather && (
+                    <p className="text-xs text-gray-400 mt-2">
+                      {getWeatherIcon(performance.weather)}{" "}
+                      {getWeatherLabel(performance.weather)}
+                    </p>
+                  )}
+
+                  {performance?.notes && (
+                    <div className="mt-3 text-sm text-gray-300">
+                      <p className="font-semibold text-[#D2FA52] mb-1">
+                        Notes :
+                      </p>
+                      <p>{performance.notes}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Training */}
+      <div id="entrainement">
+        <RiderTrainingKPI
+          sessionsPerWeek={sessionsPerWeek}
+          hoursPerSession={hoursPerSession}
+        />
+      </div>
+
+      <div id="kpi">
+        <RiderKPISection stats={stats} />
+      </div>
+
+      <ScrollSpyNav />
 
       <div className="fixed bottom-0 w-full h-[5dvh] bg-gradient-to-b from-transparent to-[#d3fa5265]"></div>
     </div>

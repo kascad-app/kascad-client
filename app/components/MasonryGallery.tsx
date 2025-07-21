@@ -13,7 +13,7 @@ export default function MasonryGallery({ images, onImageClick }: MasonryGalleryP
 
     const breakpoints = {
         default: 4,
-        1280: 3,
+        1580: 3,
         768: 2,
         500: 1,
     };

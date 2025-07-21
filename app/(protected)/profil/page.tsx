@@ -66,12 +66,12 @@ export default function ProfileComponent() {
 
   const age: number = birthDate
     ? new Date().getFullYear() -
-      birthDate.getFullYear() -
-      (new Date().getMonth() < birthDate.getMonth() ||
+    birthDate.getFullYear() -
+    (new Date().getMonth() < birthDate.getMonth() ||
       (new Date().getMonth() === birthDate.getMonth() &&
         new Date().getDate() < birthDate.getDate())
-        ? 1
-        : 0)
+      ? 1
+      : 0)
     : 0;
 
   const bio =
@@ -214,7 +214,7 @@ export default function ProfileComponent() {
         <h2 className="text-2xl font-semibold mb-4">Langues parlées</h2>
         <div className="flex gap-4 flex-wrap">
           {session.user.identity?.languageSpoken &&
-          session.user.identity.languageSpoken.length > 0 ? (
+            session.user.identity.languageSpoken.length > 0 ? (
             session.user.identity.languageSpoken.map((lang, i) => (
               <span
                 key={i}
@@ -259,9 +259,8 @@ export default function ProfileComponent() {
 
         {session.user.videos && session.user.videos.length > 0 ? (
           <div
-            className={`grid grid-cols-1 md:grid-cols-2 gap-6 relative transition-all duration-700 ${
-              !showAllYoutubeVideos ? "max-h-[50vh] overflow-hidden" : ""
-            }`}
+            className={`grid grid-cols-1 md:grid-cols-2 gap-6 relative transition-all duration-700 ${!showAllYoutubeVideos ? "max-h-[50vh] overflow-hidden" : ""
+              }`}
           >
             {session.user.videos.map((video, i) => (
               <div

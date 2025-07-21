@@ -61,7 +61,7 @@ export default function ProfileImagesManager({
             <button
               type="button"
               onClick={() => handleMarkToDelete(idx)}
-              className="absolute top-2 right-2 bg-white/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
+              className="absolute top-2 right-2 bg-white/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 cursor-pointer"
               title={img.isToDelete ? "Annuler la suppression" : "Supprimer"}
             >
               {img.isToDelete ? (
@@ -102,7 +102,7 @@ export default function ProfileImagesManager({
           </div>
         ))}
         {/* Zone d'ajout */}
-        <label className="flex flex-col items-center justify-center w-60 h-40 border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-blue-400 transition">
+        <label className="flex flex-col items-center justify-center w-60 h-40 border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-primary-green transition">
           <span className="text-gray-400 text-3xl">+</span>
           <span className="text-xs text-gray-500 mt-1">Ajouter</span>
           <input

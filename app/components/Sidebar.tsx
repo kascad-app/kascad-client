@@ -58,16 +58,16 @@ export default function Sidebar({ children }: SidebarProps) {
       label: "Messagerie",
       icon: <MessageCircle className="w-4 h-4" />,
     },
-    {
-      href: ROUTES.RIDERS.LIST,
-      label: "Liste des riders",
-      icon: <Users className="w-4 h-4" />,
-    },
     // {
-    //     href: ROUTES.SPONSORS.LIST,
-    //     label: "Liste des sponsors",
-    //     icon: <Briefcase className="w-4 h-4" />,
+    //   href: ROUTES.RIDERS.LIST,
+    //   label: "Liste des riders",
+    //   icon: <Users className="w-4 h-4" />,
     // },
+    {
+      href: ROUTES.SPONSORS.LIST,
+      label: "Liste des sponsors",
+      icon: <Briefcase className="w-4 h-4" />,
+    },
   ];
 
   return (
@@ -96,7 +96,7 @@ export default function Sidebar({ children }: SidebarProps) {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsOpen(!isOpen)}
-                className="bg-[#3F4139] text-[#D2FA52] hover:bg-[#101B08]"
+                className="bg-[#3F4139] text-primary-green hover:bg-[#101B08]"
               >
                 {isOpen ? (
                   <ChevronLeft className="w-6 h-6" />
@@ -134,7 +134,7 @@ export default function Sidebar({ children }: SidebarProps) {
                       className={cn(
                         "w-full justify-start text-sm flex items-center transition-colors",
                         active
-                          ? "bg-[#101b08] text-[#d2fa52] font-semibold"
+                          ? "bg-[#101b08] text-primary-green font-semibold"
                           : "text-white hover:bg-[#101b08]",
                         // Ajout d'une transition pour le label
                         isOpen ? "duration-200" : "duration-200",
@@ -143,7 +143,7 @@ export default function Sidebar({ children }: SidebarProps) {
                       <span
                         className={cn(
                           "mr-2",
-                          active ? "text-[#d2fa52]" : "text-white",
+                          active ? "text-primary-green" : "text-white",
                         )}
                       >
                         {link.icon}
@@ -195,7 +195,7 @@ export default function Sidebar({ children }: SidebarProps) {
           variant="ghost"
           size="icon"
           onClick={() => setMobileMenuOpen(true)}
-          className="fixed top-4 left-4 z-50 bg-[#3F4139] text-[#D2FA52]"
+          className="fixed top-4 left-4 z-50 bg-[#3F4139] text-primary-green"
         >
           <Menu className="w-6 h-6" />
         </Button>
@@ -206,7 +206,7 @@ export default function Sidebar({ children }: SidebarProps) {
               variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(false)}
-              className="fixed top-4 right-4 text-[#D2FA52]"
+              className="fixed top-4 right-4 text-primary-green"
             >
               <X className="w-6 h-6" />
             </Button>
@@ -223,7 +223,7 @@ export default function Sidebar({ children }: SidebarProps) {
                     <span
                       className={cn(
                         "flex items-center gap-2 text-lg",
-                        active ? "text-[#D2FA52]" : "text-white",
+                        active ? "text-primary-green" : "text-white",
                       )}
                     >
                       {link.icon}
@@ -272,7 +272,7 @@ function LogoutButton({
       <AlertDialogTrigger asChild>
         <Button
           variant="ghost"
-          className="text-sm text-[#D2FA52] hover:text-[#D2FA52] flex items-center gap-2 w-full justify-start"
+          className="text-sm text-primary-green hover:text-primary-green flex items-center gap-2 w-full justify-start"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

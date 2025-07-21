@@ -6,9 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogClose,
 } from "@/components/ui/dialog";
-import Link from "next/link";
-import { ROUTES } from "@/shared/constants/ROUTES";
 import { useSession } from "@/shared/context/SessionContext";
 import { Language } from "@kascad-app/shared-types";
 
@@ -36,10 +35,10 @@ export function SidebarPopup({
     <div>
       <Button
         variant="ghost"
-        className="w-full justify-start text-sm flex items-center transition-colors bg-[#101b08] text-[#d2fa52] font-semibold text-white hover:bg-[#101b08]"
+        className="w-full justify-start text-sm flex items-center transition-colors bg-[#101b08] text-primary-green font-semibold text-white hover:bg-[#101b08]"
         onClick={() => setIsDialogOpen(true)}
       >
-        <span className="mr-2 text-[#d2fa52] text-white">{icon}</span>
+        <span className="mr-2 text-primary-green text-white">{icon}</span>
         {label}
       </Button>
 

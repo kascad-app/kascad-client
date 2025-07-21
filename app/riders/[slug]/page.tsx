@@ -22,8 +22,6 @@ export default function RiderPage() {
     null,
   );
 
-
-
   if (isLoading)
     return <p className="p-8 text-[#101B08]">Chargement du profil...</p>;
   if (error || !rider)
@@ -43,8 +41,9 @@ export default function RiderPage() {
 
   const fullName =
     rider.identity?.fullName ||
-    `${rider.identity?.firstName || ""} ${rider.identity?.lastName || ""
-      }`.trim() ||
+    `${rider.identity?.firstName || ""} ${
+      rider.identity?.lastName || ""
+    }`.trim() ||
     "Nom non renseigné";
   const sports =
     rider.preferences?.sports?.map((s) => s.name).filter(Boolean) || [];
@@ -54,17 +53,18 @@ export default function RiderPage() {
   const today = new Date();
   const age = birthDate
     ? today.getFullYear() -
-    birthDate.getFullYear() -
-    (today.getMonth() < birthDate.getMonth() ||
+      birthDate.getFullYear() -
+      (today.getMonth() < birthDate.getMonth() ||
       (today.getMonth() === birthDate.getMonth() &&
         today.getDate() < birthDate.getDate())
-      ? 1
-      : 0)
+        ? 1
+        : 0)
     : null;
   const location =
     rider.identity?.city || rider.identity?.country
-      ? `${rider.identity?.city || ""}${rider.identity?.city && rider.identity?.country ? ", " : ""
-      }${rider.identity?.country || ""}`
+      ? `${rider.identity?.city || ""}${
+          rider.identity?.city && rider.identity?.country ? ", " : ""
+        }${rider.identity?.country || ""}`
       : "Localisation inconnue";
   const profilePicture = rider.avatarUrl || "/default-avatar.png";
   const images = rider.images?.map((img) => img.url).filter(Boolean) || [];
@@ -90,8 +90,6 @@ export default function RiderPage() {
     return dateObj.toLocaleDateString("fr-FR");
   };
 
-
-
   const getRankingBadge = (ranking?: number) => {
     if (!ranking) return null;
     if (ranking === 1)
@@ -108,7 +106,7 @@ export default function RiderPage() {
       <div className="relative text-center mb-16 h-[50dvh] flex items-center justify-center">
         {/* BLOB EN FOND */}
         <div className="absolute inset-0 flex items-center justify-center z-5">
-          <div className="w-72 h-72 md:w-96 md:h-96 bg-[#D2FA52] rounded-full blur-3xl opacity-30 animate-pulse" />
+          <div className="w-72 h-72 md:w-96 md:h-96 bg-primary-green rounded-full blur-3xl opacity-30 animate-pulse" />
         </div>
 
         {/* TEXTE */}
@@ -130,10 +128,10 @@ export default function RiderPage() {
               alt={fullName}
               width={600}
               height={800}
-              className="rounded-xl object-cover w-full border-4 border-[#D2FA52]"
+              className="rounded-xl object-cover w-full border-4 border-primary-green"
             />
           ) : (
-            <div className="w-full aspect-[3/4] bg-[#D2FA52] rounded-xl"></div>
+            <div className="w-full aspect-[3/4] bg-primary-green rounded-xl"></div>
           )}
         </div>
 
@@ -179,7 +177,9 @@ export default function RiderPage() {
           </div>
 
           <div className="mt-4">
-            <p className="uppercase text-sm mb-2 font-michroma">Disponibilité</p>
+            <p className="uppercase text-sm mb-2 font-michroma">
+              Disponibilité
+            </p>
 
             {availability === true ? (
               <p className="text-sm text-[#101B08] border-2 rounded-4xl px-3 py-1 w-fit">
@@ -202,7 +202,7 @@ export default function RiderPage() {
               {rawLanguages.map((lang, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 rounded-full text-sm bg-[#1a1a19] text-[#D2FA52] uppercase"
+                  className="px-3 py-1 rounded-full text-sm bg-[#1a1a19] text-primary-green uppercase"
                 >
                   {typeof lang === "string" ? lang : Language[lang]}
                 </span>
@@ -211,8 +211,6 @@ export default function RiderPage() {
           </div>
         </div>
       </div>
-
-
 
       <div className="mt-20 max-w-6xl mx-auto px-4" id="gallery">
         <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
@@ -224,7 +222,7 @@ export default function RiderPage() {
             onImageClick={(index) => setSelectedImageIndex(index)}
           />
         ) : (
-          <div className="w-[500px] h-[600px] bg-[#D2FA52] rounded-xl"></div>
+          <div className="w-[400px] h-[600px] bg-primary-green rounded-xl"></div>
         )}
       </div>
 
@@ -239,13 +237,13 @@ export default function RiderPage() {
               const videoId = url.includes("youtube.com")
                 ? new URL(url).searchParams.get("v")
                 : url.includes("youtu.be")
-                  ? url.split("/").pop()
-                  : null;
+                ? url.split("/").pop()
+                : null;
 
               return videoId ? (
                 <div
                   key={index}
-                  className="relative group w-full aspect-video rounded-xl overflow-hidden border-2 border-[#D2FA52] shadow-lg hover:shadow-2xl transition-all duration-300"
+                  className="relative group w-full aspect-video rounded-xl overflow-hidden border-2 border-primary-green shadow-lg hover:shadow-2xl transition-all duration-300"
                 >
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
@@ -312,14 +310,10 @@ export default function RiderPage() {
 
       <div id="sponsors">
         <RiderSponsorsSection
-
           currentSponsors={rider.sponsorSummary?.currentSponsors || []}
           desiredSponsors={rider.sponsorSummary?.wishListSponsors || []}
         />
       </div>
-
-
-
 
       {/* Performances */}
       <div className="mt-20 max-w-6xl mx-auto px-4" id="performances">
@@ -344,7 +338,7 @@ export default function RiderPage() {
             </p>
           </div>
         ) : (
-          <div className="relative border-l-4 border-[#D2FA52] pl-6 space-y-12">
+          <div className="relative border-l-4 border-primary-green pl-6 space-y-12">
             {stats.map((performance, index) => (
               <div key={index} className="relative group">
                 <div className="absolute -left-[2.25rem] top-1 w-5 h-5 bg-[#101B08] rounded-full group-hover:scale-125 transition-transform" />
@@ -364,8 +358,9 @@ export default function RiderPage() {
                     {performance?.sport?.name || "Sport inconnu"}
                   </p>
                   <p className="text-sm text-gray-300">
-                    {`${performance?.location?.city || "Ville inconnue"}, ${performance?.location?.country || "Pays inconnu"
-                      }`}
+                    {`${performance?.location?.city || "Ville inconnue"}, ${
+                      performance?.location?.country || "Pays inconnu"
+                    }`}
                   </p>
 
                   {performance?.weather && (
@@ -377,7 +372,7 @@ export default function RiderPage() {
 
                   {performance?.notes && (
                     <div className="mt-3 text-sm text-gray-300">
-                      <p className="font-semibold text-[#D2FA52] mb-1">
+                      <p className="font-semibold text-primary-green mb-1">
                         Notes :
                       </p>
                       <p>{performance.notes}</p>

@@ -46,7 +46,7 @@ export default function EditProfile() {
     session.user?.avatarUrl ?? null,
   );
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
-
+  const [isAvatarToReset, setIsAvatarToReset] = useState(false);
   const [imageFiles, setImageFiles] = useState<TempImage[]>([]);
 
   useEffect(() => {
@@ -143,7 +143,7 @@ export default function EditProfile() {
         formData.append("file", avatarFile);
         await uploadAvatarMutation.trigger(formData);
       }
-      if (avatarPreview == null) {
+      if (isAvatarToReset) {
         // si l'image a été reset
         const formData = new FormData();
         formData.append("file", new Blob(), "kascadResetAvatar");
@@ -208,6 +208,7 @@ export default function EditProfile() {
           avatarPreview={avatarPreview}
           setAvatarFile={setAvatarFile}
           setAvatarPreview={setAvatarPreview}
+          setIsAvatarToReset={setIsAvatarToReset}
         />
       )}
       {slide === 1 && (

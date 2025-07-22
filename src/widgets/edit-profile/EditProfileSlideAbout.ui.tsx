@@ -25,22 +25,26 @@ export default function EditProfileSlideAbout({
   avatarPreview,
   setAvatarFile,
   setAvatarPreview,
+  setIsAvatarToReset,
 }: {
   profile: ProfileState;
   setProfile: React.Dispatch<React.SetStateAction<ProfileState | null>>;
   avatarPreview: string | null;
   setAvatarFile: (file: File | null) => void;
   setAvatarPreview: (url: string | null) => void;
+  setIsAvatarToReset: (reset: boolean) => void;
 }) {
   function handleAvatarReset() {
     setAvatarFile(null);
     setAvatarPreview(null);
+    setIsAvatarToReset(true);
   }
 
   function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     setAvatarFile(file);
+    setIsAvatarToReset(false);
     const reader = new FileReader();
     reader.onloadend = () => setAvatarPreview(reader.result as string);
     reader.readAsDataURL(file);

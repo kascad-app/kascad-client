@@ -6,10 +6,11 @@ import { Span } from "next/dist/trace";
 
 export default function SponsorCard({ sponsor }: { sponsor: any }) {
   const sponsorName = sponsor.identity.companyName.toLowerCase();
-  const sportNames = sponsor.preferences?.sports?.map(
-    (sponsorSport: any) => sponsorSport.name,
-  ) || [];
-  console.log(sponsor);
+  const sportNames =
+    sponsor.preferences?.sports?.map(
+      (sponsorSport: any) => sponsorSport.name,
+    ) || [];
+
   return (
     <Link
       href={`/sponsors/${sponsor.slug}`}
@@ -39,37 +40,43 @@ export default function SponsorCard({ sponsor }: { sponsor: any }) {
       </div>
       <div className="p-4">
         <h3 className="font-bold text-lg mb-1 truncate">{sponsorName}</h3>
-        <p className="text-sm text-muted-foreground mb-2">
+        <div className="flex gap-2 flex-wrap text-xs mb-2">
           {sportNames.length > 0 ? (
             sportNames.join(", ")
           ) : (
             <span className="italic font-figtree text-gray-400">
-              Ce sponsor n'a pas de sports reseigné
+              Ce sponsor n'a pas de sports renseigné
             </span>
           )}
-        </p>
-        <div className="flex gap-2 flex-wrap text-xs mb-2">
-          <span className="px-2 py-1 bg-gray-100 rounded">
-            {sponsor.location ? (
-              sponsor.location
-            ) : (
-              <span className="italic font-figtree text-gray-400">
-                Ce sponsor n'a pas de localisation reseignée
-              </span>
-            )}
-          </span>
         </div>
-        {sponsor.description && (
-          <p className="text-sm text-gray-500 mb-2">
-            {sponsor.description.length > 30
-              ? sponsor.description.slice(0, 30) + "…"
-              : sponsor.description}
-          </p>
-        )}
         <div className="flex gap-2 flex-wrap text-xs mb-2">
-          {sponsor.level && (
-            <span className="px-2 py-1 bg-gray-100 rounded">
-              {sponsor.level}
+          {sponsor.location ? (
+            sponsor.location
+          ) : (
+            <span className="italic font-figtree text-gray-400">
+              Ce sponsor n'a pas de localisation renseignée
+            </span>
+          )}
+        </div>
+        <div className="flex gap-2 flex-wrap text-xs mb-2">
+          {sponsor.description ? (
+            sponsor.description.length > 30 ? (
+              sponsor.description.slice(0, 30) + "…"
+            ) : (
+              sponsor.description
+            )
+          ) : (
+            <span className="italic font-figtree text-gray-400">
+              Ce sponsor n'a pas de description renseignée
+            </span>
+          )}
+        </div>
+        <div className="flex gap-2 flex-wrap text-xs mb-2">
+          {sponsor.level ? (
+            sponsor.level
+          ) : (
+            <span className="italic font-figtree text-gray-400">
+              Ce sponsor n'a pas de niveau renseigné
             </span>
           )}
         </div>

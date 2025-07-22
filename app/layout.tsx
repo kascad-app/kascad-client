@@ -1,7 +1,7 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
-import { SessionProvider } from "@/shared/context/SessionProvider"; // 💡 nouveau
+import { SessionProvider } from "@/shared/context/SessionProvider";
 
 export const metadata: Metadata = {
   title: "Kascad",
@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body>

@@ -3,8 +3,21 @@ import { Label } from "@/components/ui/label";
 import { ProfileState } from "@/shared/types/profileSchema";
 import { Button } from "@components/ui/button";
 import { Textarea } from "@components/ui/textarea";
-import { Language, SocialNetwork } from "@kascad-app/shared-types";
+import {
+  Language,
+  SocialNetwork,
+  ContractType,
+  SportName,
+} from "@kascad-app/shared-types";
 import Avatar from "../avatar/avatar.ui";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function EditProfileSlideAbout({
   profile,
@@ -42,7 +55,7 @@ export default function EditProfileSlideAbout({
           <div className="flex flex-col gap-2">
             <label
               htmlFor="avatar"
-              className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition text-center"
+              className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-accent transition text-center"
             >
               Changer
               <input
@@ -54,7 +67,7 @@ export default function EditProfileSlideAbout({
               />
             </label>
             {avatarPreview && (
-              <label className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition text-center">
+              <label className="cursor-pointer px-4 py-2 bg-[#3F4139] text-white rounded shadow hover:bg-accent transition text-center">
                 Réinitialiser
                 <Button
                   id="avatar"
@@ -68,6 +81,72 @@ export default function EditProfileSlideAbout({
         <p className="text-xs text-gray-500">
           Formats acceptés : JPG, PNG Max : 10Mo.
         </p>
+      </div>
+      {/* Disponibilité Toggle */}
+      <div className="flex flex-col gap-2 w-full max-w-xs">
+        <label className="font-medium text-gray-700">Disponible</label>
+        <div className="flex items-center gap-4">
+          <Switch
+            checked={profile.availibility.isAvailable}
+            onCheckedChange={(checked) =>
+              setProfile((prev) =>
+                prev
+                  ? {
+                      ...prev,
+                      availibility: {
+                        ...prev.availibility,
+                        isAvailable: checked,
+                        contractType: checked
+                          ? prev.availibility.contractType
+                          : ("Contrat UGC" as ContractType),
+                      },
+                    }
+                  : prev,
+              )
+            }
+          />
+          <span className="text-sm text-gray-600">
+            {profile.availibility.isAvailable
+              ? "Disponible pour un contrat"
+              : "Non disponible"}
+          </span>
+        </div>
+        {/* Select ContratType si disponible */}
+        {profile.availibility.isAvailable && (
+          <div className="mt-2">
+            <label className="block text-sm font-medium mb-1">
+              Type de contrat
+            </label>
+            <Select
+              value={profile.availibility.contractType ?? "Contrat UGC"}
+              onValueChange={(value) => {
+                console.log("Selected contract type:", value);
+                setProfile((prev) => {
+                  if (!prev) return prev;
+                  // Correction : forcer la mise à jour même si la valeur est identique
+                  return {
+                    ...prev,
+                    availibility: {
+                      ...prev.availibility,
+                      contractType: value as ContractType,
+                    },
+                  };
+                });
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Choisir un type de contrat" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(ContractType).map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {type}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
       </div>
       <div>
         <Label>Prénom</Label>
@@ -105,6 +184,25 @@ export default function EditProfileSlideAbout({
         <Input value={profile.email} disabled />
       </div>
 
+      <div>
+        <label className="block text-sm font-medium mb-1">
+          Date de naissance
+        </label>
+        <Input
+          type="date"
+          value={profile.identity.birthDate.slice(0, 10)} // ISO string -> 'YYYY-MM-DD'
+          onChange={(e) =>
+            setProfile((prev) =>
+              prev
+                ? {
+                    ...prev,
+                    identity: { ...prev.identity, birthDate: e.target.value },
+                  }
+                : prev,
+            )
+          }
+        />
+      </div>
       <div>
         <label className="block text-sm font-medium mb-1">
           Numéro de téléphone
@@ -153,6 +251,95 @@ export default function EditProfileSlideAbout({
         />
       </div>
 
+      {/* Sélection des sports pratiqués */}
+      <div>
+        <label className="block text-sm font-medium mb-1">
+          Sports pratiqués
+        </label>
+        <div className="flex flex-wrap gap-2">
+          {Object.values(SportName).map((sport) => {
+            const isSelected = profile.preferences.sports.some(
+              (s) => s.name === sport,
+            );
+            return (
+              <Button
+                key={sport}
+                variant={isSelected ? "default" : "outline"}
+                size="sm"
+                onClick={() => {
+                  setProfile((prev) => {
+                    if (!prev) return prev;
+                    const updated = isSelected
+                      ? prev.preferences.sports.filter((s) => s.name !== sport)
+                      : [...prev.preferences.sports, { name: sport }];
+                    return {
+                      ...prev,
+                      preferences: {
+                        ...prev.preferences,
+                        sports: updated,
+                      },
+                    };
+                  });
+                }}
+              >
+                {sport}
+              </Button>
+            );
+          })}
+        </div>
+        <p className="text-xs text-gray-500 mt-1">
+          Cliquez sur les sports que vous pratiquez
+        </p>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-1">
+          Fréquence d'entraînement
+        </label>
+        <div className="flex flex-row gap-4 max-w-xs">
+          <div className="flex-1">
+            <label className="text-xs text-gray-700">Séances par semaine</label>
+            <Input
+              type="number"
+              min={1}
+              value={profile.trainingFrequency?.sessionsPerWeek ?? ""}
+              onChange={(e) =>
+                setProfile((prev) => {
+                  if (!prev) return prev;
+                  return {
+                    ...prev,
+                    trainingFrequency: {
+                      ...prev.trainingFrequency,
+                      sessionsPerWeek: Number(e.target.value),
+                    },
+                  };
+                })
+              }
+            />
+          </div>
+          <div className="flex-1">
+            <label className="text-xs text-gray-700">Heures par séance</label>
+            <Input
+              type="number"
+              min={1}
+              max={24}
+              value={profile.trainingFrequency?.hoursPerSession ?? ""}
+              onChange={(e) =>
+                setProfile((prev) => {
+                  if (!prev) return prev;
+                  return {
+                    ...prev,
+                    trainingFrequency: {
+                      ...prev.trainingFrequency,
+                      hoursPerSession: Number(e.target.value),
+                    },
+                  };
+                })
+              }
+            />
+          </div>
+        </div>
+      </div>
       <div>
         <label className="block text-sm font-medium mb-1">
           Langues parlées
@@ -206,26 +393,6 @@ export default function EditProfileSlideAbout({
       </div>
       <div>
         <label className="block text-sm font-medium mb-1">
-          Date de naissance
-        </label>
-        <Input
-          type="date"
-          value={profile.identity.birthDate.slice(0, 10)} // ISO string -> 'YYYY-MM-DD'
-          onChange={(e) =>
-            setProfile((prev) =>
-              prev
-                ? {
-                    ...prev,
-                    identity: { ...prev.identity, birthDate: e.target.value },
-                  }
-                : prev,
-            )
-          }
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">
           Réseaux sociaux
         </label>
         <div className="flex flex-wrap gap-2">
@@ -266,6 +433,155 @@ export default function EditProfileSlideAbout({
             setProfile((prev) => prev && { ...prev, bio: e.target.value })
           }
         />
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-1">Sponsors</label>
+        <div className="flex flex-col gap-2">
+          {/* Sponsors actuels */}
+          <div>
+            <span className="text-xs text-gray-700 font-semibold">
+              Sponsors actuels ({profile.sponsorsSummary.currentSponsors.length}
+              )
+            </span>
+            {/* Champ d'ajout moderne */}
+            <form
+              className="flex gap-2 mt-1"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const input = e.currentTarget.elements.namedItem(
+                  "currentSponsorInput",
+                ) as HTMLInputElement;
+                const value = input.value.trim();
+                if (!value) return;
+                setProfile((prev) => {
+                  if (!prev) return prev;
+                  if (prev.sponsorsSummary.currentSponsors.includes(value))
+                    return prev;
+                  const updated = [
+                    ...prev.sponsorsSummary.currentSponsors,
+                    value,
+                  ];
+                  return {
+                    ...prev,
+                    sponsorsSummary: {
+                      ...prev.sponsorsSummary,
+                      currentSponsors: updated,
+                      totalSponsors: updated.length,
+                    },
+                  };
+                });
+                input.value = "";
+              }}
+            >
+              <Input
+                className="w-32"
+                name="currentSponsorInput"
+                placeholder="Ajouter..."
+                autoComplete="off"
+              />
+              <Button type="submit" variant="outline" size="sm">
+                Ajouter
+              </Button>
+            </form>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {profile.sponsorsSummary.currentSponsors.map((sponsor) => (
+                <Button
+                  key={sponsor}
+                  variant="default"
+                  size="sm"
+                  onClick={() => {
+                    setProfile((prev) => {
+                      if (!prev) return prev;
+                      const updated =
+                        prev.sponsorsSummary.currentSponsors.filter(
+                          (s) => s !== sponsor,
+                        );
+                      return {
+                        ...prev,
+                        sponsorsSummary: {
+                          ...prev.sponsorsSummary,
+                          currentSponsors: updated,
+                          totalSponsors: updated.length,
+                        },
+                      };
+                    });
+                  }}
+                >
+                  {sponsor} ✕
+                </Button>
+              ))}
+            </div>
+          </div>
+          {/* Sponsors désirés */}
+          <div className="mt-2">
+            <span className="text-xs text-gray-700 font-semibold">
+              Sponsors désirés
+            </span>
+            <form
+              className="flex gap-2 mt-1"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const input = e.currentTarget.elements.namedItem(
+                  "wishSponsorInput",
+                ) as HTMLInputElement;
+                const value = input.value.trim();
+                if (!value) return;
+                setProfile((prev) => {
+                  if (!prev) return prev;
+                  if (prev.sponsorsSummary.wishListSponsors.includes(value))
+                    return prev;
+                  return {
+                    ...prev,
+                    sponsorsSummary: {
+                      ...prev.sponsorsSummary,
+                      wishListSponsors: [
+                        ...prev.sponsorsSummary.wishListSponsors,
+                        value,
+                      ],
+                    },
+                  };
+                });
+                input.value = "";
+              }}
+            >
+              <Input
+                className="w-32"
+                name="wishSponsorInput"
+                placeholder="Ajouter..."
+                autoComplete="off"
+              />
+              <Button type="submit" variant="outline" size="sm">
+                Ajouter
+              </Button>
+            </form>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {profile.sponsorsSummary.wishListSponsors.map((sponsor) => (
+                <Button
+                  key={sponsor}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setProfile((prev) => {
+                      if (!prev) return prev;
+                      return {
+                        ...prev,
+                        sponsorsSummary: {
+                          ...prev.sponsorsSummary,
+                          wishListSponsors:
+                            prev.sponsorsSummary.wishListSponsors.filter(
+                              (s) => s !== sponsor,
+                            ),
+                        },
+                      };
+                    });
+                  }}
+                >
+                  {sponsor} ✕
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

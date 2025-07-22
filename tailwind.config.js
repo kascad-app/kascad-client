@@ -9,6 +9,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      gridAutoRows: {
+        150: "150px",
+      },
       content: {
         check: 'url("/views/shared/check.svg")',
         "arrow-down": 'url("/views/shared/arrow-down.svg")',
@@ -20,12 +23,13 @@ module.exports = {
         "dark-gradient": "linear-gradient(180deg, #212121 0%, #0B0B0B 100%)",
       },
       colors: {
+        "primary-green": "#d2fa52",
         "black-gradient": "linear-gradient(180deg, #212121, #0B0B0B)",
         "blue-950": "#141D52",
         "blue-900": "#22348D",
         "blue-800": "#2035B3",
         "blue-700": "#243CDE",
-        "blue-600": "#2B4AFB",
+        "blue-600": "#3f4139",
         "blue-500": "#4F77FF",
         "blue-400": "#709CFF",
         "blue-300": "#99C1FF",
@@ -63,8 +67,8 @@ module.exports = {
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "#101B08",
+          foreground: "white",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

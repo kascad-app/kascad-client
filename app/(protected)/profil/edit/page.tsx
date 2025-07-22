@@ -51,59 +51,73 @@ export default function EditProfile() {
 
   useEffect(() => {
     if (!session.user || profile) return;
-    const draft = localStorage.getItem("profile-edit-draft");
+    console.log(session.user);
 
-    if (draft) {
-      setProfile(JSON.parse(draft));
-    } else {
-      const identity = session.user.identity as RiderIdentity;
-      const identifier = session.user.identifier as RiderIdentifier;
+    const identity = session.user.identity as RiderIdentity;
+    const identifier = session.user.identifier as RiderIdentifier;
 
-      const birthDate =
-        identity.birthDate instanceof Date
-          ? identity.birthDate.toISOString()
-          : new Date(identity.birthDate).toISOString();
+    const birthDate =
+      identity.birthDate instanceof Date
+        ? identity.birthDate.toISOString()
+        : new Date(identity.birthDate).toISOString();
 
-      setProfile({
-        identity: {
-          firstName: identity.firstName,
-          lastName: identity.lastName,
-          gender: identity.gender,
-          birthDate,
-          country: identity.country,
-          city: identity.city,
-          practiceLocation: identity.practiceLocation,
-          languageSpoken: identity.languageSpoken,
-        },
-        email: session.user.identifier.email || "",
-        address: "",
-        phoneNumber: identifier.phoneNumber || "",
-        bio: identity.bio || "",
-        trainingFrequency: session.user.trainingFrequency?.sessionsPerWeek || 3,
-        trainingUnit: "week",
-        sponsors: session.user.sponsorSummary?.currentSponsors || [],
-        events: [],
-        videos: session.user.videos || [],
-        images: (session.user.images || []).map((img) =>
-          typeof img === "string"
-            ? { url: img, uploadDate: new Date() }
-            : {
-                url: img.url,
-                uploadDate: img.uploadDate ?? new Date(),
-                alt: img.alt,
-                isToDelete: false,
-              },
-        ),
-        preferences: {
-          networks: session.user.preferences?.networks || [],
-          sports: session.user.preferences?.sports || [],
-          appLanguage:
-            Number(session.user.preferences?.appLanguage) || Language.FR,
-        },
-        performanceSummary: session.user.performanceSummary || null,
-        isAvailable: session.user.availibility?.isAvailable ?? true,
-      });
-    }
+    setProfile({
+      identity: {
+        firstName: identity.firstName,
+        lastName: identity.lastName,
+        gender: identity.gender,
+        birthDate,
+        country: identity.country,
+        city: identity.city,
+        practiceLocation: identity.practiceLocation,
+        languageSpoken: identity.languageSpoken,
+      },
+      email: session.user.identifier.email || "",
+      address: "",
+      phoneNumber: identifier.phoneNumber || "",
+      bio: identity.bio || "",
+      trainingFrequency: {
+        sessionsPerWeek: session.user.trainingFrequency?.sessionsPerWeek || 1,
+        hoursPerSession: session.user.trainingFrequency?.hoursPerSession || 1,
+      },
+      sponsors: session.user.sponsorSummary?.currentSponsors || [],
+      events: [],
+      videos: session.user.videos || [],
+      images: (session.user.images || []).map((img) =>
+        typeof img === "string"
+          ? { url: img, uploadDate: new Date() }
+          : {
+              url: img.url,
+              uploadDate: img.uploadDate ?? new Date(),
+              alt: img.alt,
+              isToDelete: false,
+            },
+      ),
+      preferences: {
+        networks: session.user.preferences?.networks || [],
+        sports: session.user.preferences?.sports || [],
+        appLanguage:
+          Number(session.user.preferences?.appLanguage) || Language.FR,
+      },
+      performanceSummary: session.user.performanceSummary || null,
+      availibility: {
+        isAvailable:
+          session.user.availibility &&
+          typeof session.user.availibility.isAvailable !== "undefined"
+            ? session.user.availibility.isAvailable
+            : true,
+        contractType:
+          session.user.availibility &&
+          typeof session.user.availibility.contractType !== "undefined"
+            ? session.user.availibility.contractType
+            : undefined,
+      },
+      sponsorsSummary: {
+        totalSponsors: session.user.sponsorSummary?.totalSponsors || 0,
+        currentSponsors: session.user.sponsorSummary?.currentSponsors || [],
+        wishListSponsors: session.user.sponsorSummary?.wishListSponsors || [],
+      },
+    });
 
     if (!profile) return;
     const parse = profileSchema.safeParse(profile);
@@ -113,19 +127,15 @@ export default function EditProfile() {
     }
   }, [session.user]);
 
-  useEffect(() => {
-    if (profile) {
-      localStorage.setItem("profile-edit-draft", JSON.stringify(profile));
-    }
-  }, [profile]);
-
   async function handleSave() {
     if (!profile) return;
-
     try {
       const parsed = profileSchema.safeParse(profile);
       if (!parsed.success) {
-        throw new Error(`Infos incomplètes ou incorrectes`);
+        const details = parsed.error.errors
+          .map((e) => `${e.path.join(".")} : ${e.message}`)
+          .join(" | ");
+        throw new Error(`Infos incomplètes ou incorrectes : ${details}`);
       }
       const riderPayload = mapProfileToRawRider(parsed.data);
       if (avatarFile) {
@@ -133,7 +143,6 @@ export default function EditProfile() {
         formData.append("file", avatarFile);
         await uploadAvatarMutation.trigger(formData);
       }
-
       if (avatarPreview == null) {
         // si l'image a été reset
         const formData = new FormData();
@@ -147,10 +156,7 @@ export default function EditProfile() {
         });
         await uploadImagesMutation.trigger(formData);
       }
-
-      // TODO : BUG A FIX
       await updateRiderMutation.trigger(riderPayload);
-      localStorage.removeItem("profile-edit-draft");
       toast.success("Profil mis à jour avec succès");
       router.push(ROUTES.RIDER.PROFILE);
     } catch (error: any) {
@@ -164,7 +170,6 @@ export default function EditProfile() {
         "Êtes-vous sûr de vouloir annuler ? Toutes les modifications seront perdues.",
       )
     ) {
-      localStorage.removeItem("profile-edit-draft");
       router.push(ROUTES.RIDER.PROFILE);
     }
   }
@@ -178,15 +183,15 @@ export default function EditProfile() {
   ];
 
   return (
-    <div className="relative max-w-7xl mx-auto p-6 space-y-6 w-[100vw] flex flex-col">
+    <div className="relative max-w-7xl mx-auto p-6 space-y-6 flex flex-col">
       <h2 className="text-2xl font-semibold">Modifier le profil</h2>
       <div className="flex justify-between border-b mb-6">
         {slideLabels.map((label, index) => (
           <button
             key={label}
-            className={`pb-3 px-4 text-base font-medium border-b-2 transition-all duration-200 hover:text-blue-500 ${
+            className={`pb-3 px-4 text-base font-medium border-b-2 transition-all duration-200 hover:text-accent ${
               slide === index
-                ? "border-blue-500 text-blue-600"
+                ? "border-accent text-accent"
                 : "border-transparent text-gray-600 hover:border-gray-300"
             }`}
             onClick={() => setSlide(index)}

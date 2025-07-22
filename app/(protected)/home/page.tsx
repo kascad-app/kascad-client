@@ -1,38 +1,63 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { MessageSquare, ThumbsUp } from "lucide-react";
+import { Eye, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import ArticleSlider from "@components/ui/articleSlider";
 import { useSession } from "@/shared/context/SessionContext";
 import { ROUTES } from "@/shared/constants/ROUTES";
 import { useGetCountNewMessages } from "@/entities/contracts/contracts.hook";
 import { GenderIdentity } from "@kascad-app/shared-types";
+import { TestimonialsSection } from "../../components/TestimonialsSection";
+import Footer from "../../components/Footer";
+import { ViewDashboard } from "@/widgets/view-dashboard";
 
 export default function Home() {
   const session = useSession();
-  const { data: NewMessages, isLoading, error } = useGetCountNewMessages();
+  const { data: NewMessages } = useGetCountNewMessages();
 
   return (
-    <main className="min-h-screen bg-white text-black flex flex-col justify-between relative">
+    <main className="min-h-screen bg-white text-white flex flex-col justify-between relative">
       {/* Hero section */}
-      <section className="relative w-full h-[70vh] overflow-hidden">
+      <section className="relative w-full h-[70vh] overflow-hidden bg-[#3f4139]">
+        {/* Video en arrière-plan */}
         <video
           autoPlay
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover min-w-full min-h-full"
         >
-          <source src="/assets/videos/homeVid.mov" type="video/mp4" />
+          <source src="/assets/videos/homeVid.mp4" type="video/mp4" />
         </video>
+
+        {/* Overlay sombre */}
         <div className="absolute inset-0 bg-black/70" />
-        <div className="relative z-10 h-full flex flex-col justify-center items-center gap-10 px-10 text-white">
-          <h1 className="text-[8dvw] text-center md:text-5xl font-bold mb-4 font-michroma">
-            Bonjour {session.user?.identity.firstName}👋
-          </h1>
+
+        {/* Contenu principal */}
+        <div className="relative z-10 h-full w-full flex flex-col  items-center justify-center px-6 md:px-16 gap-10 text-white">
+          {/* Partie gauche */}
+          <div className=" flex flex-col items-center md:items-center text-center md:text-left gap-12">
+            <h1 className="text-[8vw] md:text-5xl font-bold font-michroma text-center">
+              Bonjour {session.user?.identity.firstName}, bienvenue sur Kascad
+              👋
+            </h1>
+          </div>
+          {/* 
+          {/* Séparateur */}
+
+          {/* Partie droite */}
+          <div className=" flex flex-col items-center md:items-center text-left md:text-left gap-4">
+            <h2 className="text-2xl md:text-3xl font-bold"></h2>
+            <p className="text-center md:text-lg max-w-[500px]">
+              Kascad est la plateforme qui connecte les athlètes aux sponsors.
+              Mettez à jour votre profil, indiquez vos disponibilités, et
+              laissez les marques venir à vous. Plus vous êtes actif, plus vous
+              êtes visible.
+            </p>
+          </div>
           <Link href={ROUTES.RIDER.PROFILE}>
-            <Button className="bg-transparent border-white border-2 text-white font-semibold hover:bg-gray-100 hover:text-black p-[1.5rem]">
+            <Button className="bg-transparent border-2 border-primary-green text-primary-green font-semibold hover:bg-primary-green hover:text-black p-4">
               Accéder à mon profil
             </Button>
           </Link>
@@ -40,10 +65,10 @@ export default function Home() {
       </section>
 
       {/* Statistiques */}
-      <section className="p-8 md:px-[12%] md:py-[7%] bg-white flex flex-col gap-8 text-center md:text-start items-center justify-center">
+      <section className="p-8 md:px-[12%] md:py-[7%] bg-white text-black flex flex-col gap-8 text-center md:text-start items-center justify-center">
         <p className="text-lg mb-6 w-full">
           <span className="text-3xl md:text-4xl block mb-4">
-            {session.user?.identity.gender == GenderIdentity.FEMALE
+            {session.user?.identity.gender === GenderIdentity.FEMALE
               ? "Ne soyez plus seulement celle qui cherche, soyez aussi celle que l’on trouve."
               : "Ne soyez plus seulement celui qui cherche, soyez aussi celui que l’on trouve."}
           </span>
@@ -53,19 +78,19 @@ export default function Home() {
 
         <div className="flex flex-col lg:flex-row w-full justify-start gap-12 md:gap-24 items-center">
           {/* Bloc profil */}
-          <div className="rounded relative p-8 bg-blue-200 overflow-hidden w-full lg:w-1/2">
-            <div className="flex flex-col gap-6 md:gap-12 max-w-full md:max-w-[60%]">
+          <div className="rounded relative p-8 bg-[#3f4139] overflow-hidden w-full lg:w-1/2 text-white">
+            <div className="flex flex-col gap-6 md:gap-12 max-w-full md:max-w-[60%] z-10 relative">
               <p className="text-center md:text-start">
-                Accéder à votre profil et rentrez vos informations !
+                Accédez à votre profil et remplissez vos informations !
               </p>
-              <Link href={ROUTES.RIDER.PROFILE}>
-                <Button className="bg-blue-700 text-white font-semibold hover:bg-blue-800 w-full z-4">
+              <Link href={ROUTES.RIDER.PROFILE} className="w-auto">
+                <Button className="bg-primary-green text-black font-semibold hover:bg-[#d9ff65] px-6 min-w-fit">
                   Accéder à mon profil
                 </Button>
               </Link>
             </div>
             <img
-              className="grayscale absolute top-1/2 -translate-y-1/3 -right-[10%] w-auto md:w-auto h-[120%] z-0"
+              className="grayscale absolute top-1/2 -translate-y-1/3 -right-[10%] w-auto h-[120%] z-0 opacity-30"
               src="/assets/img/moto-illu.png"
               alt=""
             />
@@ -73,42 +98,44 @@ export default function Home() {
 
           {/* Bloc stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-            <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl transition w-full border border-blue-700">
-              <p className="text-md text-blue-700 mb-4">Messages reçus</p>
-              <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
-                <MessageSquare className="w-10 h-10 text-white bg-blue-700 rounded-md p-2" />
-                <p className="text-4xl text-blue-700 font-bold">
-                  {NewMessages?.count ?? 0}
-                </p>
-              </div>
-              <Link href={ROUTES.RIDER.PROFILE} className="w-1/2">
-                <Button
-                  variant="outline"
-                  className="text-blue-700 bg-white text-white border-blue-700 hover:bg-blue-700 hover:text-white text-blue-700 w-full"
-                >
-                  ma messagerie
-                </Button>
-              </Link>
+            {/* Colonne droite : dashboard */}
+            <div className="w-full">
+              <ViewDashboard views={session.user?.views.viewEntries} />
             </div>
-
-            <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl transition w-full border border-blue-700">
-              <p className="text-md text-blue-700 mb-4">
-                Vues sur mon profil ce mois
-              </p>
-              <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
-                <ThumbsUp className="w-10 h-10 text-white bg-blue-700 rounded-md p-2" />
-                <p className="text-4xl font-bold text-blue-700">
-                  {session.user?.tempViewsStats.monthlyViews || 0}
+            {/* Colonne gauche : messages reçus + vues du mois précédent */}
+            <div className="flex flex-col justify-between gap-4 w-full">
+              {/* Vues profil */}
+              <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl border w-full">
+                <p className="text-md text-[#3f4139] font-semibold mb-4">
+                  Vues du mois précédent
                 </p>
+                <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
+                  <Eye className="w-10 h-10 text-white bg-[#3f4139] rounded-md p-2" />
+                  <p className="text-4xl text-[#3f4139] font-bold">
+                    {session.user?.views.lastMonthViews || 0}
+                  </p>
+                </div>
               </div>
-              <Link href={ROUTES.RIDER.PROFILE} className="w-1/2">
-                <Button
-                  variant="outline"
-                  className="text-blue-700 bg-white text-white border-blue-700 hover:bg-blue-700 hover:text-white text-blue-700 w-full"
-                >
-                  voir les vues
-                </Button>
-              </Link>
+              {/* Messages reçus */}
+              <div className="flex flex-col items-center md:items-start text-center p-6 gap-4 rounded-xl border w-full">
+                <p className="text-md text-[#3f4139] font-semibold mb-4">
+                  Messages reçus
+                </p>
+                <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
+                  <MessageSquare className="w-10 h-10 text-white bg-[#3f4139] rounded-md p-2" />
+                  <p className="text-4xl text-[#3f4139] font-bold">
+                    {NewMessages?.count ?? 0}
+                  </p>
+                </div>
+                <Link href={ROUTES.MESSAGERIE} className="w-auto">
+                  <Button
+                    variant="outline"
+                    className="border-[#3f4139] text-[#3f4139] hover:bg-[#3f4139] hover:text-white px-6 min-w-fit"
+                  >
+                    Ma messagerie
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -116,7 +143,7 @@ export default function Home() {
 
       {/* Call to action */}
       <section
-        className="relative w-full h-[60vh] bg-cover bg-center"
+        className="relative w-full h-[60vh] bg-cover bg-center mb-8"
         style={{ backgroundImage: "url('/assets/img/ctaBG.webp')" }}
       >
         <div className="absolute inset-0 bg-black/40" />
@@ -125,58 +152,28 @@ export default function Home() {
             Trouve ton prochain sponsor dès aujourd’hui.
           </h2>
           <Link href={ROUTES.SPONSORS.LIST}>
-            <Button className="bg-transparent border-white border-2 text-white font-semibold hover:bg-gray-100 hover:text-black p-[1.5rem]">
+            <Button className="bg-transparent border-2 border-primary-green text-primary-green font-semibold hover:bg-primary-green hover:text-black p-[1.5rem]">
               Rechercher des sponsors
             </Button>
           </Link>
         </div>
       </section>
 
-      <ArticleSlider />
+      <section className="bg-white text-[#0A0B1E] py-12 px-6 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          Explorez nos derniers articles
+        </h2>
+        <p className="text-base md:text-lg max-w-2xl mx-auto mb-10">
+          Découvrez des conseils, témoignages, et actualités pour progresser
+          dans votre discipline et mieux comprendre comment attirer des
+          sponsors. Bonne lecture !
+        </p>
 
-      {/* Articles de blog
-            <section className="py-12 px-6 bg-white">
-                <h2 className="text-2xl font-bold mb-6">Derniers articles</h2>
-                <div className="flex gap-4 overflow-x-auto pb-4">
-                    {[1, 2, 3, 4].map((n) => (
-                        <div
-                            key={n}
-                            className="min-w-[250px] bg-white rounded-xl border-gray-100 border overflow-hidden hover:shadow-md transition"
-                        >
-                            <img
-                                src={`assets/img/blog-${n}.jpg`}
-                                alt={`Article ${n}`}
-                                className="w-full h-40 object-cover"
-                            />
-                            <div className="p-4">
-                                <h3 className="text-lg font-semibold mb-2">Titre de l'article {n}</h3>
-                                <p className="text-sm text-gray-600 line-clamp-3">
-                                    Un aperçu du contenu de l'article numéro {n}. Voici quelques lignes intéressantes pour teaser la lecture...
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section> */}
+        <ArticleSlider />
+      </section>
 
-      {/* Résultats de contest
-            <section className="py-12 px-6 bg-gray-50">
-                <h2 className="text-2xl font-bold mb-6">Résultats récents de contests</h2>
-                <div className="flex gap-4 overflow-x-auto pb-4">
-                    {[1, 2, 3, 4].map((n) => (
-                        <div
-                            key={n}
-                            className="min-w-[200px] bg-white rounded-xl border border-gray-200 p-4 shadow-xs hover:shadow-md transition"
-                        >
-                            <h4 className="text-lg font-semibold mb-1">Contest #{n}</h4>
-                            <p className="text-sm text-gray-500 mb-1">Date : 2025-03-0{n}</p>
-                            <p className="text-sm text-black font-medium">Résultat : Top {n}</p>
-                        </div>
-                    ))}
-                </div>
-            </section> */}
-
-      {/* <BottomNav /> */}
+      <TestimonialsSection />
+      <Footer />
     </main>
   );
 }

@@ -9,16 +9,25 @@ import { z } from "zod";
 import { useRegister } from "@/entities/authentication/authentication.hooks";
 import type { GenderIdentity } from "@kascad-app/shared-types";
 import { Form } from "@components/ui/form";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 
 const registerFormSchema = z
   .object({
-    email: z.string().email(),
-    firstName: z.string().min(2, "First name must be at least 2 characters"),
-    lastName: z.string().min(2, "Last name must be at least 2 characters"),
+    email: z.string().email("Adresse email invalide"),
+    firstName: z
+      .string()
+      .min(2, "Le prénom doit contenir au moins 2 caractères"),
+    lastName: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
     gender: z.enum(["homme", "femme", "autre"]),
     password: z
       .string()
-      .min(6, "Password must be at least 6 characters")
+      .min(6, "Le mot de passe doit contenir au moins 6 caractères")
       .refine(
         (val) =>
           /[A-Z]/.test(val) &&
@@ -27,13 +36,13 @@ const registerFormSchema = z
           /[^A-Za-z0-9]/.test(val),
         {
           message:
-            "Password must include uppercase, lowercase, number, and symbol",
+            "Le mot de passe doit contenir une majuscule, une minuscule, un chiffre et un symbole",
         },
       ),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "Les mots de passe ne correspondent pas",
     path: ["confirmPassword"],
   });
 
@@ -65,12 +74,12 @@ export const RegisterFormWidget: React.FC = () => {
         gender: values.gender as GenderIdentity,
       })
       .then(() => {
-        toast.success("Registration successful");
+        toast.success("Inscription réussie");
         router.push(ROUTES.HOMEPAGE);
       })
       .catch((err) => {
         console.error(err);
-        toast.error("Registration failed");
+        toast.error("Échec de l'inscription");
       });
   }
 
@@ -85,13 +94,13 @@ export const RegisterFormWidget: React.FC = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full max-w-md space-y-4"
         >
-          <h2 className="font-michroma text-title ">Register</h2>
+          <h2 className="font-michroma text-title ">Inscription</h2>
           <div key="email">
             <label
               htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
-              Email
+              Adresse email
             </label>
             <input
               type="email"
@@ -107,7 +116,7 @@ export const RegisterFormWidget: React.FC = () => {
                 htmlFor="firstName"
                 className="block text-sm font-medium text-gray-700"
               >
-                Firstname
+                Prénom
               </label>
               <input
                 type="firstName"
@@ -127,7 +136,7 @@ export const RegisterFormWidget: React.FC = () => {
                 htmlFor="lastName"
                 className="block text-sm font-medium text-gray-700"
               >
-                Lastname
+                Nom
               </label>
               <input
                 type="lastName"
@@ -148,24 +157,30 @@ export const RegisterFormWidget: React.FC = () => {
               htmlFor="gender"
               className="block text-sm font-medium text-gray-700"
             >
-              Gender
+              Genre
             </label>
-            <select
-              id="gender"
-              {...form.register("gender")}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            <Select
+              value={form.watch("gender") as "homme" | "femme" | "autre"}
+              onValueChange={(value) =>
+                form.setValue("gender", value as "homme" | "femme" | "autre")
+              }
             >
-              <option value="homme">Homme</option>
-              <option value="femme">Femme</option>
-              <option value="autre">Autre</option>
-            </select>
+              <SelectTrigger className="mt-1 w-full border border-gray-300 rounded-md">
+                <SelectValue placeholder="Sélectionner le genre" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="homme">Homme</SelectItem>
+                <SelectItem value="femme">Femme</SelectItem>
+                <SelectItem value="autre">Autre</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div key="password">
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
             >
-              Password
+              Mot de passe
             </label>
             <input
               type="password"
@@ -185,7 +200,7 @@ export const RegisterFormWidget: React.FC = () => {
               htmlFor="confirmPassword"
               className="block text-sm font-medium text-gray-700"
             >
-              Confirm Password
+              Vérifier le mot de passe
             </label>
             <input
               type="password"
@@ -205,24 +220,24 @@ export const RegisterFormWidget: React.FC = () => {
           )}
           <button
             type="submit"
-            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-blue-300${
+            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-accent${
               registerMutation.isMutating ? " sending" : ""
             }`}
             disabled={registerMutation.isMutating}
           >
-            Register
+            Inscription
           </button>
           <div className="flex flex-row items-center justify-center">
             <span className="h-0.5 w-full bg-dark-gradient"></span>
-            <p className="px-2 font-bold">or</p>
+            <p className="px-2 font-bold">ou</p>
             <span className="h-0.5 w-full bg-dark-gradient"></span>
           </div>
         </form>
         <button
           onClick={handleChangeAuth}
-          className="w-full py-2 bg-white text-medium px-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-md hover:bg-blue-300 hover:border-blue-300 hover:text-white  transition duration-200"
+          className="w-full py-2 bg-white text-medium px-4 border-2 font-semibold rounded-md hover:border-[#3f4139] hover:bg-[#3f4139] hover:text-white  transition duration-200"
         >
-          Login
+          Connexion
         </button>
       </div>
     </Form>

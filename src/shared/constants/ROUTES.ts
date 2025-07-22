@@ -12,6 +12,8 @@ export const ROUTES = {
     EDIT_PROFILE: "/profil/edit",
   },
 
+  MESSAGERIE: "/messagerie",
+
   RIDERS: {
     LIST: "/riders",
     DETAIL: (slug: string) => `/riders/${slug}`,
@@ -20,5 +22,5 @@ export const ROUTES = {
   SPONSORS: {
     LIST: "/sponsors",
     DETAIL: (slug: string) => `/sponsors/${slug}`,
-  }
+  },
 };

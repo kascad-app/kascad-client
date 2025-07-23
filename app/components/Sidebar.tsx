@@ -53,11 +53,11 @@ export default function Sidebar({ children }: SidebarProps) {
       label: "Profil",
       icon: <User className="w-4 h-4" />,
     },
-    {
-      href: ROUTES.MESSAGERIE,
-      label: "Messagerie",
-      icon: <MessageCircle className="w-4 h-4" />,
-    },
+    // {
+    //   href: ROUTES.MESSAGERIE,
+    //   label: "Messagerie",
+    //   icon: <MessageCircle className="w-4 h-4" />,
+    // },
     {
       href: ROUTES.OFFRES,
       label: "Découvrir les offres",

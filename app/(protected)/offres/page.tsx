@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useGetOffers } from "@/entities/offers/offers.hook";
 import { IOffer } from "@kascad-app/shared-types";
 import {
@@ -14,15 +14,19 @@ import {
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 9;
 
 export default function OffresPage() {
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useGetOffers({ page, limit: PAGE_SIZE });
   // Adaptation au nouveau type IOfferPaginee
-  const offersArray: IOffer[] = Array.isArray(data?.offers) ? data.offers : [];
+  const offersArray: IOffer[] = Array.isArray(data?.data) ? data?.data : [];
   const pagination = data?.pagination;
   const totalPages = pagination?.totalPages || 1;
+
+  useEffect(() => {
+    console.log("Data fetched:", data?.data);
+  }, [data]);
 
   return (
     <main className="min-h-screen bg-white text-black p-8">
@@ -42,44 +46,59 @@ export default function OffresPage() {
               offersArray.map((offer: IOffer) => (
                 <div
                   key={offer._id}
-                  className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 flex flex-col gap-4 hover:shadow-md transition-all"
+                  className="relative bg-white border-2 border-[#eaf7c2] rounded-2xl shadow-lg p-6 flex flex-col gap-4 transition-all duration-300 group overflow-hidden hover:-translate-y-2 hover:shadow-[0_8px_32px_0_rgba(210,250,82,0.25)] hover:border-[#d2fa52]"
                 >
-                  <h2 className="text-lg font-bold text-[#3f4139] mb-2">
-                    {offer.title}
-                  </h2>
-                  <div className="flex flex-wrap gap-2 mb-2">
+                  <div className="absolute top-0 right-0 m-4 flex gap-2 z-10">
                     {offer.sports.map((sport: string) => (
-                      <Badge
+                      <span
                         key={sport}
-                        variant="secondary"
-                        className="text-xs px-2 py-1"
+                        className="bg-[#f6ffe0] text-[#3f4139] px-4 py-1 rounded-full border border-[#d2fa52] text-xs font-bold uppercase tracking-wide shadow-sm transition-all duration-200 "
                       >
                         {sport}
-                      </Badge>
+                      </span>
                     ))}
                   </div>
-                  <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-semibold">Type :</span>{" "}
-                    {offer.contractType}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-semibold">Statut :</span>{" "}
-                    {offer.status}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-semibold">Budget :</span>{" "}
-                    {offer.budgetMin ? offer.budgetMin : "-"}{" "}
-                    {offer.currency || ""}
-                    {offer.budgetMax
-                      ? ` - ${offer.budgetMax} ${offer.currency || ""}`
-                      : ""}
-                  </p>
-                  <p className="text-sm text-gray-700 mt-2 line-clamp-3">
+                  <h2 className="text-2xl font-extrabold text-[#101B08] mb-2 font-michroma drop-shadow-lg">
+                    {offer.title}
+                  </h2>
+                  <div className="flex flex-wrap gap-3 mb-2">
+                    <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#f6ffe0] text-[#3f4139] px-3 py-0.5 rounded-lg border border-[#eaf7c2]">
+                      Contrat :{" "}
+                      <span className="font-semibold">
+                        {offer.contractType}
+                      </span>
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#eaf7c2] text-[#3f4139] px-3 py-0.5 rounded-lg border border-[#d2fa52]">
+                      Statut :{" "}
+                      <span className="font-semibold">{offer.status}</span>
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="font-bold text-[#3f4139] text-sm border-b-2 border-[#d2fa52] pb-0.5">
+                      Budget :
+                    </span>
+                    <span className="text-sm text-[#3f4139] px-3 py-1 border border-[#d2fa52] rounded-lg bg-[#f6ffe0] font-semibold">
+                      {offer.budgetMin ? offer.budgetMin : "-"}{" "}
+                      {offer.currency || ""}
+                      {offer.budgetMax
+                        ? ` - ${offer.budgetMax} ${offer.currency || ""}`
+                        : ""}
+                    </span>
+                  </div>
+                  <p className="text-base text-[#101B08] font-figtree mt-2 line-clamp-3">
                     {offer.description}
                   </p>
-                  <p className="text-xs text-gray-400 mt-2">
-                    Publiée le {new Date(offer.createdAt).toLocaleDateString()}
-                  </p>
+                  <div className="flex items-center justify-between mt-4">
+                    <span className="text-xs text-[#7a7a7a] font-normal">
+                      Publiée le{" "}
+                      {new Date(offer.createdAt).toLocaleDateString()}
+                    </span>
+                    <button className="px-6 py-2 bg-[#eaf7c2] text-[#3f4139] font-bold text-xs border border-[#b6d94c] rounded-lg shadow-sm transition-all duration-200 hover:bg-[#d2fa52] hover:text-[#101B08] hover:border-[#d2fa52] active:scale-95">
+                      Postuler
+                    </button>
+                  </div>
+                  <div className="absolute left-0 bottom-0 w-full h-2 bg-[#eaf7c2] opacity-70 rounded-b-2xl group-hover:bg-[#d2fa52] group-hover:opacity-80 transition-all duration-300" />
+                  <div className="absolute right-0 top-0 w-10 h-10 bg-[#d2fa52] rounded-bl-2xl blur-md opacity-20" />
                 </div>
               ))
             )}

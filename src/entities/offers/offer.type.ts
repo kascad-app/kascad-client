@@ -2,7 +2,7 @@ import { ContractType, IOffer } from "@kascad-app/shared-types";
 import { z } from "zod";
 
 export interface IOfferPaginee {
-  offers: IOffer[];
+  data: IOffer[];
   pagination: {
     currentPage: number;
     totalPages: number;

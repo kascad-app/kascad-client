@@ -69,7 +69,7 @@ export default function RiderPage() {
   const profilePicture =
     rider.avatarUrl && rider.avatarUrl.includes("http")
       ? rider.avatarUrl
-      : "/assets/img/blog4.jpg";
+      : "/assets/img/blog-4.jpg";
   const images = rider.images?.map((img) => img.url).filter(Boolean) || [];
   const stats = rider.performanceSummary?.performances || [];
   const podiums = rider.performanceSummary?.totalPodiums ?? 0;
@@ -144,7 +144,7 @@ export default function RiderPage() {
             alt={fullName}
             width={600}
             height={800}
-            className="rounded-xl object-cover w-full border-4 border-[#D2FA52]"
+            className="rounded-xl object-cover w-full border-4 border-primary-green"
           />
         </div>
 
@@ -190,7 +190,7 @@ export default function RiderPage() {
               {sports.map((s, i) => (
                 <span key={i} className="relative inline-block group">
                   <span
-                    className="block px-6 py-2 text-xs uppercase font-bold tracking-wider text-[#D2FA52] bg-[#101B08] transition-transform group-hover:scale-105"
+                    className="block px-6 py-2 text-xs uppercase font-bold tracking-wider text-primary-green bg-[#101B08] transition-transform group-hover:scale-105"
                     style={{
                       clipPath: "polygon(0% 10%, 90% 0%, 100% 90%, 10% 100%)",
                     }}
@@ -437,7 +437,7 @@ export default function RiderPage() {
 
                     {performance?.notes && (
                       <div className="mt-3 text-sm text-gray-300">
-                        <p className="font-semibold text-[#D2FA52] mb-1">
+                        <p className="font-semibold text-primary-green mb-1">
                           Notes :
                         </p>
                         <p>{performance.notes}</p>

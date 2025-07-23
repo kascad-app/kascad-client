@@ -85,7 +85,7 @@ export default function RidersPage() {
             `${rider.identity.firstName} ${rider.identity.lastName}`;
           const sports = rider.preferences?.sports?.map((s) => s.name) || [];
           const bio = rider.identity.bio || "Pas de bio disponible.";
-          const image = rider.avatarUrl || "/assets/img/blog4.jpg";
+          const image = rider.avatarUrl || "/assets/img/blog-4.jpg";
 
           return (
             <Link

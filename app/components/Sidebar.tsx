@@ -53,20 +53,20 @@ export default function Sidebar({ children }: SidebarProps) {
       label: "Profil",
       icon: <User className="w-4 h-4" />,
     },
-    {
-      href: ROUTES.MESSAGERIE,
-      label: "Messagerie",
-      icon: <MessageCircle className="w-4 h-4" />,
-    },
     // {
-    //   href: ROUTES.RIDERS.LIST,
-    //   label: "Liste des riders",
-    //   icon: <Users className="w-4 h-4" />,
+    //   href: ROUTES.MESSAGERIE,
+    //   label: "Messagerie",
+    //   icon: <MessageCircle className="w-4 h-4" />,
     // },
+    {
+      href: ROUTES.OFFRES,
+      label: "Découvrir les offres",
+      icon: <Briefcase className="w-4 h-4" />,
+    },
     {
       href: ROUTES.SPONSORS.LIST,
       label: "Liste des sponsors",
-      icon: <Briefcase className="w-4 h-4" />,
+      icon: <Users className="w-4 h-4" />, // Meilleur icône pour sponsors
     },
   ];
 

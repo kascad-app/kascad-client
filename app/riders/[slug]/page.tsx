@@ -23,10 +23,18 @@ export default function RiderPage() {
     null,
   );
 
+  // Overlay loader sur toute la page
   if (isLoading)
-    return <p className="p-8 text-[#101B08]">Chargement du profil...</p>;
+    return (
+      <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white bg-opacity-90 min-h-screen min-w-full">
+        <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-[#d2fa52] mb-8"></div>
+        <span className="text-2xl text-[#101B08] font-bold font-figtree">
+          Chargement du portfolio...
+        </span>
+      </div>
+    );
   if (error || !rider)
-    return <p className="p-8 text-red-500">Rider introuvable.</p>;
+    return <p className="p-8 text-red-500">Une erreur est survenue.</p>;
 
   const closeLightbox = () => setSelectedImageIndex(null);
   const showPrevImage = () => {
@@ -118,7 +126,7 @@ export default function RiderPage() {
   ];
 
   return (
-    <div className="bg-[#F4F3EF] text-[#000000] min-h-screen">
+    <div className="bg-[#F4F3EF] text-[#000000] min-h-screen pb-10">
       <div className="relative text-center mb-16 h-[50dvh] flex items-center justify-center py-16">
         {/* BLOB EN FOND */}
         <ShapeCanvas className="z-[0] absolute inset-0" />
@@ -437,7 +445,7 @@ export default function RiderPage() {
 
                     {performance?.notes && (
                       <div className="mt-3 text-sm text-gray-300">
-                        <p className="font-semibold text-primary-green mb-1">
+                        <p className="font-semibold text-primary-green">
                           Notes :
                         </p>
                         <p>{performance.notes}</p>

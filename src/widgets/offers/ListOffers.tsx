@@ -51,7 +51,7 @@ export default function ListOffers({
     <div className="flex-1 flex flex-col relative">
       <h1 className="text-2xl font-bold mb-8">Offres disponibles</h1>
       <div className="flex-1">
-        {!isLoading ? (
+        {isLoading ? (
           <div className="flex flex-col items-center justify-center h-64 w-full">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#d2fa52] mb-6"></div>
             <span className="text-lg text-[#101B08] font-bold font-figtree">

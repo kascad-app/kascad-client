@@ -9,7 +9,7 @@ interface MasonryGalleryProps {
 }
 
 export default function MasonryGallery({ images, onImageClick }: MasonryGalleryProps) {
-    const galleryImages = images.slice(1); // On saute la première image (déjà utilisée en haut)
+    const galleryImages = images; // On saute la première image (déjà utilisée en haut)
 
     const breakpoints = {
         default: 4,

@@ -22,13 +22,17 @@ export default function SponsorsPage() {
     );
   }
 
+  const now = new Date();
+  const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
   const sortedByRecent = [...sponsors]
     .filter((sponsor: any) => sponsor.createdAt)
     .sort(
       (a: any, b: any) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
-  const recentSponsors = sortedByRecent.slice(0, 2);
+  const recentSponsors = sortedByRecent.filter(
+    (sponsor: any) => new Date(sponsor.createdAt) >= oneWeekAgo,
+  );
   const recentSlugsOrIds = new Set(
     recentSponsors.map((sponsor: any) => sponsor.slug || sponsor.id),
   );

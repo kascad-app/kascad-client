@@ -15,14 +15,13 @@ import RiderTrainingKPI from "../../components/RiderKPITrainingCard";
 import RiderSponsorsSection from "../../components/RiderSponsorsSection";
 import ScrollSpyNav from "../../components/ScrollSpyNav";
 
+
 export default function RiderPage() {
   const { slug } = useParams();
   const { data: rider, isLoading, error } = useGetRider(slug as string);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
   );
-
-
 
   if (isLoading)
     return <p className="p-8 text-[#101B08]">Chargement du profil...</p>;
@@ -66,8 +65,10 @@ export default function RiderPage() {
       ? `${rider.identity?.city || ""}${rider.identity?.city && rider.identity?.country ? ", " : ""
       }${rider.identity?.country || ""}`
       : "Localisation inconnue";
-  const profilePicture = rider.avatarUrl || "/default-avatar.png";
-  const images = rider.images?.map((img) => img.url).filter(Boolean) || [];
+  const profilePicture =
+    rider.avatarUrl && rider.avatarUrl.includes("http")
+      ? rider.avatarUrl
+      : "/assets/img/blog4.jpg"; const images = rider.images?.map((img) => img.url).filter(Boolean) || [];
   const stats = rider.performanceSummary?.performances || [];
   const podiums = rider.performanceSummary?.totalPodiums ?? 0;
   const networks: SocialNetwork[] =
@@ -116,7 +117,7 @@ export default function RiderPage() {
           <h1 className="text-4xl md:text-5xl font-michroma font-bold mb-2">
             {fullName}
           </h1>
-          <p className="uppercase py-8 text-[1.6rem] font-michroma tracking-widest text-[#B1BD93]">
+          <p className="uppercase py-8 text-[1.6rem] max-w-[60dvw] font-michroma tracking-widest text-[#B1BD93]">
             {sports.join(", ")}
           </p>
         </div>
@@ -124,21 +125,17 @@ export default function RiderPage() {
 
       <div className="flex flex-col md:flex-row gap-10 max-w-6xl mx-auto items-start">
         <div className="w-full md:w-1/2 ">
-          {images[0] ? (
-            <Image
-              src={profilePicture}
-              alt={fullName}
-              width={600}
-              height={800}
-              className="rounded-xl object-cover w-full border-4 border-[#D2FA52]"
-            />
-          ) : (
-            <div className="w-full aspect-[3/4] bg-[#D2FA52] rounded-xl"></div>
-          )}
+          <Image
+            src={profilePicture}
+            alt={fullName}
+            width={600}
+            height={800}
+            className="rounded-xl object-cover w-full border-4 border-[#D2FA52]"
+          />
         </div>
 
         <div className="w-full md:w-1/2 flex flex-col gap-4" id="profile">
-          <p className="whitespace-pre-line text-sm leading-relaxed">
+          <p className="whitespace-pre-line text-lm leading-relaxed">
             {rider.identity.bio || "Pas de bio disponible."}
           </p>
 
@@ -147,33 +144,48 @@ export default function RiderPage() {
               <div className="text-3xl font-bold">{age}</div>
               <div className="text-sm ">ans</div>
             </div>
+            <p className="uppercase text-sm mb-2 font-michroma">Localistation</p>
+
             <div className="text-sm ">{location}</div>
           </div>
 
-          <div className="flex flex-wrap gap-2 mt-4">
+          {/* <div className="flex flex-wrap gap-2 mt-4">
             {sports.map((s, i) => (
-              <span
-                key={i}
-                className="px-4 py-1 text-xs uppercase tracking-wide rounded-full bg-[#3F4139] text-[#F4F3EF] font-semibold"
-              >
-                {s}
+              <span className="relative inline-block group">
+                <span
+                  className="block px-6 py-2 text-xs uppercase font-bold tracking-wider text-[#D2FA52] bg-[#101B08] transition-transform group-hover:scale-105"
+                  style={{
+                    clipPath: 'polygon(0% 10%, 90% 0%, 100% 90%, 10% 100%)',
+                  }}
+                >
+                  {s}
+                </span>
+                <span className="absolute left-0 -bottom-[2px] w-full h-[2px] bg-[#101B08]"></span>
               </span>
             ))}
-          </div>
+          </div> */}
 
+          {/* RÉSEAUX */}
           <div className="mt-6">
             <p className="uppercase text-sm mb-2 font-michroma">Réseaux</p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-3">
               {Object.values(SocialNetwork).map(
                 (network) =>
                   hasNetwork(network as SocialNetwork) && (
-                    <span
-                      key={network}
-                      className="px-3 py-1 rounded-full text-sm bg-[#B1BD93] text-[#101B08] uppercase"
-                    >
-                      {network}
+                    <span className="relative inline-block group">
+                      <span
+                        className="block px-6 py-2 text-xs uppercase font-bold tracking-wider text-[#101B08] bg-[#B1BD93] transition-transform group-hover:scale-105"
+                        style={{
+                          clipPath: 'polygon(10% 0%, 100% 10%, 90% 100%, 0% 90%)',
+                        }}
+                      >
+                        {network}
+                      </span>
+                      <span className="absolute left-0 -bottom-[2px] w-full h-[2px] bg-[#101B08]"></span>
                     </span>
-                  ),
+
+
+                  )
               )}
             </div>
           </div>
@@ -214,19 +226,17 @@ export default function RiderPage() {
 
 
 
-      <div className="mt-20 max-w-6xl mx-auto px-4" id="gallery">
-        <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
-          Galerie
-        </h3>
-        {images.length > 1 ? (
+      {images.length > 1 && (
+        <div className="mt-20 max-w-6xl mx-auto px-4" id="gallery">
+          <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
+            Galerie
+          </h3>
           <MasonryGallery
             images={images}
             onImageClick={(index) => setSelectedImageIndex(index)}
           />
-        ) : (
-          <div className="w-[500px] h-[600px] bg-[#D2FA52] rounded-xl"></div>
-        )}
-      </div>
+        </div>
+      )}
 
       {youtube.length > 0 && (
         <div className="mt-20 max-w-6xl mx-auto px-4" id="videos">
@@ -318,9 +328,6 @@ export default function RiderPage() {
         />
       </div>
 
-
-
-
       {/* Performances */}
       <div className="mt-20 max-w-6xl mx-auto px-4" id="performances">
         <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
@@ -335,7 +342,7 @@ export default function RiderPage() {
           </p>
         </div>
 
-        {stats.length === 0 ? (
+        {stats.length < 0 ? (
           <div className="text-center py-12 bg-[#1a1a19] text-white rounded-xl">
             <Trophy className="w-12 h-12 text-gray-500 mx-auto mb-4" />
             <p className="text-lg">Aucune performance enregistrée</p>
@@ -364,8 +371,7 @@ export default function RiderPage() {
                     {performance?.sport?.name || "Sport inconnu"}
                   </p>
                   <p className="text-sm text-gray-300">
-                    {`${performance?.location?.city || "Ville inconnue"}, ${performance?.location?.country || "Pays inconnu"
-                      }`}
+                    {`${performance?.location?.city || "Ville inconnue"}, ${performance?.location?.country || "Pays inconnu"}`}
                   </p>
 
                   {performance?.weather && (
@@ -377,9 +383,7 @@ export default function RiderPage() {
 
                   {performance?.notes && (
                     <div className="mt-3 text-sm text-gray-300">
-                      <p className="font-semibold text-[#D2FA52] mb-1">
-                        Notes :
-                      </p>
+                      <p className="font-semibold text-[#D2FA52] mb-1">Notes :</p>
                       <p>{performance.notes}</p>
                     </div>
                   )}
@@ -389,6 +393,8 @@ export default function RiderPage() {
           </div>
         )}
       </div>
+
+
 
       {/* Training */}
       <div id="entrainement">

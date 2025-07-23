@@ -13,8 +13,8 @@ import MasonryGallery from "../../components/MasonryGallery";
 import RiderKPISection from "../../components/RiderKPISection";
 import RiderTrainingKPI from "../../components/RiderKPITrainingCard";
 import RiderSponsorsSection from "../../components/RiderSponsorsSection";
-import ScrollSpyNav from "../../components/ScrollSpyNav";
-
+import ScrollSpyNav, { Section } from "../../components/ScrollSpyNav";
+import ShapeCanvas from "../../components/ShapeCanvas";
 
 export default function RiderPage() {
   const { slug } = useParams();
@@ -42,33 +42,35 @@ export default function RiderPage() {
 
   const fullName =
     rider.identity?.fullName ||
-    `${rider.identity?.firstName || ""} ${rider.identity?.lastName || ""
-      }`.trim() ||
+    `${rider.identity?.firstName || ""} ${
+      rider.identity?.lastName || ""
+    }`.trim() ||
     "Nom non renseigné";
   const sports =
     rider.preferences?.sports?.map((s) => s.name).filter(Boolean) || [];
   const birthDate = rider.identity?.birthDate
     ? new Date(rider.identity.birthDate)
     : null;
-  const today = new Date();
-  const age = birthDate
-    ? today.getFullYear() -
-    birthDate.getFullYear() -
-    (today.getMonth() < birthDate.getMonth() ||
-      (today.getMonth() === birthDate.getMonth() &&
-        today.getDate() < birthDate.getDate())
-      ? 1
-      : 0)
-    : null;
+  const age: number = birthDate
+    ? new Date().getFullYear() -
+      birthDate.getFullYear() -
+      (new Date().getMonth() < birthDate.getMonth() ||
+      (new Date().getMonth() === birthDate.getMonth() &&
+        new Date().getDate() < birthDate.getDate())
+        ? 1
+        : 0)
+    : 0;
   const location =
     rider.identity?.city || rider.identity?.country
-      ? `${rider.identity?.city || ""}${rider.identity?.city && rider.identity?.country ? ", " : ""
-      }${rider.identity?.country || ""}`
-      : "Localisation inconnue";
+      ? `${rider.identity?.city || ""}${
+          rider.identity?.city && rider.identity?.country ? ", " : ""
+        }${rider.identity?.country || ""}`
+      : "";
   const profilePicture =
     rider.avatarUrl && rider.avatarUrl.includes("http")
       ? rider.avatarUrl
-      : "/assets/img/blog4.jpg"; const images = rider.images?.map((img) => img.url).filter(Boolean) || [];
+      : "/assets/img/blog4.jpg";
+  const images = rider.images?.map((img) => img.url).filter(Boolean) || [];
   const stats = rider.performanceSummary?.performances || [];
   const podiums = rider.performanceSummary?.totalPodiums ?? 0;
   const networks: SocialNetwork[] =
@@ -102,13 +104,27 @@ export default function RiderPage() {
     return <span className="text-white font-semibold">{ranking}ᵉ</span>;
   };
 
+  // Détermination dynamique des sections à afficher dans le scrollspy
+  const scrollSections: Section[] = [
+    { id: "profile", label: "Profil" },
+    ...(images.length > 1 ? [{ id: "gallery", label: "Galerie" }] : []),
+    ...(youtube.length > 0 ? [{ id: "videos", label: "Vidéos" }] : []),
+    ...(rider.sponsorSummary?.currentSponsors?.length > 0
+      ? [{ id: "sponsors", label: "Sponsors" }]
+      : []),
+    ...(stats.length > 0 || sessionsPerWeek > 0
+      ? [{ id: "performances", label: "Performances" }]
+      : []),
+  ];
+
   return (
-    <div className="bg-[#F4F3EF] text-[#000000] min-h-screen py-16">
-      <div className="relative text-center mb-16 h-[50dvh] flex items-center justify-center">
+    <div className="bg-[#F4F3EF] text-[#000000] min-h-screen">
+      <div className="relative text-center mb-16 h-[50dvh] flex items-center justify-center py-16">
         {/* BLOB EN FOND */}
-        <div className="absolute inset-0 flex items-center justify-center z-5">
+        <ShapeCanvas className="z-[0] absolute inset-0" />
+        {/* <div className="absolute inset-0 flex items-center justify-center z-5">
           <div className="w-72 h-72 md:w-96 md:h-96 bg-primary-green rounded-full blur-3xl opacity-30 animate-pulse" />
-        </div>
+        </div> */}
 
         {/* TEXTE */}
         <div className="relative z-10">
@@ -121,7 +137,7 @@ export default function RiderPage() {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-10 max-w-6xl mx-auto items-start">
+      <div className="flex flex-col md:flex-row gap-10 max-w-6xl mx-auto items-start relative z-10">
         <div className="w-full md:w-1/2 ">
           <Image
             src={profilePicture}
@@ -134,56 +150,88 @@ export default function RiderPage() {
 
         <div className="w-full md:w-1/2 flex flex-col gap-4" id="profile">
           <p className="whitespace-pre-line text-lm leading-relaxed">
-            {rider.identity.bio || "Pas de bio disponible."}
+            {rider.identity.bio || (
+              <span className="italic text-gray-400">
+                Aucune bio disponible.
+              </span>
+            )}
           </p>
 
           <div className="flex flex-col gap-6 ">
             <div>
-              <div className="text-3xl font-bold">{age}</div>
-              <div className="text-sm ">ans</div>
+              {birthDate && age > 0 ? (
+                <>
+                  <span className="text-3xl font-bold">{age}</span>
+                  <div className="text-sm ">ans</div>
+                </>
+              ) : (
+                <span className="font-regular italic text-lm text-gray-400">
+                  Date de naissance non renseignée
+                </span>
+              )}
             </div>
-            <p className="uppercase text-sm mb-2 font-michroma">Localistation</p>
+            <div>
+              <p className="uppercase text-sm mb-2 font-michroma">
+                Localistation
+              </p>
 
-            <div className="text-sm ">{location}</div>
+              <div>
+                {location || (
+                  <span className="italic text-lm text-gray-400">
+                    Aucune localisation disponible.
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
 
-          {/* <div className="flex flex-wrap gap-2 mt-4">
-            {sports.map((s, i) => (
-              <span className="relative inline-block group">
-                <span
-                  className="block px-6 py-2 text-xs uppercase font-bold tracking-wider text-[#D2FA52] bg-[#101B08] transition-transform group-hover:scale-105"
-                  style={{
-                    clipPath: 'polygon(0% 10%, 90% 0%, 100% 90%, 10% 100%)',
-                  }}
-                >
-                  {s}
+          {sports.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {sports.map((s, i) => (
+                <span key={i} className="relative inline-block group">
+                  <span
+                    className="block px-6 py-2 text-xs uppercase font-bold tracking-wider text-[#D2FA52] bg-[#101B08] transition-transform group-hover:scale-105"
+                    style={{
+                      clipPath: "polygon(0% 10%, 90% 0%, 100% 90%, 10% 100%)",
+                    }}
+                  >
+                    {s}
+                  </span>
+                  <span className="absolute left-0 -bottom-[2px] w-full h-[2px] bg-[#101B08]"></span>
                 </span>
-                <span className="absolute left-0 -bottom-[2px] w-full h-[2px] bg-[#101B08]"></span>
-              </span>
-            ))}
-          </div> */}
+              ))}
+            </div>
+          )}
 
           {/* RÉSEAUX */}
           <div className="mt-6">
             <p className="uppercase text-sm mb-2 font-michroma">Réseaux</p>
             <div className="flex flex-wrap gap-3">
-              {Object.values(SocialNetwork).map(
-                (network) =>
-                  hasNetwork(network as SocialNetwork) && (
-                    <span className="relative inline-block group">
+              {networks.length > 0 ? (
+                Object.values(SocialNetwork).map(
+                  (network) =>
+                    hasNetwork(network as SocialNetwork) && (
                       <span
-                        className="block px-6 py-2 text-xs uppercase font-bold tracking-wider text-[#101B08] bg-[#B1BD93] transition-transform group-hover:scale-105"
-                        style={{
-                          clipPath: 'polygon(10% 0%, 100% 10%, 90% 100%, 0% 90%)',
-                        }}
+                        className="relative inline-block group"
+                        key={network}
                       >
-                        {network}
+                        <span
+                          className="block px-6 py-2 text-xs uppercase font-bold tracking-wider text-[#101B08] bg-[#B1BD93] transition-transform group-hover:scale-105"
+                          style={{
+                            clipPath:
+                              "polygon(10% 0%, 100% 10%, 90% 100%, 0% 90%)",
+                          }}
+                        >
+                          {network}
+                        </span>
+                        <span className="absolute left-0 -bottom-[2px] w-full h-[2px] bg-[#101B08]"></span>
                       </span>
-                      <span className="absolute left-0 -bottom-[2px] w-full h-[2px] bg-[#101B08]"></span>
-                    </span>
-
-
-                  )
+                    ),
+                )
+              ) : (
+                <span className="italic text-lm text-gray-400">
+                  Aucun réseau renseigné
+                </span>
               )}
             </div>
           </div>
@@ -211,20 +259,24 @@ export default function RiderPage() {
           <div className="mt-4">
             <p className="uppercase text-sm mb-2 font-michroma">Langues</p>
             <div className="flex flex-wrap gap-2">
-              {rawLanguages.map((lang, i) => (
-                <span
-                  key={i}
-                  className="px-3 py-1 rounded-full text-sm bg-[#1a1a19] text-primary-green uppercase"
-                >
-                  {typeof lang === "string" ? lang : Language[lang]}
+              {rawLanguages.length > 0 ? (
+                rawLanguages.map((lang, i) => (
+                  <span
+                    key={i}
+                    className="px-3 py-1 rounded-full text-sm bg-[#1a1a19] text-primary-green uppercase"
+                  >
+                    {typeof lang === "string" ? lang : Language[lang]}
+                  </span>
+                ))
+              ) : (
+                <span className="italic text-lm text-gray-400">
+                  Aucune langue renseignée
                 </span>
-              ))}
+              )}
             </div>
           </div>
         </div>
       </div>
-
-
 
       {images.length > 1 && (
         <div className="mt-20 max-w-6xl mx-auto px-4" id="gallery">
@@ -249,8 +301,8 @@ export default function RiderPage() {
               const videoId = url.includes("youtube.com")
                 ? new URL(url).searchParams.get("v")
                 : url.includes("youtu.be")
-                  ? url.split("/").pop()
-                  : null;
+                ? url.split("/").pop()
+                : null;
 
               return videoId ? (
                 <div
@@ -328,88 +380,96 @@ export default function RiderPage() {
       </div>
 
       {/* Performances */}
-      <div className="mt-20 max-w-6xl mx-auto px-4" id="performances">
-        <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
-          PERFORMANCES
-        </h3>
+      {stats.length > 0 && (
+        <div className="mt-20 max-w-6xl mx-auto px-4" id="performances">
+          <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
+            PERFORMANCES
+          </h3>
 
-        <div className="mb-10 flex items-center gap-4 text-[#B1BD93] text-sm">
-          <Trophy className="w-5 h-5" />
-          <p className="uppercase tracking-wide">
-            Total podiums :{" "}
-            <span className="text-[#101B08] font-bold">{podiums}</span>
-          </p>
-        </div>
-
-        {stats.length < 0 ? (
-          <div className="text-center py-12 bg-[#1a1a19] text-white rounded-xl">
-            <Trophy className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-            <p className="text-lg">Aucune performance enregistrée</p>
-            <p className="text-sm text-gray-400">
-              Ce rider n'a pas encore partagé ses résultats.
+          <div className="mb-10 flex items-center gap-4 text-[#B1BD93] text-sm">
+            <Trophy className="w-5 h-5" />
+            <p className="uppercase tracking-wide">
+              Total podiums :{" "}
+              <span className="text-[#101B08] font-bold">{podiums}</span>
             </p>
           </div>
-        ) : (
-          <div className="relative border-l-4 border-primary-green pl-6 space-y-12">
-            {stats.map((performance, index) => (
-              <div key={index} className="relative group">
-                <div className="absolute -left-[2.25rem] top-1 w-5 h-5 bg-[#101B08] rounded-full group-hover:scale-125 transition-transform" />
 
-                <div className="bg-[#101B08] text-white p-6 rounded-lg shadow-md group-hover:shadow-lg transition-all">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-xl font-bold flex items-center gap-2">
-                      {getRankingBadge(performance?.ranking)}
-                      {performance?.eventName || "Événement inconnu"}
-                    </h4>
-                    <span className="text-xs opacity-60 font-mono">
-                      {formatDate(performance?.startDate)}
-                    </span>
-                  </div>
-                  <p className="text-[#B1BD93] text-sm mb-1">
-                    {performance?.category || "Catégorie inconnue"} —{" "}
-                    {performance?.sport?.name || "Sport inconnu"}
-                  </p>
-                  <p className="text-sm text-gray-300">
-                    {`${performance?.location?.city || "Ville inconnue"}, ${performance?.location?.country || "Pays inconnu"}`}
-                  </p>
+          {stats.length < 0 ? (
+            <div className="text-center py-12 bg-[#1a1a19] text-white rounded-xl">
+              <Trophy className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+              <p className="text-lg">Aucune performance enregistrée</p>
+              <p className="text-sm text-gray-400">
+                Ce rider n'a pas encore partagé ses résultats.
+              </p>
+            </div>
+          ) : (
+            <div className="relative border-l-4 border-primary-green pl-6 space-y-12">
+              {stats.map((performance, index) => (
+                <div key={index} className="relative group">
+                  <div className="absolute -left-[2.25rem] top-1 w-5 h-5 bg-[#101B08] rounded-full group-hover:scale-125 transition-transform" />
 
-                  {performance?.weather && (
-                    <p className="text-xs text-gray-400 mt-2">
-                      {getWeatherIcon(performance.weather)}{" "}
-                      {getWeatherLabel(performance.weather)}
-                    </p>
-                  )}
-
-                  {performance?.notes && (
-                    <div className="mt-3 text-sm text-gray-300">
-                      <p className="font-semibold text-[#D2FA52] mb-1">Notes :</p>
-                      <p>{performance.notes}</p>
+                  <div className="bg-[#101B08] text-white p-6 rounded-lg shadow-md group-hover:shadow-lg transition-all">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-xl font-bold flex items-center gap-2">
+                        {getRankingBadge(performance?.ranking)}
+                        {performance?.eventName || "Événement inconnu"}
+                      </h4>
+                      <span className="text-xs opacity-60 font-mono">
+                        {formatDate(performance?.startDate)}
+                      </span>
                     </div>
-                  )}
+                    <p className="text-[#B1BD93] text-sm mb-1">
+                      {performance?.category || "Catégorie inconnue"} —{" "}
+                      {performance?.sport?.name || "Sport inconnu"}
+                    </p>
+                    <p className="text-sm text-gray-300">
+                      {`${performance?.location?.city || "Ville inconnue"}, ${
+                        performance?.location?.country || "Pays inconnu"
+                      }`}
+                    </p>
+
+                    {performance?.weather && (
+                      <p className="text-xs text-gray-400 mt-2">
+                        {getWeatherIcon(performance.weather)}{" "}
+                        {getWeatherLabel(performance.weather)}
+                      </p>
+                    )}
+
+                    {performance?.notes && (
+                      <div className="mt-3 text-sm text-gray-300">
+                        <p className="font-semibold text-[#D2FA52] mb-1">
+                          Notes :
+                        </p>
+                        <p>{performance.notes}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Training */}
-      <div id="entrainement">
-        <RiderTrainingKPI
-          sessionsPerWeek={sessionsPerWeek}
-          hoursPerSession={hoursPerSession}
-        />
-      </div>
+      {sessionsPerWeek > 0 && (
+        <div id="entrainement">
+          <RiderTrainingKPI
+            sessionsPerWeek={sessionsPerWeek}
+            hoursPerSession={hoursPerSession}
+          />
+        </div>
+      )}
 
-      <div id="kpi">
-        <RiderKPISection stats={stats} />
-      </div>
+      {stats.length > 0 && (
+        <div id="kpi">
+          <RiderKPISection stats={stats} />
+        </div>
+      )}
 
-      <ScrollSpyNav />
+      <ScrollSpyNav sections={scrollSections} />
 
-      <div className="fixed bottom-0 w-full h-[5dvh] bg-gradient-to-b from-transparent to-[#d3fa5265]"></div>
+      {/* <div className="fixed bottom-0 w-full h-[5dvh] bg-gradient-to-b from-transparent to-[#d3fa5265]"></div> */}
     </div>
   );
 }

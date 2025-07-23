@@ -222,7 +222,7 @@ export default function RiderPage() {
             onImageClick={(index) => setSelectedImageIndex(index)}
           />
         ) : (
-          <div className="w-[400px] h-[600px] bg-primary-green rounded-xl"></div>
+          <div className="w-[500px] h-[600px] bg-primary-green rounded-xl"></div>
         )}
       </div>
 

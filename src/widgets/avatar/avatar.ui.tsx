@@ -32,11 +32,9 @@ export default function Avatar({
         alt={alt}
         width={config.width}
         height={config.height}
-        className={`rounded-full object-cover border ${
-          config.className
-        } ${className} transition-opacity duration-500 ${
-          isLoaded ? "opacity-100" : "opacity-0"
-        }`}
+        className={`rounded-full object-cover border ${config.className
+          } ${className} transition-opacity duration-500 ${isLoaded ? "opacity-100" : "opacity-0"
+          }`}
         onLoadingComplete={() => setIsLoaded(true)}
       />
     </div>

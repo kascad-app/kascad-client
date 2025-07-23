@@ -10,12 +10,26 @@ import { GetOffersQueryDto } from "./offer.type";
 
 export function useGetOffers(query: Partial<GetOffersQueryDto>) {
   const params = new URLSearchParams();
-  // if (query.page) params.append("page", String(query.page));
-  // if (query.limit) params.append("limit", String(query.limit));
-  // if (query.status) params.append("status", query.status);
-  // if (query.sport) params.append("sport", query.sport);
+  if (query.page) params.append("page", String(query.page));
+  if (query.limit) params.append("limit", String(query.limit));
+  if (query.status) params.append("status", query.status);
+  if (query.sport) params.append("sport", query.sport);
   if (query.contractType)
     params.append("contractType", String(query.contractType));
   const key = `${SWR_KEY.OFFERS.OFFERS}?${params.toString()}`;
   return useSWR<IOfferPaginee>(key, () => requester().get<IOfferPaginee>(key));
+}
+
+export function usePostCustomRiderOffer() {
+  return useSWRMutation<IOffer, Error, string, { id: string }>(
+    SWR_KEY.OFFERS.CUSTOM_RIDER.CANDIDATE(""),
+    (key, { arg }) =>
+      sendSWRRequest(SWR_KEY.OFFERS.CUSTOM_RIDER.CANDIDATE(arg.id)),
+    {
+      rollbackOnError: true,
+      onSuccess(key) {
+        console.log("success upload", key);
+      },
+    },
+  );
 }

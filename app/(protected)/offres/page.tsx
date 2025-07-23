@@ -1,7 +1,10 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
-import { useGetOffers } from "@/entities/offers/offers.hook";
+import {
+  useGetOffers,
+  usePostCustomRiderOffer,
+} from "@/entities/offers/offers.hook";
 import { IOffer } from "@kascad-app/shared-types";
 import {
   Pagination,
@@ -12,21 +15,33 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
 const PAGE_SIZE = 9;
 
 export default function OffresPage() {
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useGetOffers({ page, limit: PAGE_SIZE });
-  // Adaptation au nouveau type IOfferPaginee
   const offersArray: IOffer[] = Array.isArray(data?.data) ? data?.data : [];
+  const postOfferMutation = usePostCustomRiderOffer(); // <-- déclare le hook ici
+
   const pagination = data?.pagination;
   const totalPages = pagination?.totalPages || 1;
 
   useEffect(() => {
     console.log("Data fetched:", data?.data);
   }, [data]);
+
+  const handlePostuler = async (offerId: string) => {
+    toast.success(`Postulation pour l'offre ${offerId} en cours...`);
+    try {
+      await postOfferMutation.trigger({ id: offerId });
+    } catch (error) {
+      toast.error(
+        `Erreur lors de la candidature pour l'offre ${offerId}: ${error}`,
+      );
+    }
+  };
 
   return (
     <main className="min-h-screen bg-white text-black p-8">
@@ -93,7 +108,10 @@ export default function OffresPage() {
                       Publiée le{" "}
                       {new Date(offer.createdAt).toLocaleDateString()}
                     </span>
-                    <button className="px-6 py-2 bg-[#eaf7c2] text-[#3f4139] font-bold text-xs border border-[#b6d94c] rounded-lg shadow-sm transition-all duration-200 hover:bg-[#d2fa52] hover:text-[#101B08] hover:border-[#d2fa52] active:scale-95">
+                    <button
+                      onClick={() => handlePostuler(offer._id)}
+                      className="px-6 py-2 bg-[#eaf7c2] text-[#3f4139] font-bold text-xs border border-[#b6d94c] rounded-lg shadow-sm transition-all duration-200 hover:bg-[#d2fa52] hover:text-[#101B08] hover:border-[#d2fa52] active:scale-95"
+                    >
                       Postuler
                     </button>
                   </div>

@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
 import { usePostCustomRiderOffer } from "@/entities/offers/offers.hook";
 import { toast } from "sonner";
-import { IOffer, IOffersRider } from "@kascad-app/shared-types";
+import { IOffersRider } from "@kascad-app/shared-types";
 import {
   Pagination,
   PaginationContent,
@@ -11,25 +10,17 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { IOfferPaginee } from "@/entities/offers/offer.type";
 
-interface ListOffersProps {
-  data: IOfferPaginee | undefined;
-  isLoading: boolean;
-  error: any;
-  page: number;
-  setPage: (page: number) => void;
-  pageSize: number;
-}
+import { useGetOffers } from "@/entities/offers/offers.hook";
+import { useState } from "react";
 
-export default function ListOffers({
-  data,
-  isLoading,
-  error,
-  page,
-  setPage,
-  pageSize,
-}: ListOffersProps) {
+export default function ListOffers() {
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 9;
+  const { data, isLoading, error } = useGetOffers({
+    page,
+    limit: PAGE_SIZE,
+  });
   const postOfferMutation = usePostCustomRiderOffer();
   const handlePostuler = async (offerId: string) => {
     toast.success(`Postulation pour l'offre ${offerId} en cours...`);

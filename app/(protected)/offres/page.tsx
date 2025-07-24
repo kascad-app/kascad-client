@@ -10,19 +10,9 @@ export default function OffresPage() {
     "offres",
   );
 
-  // Pagination state
-  const [pageListOffers, setPageListOffers] = useState(1);
+  // Pagination state for MyOffers only
   const [pageMyOffers, setPageMyOffers] = useState(1);
-  const PAGE_SIZE_LIST_OFFERS = 9;
   const PAGE_SIZE_MY_OFFERS = 9;
-  const {
-    data: dataListOffers,
-    isLoading: isLoadingListOffers,
-    error: errorListOffers,
-  } = useGetOffers({
-    page: pageListOffers,
-    limit: PAGE_SIZE_LIST_OFFERS,
-  });
   const {
     data: dataMyOffers,
     isLoading: isLoadingMyOffers,
@@ -69,23 +59,9 @@ export default function OffresPage() {
       </div>
       <div className="flex-1">
         {activeTab === "candidatures" ? (
-          <MyOffers
-            data={dataMyOffers}
-            isLoading={isLoadingMyOffers}
-            error={errorMyOffers}
-            page={pageMyOffers}
-            setPage={setPageMyOffers}
-            pageSize={PAGE_SIZE_MY_OFFERS}
-          />
+          <MyOffers />
         ) : (
-          <ListOffers
-            data={dataListOffers}
-            isLoading={isLoadingListOffers}
-            error={errorListOffers}
-            page={pageListOffers}
-            setPage={setPageListOffers}
-            pageSize={PAGE_SIZE_LIST_OFFERS}
-          />
+          <ListOffers />
         )}
       </div>
     </div>

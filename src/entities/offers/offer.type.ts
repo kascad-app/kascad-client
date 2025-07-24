@@ -11,9 +11,16 @@ export interface IOfferPaginee {
   };
 }
 
+export interface IMyOffers {
+  application: string;
+  createdAt: Date;
+  offer: IOffersRider;
+  riderId: string;
+  updatedAt: Date;
+}
+
 export interface IMyOffersPaginee {
-  status: string;
-  data: IOffersRider[];
+  applications: IMyOffers[];
   pagination: {
     currentPage: number;
     totalPages: number;

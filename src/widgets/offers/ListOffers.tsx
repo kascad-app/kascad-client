@@ -164,9 +164,19 @@ export default function ListOffers({
                       <div className="flex items-center justify-end mt-4">
                         <button
                           onClick={() => handlePostuler(offer._id)}
-                          className="px-6 py-2 bg-[#eaf7c2] text-[#3f4139] font-bold text-xs border border-[#b6d94c] rounded-lg shadow-sm transition-all duration-200 hover:bg-[#d2fa52] hover:text-[#101B08] hover:border-[#d2fa52] active:scale-95"
+                          disabled={
+                            postOfferMutation.isMutating || offer.alreadyApplied
+                          }
+                          className={`px-6 py-2 font-bold text-xs border rounded-lg shadow-sm transition-all duration-200 active:scale-95
+                            ${
+                              postOfferMutation.isMutating ||
+                              offer.alreadyApplied
+                                ? "bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed opacity-60"
+                                : "bg-[#eaf7c2] text-[#3f4139] border-[#b6d94c] hover:bg-[#d2fa52] hover:text-[#101B08] hover:border-[#d2fa52]"
+                            }
+                          `}
                         >
-                          Postuler
+                          {offer.alreadyApplied ? "Déjà postulé" : "Postuler"}
                         </button>
                       </div>
                       <div className="mt-2 border-t pt-2 border-[#eaf7c2] flex items-center justify-between">

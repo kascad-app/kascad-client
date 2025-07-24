@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import { Undo2, X } from "lucide-react";
 import { ImageDto, TempImage } from "@kascad-app/shared-types";
 
 export default function ProfileImagesManager({
@@ -61,17 +60,46 @@ export default function ProfileImagesManager({
             <button
               type="button"
               onClick={() => handleMarkToDelete(idx)}
-              className="absolute top-2 right-2 bg-white/80 rounded-full p-1 z-10 cursor-pointer"
+              className="!absolute top-2 right-2 bg-white/80 rounded-full p-1 z-10 cursor-pointer"
               title={img.isToDelete ? "Annuler la suppression" : "Supprimer"}
             >
               {img.isToDelete ? (
-                <Undo2 className="w-5 h-5 text-green-500" />
+                <svg
+                  className="w-5 h-5 text-green-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 14l-4-4 4-4"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 10h7a4 4 0 110 8h-1"
+                  />
+                </svg>
               ) : (
-                <X className="w-5 h-5 text-red-500" />
+                <svg
+                  className="w-5 h-5 text-red-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               )}
             </button>
             {img.isToDelete && (
-              <span className="absolute bottom-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
+              <span className="!absolute bottom-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
                 À supprimer
               </span>
             )}
@@ -81,7 +109,7 @@ export default function ProfileImagesManager({
         {imageFiles.map((img, idx) => (
           <div
             key={`new-${idx}`}
-            className="relative group w-60 h-40 rounded overflow-hidden shadow ring-2 ring-blue-400 ring-offset-2"
+            className="relative group w-60 h-40 rounded overflow-hidden shadow ring-2 ring-primary-green ring-offset-2"
           >
             <img
               src={img.preview}
@@ -91,12 +119,24 @@ export default function ProfileImagesManager({
             <button
               type="button"
               onClick={() => handleRemoveNewImage(idx)}
-              className="absolute top-2 right-2 bg-white/80 rounded-full p-1 z-10 cursor-pointer"
+              className="!absolute top-2 right-2 bg-white/80 rounded-full p-1 z-10 cursor-pointer"
               title="Supprimer"
             >
-              <X className="w-5 h-5 text-red-500" />
+              <svg
+                className="w-5 h-5 text-red-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
-            <span className="absolute bottom-2 left-2 bg-blue-400 text-white text-xs px-2 py-1 rounded">
+            <span className="absolute bottom-2 left-2 bg-primary-green text-white text-xs px-2 py-1 rounded">
               Nouvelle
             </span>
           </div>

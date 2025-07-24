@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SessionProvider } from "@/shared/context/SessionProvider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Kascad",
@@ -17,6 +18,16 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <SessionProvider>{children}</SessionProvider>
+
+        <Toaster
+          toastOptions={{
+            style: {
+              background: "#f6ffe0",
+              color: "#3f4139",
+              border: "2px solid #d2fa52",
+            },
+          }}
+        />
       </body>
     </html>
   );

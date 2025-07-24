@@ -11,7 +11,7 @@ export default function InnerLayout({
   return (
     <Sidebar>
       {children}
-      <Toaster
+      {/* <Toaster
       // toastOptions={{
       //   style: {
       //     background: "#f6ffe0",
@@ -19,7 +19,7 @@ export default function InnerLayout({
       //     border: "2px solid #d2fa52",
       //   },
       // }}
-      />
+      /> */}
     </Sidebar>
   );
 }

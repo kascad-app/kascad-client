@@ -1,8 +1,8 @@
-import { ContractType, IOffer } from "@kascad-app/shared-types";
+import { ContractType, IOffersRider } from "@kascad-app/shared-types";
 import { z } from "zod";
 
 export interface IOfferPaginee {
-  data: IOffer[];
+  data: IOffersRider[];
   pagination: {
     currentPage: number;
     totalPages: number;
@@ -10,6 +10,25 @@ export interface IOfferPaginee {
     itemsPerPage: number;
   };
 }
+
+export interface IMyOffers {
+  application: string;
+  createdAt: Date;
+  offer: IOffersRider;
+  riderId: string;
+  updatedAt: Date;
+}
+
+export interface IMyOffersPaginee {
+  applications: IMyOffers[];
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    itemsPerPage: number;
+  };
+}
+
 const OfferStatus = z.enum([
   "draft",
   "active",

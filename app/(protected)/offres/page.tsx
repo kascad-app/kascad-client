@@ -1,19 +1,26 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
-import {
-  useGetOffers,
-  usePostCustomRiderOffer,
-} from "@/entities/offers/offers.hook";
-import { IOffer } from "@kascad-app/shared-types";
+import { useState } from "react";
 import ListOffers from "@/widgets/offers/ListOffers";
-import { toast } from "sonner";
+import { useGetMyOffers, useGetOffers } from "@/entities/offers/offers.hook";
 import MyOffers from "@/widgets/offers/MyOffers";
 
 export default function OffresPage() {
   const [activeTab, setActiveTab] = useState<"candidatures" | "offres">(
-    "candidatures",
+    "offres",
   );
+
+  // Pagination state for MyOffers only
+  const [pageMyOffers, setPageMyOffers] = useState(1);
+  const PAGE_SIZE_MY_OFFERS = 9;
+  const {
+    data: dataMyOffers,
+    isLoading: isLoadingMyOffers,
+    error: errorMyOffers,
+  } = useGetMyOffers({
+    page: pageMyOffers,
+    limit: PAGE_SIZE_MY_OFFERS,
+  });
 
   return (
     <div className="min-h-screen bg-white text-black p-8 flex flex-col">
@@ -51,7 +58,11 @@ export default function OffresPage() {
         </div>
       </div>
       <div className="flex-1">
-        {activeTab === "candidatures" ? <MyOffers /> : <ListOffers />}
+        {activeTab === "candidatures" ? (
+          <MyOffers />
+        ) : (
+          <ListOffers />
+        )}
       </div>
     </div>
   );

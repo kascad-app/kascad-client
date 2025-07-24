@@ -1,4 +1,5 @@
 import { IOffer, IOffersRider } from "@kascad-app/shared-types";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -22,7 +23,7 @@ import {
 
 export default function MyOffers() {
   const [page, setPage] = useState(1);
-  const PAGE_SIZE = 9;
+  const PAGE_SIZE = 20;
   const result = useGetMyOffers({
     page,
     limit: PAGE_SIZE,
@@ -38,7 +39,15 @@ export default function MyOffers() {
   console.log(offersArray);
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-8">Mes Offres</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-2xl font-bold">Mes Offres</h1>
+        {typeof pagination?.totalItems === "number" && (
+          <div className="text-sm text-[#7a7a7a] font-medium">
+            {pagination.totalItems} offre{pagination.totalItems > 1 ? "s" : ""}{" "}
+            candidatée{pagination.totalItems > 1 ? "s" : ""}
+          </div>
+        )}
+      </div>
       {isLoading ? (
         <div className="flex flex-col items-center justify-center h-64 w-full">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#d2fa52] mb-6"></div>
@@ -62,8 +71,8 @@ export default function MyOffers() {
                 <TableHead>Statut</TableHead>
                 <TableHead>Budget</TableHead>
                 <TableHead>Date</TableHead>
-                <TableHead>Sports</TableHead>
                 <TableHead>Sponsor</TableHead>
+                <TableHead className="bg-[#f6ffe0]">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -83,7 +92,28 @@ export default function MyOffers() {
                     )}
                   </TableCell>
                   <TableCell>
-                    {myOffer.application || (
+                    {myOffer.application ? (
+                      <Badge
+                        className={
+                          myOffer.application === "accepted"
+                            ? "bg-green-100 text-green-800 border-green-300"
+                            : myOffer.application === "pending"
+                            ? "bg-yellow-100 text-yellow-800 border-yellow-300"
+                            : myOffer.application === "rejected"
+                            ? "bg-red-100 text-red-800 border-red-300"
+                            : "bg-gray-100 text-gray-600 border-gray-300"
+                        }
+                        variant="outline"
+                      >
+                        {myOffer.application === "accepted"
+                          ? "Acceptée"
+                          : myOffer.application === "pending"
+                          ? "En attente"
+                          : myOffer.application === "rejected"
+                          ? "Refusée"
+                          : myOffer.application}
+                      </Badge>
+                    ) : (
                       <span className="italic text-gray-400">
                         Non renseigné
                       </span>
@@ -118,22 +148,6 @@ export default function MyOffers() {
                     )}
                   </TableCell>
                   <TableCell>
-                    {myOffer.offer.sports && myOffer.offer.sports.length > 0 ? (
-                      <div className="flex flex-wrap gap-1">
-                        {myOffer.offer.sports.map((sport) => (
-                          <span
-                            key={sport}
-                            className="bg-[#f6ffe0] text-[#7a7a7a] px-2 py-0.5 rounded-lg border border-[#eaf7c2] text-xs font-medium tracking-wide shadow-none whitespace-nowrap"
-                          >
-                            {sport}
-                          </span>
-                        ))}
-                      </div>
-                    ) : (
-                      <span className="italic text-gray-400">Aucun</span>
-                    )}
-                  </TableCell>
-                  <TableCell>
                     {myOffer.offer.sponsor &&
                     myOffer.offer.sponsor.companyName ? (
                       <span className="font-bold text-[#101B08]">
@@ -144,6 +158,30 @@ export default function MyOffers() {
                         Non renseigné
                       </span>
                     )}
+                  </TableCell>
+                  <TableCell className="text-right p-0 w-0 whitespace-nowrap align-middle">
+                    <button
+                      className="inline-flex items-center gap-2 px-3 py-1 bg-[#f6ffe0] text-[#3f4139] font-medium text-xs border border-[#eaf7c2] rounded-md shadow-none transition-all duration-200 hover:bg-[#eaf7c2] hover:text-[#101B08] hover:border-[#d2fa52] active:scale-95 focus:outline-none focus:ring-1 focus:ring-[#eaf7c2] focus:ring-offset-1"
+                      onClick={() => {
+                        window.location.href = `/messagerie/${myOffer.offer._id}`;
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M21.75 6.75v7.5a2.25 2.25 0 01-2.25 2.25h-5.25l-4.5 3v-3H4.5A2.25 2.25 0 012.25 14.25v-7.5A2.25 2.25 0 014.5 4.5h15a2.25 2.25 0 012.25 2.25z"
+                        />
+                      </svg>
+                      Accéder à la conversation
+                    </button>
                   </TableCell>
                 </TableRow>
               ))}

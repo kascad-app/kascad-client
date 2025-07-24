@@ -17,7 +17,12 @@ import { useState } from "react";
 export default function ListOffers() {
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 9;
-  const { data, isLoading, error } = useGetOffers({
+  const {
+    data,
+    isLoading,
+    error,
+    mutate: mutateOffers,
+  } = useGetOffers({
     page,
     limit: PAGE_SIZE,
   });
@@ -26,6 +31,7 @@ export default function ListOffers() {
     toast.success(`Postulation pour l'offre ${offerId} en cours...`);
     try {
       await postOfferMutation.trigger({ id: offerId });
+      mutateOffers();
     } catch (error) {
       console.log(`Postuler pour l'offre avec l'ID: ${error}`);
       toast.error(
@@ -41,7 +47,15 @@ export default function ListOffers() {
 
   return (
     <div className="flex-1 flex flex-col relative">
-      <h1 className="text-2xl font-bold mb-8">Offres disponibles</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-2xl font-bold">Offres disponibles</h1>
+        {typeof pagination?.totalItems === "number" && (
+          <div className="text-sm text-[#7a7a7a] font-medium">
+            {pagination.totalItems} offre{pagination.totalItems > 1 ? "s" : ""}{" "}
+            trouvée{pagination.totalItems > 1 ? "s" : ""}
+          </div>
+        )}
+      </div>
       <div className="flex-1 mb-10">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center h-64 w-full">

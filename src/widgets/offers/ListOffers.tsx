@@ -11,9 +11,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { IOfferPaginee } from "@/entities/offers/offer.type";
 
 interface ListOffersProps {
-  data: any;
+  data: IOfferPaginee | undefined;
   isLoading: boolean;
   error: any;
   page: number;
@@ -50,7 +51,7 @@ export default function ListOffers({
   return (
     <div className="flex-1 flex flex-col relative">
       <h1 className="text-2xl font-bold mb-8">Offres disponibles</h1>
-      <div className="flex-1">
+      <div className="flex-1 mb-10">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center h-64 w-full">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#d2fa52] mb-6"></div>
@@ -71,114 +72,132 @@ export default function ListOffers({
               offersArray.map((offer: IOffersRider) => (
                 <div
                   key={offer._id}
-                  className="relative bg-white border-2 border-[#eaf7c2] rounded-2xl shadow-lg p-6 flex flex-col gap-4 transition-all duration-300 group overflow-hidden hover:-translate-y-2 hover:shadow-[0_8px_32px_0_rgba(210,250,82,0.25)] hover:border-[#d2fa52]"
+                  className="relative bg-white border-2 border-[#eaf7c2] rounded-2xl shadow-lg p-6 flex flex-col transition-all  gap-2  duration-300 group overflow-hidden hover:-translate-y-2 hover:shadow-[0_8px_32px_0_rgba(210,250,82,0.25)] hover:border-[#d2fa52] h-full"
                 >
-                  <div className="absolute top-0 right-0 m-4 flex gap-2 z-10">
-                    {offer.sports.map((sport: string) => (
-                      <span
-                        key={sport}
-                        className="bg-[#f6ffe0] text-[#3f4139] px-4 py-1 rounded-full border border-[#d2fa52] text-xs font-bold uppercase tracking-wide shadow-sm transition-all duration-200 "
-                      >
-                        {sport}
-                      </span>
-                    ))}
-                  </div>
-                  <h2 className="text-2xl font-extrabold text-[#101B08] mb-2 font-michroma drop-shadow-lg">
+                  <h2 className="text-2xl font-extrabold text-[#101B08] mb-1 font-michroma drop-shadow-lg">
                     {offer.title}
                   </h2>
-                  {/* ...existing code... */}
-                  <div className="flex flex-wrap gap-3 mb-2">
-                    <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#f6ffe0] text-[#3f4139] px-3 py-0.5 rounded-lg border border-[#eaf7c2]">
-                      Contrat :{" "}
-                      <span className="font-semibold">
-                        {offer.contractType ? (
-                          offer.contractType
-                        ) : (
-                          <span className="italic text-gray-400">
-                            Non renseigné
-                          </span>
-                        )}
-                      </span>
-                    </span>
-                    <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#eaf7c2] text-[#3f4139] px-3 py-0.5 rounded-lg border border-[#d2fa52]">
-                      Statut :{" "}
-                      <span className="font-semibold">
-                        {offer.status ? (
-                          offer.status
-                        ) : (
-                          <span className="italic text-gray-400">
-                            Non renseigné
-                          </span>
-                        )}
-                      </span>
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="font-bold text-[#3f4139] text-sm border-b-2 border-[#d2fa52] pb-0.5">
-                      Budget :
-                    </span>
-                    <span className="text-sm text-[#3f4139] px-3 py-1 border border-[#d2fa52] rounded-lg bg-[#f6ffe0] font-semibold">
-                      {offer.budgetMin || offer.budgetMax ? (
-                        <>
-                          {offer.budgetMin ? offer.budgetMin : "-"}{" "}
-                          {offer.currency || ""}
-                          {offer.budgetMax
-                            ? ` - ${offer.budgetMax} ${offer.currency || ""}`
-                            : ""}
-                        </>
-                      ) : (
-                        <span className="italic text-gray-400">
-                          Non renseigné
+                  {/* Sports badges below title, horizontal scroll if overflow */}
+                  <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-[#eaf7c2] scrollbar-track-transparent">
+                    <div className="flex gap-1 min-w-max">
+                      {offer.sports.map((sport: string) => (
+                        <span
+                          key={sport}
+                          className="bg-[#f6ffe0] text-[#7a7a7a] px-2 py-0.5 rounded-lg border border-[#eaf7c2] text-xs font-medium tracking-wide shadow-none whitespace-nowrap"
+                        >
+                          {sport}
                         </span>
-                      )}
-                    </span>
+                      ))}
+                    </div>
                   </div>
-                  <p className="text-base text-[#101B08] font-figtree mt-2 line-clamp-3">
-                    {offer.description && offer.description.trim() !== "" ? (
-                      offer.description
-                    ) : (
-                      <span className="italic text-gray-400">
-                        Aucune description fournie
-                      </span>
-                    )}
-                  </p>
-                  {/* Bouton Postuler sous la description */}
-                  <div className="flex items-center justify-end mt-4">
-                    <button
-                      onClick={() => handlePostuler(offer._id)}
-                      className="px-6 py-2 bg-[#eaf7c2] text-[#3f4139] font-bold text-xs border border-[#b6d94c] rounded-lg shadow-sm transition-all duration-200 hover:bg-[#d2fa52] hover:text-[#101B08] hover:border-[#d2fa52] active:scale-95"
-                    >
-                      Postuler
-                    </button>
-                  </div>
-                  {/* Footer sponsor + date */}
-                  <div className="mt-4 border-t pt-2 border-[#eaf7c2] flex items-center justify-between">
-                    {/* Sponsor à gauche */}
-                    {offer.sponsor && offer.sponsor.companyName ? (
-                      <div className="flex items-center gap-2">
-                        <span className="text-[#7a7a7a] text-xs italic">
-                          Sponsor :
+                  <div className="flex flex-col flex-grow">
+                    {/* Infos principales */}
+                    <div>
+                      <div className="flex flex-wrap gap-3 mb-2">
+                        <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#f6ffe0] text-[#3f4139] px-3 py-0.5 rounded-lg border border-[#eaf7c2]">
+                          Contrat :{" "}
+                          <span className="font-semibold">
+                            {offer.contractType ? (
+                              offer.contractType
+                            ) : (
+                              <span className="italic text-gray-400">
+                                Non renseigné
+                              </span>
+                            )}
+                          </span>
                         </span>
-                        <span className="text-[#101B08] text-xs font-bold font-figtree">
-                          {offer.sponsor.companyName}
+                        <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#eaf7c2] text-[#3f4139] px-3 py-0.5 rounded-lg border border-[#d2fa52]">
+                          Statut :{" "}
+                          <span className="font-semibold">
+                            {offer.status ? (
+                              offer.status
+                            ) : (
+                              <span className="italic text-gray-400">
+                                Non renseigné
+                              </span>
+                            )}
+                          </span>
                         </span>
                       </div>
-                    ) : (
-                      <span className="italic text-gray-400 text-xs">
-                        Sponsor non renseigné
-                      </span>
-                    )}
-                    {/* Date à droite */}
-                    <span className="text-xs text-[#7a7a7a] font-normal">
-                      Publiée le{" "}
-                      {offer.createdAt ? (
-                        new Date(offer.createdAt).toLocaleDateString()
-                      ) : (
-                        <span className="italic text-gray-400">
-                          Date inconnue
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="font-bold text-[#3f4139] text-sm border-b-2 border-[#d2fa52] pb-0.5">
+                          Budget :
                         </span>
-                      )}
-                    </span>
+                        <span className="text-sm text-[#3f4139] px-3 py-1 border border-[#d2fa52] rounded-lg bg-[#f6ffe0] font-semibold">
+                          {offer.budgetMin || offer.budgetMax ? (
+                            <>
+                              {offer.budgetMin ? offer.budgetMin : "-"}{" "}
+                              {offer.currency || ""}
+                              {offer.budgetMax
+                                ? ` - ${offer.budgetMax} ${
+                                    offer.currency || ""
+                                  }`
+                                : ""}
+                            </>
+                          ) : (
+                            <span className="italic text-gray-400">
+                              Non renseigné
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                      <p
+                        className={`font-figtree mt-2 break-words ${
+                          offer.description && offer.description.length > 200
+                            ? "text-sm"
+                            : "text-base"
+                        } text-[#101B08]`}
+                      >
+                        {offer.description &&
+                        offer.description.trim() !== "" ? (
+                          offer.description
+                        ) : (
+                          <span className="italic text-gray-400">
+                            Aucune description fournie
+                          </span>
+                        )}
+                      </p>
+                      {/* Bouton Postuler sous la description */}
+                    </div>
+                    {/* Footer toujours en bas */}
+                    <div className=" flex-1 flex flex-col justify-end">
+                      <div className="flex items-center justify-end mt-4">
+                        <button
+                          onClick={() => handlePostuler(offer._id)}
+                          className="px-6 py-2 bg-[#eaf7c2] text-[#3f4139] font-bold text-xs border border-[#b6d94c] rounded-lg shadow-sm transition-all duration-200 hover:bg-[#d2fa52] hover:text-[#101B08] hover:border-[#d2fa52] active:scale-95"
+                        >
+                          Postuler
+                        </button>
+                      </div>
+                      <div className="mt-2 border-t pt-2 border-[#eaf7c2] flex items-center justify-between">
+                        {/* Sponsor à gauche */}
+                        {offer.sponsor && offer.sponsor.companyName ? (
+                          <div className="flex items-center gap-2">
+                            <span className="text-[#7a7a7a] text-xs italic">
+                              Sponsor :
+                            </span>
+                            <span className="text-[#101B08] text-xs font-bold font-figtree">
+                              {offer.sponsor.companyName}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="italic text-gray-400 text-xs">
+                            Sponsor non renseigné
+                          </span>
+                        )}
+                        {/* Date à droite */}
+                        <span className="text-xs text-[#7a7a7a] font-normal">
+                          Publiée le{" "}
+                          {offer.createdAt ? (
+                            new Date(offer.createdAt).toLocaleDateString()
+                          ) : (
+                            <span className="italic text-gray-400">
+                              Date inconnue
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                   <div className="absolute left-0 bottom-0 w-full h-2 bg-[#eaf7c2] opacity-70 rounded-b-2xl group-hover:bg-[#d2fa52] group-hover:opacity-80 transition-all duration-300" />
                   <div className="absolute right-0 top-0 w-10 h-10 bg-[#d2fa52] rounded-bl-2xl blur-md opacity-20" />

@@ -10,6 +10,18 @@ export interface IOfferPaginee {
     itemsPerPage: number;
   };
 }
+
+export interface IMyOffersPaginee {
+  status: string;
+  data: IOffersRider[];
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    itemsPerPage: number;
+  };
+}
+
 const OfferStatus = z.enum([
   "draft",
   "active",

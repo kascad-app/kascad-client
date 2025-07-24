@@ -28,16 +28,11 @@ export default function ListOffers() {
   });
   const postOfferMutation = usePostCustomRiderOffer();
   const handlePostuler = async (offerId: string) => {
-    toast.success(`Postulation pour l'offre ${offerId} en cours...`);
     try {
       await postOfferMutation.trigger({ id: offerId });
       mutateOffers();
-    } catch (error) {
-      console.log(`Postuler pour l'offre avec l'ID: ${error}`);
-      toast.error(
-        `Erreur lors de la candidature pour l'offre ${offerId}: ${error}`,
-      );
-    }
+      toast.success(`Candidature envoyée !`);
+    } catch (error) {}
   };
   const offersArray: IOffersRider[] = Array.isArray(data?.data)
     ? data?.data

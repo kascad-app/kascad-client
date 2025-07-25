@@ -7,6 +7,7 @@ import {
 import { Language, SocialNetwork } from "@kascad-app/shared-types";
 import { Trophy } from "lucide-react";
 import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import MasonryGallery from "../../components/MasonryGallery";
@@ -22,6 +23,7 @@ export default function RiderPage() {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
   );
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   // Overlay loader sur toute la page
   if (isLoading)
@@ -147,13 +149,23 @@ export default function RiderPage() {
 
       <div className="flex flex-col md:flex-row gap-10 max-w-6xl mx-auto items-start relative z-10">
         <div className="w-full md:w-1/2 ">
-          <Image
-            src={profilePicture}
-            alt={fullName}
-            width={600}
-            height={800}
-            className="rounded-xl object-cover w-full border-4 border-primary-green"
-          />
+          <div className="relative w-full min-h-[400px]">
+            {!imgLoaded && (
+              <Skeleton className="absolute inset-0 w-full h-full rounded-xl border-4 border-primary-green bg-gray-200" />
+            )}
+            <Image
+              src={profilePicture}
+              alt={fullName}
+              width={600}
+              height={800}
+              className={`rounded-xl object-cover w-full border-4 border-primary-green transition-opacity duration-300 ${
+                imgLoaded ? "opacity-100" : "opacity-0"
+              }`}
+              onLoad={() => setImgLoaded(true)}
+              onError={() => setImgLoaded(true)}
+              priority
+            />
+          </div>
         </div>
 
         <div className="w-full md:w-1/2 flex flex-col gap-4" id="profile">
@@ -286,7 +298,7 @@ export default function RiderPage() {
         </div>
       </div>
 
-      {images.length > 1 && (
+      {images.length > 0 && (
         <div className="mt-20 max-w-6xl mx-auto px-4" id="gallery">
           <h3 className="text-4xl font-bold mb-6 text-[#101B08] font-michroma tracking-widest">
             Galerie

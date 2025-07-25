@@ -9,6 +9,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+// import { formatDate } from "@/shared/utils/date/date.utils";
+
+// Fonction utilitaire pour formater la date en français
+function formatDateFr(dateString: string) {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  return date.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
 
 export default function SponsorCard({ sponsor }: { sponsor: any }) {
   const sponsorName = sponsor.identity.companyName.toLowerCase();
@@ -17,7 +29,7 @@ export default function SponsorCard({ sponsor }: { sponsor: any }) {
       (sponsorSport: any) => sponsorSport.name,
     ) || [];
   const [open, setOpen] = useState(false);
-
+  console.log(sponsor);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <div
@@ -95,95 +107,131 @@ export default function SponsorCard({ sponsor }: { sponsor: any }) {
           </div>
         </div>
       </div>
-      <DialogContent className="w-[90vw] max-w-2xl md:max-w-3xl lg:max-w-4xl h-[90vh] overflow-y-auto p-8 bg-white rounded-xl">
-        <DialogHeader>
+      <DialogContent className="w-[90vw] max-w-2xl md:max-w-3xl lg:max-w-4xl h-[60vh] overflow-y-auto p-8 bg-white rounded-xl">
+        <div>
           <DialogTitle className="text-3xl font-bold text-black mb-2">
-            {sponsor.identity?.companyName || sponsorName}
+            {sponsorName}
           </DialogTitle>
-          <div className="flex flex-row md:items-start gap-4 w-full">
+          <div className="flex flex-row md:items-start my-4 gap-4 w-full">
             <img
               src={sponsor.avatarUrl || "/assets/img/blog-6.jpg"}
               alt={sponsorName}
-              className="w-32 h-32 z-[2] object-contain"
+              className="w-32 h-32 z-[2] object-contain object-left"
             />
-            <div>
+            <div>Il nous a rejoint le {formatDateFr(sponsor.createdAt)}</div>
+          </div>
+          <div>
+            <div className="space-y-4 mt-12">
               <h4 className="font-semibold text-lg mb-1">Description</h4>
               <p className="text-gray-700 text-base">
                 {sponsor.description || (
-                  <span className="italic text-gray-400">
+                  <span className="italic text-sm text-gray-400">
                     Aucune description disponible.
                   </span>
                 )}
               </p>
-            </div>
-          </div>
-        </DialogHeader>
-        <div className="flex flex-col md:flex-row gap-8">
-          
-          <div className="space-y-4">
-            <div className="text-sm text-gray-500">
-              {sponsor.location || (
-                <span className="italic">Aucune localisation renseignée</span>
-              )}
-            </div>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {sportNames.length > 0 ? (
-                sportNames.map((sport: string, i: number) => (
-                  <span
-                    key={i}
-                    className="bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded"
-                  >
-                    {sport}
-                  </span>
-                ))
-              ) : (
-                <span className="italic text-gray-400">
-                  Aucun sport renseigné
-                </span>
-              )}
-            </div>
-            {sponsor.website && (
-              <a
-                href={sponsor.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline mt-2 text-xs"
-              >
-                {sponsor.website}
-              </a>
-            )}
-            {sponsor.values && sponsor.values.length > 0 && (
-              <div>
-                <h4 className="font-semibold text-lg mb-1">Valeurs</h4>
-                <ul className="list-disc list-inside text-gray-700">
-                  {sponsor.values.map((value: string, i: number) => (
-                    <li key={i}>{value}</li>
-                  ))}
-                </ul>
+              <div className="italic text-sm text-gray-400">
+                {sponsor.location || (
+                  <span className="italic">Aucune localisation renseignée</span>
+                )}
               </div>
-            )}
-            {sponsor.athletes && sponsor.athletes.length > 0 && (
-              <div>
-                <h4 className="font-semibold text-lg mb-1">Athlètes</h4>
-                <ul className="flex flex-wrap gap-2">
-                  {sponsor.athletes.map((athlete: any, i: number) => (
-                    <li
+              <div className="flex flex-wrap gap-2 mt-2">
+                {sportNames.length > 0 ? (
+                  sportNames.map((sport: string, i: number) => (
+                    <span
                       key={i}
-                      className="flex items-center gap-2 bg-gray-100 rounded px-2 py-1"
+                      className="bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded"
                     >
-                      {athlete.image && (
-                        <img
-                          src={athlete.image}
-                          alt={athlete.name}
-                          className="w-6 h-6 rounded-full object-cover"
-                        />
-                      )}
-                      <span>{athlete.name}</span>
-                    </li>
-                  ))}
-                </ul>
+                      {sport}
+                    </span>
+                  ))
+                ) : (
+                  <span className="italic text-sm text-gray-400">
+                    Aucun sport renseigné
+                  </span>
+                )}
               </div>
-            )}
+              {sponsor.website ? (
+                <a
+                  href={sponsor.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline mt-2 text-xs"
+                >
+                  {sponsor.website}
+                </a>
+              ) : (
+                <p className="italic text-sm text-gray-400">
+                  Aucun site web renseigné
+                </p>
+              )}
+              {sponsor.values && sponsor.values.length > 0 ? (
+                <div>
+                  <h4 className="font-semibold text-lg mb-1">Valeurs</h4>
+                  <ul className="list-disc list-inside text-gray-700">
+                    {sponsor.values.map((value: string, i: number) => (
+                      <li key={i}>{value}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <p className="italic text-sm text-gray-400">
+                  Aucune valeur renseignée
+                </p>
+              )}
+              {sponsor.partnerships && sponsor.partnerships.length > 0 ? (
+                <div>
+                  <h4 className="font-semibold text-lg mb-1">Partenaires</h4>
+                  <ul className="flex flex-wrap gap-2">
+                    {sponsor.partnerships.map((partnership: any, i: number) => (
+                      <li
+                        key={i}
+                        className="flex items-center gap-2 bg-gray-100 rounded px-2 py-1"
+                      >
+                        {partnership.image && (
+                          <img
+                            src={partnership.image}
+                            alt={partnership.name}
+                            className="w-6 h-6 rounded-full object-cover"
+                          />
+                        )}
+                        <span>{partnership.name}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <p className="italic text-sm text-gray-400">
+                  Aucun partenaire renseigné
+                </p>
+              )}
+              {sponsor.athletes && sponsor.athletes.length > 0 ? (
+                <div>
+                  <h4 className="font-semibold text-lg mb-1">Athlètes</h4>
+                  <ul className="flex flex-wrap gap-2">
+                    {sponsor.athletes.map((athlete: any, i: number) => (
+                      <li
+                        key={i}
+                        className="flex items-center gap-2 bg-gray-100 rounded px-2 py-1"
+                      >
+                        {athlete.image && (
+                          <img
+                            src={athlete.image}
+                            alt={athlete.name}
+                            className="w-6 h-6 rounded-full object-cover"
+                          />
+                        )}
+                        <span>{athlete.name}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <p className="italic text-sm text-gray-400">
+                  Aucun athlète renseigné
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </DialogContent>

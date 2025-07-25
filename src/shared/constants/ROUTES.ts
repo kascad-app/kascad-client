@@ -19,6 +19,8 @@ export const ROUTES = {
     DETAIL: (slug: string) => `/riders/${slug}`,
   },
 
+  OFFRES: "/offres",
+
   SPONSORS: {
     LIST: "/sponsors",
     DETAIL: (slug: string) => `/sponsors/${slug}`,

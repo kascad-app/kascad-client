@@ -99,8 +99,9 @@ export const LoginFormWidget: React.FC = () => {
           )}
           <button
             type="submit"
-            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-accent ${loginMutation.isMutating ? " sending" : ""
-              }`}
+            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-accent relative ${
+              loginMutation.isMutating ? " sending" : ""
+            }`}
             disabled={loginMutation.isMutating}
           >
             Se connecter

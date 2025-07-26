@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ProfileState } from "@/shared/types/profileSchema";
 import { Button } from "@components/ui/button";
+import { MultiSelect } from "@components/ui/custom-multiselect";
 import { Textarea } from "@components/ui/textarea";
 import {
   Language,
@@ -255,44 +256,33 @@ export default function EditProfileSlideAbout({
         />
       </div>
 
-      {/* Sélection des sports pratiqués */}
+      {/* Sélection des sports pratiqués avec MultiSelect */}
       <div>
         <label className="block text-sm font-medium mb-1">
           Sports pratiqués
         </label>
-        <div className="flex flex-wrap gap-2">
-          {Object.values(SportName).map((sport) => {
-            const isSelected = profile.preferences.sports.some(
-              (s) => s.name === sport,
-            );
-            return (
-              <Button
-                key={sport}
-                variant={isSelected ? "default" : "outline"}
-                size="sm"
-                onClick={() => {
-                  setProfile((prev) => {
-                    if (!prev) return prev;
-                    const updated = isSelected
-                      ? prev.preferences.sports.filter((s) => s.name !== sport)
-                      : [...prev.preferences.sports, { name: sport }];
-                    return {
-                      ...prev,
-                      preferences: {
-                        ...prev.preferences,
-                        sports: updated,
-                      },
-                    };
-                  });
-                }}
-              >
-                {sport}
-              </Button>
-            );
-          })}
-        </div>
+        <MultiSelect
+          options={Object.values(SportName).map((sport) => ({
+            label: sport,
+            value: sport,
+          }))}
+          selected={profile.preferences.sports.map((s) => s.name)}
+          onChange={(selected: string[]) => {
+            setProfile((prev) => {
+              if (!prev) return prev;
+              return {
+                ...prev,
+                preferences: {
+                  ...prev.preferences,
+                  sports: selected.map((name) => ({ name: name as SportName })),
+                },
+              };
+            });
+          }}
+          placeholder="Sélectionner les sports pratiqués"
+        />
         <p className="text-xs text-gray-500 mt-1">
-          Cliquez sur les sports que vous pratiquez
+          Sélectionnez vos sports dans la liste
         </p>
       </div>
 
@@ -344,12 +334,13 @@ export default function EditProfileSlideAbout({
           </div>
         </div>
       </div>
+      {/* Sélection des langues parlées avec MultiSelect */}
       <div>
         <label className="block text-sm font-medium mb-1">
           Langues parlées
         </label>
-        <div className="flex flex-wrap gap-2">
-          {[
+        <MultiSelect
+          options={[
             "Français",
             "Anglais",
             "Espagnol",
@@ -360,73 +351,51 @@ export default function EditProfileSlideAbout({
             "Chinois",
             "Japonais",
             "Arabe",
-          ].map((language) => {
-            const isSelected =
-              profile.identity.languageSpoken.includes(language);
-            return (
-              <Button
-                key={language}
-                variant={isSelected ? "default" : "outline"}
-                size="sm"
-                onClick={() => {
-                  setProfile((prev) => {
-                    if (!prev) return prev;
-                    const updated = isSelected
-                      ? prev.identity.languageSpoken.filter(
-                          (lang) => lang !== language,
-                        )
-                      : [...prev.identity.languageSpoken, language];
-                    return {
-                      ...prev,
-                      identity: {
-                        ...prev.identity,
-                        languageSpoken: updated,
-                      },
-                    };
-                  });
-                }}
-              >
-                {language}
-              </Button>
-            );
-          })}
-        </div>
+          ].map((lang) => ({ label: lang, value: lang }))}
+          selected={profile.identity.languageSpoken}
+          onChange={(selected: string[]) => {
+            setProfile((prev) => {
+              if (!prev) return prev;
+              return {
+                ...prev,
+                identity: {
+                  ...prev.identity,
+                  languageSpoken: selected,
+                },
+              };
+            });
+          }}
+          placeholder="Sélectionner les langues parlées"
+        />
         <p className="text-xs text-gray-500 mt-1">
-          Cliquez sur les langues que vous parlez
+          Sélectionnez vos langues dans la liste
         </p>
       </div>
+      {/* Sélection des réseaux sociaux avec MultiSelect */}
       <div>
         <label className="block text-sm font-medium mb-1">
           Réseaux sociaux
         </label>
-        <div className="flex flex-wrap gap-2">
-          {Object.values(SocialNetwork).map((network) => {
-            const isSelected = profile.preferences.networks.includes(network);
-            return (
-              <Button
-                key={network}
-                variant={isSelected ? "default" : "outline"}
-                onClick={() => {
-                  setProfile((prev) => {
-                    if (!prev) return prev;
-                    const updated = isSelected
-                      ? prev.preferences.networks.filter((n) => n !== network)
-                      : [...prev.preferences.networks, network];
-                    return {
-                      ...prev,
-                      preferences: {
-                        ...prev.preferences,
-                        networks: updated,
-                      },
-                    };
-                  });
-                }}
-              >
-                {network.charAt(0).toUpperCase() + network.slice(1)}
-              </Button>
-            );
-          })}
-        </div>
+        <MultiSelect
+          options={Object.values(SocialNetwork).map((network) => ({
+            label: network.charAt(0).toUpperCase() + network.slice(1),
+            value: network,
+          }))}
+          selected={profile.preferences.networks}
+          onChange={(selected: string[]) => {
+            setProfile((prev) => {
+              if (!prev) return prev;
+              return {
+                ...prev,
+                preferences: {
+                  ...prev.preferences,
+                  networks: selected as SocialNetwork[],
+                },
+              };
+            });
+          }}
+          placeholder="Sélectionner les réseaux sociaux"
+        />
       </div>
 
       <div>

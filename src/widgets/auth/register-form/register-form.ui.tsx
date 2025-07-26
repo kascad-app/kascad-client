@@ -1,7 +1,6 @@
 "use client";
 import { ROUTES } from "@/shared/constants/ROUTES";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -220,7 +219,7 @@ export const RegisterFormWidget: React.FC = () => {
           )}
           <button
             type="submit"
-            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-accent${
+            className={`w-full py-2 px-4 bg-blue-600 text-medium font-bold text-white font-semibold rounded-md hover:bg-accent relative ${
               registerMutation.isMutating ? " sending" : ""
             }`}
             disabled={registerMutation.isMutating}

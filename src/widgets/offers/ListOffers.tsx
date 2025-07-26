@@ -216,53 +216,55 @@ export default function ListOffers() {
           </div>
         )}
       </div>
-      <div className="w-full flex justify-center bg-white py-6 border-t border-gray-200">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={(e: React.MouseEvent) => {
-                  e.preventDefault();
-                  if (page > 1) setPage(page - 1);
-                }}
-                className={page === 1 ? "pointer-events-none opacity-50" : ""}
-              />
-            </PaginationItem>
-            {[...Array(totalPages)].map((_, i) => (
-              <PaginationItem key={i}>
-                <PaginationLink
+      {offersArray.length > 0 && (
+        <div className="w-full flex justify-center bg-white py-6 border-t border-gray-200">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
                   href="#"
-                  isActive={page === i + 1}
                   onClick={(e: React.MouseEvent) => {
                     e.preventDefault();
-                    setPage(i + 1);
+                    if (page > 1) setPage(page - 1);
                   }}
-                >
-                  {i + 1}
-                </PaginationLink>
+                  className={page === 1 ? "pointer-events-none opacity-50" : ""}
+                />
               </PaginationItem>
-            ))}
-            {totalPages > 5 && page < totalPages - 2 && (
+              {[...Array(totalPages)].map((_, i) => (
+                <PaginationItem key={i}>
+                  <PaginationLink
+                    href="#"
+                    isActive={page === i + 1}
+                    onClick={(e: React.MouseEvent) => {
+                      e.preventDefault();
+                      setPage(i + 1);
+                    }}
+                  >
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              {totalPages > 5 && page < totalPages - 2 && (
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              )}
               <PaginationItem>
-                <PaginationEllipsis />
+                <PaginationNext
+                  href="#"
+                  onClick={(e: React.MouseEvent) => {
+                    e.preventDefault();
+                    if (page < totalPages) setPage(page + 1);
+                  }}
+                  className={
+                    page === totalPages ? "pointer-events-none opacity-50" : ""
+                  }
+                />
               </PaginationItem>
-            )}
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={(e: React.MouseEvent) => {
-                  e.preventDefault();
-                  if (page < totalPages) setPage(page + 1);
-                }}
-                className={
-                  page === totalPages ? "pointer-events-none opacity-50" : ""
-                }
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 }

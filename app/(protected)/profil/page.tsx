@@ -179,6 +179,26 @@ export default function ProfileComponent() {
         </CardHeader>
         <CardContent>
           <p className="text-sm whitespace-pre-line">{bio}</p>
+          {session.user.preferences?.sports?.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {session.user.preferences.sports.map((sport, i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center gap-1 text-xs font-medium border border-[#3F4139] px-2 py-1 rounded-full bg-[#232321] text-[#B1BD93] shadow-sm opacity-80 hover:opacity-100 transition-opacity"
+                >
+                  <svg
+                    className="w-3 h-3 text-primary-green"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    aria-hidden="true"
+                  >
+                    <circle cx="10" cy="10" r="8" />
+                  </svg>
+                  {sport.name}
+                </span>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
 

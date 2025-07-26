@@ -5,12 +5,17 @@ import { Button } from "@components/ui/button";
 import { MultiSelect } from "@components/ui/custom-multiselect";
 import { Textarea } from "@components/ui/textarea";
 import {
-  Language,
   SocialNetwork,
   ContractType,
   SportName,
 } from "@kascad-app/shared-types";
 import Avatar from "../avatar/avatar.ui";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -193,20 +198,49 @@ export default function EditProfileSlideAbout({
         <label className="block text-sm font-medium mb-1">
           Date de naissance
         </label>
-        <Input
-          type="date"
-          value={profile.identity.birthDate.slice(0, 10)} // ISO string -> 'YYYY-MM-DD'
-          onChange={(e) =>
-            setProfile((prev) =>
-              prev
-                ? {
-                    ...prev,
-                    identity: { ...prev.identity, birthDate: e.target.value },
-                  }
-                : prev,
-            )
-          }
-        />
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="w-full justify-start">
+              {profile.identity.birthDate
+                ? new Date(profile.identity.birthDate).toLocaleDateString(
+                    "fr-FR",
+                  )
+                : "Sélectionner une date"}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={
+                profile.identity.birthDate
+                  ? new Date(profile.identity.birthDate)
+                  : undefined
+              }
+              defaultMonth={
+                profile.identity.birthDate
+                  ? new Date(profile.identity.birthDate)
+                  : undefined
+              }
+              onSelect={(date) => {
+                setProfile((prev) =>
+                  prev
+                    ? {
+                        ...prev,
+                        identity: {
+                          ...prev.identity,
+                          birthDate: date ? date.toISOString() : "",
+                        },
+                      }
+                    : prev,
+                );
+              }}
+              captionLayout="dropdown"
+              fromYear={1950}
+              toYear={new Date().getFullYear()}
+              className="rounded-md border bg-white shadow-sm"
+            />
+          </PopoverContent>
+        </Popover>
       </div>
       <div>
         <label className="block text-sm font-medium mb-1">

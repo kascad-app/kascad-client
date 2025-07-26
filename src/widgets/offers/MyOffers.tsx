@@ -160,12 +160,7 @@ export default function MyOffers() {
                     )}
                   </TableCell>
                   <TableCell className="text-right p-0 w-0 whitespace-nowrap align-middle">
-                    <button
-                      className="inline-flex items-center gap-2 px-3 py-1 bg-[#f6ffe0] text-[#3f4139] font-medium text-xs border border-[#eaf7c2] rounded-md shadow-none transition-all duration-200 hover:bg-[#eaf7c2] hover:text-[#101B08] hover:border-[#d2fa52] active:scale-95 focus:outline-none focus:ring-1 focus:ring-[#eaf7c2] focus:ring-offset-1"
-                      onClick={() => {
-                        window.location.href = `/messagerie/${myOffer.offer._id}`;
-                      }}
-                    >
+                    <button className="inline-flex items-center gap-2 px-3 py-1 bg-[#f6ffe0] text-[#3f4139] font-medium text-xs border border-[#eaf7c2] rounded-md shadow-none transition-all duration-200 hover:bg-[#eaf7c2] hover:text-[#101B08] hover:border-[#d2fa52] active:scale-95 focus:outline-none focus:ring-1 focus:ring-[#eaf7c2] focus:ring-offset-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

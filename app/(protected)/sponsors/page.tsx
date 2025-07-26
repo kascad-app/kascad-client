@@ -36,7 +36,7 @@ export default function SponsorsPage() {
       !recentSlugsOrIds.has(sponsor.slug) && !recentSlugsOrIds.has(sponsor.id),
   );
 
-  const isEmpty = true;
+  const isEmpty = originalSponsors.length === 0;
 
   return (
     <div className="w-full min-h-screen bg-white text-black px-4 sm:px-6 py-10">

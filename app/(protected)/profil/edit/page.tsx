@@ -22,7 +22,6 @@ import {
 } from "@kascad-app/shared-types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { z } from "zod";
 import { ROUTES } from "@/shared/constants/ROUTES";
 import EditProfileSlideAchievements from "@/widgets/edit-profile/EditProfileSlideAchievements.ui";
 import EditProfileSlideVisibility from "@/widgets/edit-profile/EditProfileSlideVisibility.ui";

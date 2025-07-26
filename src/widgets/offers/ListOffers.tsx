@@ -216,7 +216,7 @@ export default function ListOffers() {
           </div>
         )}
       </div>
-      <div className="w-full flex justify-center fixed left-0 bottom-0 bg-white py-6 z-20 border-t border-gray-200">
+      <div className="w-full flex justify-center bg-white py-6 border-t border-gray-200">
         <Pagination>
           <PaginationContent>
             <PaginationItem>

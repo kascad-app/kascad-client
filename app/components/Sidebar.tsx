@@ -1,6 +1,6 @@
 "use client";
-
-import { ReactNode, useState } from "react";
+import { useGetTotalUnreadMessages } from "@/entities/direct-messages/conversations.hooks";
+import { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -37,6 +37,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ children }: SidebarProps) {
+  const { data: totalUnreadMessages } = useGetTotalUnreadMessages();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -53,11 +54,23 @@ export default function Sidebar({ children }: SidebarProps) {
       label: "Profil",
       icon: <User className="w-4 h-4" />,
     },
-    // {
-    //   href: ROUTES.MESSAGERIE,
-    //   label: "Messagerie",
-    //   icon: <MessageCircle className="w-4 h-4" />,
-    // },
+    {
+      href: ROUTES.MESSAGERIE,
+      label: "Messagerie",
+      icon: (
+        <span className="relative">
+          <MessageCircle className="w-4 h-4" />
+          {(totalUnreadMessages?.unreadCount ?? 0) > 0 && (
+            <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center">
+              <span className="relative flex items-center justify-center">
+                <span className="absolute left-1/2 top-1/2 w-3 h-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-green opacity-40 animate-ping-slow" />
+                <span className="w-1.75 h-1.75 rounded-full bg-primary-green" />
+              </span>
+            </span>
+          )}
+        </span>
+      ),
+    },
     {
       href: ROUTES.OFFRES,
       label: "Découvrir les offres",

@@ -9,6 +9,21 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { MessageCircle } from "lucide-react";
+import { Button } from "@components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
+import { useGetOrCreateConversation } from "@/entities/direct-messages/conversations.hooks";
+import { ProfileType, ConversationType } from "@kascad-app/shared-types";
 // import { formatDate } from "@/shared/utils/date/date.utils";
 
 // Fonction utilitaire pour formater la date en français
@@ -29,7 +44,8 @@ export default function SponsorCard({ sponsor }: { sponsor: any }) {
       (sponsorSport: any) => sponsorSport.name,
     ) || [];
   const [open, setOpen] = useState(false);
-  console.log(sponsor);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const { trigger } = useGetOrCreateConversation();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <div
@@ -140,7 +156,7 @@ export default function SponsorCard({ sponsor }: { sponsor: any }) {
                 className="w-20 h-20 rounded-xl object-contain opacity-50 grayscale bg-gray-50"
               />
             )}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 flex-1">
               <DialogTitle className="text-3xl font-bold text-black mb-1">
                 {sponsorName}
               </DialogTitle>
@@ -158,9 +174,51 @@ export default function SponsorCard({ sponsor }: { sponsor: any }) {
                   </span>
                 )}
               </div>
-              <span className="text-xs text-gray-400">
-                Rejoint le {formatDateFr(sponsor.createdAt)}
-              </span>
+              {/* Date et bouton sur la même ligne, alignés */}
+              <div className="flex items-center justify-between mt-4 w-full">
+                <span className="text-xs text-gray-400">
+                  Rejoint le {formatDateFr(sponsor.createdAt)}
+                </span>
+                <Button
+                  className="bg-black text-white hover:bg-gray-900 px-3 py-1 rounded flex items-center gap-2 text-xs font-semibold"
+                  aria-label="Contacter le sponsor"
+                  type="button"
+                  onClick={() => setAlertOpen(true)}
+                >
+                  Contacter
+                </Button>
+                {/* AlertDialog pour confirmation de démarrage de conversation */}
+                <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Démarrer une conversation ?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Voulez-vous démarrer une conversation avec ce sponsor ?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Annuler</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => {
+                          trigger({
+                            targetUserId: sponsor.id,
+                            targetUserType: ProfileType.SPONSOR,
+                            context: {
+                              type: ConversationType.PRIVATE,
+                              referenceId: undefined,
+                            },
+                          });
+                          setAlertOpen(false);
+                        }}
+                      >
+                        Démarrer
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             </div>
           </div>
 

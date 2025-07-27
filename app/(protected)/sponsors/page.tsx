@@ -1,22 +1,30 @@
 "use client";
 import { useGetSponsors } from "@/entities/sponsors/sponsors.hooks";
 import SponsorCard from "./SponsorCard";
+import React, { useState } from "react";
+import { MessageCircle } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
+import { ProfileType, ConversationType } from "@kascad-app/shared-types";
+import { useGetOrCreateConversation } from "@/entities/direct-messages/conversations.hooks";
 
 export default function SponsorsPage() {
   const { data: sponsors = [], isLoading, error } = useGetSponsors();
+  const [openDialogSponsorId, setOpenDialogSponsorId] = useState<string | null>(
+    null,
+  );
+  const { trigger } = useGetOrCreateConversation();
 
-  if (isLoading) {
-    return <p className="p-8 text-black">Chargement des sponsors...</p>;
-  }
-
-  if (error) {
-    return (
-      <p className="p-8 text-red-500">
-        Erreur lors du chargement des sponsors.
-      </p>
-    );
-  }
-
+  // Calculs toujours après les hooks
   const now = new Date();
   const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
   const sortedByRecent = [...sponsors]
@@ -35,8 +43,31 @@ export default function SponsorsPage() {
     (sponsor: any) =>
       !recentSlugsOrIds.has(sponsor.slug) && !recentSlugsOrIds.has(sponsor.id),
   );
-
   const isEmpty = originalSponsors.length === 0;
+
+  const handleStartConversation = (targetSponsorId: string) => {
+    trigger({
+      targetUserId: targetSponsorId,
+      targetUserType: ProfileType.SPONSOR,
+      context: {
+        type: ConversationType.PRIVATE,
+        referenceId: undefined,
+      },
+    });
+    setOpenDialogSponsorId(null);
+  };
+
+  if (isLoading) {
+    return <p className="p-8 text-black">Chargement des sponsors...</p>;
+  }
+
+  if (error) {
+    return (
+      <p className="p-8 text-red-500">
+        Erreur lors du chargement des sponsors.
+      </p>
+    );
+  }
 
   return (
     <div className="w-full min-h-screen bg-white text-black px-4 sm:px-6 py-10">
@@ -96,10 +127,47 @@ export default function SponsorsPage() {
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {recentSponsors.map((sponsor: any) => (
-                  <SponsorCard
-                    key={sponsor.slug || sponsor.id}
-                    sponsor={sponsor}
-                  />
+                  <div className="relative" key={sponsor.id}>
+                    <SponsorCard
+                      key={sponsor.slug || sponsor.id}
+                      sponsor={sponsor}
+                    />
+                    <AlertDialog
+                      open={openDialogSponsorId === sponsor.id}
+                      onOpenChange={(open) =>
+                        setOpenDialogSponsorId(open ? sponsor.id : null)
+                      }
+                    >
+                      <AlertDialogTrigger asChild>
+                        <button
+                          className="absolute bottom-3 right-3 w-9 h-9 flex items-center justify-center bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition"
+                          aria-label="Contacter le sponsor"
+                          type="button"
+                        >
+                          <MessageCircle className="w-4 h-4" />
+                        </button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Démarrer une conversation ?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Voulez-vous démarrer une conversation avec ce
+                            sponsor ?
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Annuler</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleStartConversation(sponsor.id)}
+                          >
+                            Démarrer
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 ))}
               </div>
             </div>
@@ -111,10 +179,44 @@ export default function SponsorsPage() {
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {originalSponsors.map((sponsor: any) => (
-                  <SponsorCard
-                    key={sponsor.slug || sponsor.id}
-                    sponsor={sponsor}
-                  />
+                  <div className="relative" key={sponsor.id}>
+                    <SponsorCard key={sponsor.id} sponsor={sponsor} />
+                    <AlertDialog
+                      open={openDialogSponsorId === sponsor.id}
+                      onOpenChange={(open) =>
+                        setOpenDialogSponsorId(open ? sponsor.id : null)
+                      }
+                    >
+                      <AlertDialogTrigger asChild>
+                        <button
+                          className="absolute bottom-3 right-3 w-9 h-9 flex items-center justify-center bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition"
+                          aria-label="Contacter le sponsor"
+                          type="button"
+                        >
+                          <MessageCircle className="w-4 h-4" />
+                        </button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Démarrer une conversation ?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Voulez-vous démarrer une conversation avec ce
+                            sponsor ?
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Annuler</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleStartConversation(sponsor.id)}
+                          >
+                            Démarrer
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 ))}
               </div>
             </>

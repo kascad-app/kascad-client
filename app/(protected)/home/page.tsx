@@ -10,9 +10,11 @@ import { GenderIdentity } from "@kascad-app/shared-types";
 import { TestimonialsSection } from "../../components/TestimonialsSection";
 import Footer from "../../components/Footer";
 import { ViewDashboard } from "@/widgets/view-dashboard";
+import { useGetTotalUnreadMessages } from "@/entities/direct-messages/conversations.hooks";
 
 export default function Home() {
   const session = useSession();
+  const { data: totalUnreadMessages } = useGetTotalUnreadMessages();
 
   return (
     <main className="min-h-screen bg-white text-white flex flex-col justify-between relative">
@@ -121,7 +123,9 @@ export default function Home() {
                 </p>
                 <div className="flex gap-6 md:gap-8 w-full justify-center md:justify-start items-center">
                   <MessageSquare className="w-10 h-10 text-white bg-[#3f4139] rounded-md p-2" />
-                  <p className="text-4xl text-[#3f4139] font-bold">{0}</p>
+                  <p className="text-4xl text-[#3f4139] font-bold">
+                    {totalUnreadMessages?.unreadCount || 0}
+                  </p>
                 </div>
                 <Link href={ROUTES.MESSAGERIE} className="w-auto">
                   <Button

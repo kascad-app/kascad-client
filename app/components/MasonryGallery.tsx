@@ -2,43 +2,81 @@
 
 import Image from "next/image";
 import Masonry from "react-masonry-css";
+import { useRef, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 interface MasonryGalleryProps {
-    images: string[];
-    onImageClick?: (index: number) => void;
+  images: string[];
+  onImageClick?: (index: number) => void;
 }
 
-export default function MasonryGallery({ images, onImageClick }: MasonryGalleryProps) {
-    const galleryImages = images; // On saute la première image (déjà utilisée en haut)
+export default function MasonryGallery({
+  images,
+  onImageClick,
+}: MasonryGalleryProps) {
+  const galleryImages = images;
+  const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-    const breakpoints = {
-        default: 4,
-        1580: 3,
-        768: 2,
-        500: 1,
+  useEffect(() => {
+    if (!imageRefs.current) return;
+    imageRefs.current.forEach((el, i) => {
+      if (!el) return;
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          delay: i * 0.08,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        },
+      );
+    });
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => st.kill());
     };
+  }, [galleryImages]);
 
-    return (
-        <Masonry
-            breakpointCols={breakpoints}
-            className="flex gap-4"
-            columnClassName="masonry-column"
+  const breakpoints = {
+    default: 4,
+    1580: 3,
+    768: 2,
+    500: 1,
+  };
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  return (
+    <Masonry
+      breakpointCols={breakpoints}
+      className="flex gap-4"
+      columnClassName="masonry-column"
+    >
+      {galleryImages.map((img, index) => (
+        <div
+          key={index}
+          ref={(el) => {
+            imageRefs.current[index] = el;
+          }}
+          className="mb-4 cursor-pointer group opacity-0 translate-y-10"
+          onClick={() => onImageClick?.(index + 1)}
         >
-            {galleryImages.map((img, index) => (
-                <div
-                    key={index}
-                    className="mb-4 cursor-pointer"
-                    onClick={() => onImageClick?.(index + 1)} // +1 car on a sauté la première image
-                >
-                    <Image
-                        src={img}
-                        alt={`Image ${index + 1}`}
-                        width={300}
-                        height={400}
-                        className="object-cover w-full h-auto rounded-lg shadow-md hover:shadow-xl transition-shadow"
-                    />
-                </div>
-            ))}
-        </Masonry>
-    );
+          <Image
+            src={img}
+            alt={`Image ${index + 1}`}
+            width={300}
+            height={400}
+            className="object-cover w-full h-auto rounded-lg shadow-md hover:shadow-xl transition-shadow"
+          />
+        </div>
+      ))}
+    </Masonry>
+  );
 }

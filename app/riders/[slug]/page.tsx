@@ -9,34 +9,27 @@ import { Trophy } from "lucide-react";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import MasonryGallery from "../../components/MasonryGallery";
 import RiderKPISection from "../../components/RiderKPISection";
 import RiderTrainingKPI from "../../components/RiderKPITrainingCard";
 import RiderSponsorsSection from "../../components/RiderSponsorsSection";
 import ScrollSpyNav, { Section } from "../../components/ScrollSpyNav";
 import ShapeCanvas from "../../components/ShapeCanvas";
+import { networkData } from "@/shared/utils/networks/socialNetworks.utils";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function RiderPage() {
   const { slug } = useParams();
   const { data: rider, isLoading, error } = useGetRider(slug as string);
+  if (!rider && !isLoading && !error) return null;
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
   );
   const [imgLoaded, setImgLoaded] = useState(false);
-
-  // Overlay loader sur toute la page
-  if (isLoading)
-    return (
-      <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white bg-opacity-90 min-h-screen min-w-full">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-[#d2fa52] mb-8"></div>
-        <span className="text-2xl text-[#101B08] font-bold font-figtree">
-          Chargement du portfolio...
-        </span>
-      </div>
-    );
-  if (error || !rider)
-    return <p className="p-8 text-red-500">Une erreur est survenue.</p>;
 
   const closeLightbox = () => setSelectedImageIndex(null);
   const showPrevImage = () => {
@@ -51,15 +44,15 @@ export default function RiderPage() {
   };
 
   const fullName =
-    rider.identity?.fullName ||
-    `${rider.identity?.firstName || ""} ${
-      rider.identity?.lastName || ""
+    rider?.identity?.fullName ||
+    `${rider?.identity?.firstName || ""} ${
+      rider?.identity?.lastName || ""
     }`.trim() ||
     "Nom non renseigné";
   const sports =
-    rider.preferences?.sports?.map((s) => s.name).filter(Boolean) || [];
-  const birthDate = rider.identity?.birthDate
-    ? new Date(rider.identity.birthDate)
+    rider?.preferences?.sports?.map((s) => s.name).filter(Boolean) || [];
+  const birthDate = rider?.identity?.birthDate
+    ? new Date(rider?.identity.birthDate)
     : null;
   const age: number = birthDate
     ? new Date().getFullYear() -
@@ -71,28 +64,102 @@ export default function RiderPage() {
         : 0)
     : 0;
   const location =
-    rider.identity?.city || rider.identity?.country
-      ? `${rider.identity?.city || ""}${
-          rider.identity?.city && rider.identity?.country ? ", " : ""
-        }${rider.identity?.country || ""}`
+    rider?.identity?.city || rider?.identity?.country
+      ? `${rider?.identity?.city || ""}${
+          rider?.identity?.city && rider?.identity?.country ? ", " : ""
+        }${rider?.identity?.country || ""}`
       : "";
   const profilePicture =
-    rider.avatarUrl && rider.avatarUrl.includes("http")
-      ? rider.avatarUrl
-      : "/assets/img/blog-4.jpg";
-  const images = rider.images?.map((img) => img.url).filter(Boolean) || [];
-  const stats = rider.performanceSummary?.performances || [];
-  const podiums = rider.performanceSummary?.totalPodiums ?? 0;
+    rider?.avatarUrl && rider?.avatarUrl.includes("http")
+      ? rider?.avatarUrl
+      : "/assets/img/avatar/default-avatar.jpg";
+  const images = rider?.images?.map((img) => img.url).filter(Boolean) || [];
+  const stats = rider?.performanceSummary?.performances || [];
+  const podiums = rider?.performanceSummary?.totalPodiums ?? 0;
   const networks: SocialNetwork[] =
-    rider.preferences?.networks
+    rider?.preferences?.networks
       ?.map((n) => n as SocialNetwork)
       .filter(Boolean) || [];
   const hasNetwork = (type: SocialNetwork) => networks.includes(type);
-  const rawLanguages = rider.identity?.languageSpoken?.filter(Boolean) || [];
-  const youtube = rider.videos?.filter((v) => !!v.url) || [];
-  const availability = rider.availibility?.isAvailable;
-  const sessionsPerWeek = rider.trainingFrequency?.sessionsPerWeek ?? 0;
-  const hoursPerSession = rider.trainingFrequency?.hoursPerSession ?? 0;
+  const rawLanguages = rider?.identity?.languageSpoken?.filter(Boolean) || [];
+  const youtube = rider?.videos?.filter((v) => !!v.url) || [];
+  const availability = rider?.availibility?.isAvailable;
+  const sessionsPerWeek = rider?.trainingFrequency?.sessionsPerWeek ?? 0;
+  const hoursPerSession = rider?.trainingFrequency?.hoursPerSession ?? 0;
+
+  // GSAP refs et effets (après images/youtube)
+  const profileImgRef = useRef<HTMLImageElement | null>(null);
+  const modalImgRef = useRef<HTMLImageElement | null>(null);
+  const videoRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    if (profileImgRef.current) {
+      gsap.fromTo(
+        profileImgRef.current,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: profileImgRef.current,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        },
+      );
+    }
+    videoRefs.current.forEach((el) => {
+      if (!el) return;
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        },
+      );
+    });
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
+  }, [images, youtube]);
+
+  useEffect(() => {
+    if (selectedImageIndex !== null && modalImgRef.current) {
+      gsap.fromTo(
+        modalImgRef.current,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: "power3.out",
+        },
+      );
+    }
+  }, [selectedImageIndex]);
+
+  // Overlay loader sur toute la page
+  if (isLoading)
+    return (
+      <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white bg-opacity-90 min-h-screen min-w-full">
+        <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-[#d2fa52] mb-8"></div>
+        <span className="text-2xl text-[#101B08] font-bold font-figtree">
+          Chargement du portfolio...
+        </span>
+      </div>
+    );
+  if (error || !rider)
+    return <p className="p-8 text-red-500">Une erreur est survenue.</p>;
 
   const formatDate = (date?: Date | string) => {
     if (!date) return "Date inconnue";
@@ -119,7 +186,7 @@ export default function RiderPage() {
     { id: "profile", label: "Profil" },
     ...(images.length > 1 ? [{ id: "gallery", label: "Galerie" }] : []),
     ...(youtube.length > 0 ? [{ id: "videos", label: "Vidéos" }] : []),
-    ...(rider.sponsorSummary?.currentSponsors?.length > 0
+    ...(rider?.sponsorSummary?.currentSponsors?.length > 0
       ? [{ id: "sponsors", label: "Sponsors" }]
       : []),
     ...(stats.length > 0 || sessionsPerWeek > 0
@@ -158,9 +225,10 @@ export default function RiderPage() {
               alt={fullName}
               width={600}
               height={800}
-              className={`rounded-xl object-cover w-full border-4 border-primary-green transition-opacity duration-300 ${
-                imgLoaded ? "opacity-100" : "opacity-0"
+              className={`rounded-xl object-cover w-full border-4 border-primary-green transition-opacity duration-300 opacity-0 translate-y-10 ${
+                imgLoaded ? "" : ""
               }`}
+              ref={profileImgRef}
               onLoad={() => setImgLoaded(true)}
               onError={() => setImgLoaded(true)}
               priority
@@ -168,9 +236,12 @@ export default function RiderPage() {
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 flex flex-col gap-4" id="profile">
+        <div
+          className="w-full mx-5 md:mx-0 md:w-1/2 flex flex-col gap-4"
+          id="profile"
+        >
           <p className="whitespace-pre-line text-lm leading-relaxed">
-            {rider.identity.bio || (
+            {rider?.identity.bio || (
               <span className="italic text-gray-400">
                 Aucune bio disponible.
               </span>
@@ -206,46 +277,43 @@ export default function RiderPage() {
           </div>
 
           {sports.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
-              {sports.map((s, i) => (
-                <span key={i} className="relative inline-block group">
+            <div className="mt-6">
+              <p className="uppercase text-sm mb-2 font-michroma">Sport</p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {sports.map((s, i) => (
                   <span
-                    className="block px-6 py-2 text-xs uppercase font-bold tracking-wider text-primary-green bg-[#101B08] transition-transform group-hover:scale-105"
-                    style={{
-                      clipPath: "polygon(0% 10%, 90% 0%, 100% 90%, 10% 100%)",
-                    }}
+                    key={i}
+                    className="flex items-center gap-2 px-4 py-2 rounded-full shadow-sm bg-primary-green text-xs font-bold uppercase transition-transform hover:scale-105"
+                    style={{ minWidth: 0 }}
                   >
-                    {s}
+                    <span className="truncate">{s}</span>
                   </span>
-                  <span className="absolute left-0 -bottom-[2px] w-full h-[2px] bg-[#101B08]"></span>
-                </span>
-              ))}
+                ))}
+              </div>
             </div>
           )}
 
-          {/* RÉSEAUX */}
           <div className="mt-6">
             <p className="uppercase text-sm mb-2 font-michroma">Réseaux</p>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-row items-center flex-wrap gap-1">
               {networks.length > 0 ? (
                 Object.values(SocialNetwork).map(
                   (network) =>
                     hasNetwork(network as SocialNetwork) && (
-                      <span
-                        className="relative inline-block group"
+                      <div
                         key={network}
+                        className={`relative group flex items-center h-10 cursor-pointer bg-[#F4F3EF] text-[#101B08] rounded-full w-10 border border-[#101B08] `}
+                        tabIndex={0}
+                        aria-label={
+                          networkData[network as SocialNetwork]?.name || network
+                        }
                       >
                         <span
-                          className="block px-6 py-2 text-xs uppercase font-bold tracking-wider text-[#101B08] bg-[#B1BD93] transition-transform group-hover:scale-105"
-                          style={{
-                            clipPath:
-                              "polygon(10% 0%, 100% 10%, 90% 100%, 0% 90%)",
-                          }}
+                          className={`absolute left-0 top-0 h-full flex items-center justify-center w-10 h-10`}
                         >
-                          {network}
+                          {networkData[network as SocialNetwork]?.icon}
                         </span>
-                        <span className="absolute left-0 -bottom-[2px] w-full h-[2px] bg-[#101B08]"></span>
-                      </span>
+                      </div>
                     ),
                 )
               ) : (
@@ -262,11 +330,11 @@ export default function RiderPage() {
             </p>
 
             {availability === true ? (
-              <p className="text-sm text-[#101B08] border-2 rounded-4xl px-3 py-1 w-fit">
+              <p className="text-sm text-[#101B08] border-2 rounded-4xl px-4 py-2 w-fit">
                 disponible
               </p>
             ) : availability === false ? (
-              <p className="text-sm text-gray-500 border-2 rounded-4xl px-3 py-1 w-fit">
+              <p className="text-sm text-gray-500 border-2 rounded-4xl px-4 py-2 w-fit">
                 non disponible
               </p>
             ) : (
@@ -283,7 +351,7 @@ export default function RiderPage() {
                 rawLanguages.map((lang, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1 rounded-full text-sm bg-[#1a1a19] text-primary-green uppercase"
+                    className="px-6 py-2 rounded-full text-sm bg-[#1a1a19] text-primary-green uppercase"
                   >
                     {typeof lang === "string" ? lang : Language[lang]}
                   </span>
@@ -327,7 +395,10 @@ export default function RiderPage() {
               return videoId ? (
                 <div
                   key={index}
-                  className="relative group w-full aspect-video rounded-xl overflow-hidden border-2 border-primary-green shadow-lg hover:shadow-2xl transition-all duration-300"
+                  className="relative group w-full aspect-video rounded-xl overflow-hidden border-2 border-primary-green shadow-lg hover:shadow-2xl transition-all duration-300 opacity-0 translate-y-10"
+                  ref={(el) => {
+                    videoRefs.current[index] = el;
+                  }}
                 >
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
@@ -366,7 +437,8 @@ export default function RiderPage() {
           <img
             src={images[selectedImageIndex]}
             alt={`Image ${selectedImageIndex + 1}`}
-            className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl"
+            className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl opacity-0 translate-y-10"
+            ref={modalImgRef}
             onClick={(e) => e.stopPropagation()}
           />
 
@@ -394,8 +466,8 @@ export default function RiderPage() {
 
       <div id="sponsors">
         <RiderSponsorsSection
-          currentSponsors={rider.sponsorSummary?.currentSponsors || []}
-          desiredSponsors={rider.sponsorSummary?.wishListSponsors || []}
+          currentSponsors={rider?.sponsorSummary?.currentSponsors || []}
+          desiredSponsors={rider?.sponsorSummary?.wishListSponsors || []}
         />
       </div>
 
@@ -487,7 +559,9 @@ export default function RiderPage() {
         </div>
       )}
 
-      <ScrollSpyNav sections={scrollSections} />
+      <div className="hidden md:flex">
+        <ScrollSpyNav sections={scrollSections} />
+      </div>
 
       {/* <div className="fixed bottom-0 w-full h-[5dvh] bg-gradient-to-b from-transparent to-[#d3fa5265]"></div> */}
     </div>

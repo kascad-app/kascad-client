@@ -10,7 +10,7 @@ export default function Avatar({
   className = "",
 }: AvatarProps) {
   const config = sizeConfig[size];
-  const avatarSrc = src || "/assets/img/blog-4.jpg";
+  const avatarSrc = src || "/assets/img/avatar/default-avatar.jpg";
 
   const [isLoaded, setIsLoaded] = useState(false);
 

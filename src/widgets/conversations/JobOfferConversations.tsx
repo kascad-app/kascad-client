@@ -8,6 +8,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@components/ui/pagination";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 export default function JobOfferConversations({
   conversations,
@@ -25,6 +27,7 @@ export default function JobOfferConversations({
   totalPages: number;
 }) {
   const PAGE_SIZE = 10;
+  const router = useRouter();
   return (
     <section>
       <h2 className="text-2xl font-bold mb-6">
@@ -58,6 +61,9 @@ export default function JobOfferConversations({
               <Card
                 key={conv._id}
                 className="p-6 flex flex-col gap-2 hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() =>
+                  router.push(ROUTES.MESSAGERIE.CONVERSATION(conv._id))
+                }
               >
                 <div className="flex items-center gap-3 mb-2">
                   {conv.otherParticipant.avatarUrl ? (

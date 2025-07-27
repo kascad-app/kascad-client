@@ -55,7 +55,7 @@ export default function Sidebar({ children }: SidebarProps) {
       icon: <User className="w-4 h-4" />,
     },
     {
-      href: ROUTES.MESSAGERIE,
+      href: ROUTES.MESSAGERIE.PAGE,
       label: "Messagerie",
       icon: (
         <span className="relative">

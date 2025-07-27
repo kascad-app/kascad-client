@@ -63,7 +63,7 @@ export default function RiderKPISection({ stats }: RiderKPISectionProps) {
     if (!progression.length && !podiumsData.length && !scoresData.length) return null;
 
     return (
-        <div className="mt-20 pb-20 max-w-6xl mx-auto px-4">
+        <div className="mt-20 max-w-6xl mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {progression.length > 0 && (
                     <Card className="bg-[#F4F3EF] border-[#D2FA52]">

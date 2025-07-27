@@ -98,13 +98,19 @@ export default function MessageriePage() {
                       {conv.otherParticipant.avatarUrl ? (
                         <img
                           src={conv.otherParticipant.avatarUrl}
-                          alt={conv.otherParticipant.displayName || "Avatar"}
-                          className="w-12 h-12 rounded-full object-cover border"
+                          alt={
+                            conv.otherParticipant.displayName ||
+                            conv.otherParticipant.companyName ||
+                            "Avatar"
+                          }
+                          className="w-14 h-14 object-contain rounded-xl bg-gray-50"
                         />
                       ) : (
-                        <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 font-bold text-xl">
-                          ?
-                        </div>
+                        <img
+                          src="/favicon.ico"
+                          alt="Pas d'avatar"
+                          className="w-14 h-14 object-contain opacity-15 grayscale rounded-xl bg-gray-50"
+                        />
                       )}
                       <div>
                         <div className="font-bold text-lg text-[#101B08]">
@@ -223,8 +229,9 @@ export default function MessageriePage() {
                 Aucune conversation liée à une candidature
               </span>
               <span className="text-gray-500 mb-6 text-center max-w-md">
-                Vous n'avez pas encore de messages liés à une offre d'emploi ou
-                une candidature.
+                Vous n'avez pas encore de messages liés à une offre d'emploi.
+                Attendez d'avoir été sélectionné pour démarrer une conversation
+                avec le recruteur.
               </span>
             </div>
           ) : (
@@ -239,13 +246,19 @@ export default function MessageriePage() {
                       {conv.otherParticipant.avatarUrl ? (
                         <img
                           src={conv.otherParticipant.avatarUrl}
-                          alt={conv.otherParticipant.displayName || "Avatar"}
-                          className="w-12 h-12 rounded-full object-cover border"
+                          alt={
+                            conv.otherParticipant.displayName ||
+                            conv.otherParticipant.companyName ||
+                            "Avatar"
+                          }
+                          className="w-14 h-14 object-contain rounded-xl bg-gray-50"
                         />
                       ) : (
-                        <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 font-bold text-xl">
-                          ?
-                        </div>
+                        <img
+                          src="/favicon.ico"
+                          alt="Pas d'avatar"
+                          className="w-14 h-14 object-contain opacity-15 grayscale rounded-xl bg-gray-50"
+                        />
                       )}
                       <div>
                         <div className="font-bold text-lg text-[#101B08]">

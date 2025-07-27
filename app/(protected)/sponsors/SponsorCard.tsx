@@ -73,12 +73,12 @@ export default function SponsorCard({ sponsor }: { sponsor: any }) {
             />
           )}
           <div className="absolute top-0 left-0 z-[1] w-full h-full flex flex-col items-center justify-center pointer-events-none">
-            {Array.from({ length: 8 }).map((_, i) => (
+            {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex flex-row w-full justify-center">
-                {Array.from({ length: 10 }).map((_, y) => (
+                {Array.from({ length: 15 }).map((_, y) => (
                   <span
                     key={y}
-                    className="text-gray-200 font-black mx-1 select-none"
+                    className="text-gray-200 text-xl font-black mx-1 select-none"
                   >
                     {sportNames.length > 0 ? sportNames.join(" ") : sponsorName}
                   </span>

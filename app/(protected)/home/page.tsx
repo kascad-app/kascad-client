@@ -127,7 +127,7 @@ export default function Home() {
                     {totalUnreadMessages?.unreadCount || 0}
                   </p>
                 </div>
-                <Link href={ROUTES.MESSAGERIE} className="w-auto">
+                <Link href={ROUTES.MESSAGERIE.PAGE} className="w-auto">
                   <Button
                     variant="outline"
                     className="border-[#3f4139] text-[#3f4139] hover:bg-[#3f4139] hover:text-white px-6 min-w-fit"

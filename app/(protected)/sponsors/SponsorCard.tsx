@@ -185,7 +185,7 @@ export default function SponsorCard({ sponsor }: { sponsor: any }) {
                   type="button"
                   onClick={() => setAlertOpen(true)}
                 >
-                  Contacter
+                  Envoyer un message
                 </Button>
                 {/* AlertDialog pour confirmation de démarrage de conversation */}
                 <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>

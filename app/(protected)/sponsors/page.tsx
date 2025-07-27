@@ -139,41 +139,6 @@ export default function SponsorsPage() {
                       key={sponsor.slug || sponsor.id}
                       sponsor={sponsor}
                     />
-                    <AlertDialog
-                      open={openDialogSponsorId === sponsor.id}
-                      onOpenChange={(open) =>
-                        setOpenDialogSponsorId(open ? sponsor.id : null)
-                      }
-                    >
-                      <AlertDialogTrigger asChild>
-                        <button
-                          className="absolute bottom-3 right-3 w-9 h-9 flex items-center justify-center bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition"
-                          aria-label="Contacter le sponsor"
-                          type="button"
-                        >
-                          <MessageCircle className="w-4 h-4" />
-                        </button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Démarrer une conversation ?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Voulez-vous démarrer une conversation avec ce
-                            sponsor ?
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Annuler</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleStartConversation(sponsor.id)}
-                          >
-                            Démarrer
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
                   </div>
                 ))}
               </div>
@@ -188,41 +153,6 @@ export default function SponsorsPage() {
                 {originalSponsors.map((sponsor: any) => (
                   <div className="relative" key={sponsor.id}>
                     <SponsorCard key={sponsor.id} sponsor={sponsor} />
-                    <AlertDialog
-                      open={openDialogSponsorId === sponsor.id}
-                      onOpenChange={(open) =>
-                        setOpenDialogSponsorId(open ? sponsor.id : null)
-                      }
-                    >
-                      <AlertDialogTrigger asChild>
-                        <button
-                          className="absolute bottom-3 right-3 w-9 h-9 flex items-center justify-center bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition"
-                          aria-label="Contacter le sponsor"
-                          type="button"
-                        >
-                          <MessageCircle className="w-4 h-4" />
-                        </button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Démarrer une conversation ?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Voulez-vous démarrer une conversation avec ce
-                            sponsor ?
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Annuler</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleStartConversation(sponsor.id)}
-                          >
-                            Démarrer
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
                   </div>
                 ))}
               </div>

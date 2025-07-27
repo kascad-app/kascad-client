@@ -1,12 +1,12 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 
-interface PageProps {
-  params: { id: string };
-}
+type Params = Promise<{
+  id: string;
+}>;
 
-export default function ConversationPage({ params }: PageProps) {
-  const { id } = params;
+export default async function Page(props: { params: Params }) {
+  const { id } = await props.params;
   if (!id) return notFound();
   return (
     <main className="container mx-auto py-8">

@@ -12,7 +12,10 @@ export const ROUTES = {
     EDIT_PROFILE: "/profil/edit",
   },
 
-  MESSAGERIE: "/messagerie",
+  MESSAGERIE: {
+    PAGE: "/messagerie",
+    CONVERSATION: (conversationId: string) => `/messagerie/${conversationId}`,
+  },
 
   RIDERS: {
     LIST: "/riders",

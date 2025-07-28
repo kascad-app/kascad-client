@@ -82,3 +82,40 @@ export type GetOrCreateConversationQuery = z.infer<
 export type UnreadCountResponse = {
   unreadCount: number;
 };
+
+export interface MessageWithSender {
+  _id: string;
+  conversationId: string;
+  senderId: string;
+  senderType: ProfileType;
+  content: string;
+  messageType: MessageType;
+  readBy: Array<{
+    userId: string;
+    userType: ProfileType;
+    readAt: Date;
+  }>;
+  createdAt: Date;
+  updatedAt: Date;
+  sender: {
+    userId: string;
+    userType: ProfileType;
+    displayName?: string;
+    avatarUrl?: string;
+    firstName?: string;
+    lastName?: string;
+    fullName?: string;
+    companyName?: string;
+  };
+}
+
+export interface GetMessagesResponse {
+  messages: MessageWithSender[];
+  pagination: PaginationType;
+}
+
+export interface GetMessagesServiceQuery {
+  conversationId: string;
+  page: number;
+  limit: number;
+}

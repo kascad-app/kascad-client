@@ -1,5 +1,6 @@
 import {
   ConversationWithParticipants,
+  GetMessagesResponse,
   UnreadCountResponse,
 } from "./conversations.types";
 
@@ -47,7 +48,9 @@ export function useGetConversation(conversationId: string) {
 // GET les messages d'une conversation
 export function useGetConversationMessages(conversationId: string) {
   const key = SWR_KEY.CONVERSATIONS.MESSAGES.GET(conversationId);
-  return useSWR<any>(key, () => requester().get<any>(key));
+  return useSWR<GetMessagesResponse>(key, () =>
+    requester().get<GetMessagesResponse>(key),
+  );
 }
 
 // GET le nombre total de messages non lus

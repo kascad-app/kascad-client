@@ -50,7 +50,6 @@ export default function EditProfile() {
 
   useEffect(() => {
     if (!session.user || profile) return;
-    console.log(session.user);
 
     const identity = session.user.identity as RiderIdentity;
     const identifier = session.user.identifier as RiderIdentifier;

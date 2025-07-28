@@ -160,23 +160,25 @@ export default function MyOffers() {
                     )}
                   </TableCell>
                   <TableCell className="text-right p-0 w-0 whitespace-nowrap align-middle">
-                    <button className="inline-flex items-center gap-2 px-3 py-1 bg-[#f6ffe0] text-[#3f4139] font-medium text-xs border border-[#eaf7c2] rounded-md shadow-none transition-all duration-200 hover:bg-[#eaf7c2] hover:text-[#101B08] hover:border-[#d2fa52] active:scale-95 focus:outline-none focus:ring-1 focus:ring-[#eaf7c2] focus:ring-offset-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21.75 6.75v7.5a2.25 2.25 0 01-2.25 2.25h-5.25l-4.5 3v-3H4.5A2.25 2.25 0 012.25 14.25v-7.5A2.25 2.25 0 014.5 4.5h15a2.25 2.25 0 012.25 2.25z"
-                        />
-                      </svg>
-                      Accéder à la conversation
-                    </button>
+                    {myOffer.application === "accepted" && (
+                      <button className="inline-flex items-center gap-2 px-3 py-1 bg-[#f6ffe0] text-[#3f4139] font-medium text-xs border border-[#eaf7c2] rounded-md shadow-none transition-all duration-200 hover:bg-[#eaf7c2] hover:text-[#101B08] hover:border-[#d2fa52] active:scale-95 focus:outline-none focus:ring-1 focus:ring-[#eaf7c2] focus:ring-offset-1">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M21.75 6.75v7.5a2.25 2.25 0 01-2.25 2.25h-5.25l-4.5 3v-3H4.5A2.25 2.25 0 012.25 14.25v-7.5A2.25 2.25 0 014.5 4.5h15a2.25 2.25 0 012.25 2.25z"
+                          />
+                        </svg>
+                        Accéder à la conversation
+                      </button>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

@@ -331,9 +331,7 @@ export default function RiderPage() {
               alt={fullName}
               width={600}
               height={800}
-              className={`rounded-xl object-cover w-full border-4 border-primary-green transition-opacity duration-300 opacity-0 translate-y-10 ${
-                imgLoaded ? "" : ""
-              }`}
+              className="rounded-xl object-cover w-full border-4 border-primary-green"
               ref={profileImgRef}
               onLoad={() => setImgLoaded(true)}
               onError={() => setImgLoaded(true)}

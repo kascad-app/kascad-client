@@ -18,10 +18,7 @@ export default function RiderSponsorsSection({
     if (!hasCurrent && !hasDesired) return null;
 
     return (
-        <div className="mt-20 max-w-6xl mx-auto px-4 space-y-20" >
-            <h3 className="text-4xl font-bold text-[#101B08] font-michroma tracking-widest mb-10 uppercase">
-                Sponsors
-            </h3>
+        <div className="w-full space-y-20" >
             {hasCurrent && (
                 <section>
                     <h4 className="text-ml font-medium text-[#101B08]  font-michroma tracking-widest mb-10">

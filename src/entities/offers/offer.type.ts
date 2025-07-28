@@ -1,14 +1,13 @@
-import { ContractType, IOffersRider } from "@kascad-app/shared-types";
+import {
+  ContractType,
+  IOffersRider,
+  PaginationType,
+} from "@kascad-app/shared-types";
 import { z } from "zod";
 
 export interface IOfferPaginee {
   data: IOffersRider[];
-  pagination: {
-    currentPage: number;
-    totalPages: number;
-    totalItems: number;
-    itemsPerPage: number;
-  };
+  pagination: PaginationType;
 }
 
 export interface IMyOffers {

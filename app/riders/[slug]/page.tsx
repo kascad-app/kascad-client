@@ -29,6 +29,8 @@ export default function RiderPage() {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
   );
+  const hasAnimatedRef = useRef(false);
+
   const [imgLoaded, setImgLoaded] = useState(false);
 
   // Refs pour les animations
@@ -55,9 +57,8 @@ export default function RiderPage() {
 
   const fullName =
     rider?.identity?.fullName ||
-    `${rider?.identity?.firstName || ""} ${
-      rider?.identity?.lastName || ""
-    }`.trim() ||
+    `${rider?.identity?.firstName || ""} ${rider?.identity?.lastName || ""
+      }`.trim() ||
     "Nom non renseigné";
   const sports =
     rider?.preferences?.sports?.map((s) => s.name).filter(Boolean) || [];
@@ -66,18 +67,17 @@ export default function RiderPage() {
     : null;
   const age: number = typeof window !== 'undefined' && birthDate
     ? new Date().getFullYear() -
-      birthDate.getFullYear() -
-      (new Date().getMonth() < birthDate.getMonth() ||
+    birthDate.getFullYear() -
+    (new Date().getMonth() < birthDate.getMonth() ||
       (new Date().getMonth() === birthDate.getMonth() &&
         new Date().getDate() < birthDate.getDate())
-        ? 1
-        : 0)
+      ? 1
+      : 0)
     : 0;
   const location =
     rider?.identity?.city || rider?.identity?.country
-      ? `${rider?.identity?.city || ""}${
-          rider?.identity?.city && rider?.identity?.country ? ", " : ""
-        }${rider?.identity?.country || ""}`
+      ? `${rider?.identity?.city || ""}${rider?.identity?.city && rider?.identity?.country ? ", " : ""
+      }${rider?.identity?.country || ""}`
       : "";
   const profilePicture =
     rider?.avatarUrl && rider?.avatarUrl.includes("http")
@@ -98,80 +98,76 @@ export default function RiderPage() {
   const hoursPerSession = rider?.trainingFrequency?.hoursPerSession ?? 0;
 
   useEffect(() => {
-    if (titleRef.current) {
-      gsap.fromTo(
-        titleRef.current,
-        {
-          opacity: 0,
-          filter: "blur(5px)",
-          y: 60,
-        },
-        {
-          opacity: 1,
-          filter: "blur(0px)",
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        },
-      );
+    if (!rider) return;
+
+    // 👉 intro animation — une seule fois
+    if (!hasAnimatedRef.current) {
+      hasAnimatedRef.current = true;
+
+      if (titleRef.current) {
+        gsap.fromTo(
+          titleRef.current,
+          { opacity: 0, filter: "blur(5px)", y: 60 },
+          {
+            opacity: 1,
+            filter: "blur(0px)",
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+        );
+      }
+
+      if (subtitleRef.current) {
+        gsap.fromTo(
+          subtitleRef.current,
+          { opacity: 0, filter: "blur(15px)", y: 40 },
+          {
+            opacity: 1,
+            filter: "blur(0px)",
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+        );
+      }
+
+      if (bioRef.current) {
+        gsap.fromTo(
+          bioRef.current,
+          { opacity: 0, filter: "blur(5px)", y: 20 },
+          {
+            opacity: 1,
+            filter: "blur(0px)",
+            y: 0,
+            duration: 0.8,
+            delay: 0.4,
+            ease: "power2.out",
+          },
+        );
+      }
+
+      if (profileImgRef.current) {
+        gsap.fromTo(
+          profileImgRef.current,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: 0.3,
+            ease: "power3.out",
+          },
+        );
+      }
     }
 
-    if (subtitleRef.current) {
-      gsap.fromTo(
-        subtitleRef.current,
-        {
-          opacity: 0,
-          filter: "blur(15px)",
-          y: 40,
-        },
-        {
-          opacity: 1,
-          filter: "blur(0px)",
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        },
-      );
-    }
-
-    if (bioRef.current) {
-      gsap.fromTo(
-        bioRef.current,
-        { opacity: 0, filter: "blur(5px)", y: 20 },
-        {
-          opacity: 1,
-          filter: "blur(0px)",
-          y: 0,
-          duration: 0.8,
-          delay: 0.4,
-          ease: "power2.out",
-        },
-      );
-    }
-
-    if (profileImgRef.current) {
-      gsap.fromTo(
-        profileImgRef.current,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay: 0.3,
-          ease: "power3.out",
-        },
-      );
-    }
-
+    // 👉 animations au scroll (toujours actives)
     sectionTitleRefs.current.forEach((el, i) => {
       if (el) {
         gsap.fromTo(
           el,
-          {
-            opacity: 0,
-            filter: "blur(5px)",
-            y: 20,
-          },
+          { opacity: 0, filter: "blur(5px)", y: 20 },
           {
             opacity: 1,
             filter: "blur(0px)",
@@ -193,11 +189,7 @@ export default function RiderPage() {
       if (el) {
         gsap.fromTo(
           el,
-          {
-            opacity: 0,
-            filter: "blur(5px)",
-            y: 20,
-          },
+          { opacity: 0, filter: "blur(5px)", y: 20 },
           {
             opacity: 1,
             filter: "blur(0px)",
@@ -235,12 +227,16 @@ export default function RiderPage() {
       }
     });
 
+    ScrollTrigger.refresh();
+
     return () => {
       ScrollTrigger.getAll().forEach((st) => st.kill());
     };
-  }, [images, youtube]);
+  }, [rider, images, youtube]);
+
 
   useEffect(() => {
+    console.log("hello");
     if (selectedImageIndex !== null && modalImgRef.current) {
       gsap.fromTo(
         modalImgRef.current,
@@ -254,6 +250,14 @@ export default function RiderPage() {
       );
     }
   }, [selectedImageIndex]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   if (isLoading)
     return (
@@ -332,7 +336,10 @@ export default function RiderPage() {
               height={800}
               className="rounded-xl object-cover w-full border-4 border-primary-green"
               ref={profileImgRef}
-              onLoad={() => setImgLoaded(true)}
+              onLoad={() => {
+                setImgLoaded(true);
+                ScrollTrigger.refresh();
+              }}
               onError={() => setImgLoaded(true)}
               priority
             />
@@ -528,8 +535,8 @@ export default function RiderPage() {
               const videoId = url.includes("youtube.com")
                 ? new URL(url).searchParams.get("v")
                 : url.includes("youtu.be")
-                ? url.split("/").pop()
-                : null;
+                  ? url.split("/").pop()
+                  : null;
 
               return videoId ? (
                 <div
@@ -672,9 +679,8 @@ export default function RiderPage() {
                     {performance?.sport?.name || "Sport inconnu"}
                   </p>
                   <p className="text-sm text-gray-300">
-                    {`${performance?.location?.city || "Ville inconnue"}, ${
-                      performance?.location?.country || "Pays inconnu"
-                    }`}
+                    {`${performance?.location?.city || "Ville inconnue"}, ${performance?.location?.country || "Pays inconnu"
+                      }`}
                   </p>
                   {performance?.weather && (
                     <p className="text-xs text-gray-400 mt-2">

@@ -1,5 +1,8 @@
 "use client";
+import { useGetOrCreateConversation } from "@/entities/direct-messages/conversations.hooks";
 import { useGetSponsors } from "@/entities/sponsors/sponsors.hooks";
+import { ConversationType, ProfileType } from "@kascad-app/shared-types";
+import { useState } from "react";
 import SponsorCard from "./SponsorCard";
 
 export default function SponsorsPage() {

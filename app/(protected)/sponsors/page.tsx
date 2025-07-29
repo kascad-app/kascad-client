@@ -1,21 +1,9 @@
 "use client";
-import { useGetSponsors } from "@/entities/sponsors/sponsors.hooks";
-import SponsorCard from "./SponsorCard";
-import React, { useState } from "react";
-import { MessageCircle } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogAction,
-  AlertDialogCancel,
-} from "@/components/ui/alert-dialog";
-import { ProfileType, ConversationType } from "@kascad-app/shared-types";
 import { useGetOrCreateConversation } from "@/entities/direct-messages/conversations.hooks";
+import { useGetSponsors } from "@/entities/sponsors/sponsors.hooks";
+import { ConversationType, ProfileType } from "@kascad-app/shared-types";
+import { useState } from "react";
+import SponsorCard from "./SponsorCard";
 
 export default function SponsorsPage() {
   const { data: sponsors = [], isLoading, error } = useGetSponsors();

@@ -9,17 +9,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 interface MasonryGalleryProps {
   images: string[];
   onImageClick?: (index: number) => void;
+  onAllImagesLoaded?: () => void;
 }
 
 export default function MasonryGallery({
   images,
   onImageClick,
+  onAllImagesLoaded,
 }: MasonryGalleryProps) {
   const galleryImages = images;
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
-
   useEffect(() => {
-    if (!imageRefs.current) return;
     imageRefs.current.forEach((el, i) => {
       if (!el) return;
       gsap.fromTo(
@@ -36,13 +36,47 @@ export default function MasonryGallery({
             start: "top 90%",
             toggleActions: "play none none none",
           },
-        },
+        }
       );
     });
+
     return () => {
       ScrollTrigger.getAll().forEach((st) => st.kill());
     };
   }, [galleryImages]);
+  useEffect(() => {
+    const images = document.querySelectorAll<HTMLImageElement>("img[data-gallery]");
+    if (images.length === 0) {
+      onAllImagesLoaded?.();
+      return;
+    }
+
+    let loadedCount = 0;
+
+    images.forEach((img) => {
+      if (img.complete) {
+        loadedCount++;
+      } else {
+        img.onload = () => {
+          loadedCount++;
+          if (loadedCount === images.length) {
+            onAllImagesLoaded?.();
+          }
+        };
+        img.onerror = () => {
+          loadedCount++;
+          if (loadedCount === images.length) {
+            onAllImagesLoaded?.();
+          }
+        };
+      }
+    });
+
+    if (loadedCount === images.length) {
+      onAllImagesLoaded?.();
+    }
+  }, [images, onAllImagesLoaded]);
+
 
   const breakpoints = {
     default: 4,
@@ -73,6 +107,7 @@ export default function MasonryGallery({
             alt={`Image ${index + 1}`}
             width={300}
             height={400}
+            data-gallery
             className="object-cover w-full h-auto rounded-lg shadow-md hover:shadow-xl transition-shadow"
           />
         </div>

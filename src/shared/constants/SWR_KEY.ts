@@ -40,9 +40,12 @@ export const SWR_KEY = {
       GET: (conversationId: string) =>
         `/dm/messages/conversations/${conversationId}`,
       CREATE: "/dm/messages",
+      DELETE: (messageId: string) => `/dm/messages/${messageId}`,
       COUNT_TOTAL_UNREAD: "/dm/messages/unread-count",
       COUNT_TOTAL_UNREAD_CONVERSATIONS:
         "/dm/messages/conversations/unread-counts",
+      MARK_AS_READ: (conversationId: string) =>
+        `/dm/messages/conversations/${conversationId}/mark-all-read`,
     },
   },
   SPONSORS: {

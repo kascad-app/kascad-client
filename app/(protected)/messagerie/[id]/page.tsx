@@ -2,24 +2,70 @@
 
 import { notFound } from "next/navigation";
 import { useParams } from "next/navigation";
-import { useGetConversationMessages } from "@/entities/direct-messages/conversations.hooks";
-import { MailOpen, Send } from "lucide-react";
+import {
+  useGetConversationMessages,
+  useMarkConversationAsRead,
+  useSendMessage,
+  useDeleteMessage,
+} from "@/entities/direct-messages/conversations.hooks";
+import { SWR_KEY } from "@/shared/constants/SWR_KEY";
+import { mutate } from "swr";
+import { MailOpen, Send, X } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
 import clsx from "clsx";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { Button } from "@/shared/ui/button/Button.ui";
+import { CreateMessageInput } from "@/entities/offers/offer.type";
 
 export default function ConversationPage() {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const params = useParams();
 
+  const id =
+    typeof params.id === "string"
+      ? params.id
+      : Array.isArray(params.id)
+      ? params.id[0]
+      : undefined;
+
+  if (!id) return notFound();
+
+  const [message, setMessage] = useState("");
+  const useMarkAsRead = useMarkConversationAsRead(id);
+  const { trigger: sendMessage } = useSendMessage();
+  const { trigger: deleteMessage } = useDeleteMessage();
+  // Utilise la même clé que le hook pour que mutate mette bien à jour data
+  const messagesKey = SWR_KEY.CONVERSATIONS.MESSAGES.GET(id);
+  const { data, isLoading, error } = useGetConversationMessages(id || "");
   useEffect(() => {
     autoResize();
   }, []);
+
+  useEffect(() => {
+    if (data && !isLoading && !error) {
+      useMarkAsRead.trigger();
+    }
+  }, [data, isLoading, error]);
+
+  useEffect(() => {
+    autoResize();
+  }, [message]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
     autoResize();
   };
+
   const autoResize = () => {
     const textarea = textareaRef.current;
     if (textarea) {
@@ -27,25 +73,22 @@ export default function ConversationPage() {
       textarea.style.height = `${textarea.scrollHeight}px`;
     }
   };
-  const id =
-    typeof params.id === "string"
-      ? params.id
-      : Array.isArray(params.id)
-        ? params.id[0]
-        : undefined;
 
-  const { data, isLoading, error } = useGetConversationMessages(id || "");
-  const [message, setMessage] = useState("");
-
-  if (!id) return notFound();
-
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!message.trim()) return;
 
-    // TODO: remplacer par ta mutation API
-    console.log("Message à envoyer :", message);
+    await sendMessage({
+      conversationId: id,
+      content: message,
+    } as CreateMessageInput);
 
     setMessage("");
+    await mutate(messagesKey); // recharge les messages après envoi
+  };
+
+  const handleDeleteMessage = async (messageId: string) => {
+    await deleteMessage(messageId);
+    await mutate(messagesKey); // recharge les messages après suppression
   };
 
   const back = () => {
@@ -63,8 +106,6 @@ export default function ConversationPage() {
     );
 
   return (
-
-
     <main className="flex flex-col  mx-auto py-10 px-6 ">
       <div className="flex items-center justify-between w-full gap-3 mb-6 ">
         <div className="flex items-center gap-2">
@@ -73,7 +114,10 @@ export default function ConversationPage() {
             Sonsor message
           </h1>
         </div>
-        <Button variant="outline" onClick={back}> retour messagerie</Button>
+        <Button variant="outline" onClick={back}>
+          {" "}
+          retour messagerie
+        </Button>
       </div>
 
       <div className="flex flex-col justify-between w-full">
@@ -81,23 +125,21 @@ export default function ConversationPage() {
           {isLoading ? (
             <p className="text-gray-500">Chargement des messages...</p>
           ) : error ? (
-            <p className="text-red-500">Erreur lors du chargement des messages.</p>
+            <p className="text-red-500">
+              Erreur lors du chargement des messages.
+            </p>
           ) : data && data.messages.length > 0 ? (
-            data.messages.map((msg) => {
+            [...data.messages].reverse().map((msg) => {
               const isFromSponsor = msg.senderType === "sponsor";
-
               return (
                 <div
                   key={msg._id}
-                  className={clsx(
-                    "pl-4 rounded-md p-4 shadow-sm",
-                    {
-                      "border-l-4 border-[#B1BD93] bg-white/70 text-[#101B08]":
-                        isFromSponsor,
-                      "border-l-4 border-[#D2FA52] bg-[#D2FA52]/70 text-[#101B08]":
-                        !isFromSponsor,
-                    }
-                  )}
+                  className={clsx("pl-4 rounded-md p-4 shadow-sm relative", {
+                    "border-l-4 border-[#B1BD93] bg-white/70 text-[#101B08]":
+                      isFromSponsor,
+                    "border-l-4 border-[#D2FA52] bg-[#D2FA52]/70 text-[#101B08]":
+                      !isFromSponsor,
+                  })}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-semibold">
@@ -114,6 +156,38 @@ export default function ConversationPage() {
                     </span>
                   </div>
                   <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                  {!isFromSponsor && (
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <button
+                          className="absolute bottom-2 right-2 p-1 rounded-full hover:bg-[#e6e6e6] transition text-gray-400 hover:text-[#B91C1C]"
+                          style={{ opacity: 0.7 }}
+                          title="Supprimer"
+                        >
+                          <X size={16} />
+                        </button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Supprimer ce message ?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Cette action est irréversible. Voulez-vous vraiment
+                            supprimer ce message ?
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Annuler</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDeleteMessage(msg._id)}
+                          >
+                            Supprimer
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
                 </div>
               );
             })

@@ -2,13 +2,14 @@ import request, { ApiRequestConfig } from "./request";
 
 type BaseRequest = <TData>(
   url: string,
-  options?: ApiRequestConfig
+  options?: ApiRequestConfig,
 ) => Promise<TData>;
 
 type RequestResponse = {
   get: BaseRequest;
   post: BaseRequest;
   put: BaseRequest;
+  patch: BaseRequest;
   delete: BaseRequest;
 };
 
@@ -22,7 +23,7 @@ const requester = (auth = true): RequestResponse => {
     (method: string) =>
     async <TData = unknown>(
       url: string,
-      options?: ApiRequestConfig
+      options?: ApiRequestConfig,
     ): Promise<TData> => {
       return request<TData>(url, { ...baseOptions, ...options, method });
     };
@@ -31,6 +32,7 @@ const requester = (auth = true): RequestResponse => {
     get: createRequest("GET"),
     post: createRequest("POST"),
     put: createRequest("PUT"),
+    patch: createRequest("PATCH"),
     delete: createRequest("DELETE"),
   };
 };

@@ -4,6 +4,7 @@ import {
   PaginationType,
 } from "@kascad-app/shared-types";
 import { z } from "zod";
+import { MessageType } from "../direct-messages/conversations.types";
 
 export interface IOfferPaginee {
   data: IOffersRider[];
@@ -46,3 +47,10 @@ export const GetOffersQueryDto = z.object({
   sport: z.string().optional(),
   contractType: z.nativeEnum(ContractType).optional(),
 });
+
+export const CreateMessageDto = z.object({
+  conversationId: z.string(),
+  content: z.string().min(1, "Content cannot be empty").max(5000),
+  messageType: z.nativeEnum(MessageType).default(MessageType.TEXT),
+});
+export type CreateMessageInput = z.infer<typeof CreateMessageDto>;

@@ -29,6 +29,8 @@ export default function RiderPage() {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
   );
+  const hasAnimatedRef = useRef(false);
+
   const [imgLoaded, setImgLoaded] = useState(false);
 
   // Refs pour les animations
@@ -99,80 +101,76 @@ export default function RiderPage() {
   const hoursPerSession = rider?.trainingFrequency?.hoursPerSession ?? 0;
 
   useEffect(() => {
-    if (titleRef.current) {
-      gsap.fromTo(
-        titleRef.current,
-        {
-          opacity: 0,
-          filter: "blur(5px)",
-          y: 60,
-        },
-        {
-          opacity: 1,
-          filter: "blur(0px)",
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        },
-      );
+    if (!rider) return;
+
+    // 👉 intro animation — une seule fois
+    if (!hasAnimatedRef.current) {
+      hasAnimatedRef.current = true;
+
+      if (titleRef.current) {
+        gsap.fromTo(
+          titleRef.current,
+          { opacity: 0, filter: "blur(5px)", y: 60 },
+          {
+            opacity: 1,
+            filter: "blur(0px)",
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+        );
+      }
+
+      if (subtitleRef.current) {
+        gsap.fromTo(
+          subtitleRef.current,
+          { opacity: 0, filter: "blur(15px)", y: 40 },
+          {
+            opacity: 1,
+            filter: "blur(0px)",
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+        );
+      }
+
+      if (bioRef.current) {
+        gsap.fromTo(
+          bioRef.current,
+          { opacity: 0, filter: "blur(5px)", y: 20 },
+          {
+            opacity: 1,
+            filter: "blur(0px)",
+            y: 0,
+            duration: 0.8,
+            delay: 0.4,
+            ease: "power2.out",
+          },
+        );
+      }
+
+      if (profileImgRef.current) {
+        gsap.fromTo(
+          profileImgRef.current,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: 0.3,
+            ease: "power3.out",
+          },
+        );
+      }
     }
 
-    if (subtitleRef.current) {
-      gsap.fromTo(
-        subtitleRef.current,
-        {
-          opacity: 0,
-          filter: "blur(15px)",
-          y: 40,
-        },
-        {
-          opacity: 1,
-          filter: "blur(0px)",
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        },
-      );
-    }
-
-    if (bioRef.current) {
-      gsap.fromTo(
-        bioRef.current,
-        { opacity: 0, filter: "blur(5px)", y: 20 },
-        {
-          opacity: 1,
-          filter: "blur(0px)",
-          y: 0,
-          duration: 0.8,
-          delay: 0.4,
-          ease: "power2.out",
-        },
-      );
-    }
-
-    if (profileImgRef.current) {
-      gsap.fromTo(
-        profileImgRef.current,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay: 0.3,
-          ease: "power3.out",
-        },
-      );
-    }
-
+    // 👉 animations au scroll (toujours actives)
     sectionTitleRefs.current.forEach((el, i) => {
       if (el) {
         gsap.fromTo(
           el,
-          {
-            opacity: 0,
-            filter: "blur(5px)",
-            y: 20,
-          },
+          { opacity: 0, filter: "blur(5px)", y: 20 },
           {
             opacity: 1,
             filter: "blur(0px)",
@@ -194,11 +192,7 @@ export default function RiderPage() {
       if (el) {
         gsap.fromTo(
           el,
-          {
-            opacity: 0,
-            filter: "blur(5px)",
-            y: 20,
-          },
+          { opacity: 0, filter: "blur(5px)", y: 20 },
           {
             opacity: 1,
             filter: "blur(0px)",
@@ -236,12 +230,15 @@ export default function RiderPage() {
       }
     });
 
+    ScrollTrigger.refresh();
+
     return () => {
       ScrollTrigger.getAll().forEach((st) => st.kill());
     };
-  }, [images, youtube]);
+  }, [rider, images, youtube]);
 
   useEffect(() => {
+    console.log("hello");
     if (selectedImageIndex !== null && modalImgRef.current) {
       gsap.fromTo(
         modalImgRef.current,
@@ -255,6 +252,14 @@ export default function RiderPage() {
       );
     }
   }, [selectedImageIndex]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   if (isLoading)
     return (
@@ -333,7 +338,10 @@ export default function RiderPage() {
               height={800}
               className="rounded-xl object-cover w-full border-4 border-primary-green"
               ref={profileImgRef}
-              onLoad={() => setImgLoaded(true)}
+              onLoad={() => {
+                setImgLoaded(true);
+                ScrollTrigger.refresh();
+              }}
               onError={() => setImgLoaded(true)}
               priority
             />

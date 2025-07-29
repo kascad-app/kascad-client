@@ -1,6 +1,6 @@
 "use client";
 
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import {
   useGetConversationMessages,
@@ -26,8 +26,10 @@ import clsx from "clsx";
 import { use, useEffect, useRef, useState } from "react";
 import { Button } from "@/shared/ui/button/Button.ui";
 import { CreateMessageInput } from "@/entities/offers/offer.type";
+import { ROUTES } from "@/shared/constants/ROUTES";
 
 export default function ConversationPage() {
+  const router = useRouter();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const params = useParams();
 
@@ -92,7 +94,7 @@ export default function ConversationPage() {
   };
 
   const back = () => {
-    window.history.back();
+    router.push(ROUTES.MESSAGERIE.PAGE);
   };
 
   if (isLoading)
@@ -114,7 +116,7 @@ export default function ConversationPage() {
             Sonsor message
           </h1>
         </div>
-        <Button variant="outline" onClick={back}>
+        <Button variant="outline" onClick={() => back()}>
           {" "}
           retour messagerie
         </Button>

@@ -1,16 +1,9 @@
 "use client";
-import { useGetOrCreateConversation } from "@/entities/direct-messages/conversations.hooks";
 import { useGetSponsors } from "@/entities/sponsors/sponsors.hooks";
-import { ConversationType, ProfileType } from "@kascad-app/shared-types";
-import { useState } from "react";
 import SponsorCard from "./SponsorCard";
 
 export default function SponsorsPage() {
   const { data: sponsors = [], isLoading, error } = useGetSponsors();
-  const [openDialogSponsorId, setOpenDialogSponsorId] = useState<string | null>(
-    null,
-  );
-  const { trigger } = useGetOrCreateConversation();
 
   // Calculs toujours après les hooks
   const now = new Date();
@@ -32,18 +25,6 @@ export default function SponsorsPage() {
       !recentSlugsOrIds.has(sponsor.slug) && !recentSlugsOrIds.has(sponsor.id),
   );
   const isEmpty = originalSponsors.length === 0;
-
-  const handleStartConversation = (targetSponsorId: string) => {
-    trigger({
-      targetUserId: targetSponsorId,
-      targetUserType: ProfileType.SPONSOR,
-      context: {
-        type: ConversationType.PRIVATE,
-        referenceId: undefined,
-      },
-    });
-    setOpenDialogSponsorId(null);
-  };
 
   if (isLoading) {
     return (

@@ -1,4 +1,5 @@
 import {
+  ConversationWithParticipantPreview,
   ConversationWithParticipants,
   GetMessagesResponse,
   UnreadCountResponse,
@@ -33,7 +34,7 @@ export function useGetConversations(query: Partial<GetUserConversationsQuery>) {
 
 export function useGetOrCreateConversation() {
   return useSWRMutation<
-    GetUserConversationsResponse,
+    ConversationWithParticipantPreview,
     Error,
     string,
     GetOrCreateConversationQuery
@@ -98,12 +99,13 @@ export function useSendMessage() {
 export function useDeleteMessage() {
   return useSWRMutation<void, Error, string, string>(
     "delete-message",
-    (key, { arg: messageId }) => sendSWRDeleteRequest(SWR_KEY.CONVERSATIONS.MESSAGES.DELETE(messageId)),
+    (key, { arg: messageId }) =>
+      sendSWRDeleteRequest(SWR_KEY.CONVERSATIONS.MESSAGES.DELETE(messageId)),
     {
       rollbackOnError: true,
       onSuccess() {
         toast.success("Message supprimé !");
       },
-    }
+    },
   );
 }

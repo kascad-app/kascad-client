@@ -141,7 +141,9 @@ export default function ConversationPage() {
           {isLoading ? (
             <p className="text-gray-500">Chargement des messages...</p>
           ) : error ? (
-            <p className="text-red-500">Erreur lors du chargement des messages.</p>
+            <p className="text-red-500">
+              Erreur lors du chargement des messages.
+            </p>
           ) : data && data.messages.length > 0 ? (
             <>
               {[...data.messages].reverse().map((msg) => {

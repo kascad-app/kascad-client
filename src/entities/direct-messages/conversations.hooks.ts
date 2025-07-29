@@ -40,7 +40,7 @@ export function useGetOrCreateConversation() {
     GetOrCreateConversationQuery
   >(SWR_KEY.CONVERSATIONS.GET_OR_CREATE, sendSWRRequest, {
     rollbackOnError: true,
-    onSuccess() {},
+    onSuccess() { },
   });
 }
 
@@ -76,7 +76,7 @@ export function useMarkConversationAsRead(conversationId: string) {
   const key = SWR_KEY.CONVERSATIONS.MESSAGES.MARK_AS_READ(conversationId);
   return useSWRMutation<void, Error, string>(key, sendSWRPatchRequest, {
     rollbackOnError: true,
-    onSuccess() {},
+    onSuccess() { },
   });
 }
 

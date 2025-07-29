@@ -30,6 +30,7 @@ export default function RiderPage() {
     null,
   );
   const hasAnimatedRef = useRef(false);
+  const [galleryLoaded, setGalleryLoaded] = useState(false);
 
   const [imgLoaded, setImgLoaded] = useState(false);
 
@@ -235,8 +236,9 @@ export default function RiderPage() {
   }, [rider, images, youtube]);
 
 
+
+
   useEffect(() => {
-    console.log("hello");
     if (selectedImageIndex !== null && modalImgRef.current) {
       gsap.fromTo(
         modalImgRef.current,
@@ -516,6 +518,7 @@ export default function RiderPage() {
           <MasonryGallery
             images={images}
             onImageClick={(index) => setSelectedImageIndex(index)}
+            onAllImagesLoaded={() => setGalleryLoaded(true)}
           />
         </div>
       )}

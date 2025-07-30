@@ -9,6 +9,24 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { MessageCircle } from "lucide-react";
+import { Button } from "@components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
+import { useGetOrCreateConversation } from "@/entities/direct-messages/conversations.hooks";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/shared/constants/ROUTES";
+import { ProfileType, ConversationType } from "@kascad-app/shared-types";
+import { delay } from "framer-motion";
 // import { formatDate } from "@/shared/utils/date/date.utils";
 
 // Fonction utilitaire pour formater la date en français
@@ -23,13 +41,15 @@ function formatDateFr(dateString: string) {
 }
 
 export default function SponsorCard({ sponsor }: { sponsor: any }) {
+  const router = useRouter();
   const sponsorName = sponsor.identity.companyName.toLowerCase();
   const sportNames =
     sponsor.preferences?.sports?.map(
       (sponsorSport: any) => sponsorSport.name,
     ) || [];
   const [open, setOpen] = useState(false);
-  console.log(sponsor);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const { trigger } = useGetOrCreateConversation();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <div
@@ -57,12 +77,12 @@ export default function SponsorCard({ sponsor }: { sponsor: any }) {
             />
           )}
           <div className="absolute top-0 left-0 z-[1] w-full h-full flex flex-col items-center justify-center pointer-events-none">
-            {Array.from({ length: 8 }).map((_, i) => (
+            {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex flex-row w-full justify-center">
-                {Array.from({ length: 10 }).map((_, y) => (
+                {Array.from({ length: 15 }).map((_, y) => (
                   <span
                     key={y}
-                    className="text-gray-200 font-black mx-1 select-none"
+                    className="text-gray-200 text-xl font-black mx-1 select-none"
                   >
                     {sportNames.length > 0 ? sportNames.join(" ") : sponsorName}
                   </span>
@@ -140,7 +160,7 @@ export default function SponsorCard({ sponsor }: { sponsor: any }) {
                 className="w-20 h-20 rounded-xl object-contain opacity-50 grayscale bg-gray-50"
               />
             )}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 flex-1">
               <DialogTitle className="text-3xl font-bold text-black mb-1">
                 {sponsorName}
               </DialogTitle>
@@ -158,9 +178,67 @@ export default function SponsorCard({ sponsor }: { sponsor: any }) {
                   </span>
                 )}
               </div>
-              <span className="text-xs text-gray-400">
-                Rejoint le {formatDateFr(sponsor.createdAt)}
-              </span>
+              {/* Date et bouton sur la même ligne, alignés */}
+              <div className="flex items-center justify-between mt-4 w-full">
+                <span className="text-xs text-gray-400">
+                  Rejoint le {formatDateFr(sponsor.createdAt)}
+                </span>
+                <Button
+                  className="bg-black text-white hover:bg-gray-900 px-3 py-1 rounded flex items-center gap-2 text-xs font-semibold"
+                  aria-label="Contacter le sponsor"
+                  type="button"
+                  onClick={() => setAlertOpen(true)}
+                >
+                  Envoyer un message
+                </Button>
+                {/* AlertDialog pour confirmation de démarrage de conversation */}
+                <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Démarrer une conversation ?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Voulez-vous démarrer une conversation avec ce sponsor ?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Annuler</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          try {
+                            const res = await trigger({
+                              targetUserId: sponsor.id,
+                              targetUserType: ProfileType.SPONSOR,
+                              context: {
+                                type: ConversationType.PRIVATE,
+                                referenceId: undefined,
+                              },
+                            });
+                            const conversationId = res?._id;
+                            setAlertOpen(false);
+                            setOpen(false);
+                            if (conversationId) {
+                              delay(() => {
+                                router.push(
+                                  ROUTES.MESSAGERIE.CONVERSATION(
+                                    conversationId,
+                                  ),
+                                );
+                              }, 100);
+                            }
+                          } catch (e) {
+                            setAlertOpen(false);
+                            setOpen(false);
+                          }
+                        }}
+                      >
+                        Démarrer
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             </div>
           </div>
 

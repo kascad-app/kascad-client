@@ -81,7 +81,7 @@ export default function JobOfferConversations({
                   )}
                   <div>
                     <div className="font-bold text-lg text-[#101B08]">
-                      {conv.otherParticipant.companyName || "Utilisateur"}
+                      {conv.otherParticipant.companyName || "Sponsor inconnu"}
                     </div>
                     <div className="text-xs text-gray-500">
                       {conv.otherParticipant.userType}

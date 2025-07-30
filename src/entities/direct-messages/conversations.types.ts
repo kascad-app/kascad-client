@@ -109,7 +109,14 @@ export interface MessageWithSender {
   };
 }
 
+interface SponsorInfo {
+  _id: string;
+  companyName: string;
+  logo: string;
+}
+
 export interface GetMessagesResponse {
+  participantInfo: SponsorInfo;
   messages: MessageWithSender[];
   pagination: PaginationType;
 }

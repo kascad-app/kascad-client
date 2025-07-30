@@ -43,13 +43,11 @@ export const LoginFormWidget: React.FC = () => {
         password: values.password,
       })
       .then(async (res) => {
-        toast.success("Login successful");
+        toast.success("Vous êtes connecté !");
         await session.mutate();
         router.push(ROUTES.HOMEPAGE);
       })
-      .catch((err) => {
-        toast.error("Login failed");
-      });
+      .catch((err) => {});
   }
 
   const handleChangeAuth = () => {
@@ -63,7 +61,7 @@ export const LoginFormWidget: React.FC = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full max-w-md space-y-4"
         >
-          <h2 className="font-michroma text-title ">Connection</h2>
+          <h2 className="font-michroma text-title ">Connexion</h2>
           <div key="email">
             <label
               htmlFor="email"

@@ -88,7 +88,13 @@ export default function RiderPage() {
       ? rider?.avatarUrl
       : "/assets/img/avatar/default-avatar.jpg";
   const images = rider?.images?.map((img) => img.url).filter(Boolean) || [];
-  const stats = rider?.performanceSummary?.performances || [];
+  const stats =
+    rider?.performanceSummary?.performances
+      ?.slice()
+      .sort(
+        (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime(),
+      ) || [];
+
   const podiums = rider?.performanceSummary?.totalPodiums ?? 0;
   const networks: SocialNetwork[] =
     rider?.preferences?.networks

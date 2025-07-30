@@ -1,6 +1,12 @@
 import { ProfileState } from "@/shared/types/profileSchema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -207,14 +213,24 @@ export default function EditProfileSlideAchievements({
             Total podiums : {profile.performanceSummary.totalPodiums}
           </p>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog
+          open={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          modal={false}
+        >
           <DialogTrigger asChild>
             <Button onClick={handleAdd} className="flex items-center gap-2">
               <Plus className="w-4 h-4" />
               Ajouter une performance
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          {isDialogOpen && (
+            <div
+              className="fixed inset-0 bg-black/50 z-40"
+              aria-hidden="true"
+            />
+          )}
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto z-50">
             <DialogHeader>
               <DialogTitle>
                 {editingIndex !== null
@@ -255,31 +271,56 @@ export default function EditProfileSlideAchievements({
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="startDate">Date de début *</Label>
-                  <Input
-                    id="startDate"
-                    type="date"
-                    value={formatDateForInput(formData.startDate)}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        startDate: new Date(e.target.value),
-                      })
-                    }
-                  />
+                  <Popover modal={false}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left font-normal"
+                      >
+                        {formData.startDate
+                          ? formatDate(formData.startDate)
+                          : "Sélectionner une date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0 z-50">
+                      <Calendar
+                        mode="single"
+                        selected={formData.startDate}
+                        onSelect={(date) => {
+                          if (date)
+                            setFormData({ ...formData, startDate: date });
+                        }}
+                        initialFocus
+                        captionLayout="dropdown"
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
                 <div>
                   <Label htmlFor="endDate">Date de fin *</Label>
-                  <Input
-                    id="endDate"
-                    type="date"
-                    value={formatDateForInput(formData.endDate)}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        endDate: new Date(e.target.value),
-                      })
-                    }
-                  />
+                  <Popover modal={false}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left font-normal"
+                      >
+                        {formData.endDate
+                          ? formatDate(formData.endDate)
+                          : "Sélectionner une date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0 z-50">
+                      <Calendar
+                        mode="single"
+                        selected={formData.endDate}
+                        onSelect={(date) => {
+                          if (date) setFormData({ ...formData, endDate: date });
+                        }}
+                        initialFocus
+                        captionLayout="dropdown"
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
 

@@ -1,26 +1,12 @@
 "use client";
 
 import {
-  useGetConversations,
-  useGetOrCreateConversation,
+  useGetConversations
 } from "@/entities/direct-messages/conversations.hooks";
-import { Skeleton } from "@components/ui/skeleton";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@components/ui/pagination";
-import PrivateConversations from "@/widgets/conversations/PrivateConversations";
 import JobOfferConversations from "@/widgets/conversations/JobOfferConversations";
-import { Card } from "@components/ui/card";
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { Button } from "@components/ui/button";
-import { ROUTES } from "@/shared/constants/ROUTES";
+import PrivateConversations from "@/widgets/conversations/PrivateConversations";
 import { ConversationType } from "@kascad-app/shared-types";
+import { useState } from "react";
 
 export default function MessageriePage() {
   const [pagePrivate, setPagePrivate] = useState(1);

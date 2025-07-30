@@ -54,3 +54,24 @@ export async function sendPUTSWRRequest<T, P>(
       throw err;
     });
 }
+
+export async function sendSWRDeleteRequest<T>(url: string): Promise<T> {
+  return requester()
+    .delete<T>(url)
+    .then((res) => res)
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export async function sendSWRPatchRequest<T, P>(
+  url: string,
+  { arg }: { arg: P } = { arg: {} as P },
+): Promise<T> {
+  return requester()
+    .patch<T>(url, { data: arg === undefined ? {} : arg })
+    .then((res) => res)
+    .catch((err) => {
+      throw err;
+    });
+}

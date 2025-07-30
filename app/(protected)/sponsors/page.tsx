@@ -1,28 +1,9 @@
 "use client";
 import { useGetSponsors } from "@/entities/sponsors/sponsors.hooks";
 import SponsorCard from "./SponsorCard";
-import React, { useState } from "react";
-import { MessageCircle } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogAction,
-  AlertDialogCancel,
-} from "@/components/ui/alert-dialog";
-import { ProfileType, ConversationType } from "@kascad-app/shared-types";
-import { useGetOrCreateConversation } from "@/entities/direct-messages/conversations.hooks";
 
 export default function SponsorsPage() {
   const { data: sponsors = [], isLoading, error } = useGetSponsors();
-  const [openDialogSponsorId, setOpenDialogSponsorId] = useState<string | null>(
-    null,
-  );
-  const { trigger } = useGetOrCreateConversation();
 
   // Calculs toujours après les hooks
   const now = new Date();
@@ -44,18 +25,6 @@ export default function SponsorsPage() {
       !recentSlugsOrIds.has(sponsor.slug) && !recentSlugsOrIds.has(sponsor.id),
   );
   const isEmpty = originalSponsors.length === 0;
-
-  const handleStartConversation = (targetSponsorId: string) => {
-    trigger({
-      targetUserId: targetSponsorId,
-      targetUserType: ProfileType.SPONSOR,
-      context: {
-        type: ConversationType.PRIVATE,
-        referenceId: undefined,
-      },
-    });
-    setOpenDialogSponsorId(null);
-  };
 
   if (isLoading) {
     return (

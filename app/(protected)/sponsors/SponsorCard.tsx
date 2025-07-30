@@ -23,7 +23,10 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { useGetOrCreateConversation } from "@/entities/direct-messages/conversations.hooks";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/shared/constants/ROUTES";
 import { ProfileType, ConversationType } from "@kascad-app/shared-types";
+import { delay } from "framer-motion";
 // import { formatDate } from "@/shared/utils/date/date.utils";
 
 // Fonction utilitaire pour formater la date en français
@@ -38,6 +41,7 @@ function formatDateFr(dateString: string) {
 }
 
 export default function SponsorCard({ sponsor }: { sponsor: any }) {
+  const router = useRouter();
   const sponsorName = sponsor.identity.companyName.toLowerCase();
   const sportNames =
     sponsor.preferences?.sports?.map(
@@ -201,16 +205,32 @@ export default function SponsorCard({ sponsor }: { sponsor: any }) {
                     <AlertDialogFooter>
                       <AlertDialogCancel>Annuler</AlertDialogCancel>
                       <AlertDialogAction
-                        onClick={() => {
-                          trigger({
-                            targetUserId: sponsor.id,
-                            targetUserType: ProfileType.SPONSOR,
-                            context: {
-                              type: ConversationType.PRIVATE,
-                              referenceId: undefined,
-                            },
-                          });
-                          setAlertOpen(false);
+                        onClick={async () => {
+                          try {
+                            const res = await trigger({
+                              targetUserId: sponsor.id,
+                              targetUserType: ProfileType.SPONSOR,
+                              context: {
+                                type: ConversationType.PRIVATE,
+                                referenceId: undefined,
+                              },
+                            });
+                            const conversationId = res?._id;
+                            setAlertOpen(false);
+                            setOpen(false);
+                            if (conversationId) {
+                              delay(() => {
+                                router.push(
+                                  ROUTES.MESSAGERIE.CONVERSATION(
+                                    conversationId,
+                                  ),
+                                );
+                              }, 100);
+                            }
+                          } catch (e) {
+                            setAlertOpen(false);
+                            setOpen(false);
+                          }
                         }}
                       >
                         Démarrer

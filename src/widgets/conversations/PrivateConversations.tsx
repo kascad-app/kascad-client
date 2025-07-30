@@ -49,7 +49,10 @@ export default function PrivateConversations({
             Aucune conversation
           </span>
           <span className="text-gray-500 mb-6 text-center  max-w-md">
-            Vous n'avez pas encore de messages. Pour démarrer une conversation avec un sponsor, parcourez la liste des sponsors existants et cliquez sur le profil du sponsor qui vous intéresse. Vous pourrez alors initier une discussion directement depuis sa fiche.
+            Vous n'avez pas encore de messages. Pour démarrer une conversation
+            avec un sponsor, parcourez la liste des sponsors existants et
+            cliquez sur le profil du sponsor qui vous intéresse. Vous pourrez
+            alors initier une discussion directement depuis sa fiche.
           </span>
           <div className="flex flex-col items-center gap-6 mt-6">
             <div className="text-center text-gray-600 text-lg max-w-md"></div>
@@ -67,17 +70,27 @@ export default function PrivateConversations({
               <Card
                 key={conv._id}
                 className="p-6 flex flex-col gap-2 hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => router.push(ROUTES.MESSAGERIE.CONVERSATION(conv._id))}
+                onClick={() =>
+                  router.push(ROUTES.MESSAGERIE.CONVERSATION(conv._id))
+                }
               >
                 <div className="flex items-center gap-3 mb-2">
                   {conv.otherParticipant.avatarUrl ? (
-                    <img src={conv.otherParticipant.avatarUrl} alt={conv.otherParticipant.companyName || "Avatar"} className="w-14 h-14 object-contain rounded-xl bg-gray-50" />
+                    <img
+                      src={conv.otherParticipant.avatarUrl}
+                      alt={conv.otherParticipant.companyName || "Avatar"}
+                      className="w-14 h-14 object-contain rounded-xl bg-gray-50"
+                    />
                   ) : (
-                    <img src="/favicon.ico" alt="Pas d'avatar" className="w-14 h-14 object-contain opacity-15 grayscale rounded-xl bg-gray-50" />
+                    <img
+                      src="/favicon.ico"
+                      alt="Pas d'avatar"
+                      className="w-14 h-14 object-contain opacity-15 grayscale rounded-xl bg-gray-50"
+                    />
                   )}
                   <div>
                     <div className="font-bold text-lg text-[#101B08]">
-                      {conv.otherParticipant.companyName || "Utilisateur"}
+                      {conv.otherParticipant.companyName || "Sponsor inconnu"}
                     </div>
                     <div className="text-xs text-gray-500">
                       {conv.otherParticipant.userType}
@@ -94,11 +107,15 @@ export default function PrivateConversations({
                           : conv.lastMessage.content}
                       </>
                     ) : (
-                      <span className="italic text-gray-400">Aucun message</span>
+                      <span className="italic text-gray-400">
+                        Aucun message
+                      </span>
                     )}
                   </div>
                   <div className="text-xs text-gray-400">
-                    {conv.lastMessage ? new Date(conv.lastMessage.createdAt).toLocaleString() : ""}
+                    {conv.lastMessage
+                      ? new Date(conv.lastMessage.createdAt).toLocaleString()
+                      : ""}
                   </div>
                 </div>
               </Card>
@@ -115,7 +132,9 @@ export default function PrivateConversations({
                         e.preventDefault();
                         if (page > 1) setPage(page - 1);
                       }}
-                      className={page === 1 ? "pointer-events-none opacity-50" : ""}
+                      className={
+                        page === 1 ? "pointer-events-none opacity-50" : ""
+                      }
                     />
                   </PaginationItem>
                   {[...Array(totalPages)].map((_, i) => (
@@ -139,7 +158,11 @@ export default function PrivateConversations({
                         e.preventDefault();
                         if (page < totalPages) setPage(page + 1);
                       }}
-                      className={page === totalPages ? "pointer-events-none opacity-50" : ""}
+                      className={
+                        page === totalPages
+                          ? "pointer-events-none opacity-50"
+                          : ""
+                      }
                     />
                   </PaginationItem>
                 </PaginationContent>

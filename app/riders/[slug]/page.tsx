@@ -52,9 +52,8 @@ export default function RiderPage() {
 
   const fullName =
     rider.identity?.fullName ||
-    `${rider.identity?.firstName || ""} ${
-      rider.identity?.lastName || ""
-    }`.trim() ||
+    `${rider.identity?.firstName || ""} ${rider.identity?.lastName || ""
+      }`.trim() ||
     "Nom non renseigné";
   const sports =
     rider.preferences?.sports?.map((s) => s.name).filter(Boolean) || [];
@@ -63,18 +62,17 @@ export default function RiderPage() {
     : null;
   const age: number = birthDate
     ? new Date().getFullYear() -
-      birthDate.getFullYear() -
-      (new Date().getMonth() < birthDate.getMonth() ||
+    birthDate.getFullYear() -
+    (new Date().getMonth() < birthDate.getMonth() ||
       (new Date().getMonth() === birthDate.getMonth() &&
         new Date().getDate() < birthDate.getDate())
-        ? 1
-        : 0)
+      ? 1
+      : 0)
     : 0;
   const location =
     rider.identity?.city || rider.identity?.country
-      ? `${rider.identity?.city || ""}${
-          rider.identity?.city && rider.identity?.country ? ", " : ""
-        }${rider.identity?.country || ""}`
+      ? `${rider.identity?.city || ""}${rider.identity?.city && rider.identity?.country ? ", " : ""
+      }${rider.identity?.country || ""}`
       : "";
   const profilePicture =
     rider.avatarUrl && rider.avatarUrl.includes("http")
@@ -158,9 +156,8 @@ export default function RiderPage() {
               alt={fullName}
               width={600}
               height={800}
-              className={`rounded-xl object-cover w-full border-4 border-primary-green transition-opacity duration-300 ${
-                imgLoaded ? "opacity-100" : "opacity-0"
-              }`}
+              className={`rounded-xl object-cover w-full border-4 border-primary-green transition-opacity duration-300 ${imgLoaded ? "opacity-100" : "opacity-0"
+                }`}
               onLoad={() => setImgLoaded(true)}
               onError={() => setImgLoaded(true)}
               priority
@@ -321,8 +318,8 @@ export default function RiderPage() {
               const videoId = url.includes("youtube.com")
                 ? new URL(url).searchParams.get("v")
                 : url.includes("youtu.be")
-                ? url.split("/").pop()
-                : null;
+                  ? url.split("/").pop()
+                  : null;
 
               return videoId ? (
                 <div
@@ -443,9 +440,8 @@ export default function RiderPage() {
                       {performance?.sport?.name || "Sport inconnu"}
                     </p>
                     <p className="text-sm text-gray-300">
-                      {`${performance?.location?.city || "Ville inconnue"}, ${
-                        performance?.location?.country || "Pays inconnu"
-                      }`}
+                      {`${performance?.location?.city || "Ville inconnue"}, ${performance?.location?.country || "Pays inconnu"
+                        }`}
                     </p>
 
                     {performance?.weather && (

@@ -112,7 +112,7 @@ export interface MessageWithSender {
 interface SponsorInfo {
   _id: string;
   companyName: string;
-  logo: string;
+  avatarUrl: string;
 }
 
 export interface GetMessagesResponse {

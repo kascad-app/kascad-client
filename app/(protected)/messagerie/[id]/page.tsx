@@ -27,18 +27,20 @@ import { use, useEffect, useRef, useState } from "react";
 import { Button } from "@/shared/ui/button/Button.ui";
 import { CreateMessageInput } from "@/entities/offers/offer.type";
 import { ROUTES } from "@/shared/constants/ROUTES";
+import { useSession } from "@/shared/context/SessionContext";
 
 export default function ConversationPage() {
   const router = useRouter();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const params = useParams();
+  const session = useSession();
 
   const id =
     typeof params.id === "string"
       ? params.id
       : Array.isArray(params.id)
-      ? params.id[0]
-      : undefined;
+        ? params.id[0]
+        : undefined;
 
   if (!id) return notFound();
 
@@ -88,6 +90,13 @@ export default function ConversationPage() {
     await mutate(messagesKey); // recharge les messages après envoi
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // Empêche le retour à la ligne
+      handleSendMessage();
+    }
+  };
+
   const handleDeleteMessage = async (messageId: string) => {
     await deleteMessage(messageId);
     await mutate(messagesKey); // recharge les messages après suppression
@@ -108,22 +117,23 @@ export default function ConversationPage() {
     );
 
   return (
-    <main className="flex flex-col  mx-auto py-10 px-6 ">
-      <div className="flex items-center justify-between w-full gap-3 mb-6 ">
+    <main className="flex flex-col justify-between mx-auto py-10 px-6 h-full">
+      <div className="flex flex-col items-start  w-full gap-3 mb-6 ">
+        <Button variant="underline" onClick={() => back()}>
+          {" "}
+          ← Retour messagerie
+        </Button>
         <div className="flex items-center gap-2">
           <MailOpen className="text-[#101B08]" />
           <h1 className="text-2xl font-bold text-[#101B08] font-michroma ">
-            Sonsor message
+            {data?.participantInfo.companyName}
           </h1>
         </div>
-        <Button variant="outline" onClick={() => back()}>
-          {" "}
-          retour messagerie
-        </Button>
+
       </div>
 
-      <div className="flex flex-col justify-between w-full">
-        <div className="flex-1 bg-[#F9F9F6] border border-[#D2FA52]/40 rounded-xl p-6 space-y-8 max-h-[70vh] justify-around">
+      <div className="flex flex-col justify-between w-full h-full">
+        <div className="overflow-y-auto max-h-[60dvh] bg-[#F9F9F6] border border-[#D2FA52]/40 rounded-xl p-6 space-y-8">
           {isLoading ? (
             <p className="text-gray-500">Chargement des messages...</p>
           ) : error ? (
@@ -145,10 +155,9 @@ export default function ConversationPage() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-semibold">
-                      {msg.sender?.displayName ||
-                        msg.sender?.fullName ||
-                        msg.sender?.companyName ||
-                        msg.senderId}
+                      {isFromSponsor
+                        ? data?.participantInfo.companyName
+                        : session?.user?.identity.fullName || "Vous"}
                     </p>
                     <span className="text-xs text-gray-500">
                       {new Date(msg.createdAt).toLocaleString("fr-FR", {
@@ -201,13 +210,14 @@ export default function ConversationPage() {
         </div>
 
         {/* Zone de rédaction */}
-        <div className="mt-6 border border-[#B1BD93]/60 bg-white rounded-xl shadow-lg p-4 absolute bottom-8 w-4/5">
+        <div className="mt-6 border border-[#B1BD93]/60 bg-white rounded-xl shadow-lg p-4  bottom-8 w-full">
           <textarea
             ref={textareaRef}
             value={message}
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
             placeholder="Écrire un message..."
-            className="w-full p-3 rounded-lg border border-[#E0E0DC] text-sm text-[#101B08] resize-none focus:outline-none focus:ring-2 focus:ring-[#D2FA52] bg-[#FAFAF8] min-h-[100px] max-h-[35dvh] overflow-auto"
+            className="w-full p-3 rounded-lg border border-[#E0E0DC] text-sm text-[#101B08] resize-none focus:outline-none focus:ring-2 focus:ring-[#D2FA52] bg-[#FAFAF8] min-h-[100px] max-h-[15dvh] overflow-auto"
             rows={1}
           />
 

@@ -109,6 +109,15 @@ module.exports = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      keyframes: {
+        scrollDiag: {
+          '0%': { transform: 'translateX(0) translateY(0)' },
+          '100%': { transform: 'translateX(-10%) translateY(-30%)' },
+        },
+      },
+      animation: {
+        'scroll-diag': 'scrollDiag 10s linear infinite',
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

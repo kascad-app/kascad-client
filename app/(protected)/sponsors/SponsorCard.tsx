@@ -1,32 +1,27 @@
 "use client";
-import Link from "next/link";
-import { useState } from "react";
-import Avatar from "@/widgets/avatar/avatar.ui";
-import { Span } from "next/dist/trace";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
+} from "@/components/ui/alert-dialog";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from "@/components/ui/dialog";
-import { MessageCircle } from "lucide-react";
-import { Button } from "@components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogAction,
-  AlertDialogCancel,
-} from "@/components/ui/alert-dialog";
 import { useGetOrCreateConversation } from "@/entities/direct-messages/conversations.hooks";
-import { useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/constants/ROUTES";
-import { ProfileType, ConversationType } from "@kascad-app/shared-types";
+import { cn } from "@/shared/lib/fetch/cn";
+import { Button } from "@components/ui/button";
+import { ConversationType, ProfileType } from "@kascad-app/shared-types";
 import { delay } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 // import { formatDate } from "@/shared/utils/date/date.utils";
 
 // Fonction utilitaire pour formater la date en français
@@ -40,7 +35,7 @@ function formatDateFr(dateString: string) {
   });
 }
 
-export default function SponsorCard({ sponsor }: { sponsor: any }) {
+export default function SponsorCard({ sponsor }: { sponsor: any; }) {
   const router = useRouter();
   const sponsorName = sponsor.identity.companyName.toLowerCase();
   const sportNames =
@@ -53,96 +48,90 @@ export default function SponsorCard({ sponsor }: { sponsor: any }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <div
-        className="block relative rounded-lg overflow-hidden shadow-sm hover:shadow-md transition bg-white h-full focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-        tabIndex={0}
         onClick={() => setOpen(true)}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") setOpen(true);
         }}
+        tabIndex={0}
         role="button"
         aria-label={`Voir les détails de ${sponsorName}`}
+        className="relative group cursor-pointer  bg-white border border-[#E5E7EB] hover:border-[#D2FA52] transition-all duration-300 rounded-3xl p-6 shadow-sm hover:shadow-lg w-full h-72 overflow-hidden flex flex-col justify-between"
       >
-        <div className="w-full h-32 bg-gray-50 flex items-center justify-center relative overflow-hidden">
-          {sponsor.avatarUrl ? (
-            <img
-              src={sponsor.avatarUrl}
-              alt={sponsorName}
-              className="w-32 h-32 z-[2] object-contain"
-            />
-          ) : (
-            <img
-              src="/favicon.ico"
-              alt="Pas d'avatar"
-              className="w-20 h-20 z-[2] object-contain opacity-15 grayscale"
-            />
-          )}
-          <div className="absolute top-0 left-0 z-[1] w-full h-full flex flex-col items-center justify-center pointer-events-none">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="flex flex-row w-full justify-center">
-                {Array.from({ length: 10 }).map((_, y) => (
-                  <span
-                    key={y}
-                    className="text-gray-200 font-black mx-1 select-none"
-                  >
-                    {sportNames.length > 0 ? sportNames.join(" ") : sponsorName}
+        <div className="absolute right-0 bottom-0 h-[200%] w-full bg-gradient-to-l from-transparent via-[#ffffffbc] to-[#ffffff] pointer-events-none z-0 overflow-hidden">
+          <div className="absolute w-[200%] h-[200%] text-[#101b0842] opacity-20 font-extrabold uppercase text-5xl tracking-tight leading-none select-none whitespace-nowrap mix-blend-overlay rotate-[-45deg] group-hover:animate-scroll-diag">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <div key={i} className="flex flex-row gap-8">
+                {Array.from({ length: 8 }).map((_, j) => (
+                  <span key={`${i}-${j}`} className="drop-shadow-md">
+                    {sponsorName}
                   </span>
                 ))}
               </div>
             ))}
           </div>
         </div>
-        <div className="p-4 flex flex-col gap-2">
-          <h3 className="font-bold text-lg mb-1 truncate text-[#101B08]">
-            {sponsorName}
-          </h3>
 
-          <div className="flex items-center gap-2 text-xs text-gray-500 mb-1">
-            <span className="font-semibold">
-              {sponsor.location || (
-                <span className="italic text-gray-400">
-                  Localisation inconnue
-                </span>
+
+        {/* CONTENU TEXTE */}
+        <div className="relative z-10 flex items-center gap-4">
+          <div className="w-20 h-20 bg-transparent  shrink-0 rounded-[1px]">
+            <img
+              src={sponsor.avatarUrl || "/favicon.ico"}
+              alt={sponsorName}
+              className={cn(
+                "w-full h-full rounded-xs object-contain grayscale group-hover:grayscale-0 transition duration-300",
+                (!sponsor.avatarUrl || sponsor.avatarUrl === "/favicon.ico") && "opacity-10"
               )}
-            </span>
-            {sponsor.level && (
-              <span className="px-2 py-0.5 rounded bg-[#B1BD93]/20 text-primary-green font-bold">
-                {sponsor.level}
-              </span>
-            )}
+            />
           </div>
 
-          <div className="flex flex-wrap gap-1 text-xs mb-1">
-            {sportNames.length > 0 ? (
-              sportNames.map((sport: string, i: number) => (
-                <span
-                  key={i}
-                  className="bg-[#B1BD93]/20 text-primary-green px-2 py-0.5 rounded-full font-semibold"
-                >
-                  {sport}
-                </span>
-              ))
-            ) : (
-              <span className="italic text-gray-400">
-                Aucun sport renseigné
-              </span>
-            )}
-          </div>
-
-          <div className="text-sm text-gray-700 mt-2">
-            {sponsor.description ? (
-              sponsor.description.length > 60 ? (
-                sponsor.description.slice(0, 60) + "…"
-              ) : (
-                sponsor.description
-              )
-            ) : (
-              <span className="italic text-gray-400">
-                Aucune description renseignée
-              </span>
-            )}
+          <div className="flex flex-col justify-start w-full">
+            <h3 className="font-semibold text-xl text-[#101B08] capitalize leading-tight">
+              {sponsorName}
+            </h3>
+            <p className="text-xs text-gray-500 mt-1">
+              {sponsor.location || (
+                <span className="italic text-gray-400">Localisation inconnue</span>
+              )}
+            </p>
           </div>
         </div>
+
+        {/* TAGS + DESCRIPTION */}
+        <div className="relative z-10 mt-4 flex flex-wrap gap-2">
+          {sportNames.length > 0 ? (
+            sportNames.map((sport: string, i: number) => (
+              <span
+                key={i}
+                className="text-xs font-medium px-3 py-1 rounded-full bg-[#B1BD93]/10 text-[#101B08] border border-[#B1BD93]/30"
+              >
+                {sport}
+              </span>
+            ))
+          ) : (
+            <span className="italic text-gray-400 text-xs">
+              Aucun sport renseigné
+            </span>
+          )}
+        </div>
+
+        <div className="relative z-10 mt-4 text-sm text-gray-600 line-clamp-3">
+          {sponsor.description || (
+            <span className="italic text-gray-400">
+              Aucune description renseignée
+            </span>
+          )}
+        </div>
+
+        {/* BADGE LEVEL */}
+        {sponsor.level && (
+          <div className="absolute bottom-0 left-0 w-full bg-[#101B08] text-white text-xs text-center py-1 tracking-wide font-semibold rounded-b-3xl z-20">
+            {sponsor.level}
+          </div>
+        )}
       </div>
+
+
       <DialogContent className="w-[90vw] max-w-2xl md:max-w-3xl lg:max-w-4xl h-[60vh] overflow-y-auto p-8 bg-white rounded-xl">
         <div className="flex flex-col gap-8">
           {/* Header: Avatar, Name, Location, Level, Date */}

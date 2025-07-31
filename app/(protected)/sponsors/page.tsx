@@ -101,7 +101,7 @@ export default function SponsorsPage() {
               <h2 className="text-2xl font-bold mb-4">
                 Nous ont rejoint récemment
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-6">
                 {recentSponsors.map((sponsor: any) => (
                   <div className="relative" key={sponsor.id}>
                     <SponsorCard
@@ -118,7 +118,7 @@ export default function SponsorsPage() {
               <h2 className="text-2xl font-bold mb-4">
                 Nous font confiance depuis longtemps
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-6">
                 {originalSponsors.map((sponsor: any) => (
                   <div className="relative" key={sponsor.id}>
                     <SponsorCard key={sponsor.id} sponsor={sponsor} />

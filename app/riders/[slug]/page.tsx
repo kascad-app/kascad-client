@@ -57,28 +57,31 @@ export default function RiderPage() {
   };
 
   const fullName =
-    rider.identity?.fullName ||
-    `${rider.identity?.firstName || ""} ${rider.identity?.lastName || ""
-      }`.trim() ||
+    rider?.identity?.fullName ||
+    `${rider?.identity?.firstName || ""} ${
+      rider?.identity?.lastName || ""
+    }`.trim() ||
     "Nom non renseigné";
   const sports =
     rider?.preferences?.sports?.map((s) => s.name).filter(Boolean) || [];
   const birthDate = rider?.identity?.birthDate
     ? new Date(rider?.identity.birthDate)
     : null;
-  const age: number = birthDate
-    ? new Date().getFullYear() -
-    birthDate.getFullYear() -
-    (new Date().getMonth() < birthDate.getMonth() ||
-      (new Date().getMonth() === birthDate.getMonth() &&
-        new Date().getDate() < birthDate.getDate())
-      ? 1
-      : 0)
-    : 0;
+  const age: number =
+    typeof window !== "undefined" && birthDate
+      ? new Date().getFullYear() -
+        birthDate.getFullYear() -
+        (new Date().getMonth() < birthDate.getMonth() ||
+        (new Date().getMonth() === birthDate.getMonth() &&
+          new Date().getDate() < birthDate.getDate())
+          ? 1
+          : 0)
+      : 0;
   const location =
-    rider.identity?.city || rider.identity?.country
-      ? `${rider.identity?.city || ""}${rider.identity?.city && rider.identity?.country ? ", " : ""
-      }${rider.identity?.country || ""}`
+    rider?.identity?.city || rider?.identity?.country
+      ? `${rider?.identity?.city || ""}${
+          rider?.identity?.city && rider?.identity?.country ? ", " : ""
+        }${rider?.identity?.country || ""}`
       : "";
   const profilePicture =
     rider?.avatarUrl && rider?.avatarUrl.includes("http")
@@ -339,9 +342,12 @@ export default function RiderPage() {
               alt={fullName}
               width={600}
               height={800}
-              className={`rounded-xl object-cover w-full border-4 border-primary-green transition-opacity duration-300 ${imgLoaded ? "opacity-100" : "opacity-0"
-                }`}
-              onLoad={() => setImgLoaded(true)}
+              className="rounded-xl object-cover w-full border-4 border-primary-green"
+              ref={profileImgRef}
+              onLoad={() => {
+                setImgLoaded(true);
+                ScrollTrigger.refresh();
+              }}
               onError={() => setImgLoaded(true)}
               priority
             />
@@ -538,8 +544,8 @@ export default function RiderPage() {
               const videoId = url.includes("youtube.com")
                 ? new URL(url).searchParams.get("v")
                 : url.includes("youtu.be")
-                  ? url.split("/").pop()
-                  : null;
+                ? url.split("/").pop()
+                : null;
 
               return videoId ? (
                 <div
@@ -658,59 +664,52 @@ export default function RiderPage() {
             </p>
           </div>
 
-          {stats.length < 0 ? (
-            <div className="text-center py-12 bg-[#1a1a19] text-white rounded-xl">
-              <Trophy className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-              <p className="text-lg">Aucune performance enregistrée</p>
-              <p className="text-sm text-gray-400">
-                Ce rider n'a pas encore partagé ses résultats.
-              </p>
-            </div>
-          ) : (
-            <div className="relative border-l-4 border-primary-green pl-6 space-y-12">
-              {stats.map((performance, index) => (
-                <div key={index} className="relative group">
-                  <div className="absolute -left-[2.25rem] top-1 w-5 h-5 bg-[#101B08] rounded-full group-hover:scale-125 transition-transform" />
-
-                  <div className="bg-[#101B08] text-white p-6 rounded-lg shadow-md group-hover:shadow-lg transition-all">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-xl font-bold flex items-center gap-2">
-                        {getRankingBadge(performance?.ranking)}
-                        {performance?.eventName || "Événement inconnu"}
-                      </h4>
-                      <span className="text-xs opacity-60 font-mono">
-                        {formatDate(performance?.startDate)}
-                      </span>
-                    </div>
-                    <p className="text-[#B1BD93] text-sm mb-1">
-                      {performance?.category || "Catégorie inconnue"} —{" "}
-                      {performance?.sport?.name || "Sport inconnu"}
-                    </p>
-                    <p className="text-sm text-gray-300">
-                      {`${performance?.location?.city || "Ville inconnue"}, ${performance?.location?.country || "Pays inconnu"
-                        }`}
-                    </p>
-
-                    {performance?.weather && (
-                      <p className="text-xs text-gray-400 mt-2">
-                        {getWeatherIcon(performance.weather)}{" "}
-                        {getWeatherLabel(performance.weather)}
-                      </p>
-                    )}
-
-                    {performance?.notes && (
-                      <div className="mt-3 text-sm text-gray-300">
-                        <p className="font-semibold text-primary-green">
-                          Notes :
-                        </p>
-                        <p>{performance.notes}</p>
-                      </div>
-                    )}
+          <div
+            ref={(el) => {
+              if (el) textContentRefs.current[8] = el;
+            }}
+            className="relative border-l-4 border-primary-green pl-6 space-y-12"
+          >
+            {stats.map((performance, index) => (
+              <div key={index} className="relative group">
+                <div className="absolute -left-[2.25rem] top-1 w-5 h-5 bg-[#101B08] rounded-full group-hover:scale-125 transition-transform" />
+                <div className="bg-[#101B08] text-white p-6 rounded-lg shadow-md group-hover:shadow-lg transition-all">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-xl font-bold flex items-center gap-2">
+                      {getRankingBadge(performance?.ranking)}
+                      {performance?.eventName || "Événement inconnu"}
+                    </h4>
+                    <span className="text-xs opacity-60 font-mono">
+                      {formatDate(performance?.startDate)}
+                    </span>
                   </div>
+                  <p className="text-[#B1BD93] text-sm mb-1">
+                    {performance?.category || "Catégorie inconnue"} —{" "}
+                    {performance?.sport?.name || "Sport inconnu"}
+                  </p>
+                  <p className="text-sm text-gray-300">
+                    {`${performance?.location?.city || "Ville inconnue"}, ${
+                      performance?.location?.country || "Pays inconnu"
+                    }`}
+                  </p>
+                  {performance?.weather && (
+                    <p className="text-xs text-gray-400 mt-2">
+                      {getWeatherIcon(performance.weather)}{" "}
+                      {getWeatherLabel(performance.weather)}
+                    </p>
+                  )}
+                  {performance?.notes && (
+                    <div className="mt-3 text-sm text-gray-300">
+                      <p className="font-semibold text-primary-green">
+                        Notes :
+                      </p>
+                      <p>{performance.notes}</p>
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

@@ -32,6 +32,7 @@ import { useSession } from "@/shared/context/SessionContext";
 export default function ConversationPage() {
   const router = useRouter();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const params = useParams();
   const session = useSession();
 
@@ -39,8 +40,8 @@ export default function ConversationPage() {
     typeof params.id === "string"
       ? params.id
       : Array.isArray(params.id)
-        ? params.id[0]
-        : undefined;
+      ? params.id[0]
+      : undefined;
 
   if (!id) return notFound();
 
@@ -58,6 +59,10 @@ export default function ConversationPage() {
   useEffect(() => {
     if (data && !isLoading && !error) {
       useMarkAsRead.trigger();
+    }
+    // Scroll en bas à chaque chargement de messages
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "auto" });
     }
   }, [data, isLoading, error]);
 
@@ -129,7 +134,6 @@ export default function ConversationPage() {
             {data?.participantInfo.companyName}
           </h1>
         </div>
-
       </div>
 
       <div className="flex flex-col justify-between w-full h-full">
@@ -141,67 +145,70 @@ export default function ConversationPage() {
               Erreur lors du chargement des messages.
             </p>
           ) : data && data.messages.length > 0 ? (
-            [...data.messages].reverse().map((msg) => {
-              const isFromSponsor = msg.senderType === "sponsor";
-              return (
-                <div
-                  key={msg._id}
-                  className={clsx("pl-4 rounded-md p-4 shadow-sm relative", {
-                    "border-l-4 border-[#B1BD93] bg-white/70 text-[#101B08]":
-                      isFromSponsor,
-                    "border-l-4 border-[#D2FA52] bg-[#D2FA52]/70 text-[#101B08]":
-                      !isFromSponsor,
-                  })}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm font-semibold">
-                      {isFromSponsor
-                        ? data?.participantInfo.companyName
-                        : session?.user?.identity.fullName || "Vous"}
-                    </p>
-                    <span className="text-xs text-gray-500">
-                      {new Date(msg.createdAt).toLocaleString("fr-FR", {
-                        dateStyle: "short",
-                        timeStyle: "short",
-                      })}
-                    </span>
-                  </div>
-                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                  {!isFromSponsor && (
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <button
-                          className="absolute bottom-2 right-2 p-1 rounded-full hover:bg-[#e6e6e6] transition text-gray-400 hover:text-[#B91C1C]"
-                          style={{ opacity: 0.7 }}
-                          title="Supprimer"
-                        >
-                          <X size={16} />
-                        </button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Supprimer ce message ?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Cette action est irréversible. Voulez-vous vraiment
-                            supprimer ce message ?
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Annuler</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleDeleteMessage(msg._id)}
+            <>
+              {[...data.messages].reverse().map((msg) => {
+                const isFromSponsor = msg.senderType === "sponsor";
+                return (
+                  <div
+                    key={msg._id}
+                    className={clsx("pl-4 rounded-md p-4 shadow-sm relative", {
+                      "border-l-4 border-[#B1BD93] bg-white/70 text-[#101B08]":
+                        isFromSponsor,
+                      "border-l-4 border-[#D2FA52] bg-[#D2FA52]/70 text-[#101B08]":
+                        !isFromSponsor,
+                    })}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-semibold">
+                        {isFromSponsor
+                          ? data?.participantInfo.companyName
+                          : session?.user?.identity.fullName || "Vous"}
+                      </p>
+                      <span className="text-xs text-gray-500">
+                        {new Date(msg.createdAt).toLocaleString("fr-FR", {
+                          dateStyle: "short",
+                          timeStyle: "short",
+                        })}
+                      </span>
+                    </div>
+                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                    {!isFromSponsor && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <button
+                            className="absolute bottom-2 right-2 p-1 rounded-full hover:bg-[#e6e6e6] transition text-gray-400 hover:text-[#B91C1C]"
+                            style={{ opacity: 0.7 }}
+                            title="Supprimer"
                           >
-                            Supprimer
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  )}
-                </div>
-              );
-            })
+                            <X size={16} />
+                          </button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Supprimer ce message ?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Cette action est irréversible. Voulez-vous
+                              vraiment supprimer ce message ?
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Annuler</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDeleteMessage(msg._id)}
+                            >
+                              Supprimer
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
+                  </div>
+                );
+              })}
+              <div ref={messagesEndRef} />
+            </>
           ) : (
             <p className="text-gray-400 italic">
               Aucun message dans cette conversation.

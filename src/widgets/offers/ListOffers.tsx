@@ -106,18 +106,6 @@ export default function ListOffers() {
                             )}
                           </span>
                         </span>
-                        <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#eaf7c2] text-[#3f4139] px-3 py-0.5 rounded-lg border border-[#d2fa52]">
-                          Statut :{" "}
-                          <span className="font-semibold">
-                            {offer.status ? (
-                              offer.status
-                            ) : (
-                              <span className="italic text-gray-400">
-                                Non renseigné
-                              </span>
-                            )}
-                          </span>
-                        </span>
                       </div>
                       <div className="flex items-center gap-2 mb-4">
                         <span className="font-bold text-[#3f4139] text-sm border-b-2 border-[#d2fa52] pb-0.5">

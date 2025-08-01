@@ -239,7 +239,7 @@ export default function SponsorCard({ sponsor }: { sponsor: any; }) {
                 sportNames.map((sport: string, i: number) => (
                   <span
                     key={i}
-                    className="bg-[#B1BD93]/20 text-primary-green px-3 py-1 rounded-full font-semibold text-xs"
+                    className="bg-[#101B08] text-primary-green px-3 py-1 rounded-full font-semibold text-xs"
                   >
                     {sport}
                   </span>

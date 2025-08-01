@@ -239,7 +239,7 @@ export default function SponsorCard({ sponsor }: { sponsor: any; }) {
                 sportNames.map((sport: string, i: number) => (
                   <span
                     key={i}
-                    className="bg-[#B1BD93]/20 text-primary-green px-3 py-1 rounded-full font-semibold text-xs"
+                    className="bg-[#101B08] text-primary-green px-3 py-1 rounded-full font-semibold text-xs"
                   >
                     {sport}
                   </span>
@@ -262,14 +262,16 @@ export default function SponsorCard({ sponsor }: { sponsor: any; }) {
                 </span>
               )}
             </p>
+
             {sponsor.website ? (
               <a
                 href={sponsor.website}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline text-xs"
+
               >
-                {sponsor.website}
+                Site Web
               </a>
             ) : (
               <p className="italic text-sm text-gray-400">

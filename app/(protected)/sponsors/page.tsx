@@ -24,7 +24,7 @@ export default function SponsorsPage() {
     (sponsor: any) =>
       !recentSlugsOrIds.has(sponsor.slug) && !recentSlugsOrIds.has(sponsor.id),
   );
-  const isEmpty = originalSponsors.length === 0;
+  const isEmpty = sponsors.length === 0;
 
   if (isLoading) {
     return (

@@ -40,7 +40,7 @@ export default function SponsorCard({ sponsor }: { sponsor: any; }) {
   const sponsorName = sponsor.identity.companyName.toLowerCase();
   const sportNames =
     sponsor.preferences?.sports?.map(
-      (sponsorSport: any) => sponsorSport.name,
+      (sponsorSport: any) => sponsorSport,
     ) || [];
   const [open, setOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);

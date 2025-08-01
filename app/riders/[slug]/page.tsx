@@ -25,7 +25,9 @@ gsap.registerPlugin(ScrollTrigger);
 export default function RiderPage() {
   const { slug } = useParams();
   const { data: rider, isLoading, error } = useGetRider(slug as string);
-  if (!rider && !isLoading && !error) return null;
+
+  // ...existing code...
+
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
   );
@@ -275,8 +277,18 @@ export default function RiderPage() {
       </div>
     );
 
-  if (error || !rider)
+  if (error)
     return <p className="p-8 text-red-500">Une erreur est survenue.</p>;
+
+  if (!rider) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-white">
+        <h1 className="text-5xl font-bold text-primary-green mb-4">404</h1>
+        <p className="text-2xl text-gray-700 mb-2">Rider introuvable</p>
+        <p className="text-lg text-gray-500">Le rider demandé n'existe pas ou a été supprimé.</p>
+      </div>
+    );
+  }
 
   const formatDate = (date?: Date | string) => {
     if (!date) return "Date inconnue";

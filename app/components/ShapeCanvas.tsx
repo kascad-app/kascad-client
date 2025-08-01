@@ -14,7 +14,7 @@ const ShapeCanvas: React.FC<ShapeCanvasProps> = ({
   canvasHeight,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const previousVerticesRef = useRef<{ x: number; y: number }[] | null>(null);
+  const previousVerticesRef = useRef<{ x: number; y: number; }[] | null>(null);
   const lastDrawTimeRef = useRef<number>(performance.now());
   const redrawIntervalRef = useRef<number>(0);
 
@@ -92,7 +92,7 @@ const ShapeCanvas: React.FC<ShapeCanvasProps> = ({
           ctx.fill();
 
           // Application du flou
-          ctx.filter = "blur(100px)";
+          // ctx.filter = "blur(100px)";
           ctx.fillStyle = gradient;
           ctx.fill();
 
@@ -118,7 +118,7 @@ const ShapeCanvas: React.FC<ShapeCanvasProps> = ({
     <canvas
       ref={canvasRef}
       className={`${className}`}
-      style={{ maxWidth: "100vw", display: "block" }}
+      style={{ maxWidth: "100vw", display: "block", filter: "blur(100px)" }}
     />
   );
 };

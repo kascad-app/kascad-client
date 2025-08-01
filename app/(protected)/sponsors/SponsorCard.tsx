@@ -40,7 +40,7 @@ export default function SponsorCard({ sponsor }: { sponsor: any; }) {
   const sponsorName = sponsor.identity.companyName.toLowerCase();
   const sportNames =
     sponsor.preferences?.sports?.map(
-      (sponsorSport: any) => sponsorSport.name,
+      (sponsorSport: any) => sponsorSport,
     ) || [];
   const [open, setOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
@@ -304,14 +304,14 @@ export default function SponsorCard({ sponsor }: { sponsor: any; }) {
                     key={i}
                     className="flex items-center gap-2 bg-gray-100 rounded px-2 py-1"
                   >
-                    {partnership.image && (
+                    {/* {partnership.image && (
                       <img
                         src={partnership.image}
                         alt={partnership.name}
                         className="w-6 h-6 rounded-full object-cover"
                       />
-                    )}
-                    <span>{partnership.name}</span>
+                    )} */}
+                    <span>{partnership}</span>
                   </li>
                 ))}
               </ul>

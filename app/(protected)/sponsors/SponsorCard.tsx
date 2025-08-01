@@ -262,14 +262,16 @@ export default function SponsorCard({ sponsor }: { sponsor: any; }) {
                 </span>
               )}
             </p>
+
             {sponsor.website ? (
               <a
                 href={sponsor.website}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline text-xs"
+
               >
-                {sponsor.website}
+                Site Web
               </a>
             ) : (
               <p className="italic text-sm text-gray-400">
